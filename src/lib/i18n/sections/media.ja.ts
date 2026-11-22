@@ -62,6 +62,8 @@ export const mediaJa: Record<keyof typeof mediaEn, string> = {
   "media.reels.searchNoneBody": "クリップのタイトルとチャンネル名から検索します。プレイヤー名、キャラ、チャンネル名で試してください。",
   "media.reels.searchBack": "リールに戻る",
   "media.reels.searchEnd": "一致するのはここまでです",
+  "media.reels.fromYouTube": "YouTubeから",
+  "media.reels.fromYouTubeSearchNote": "検索でYouTubeから見つかった動画です。Smashyには保存されないため、ここではいいねやコメントはできません。",
   "media.reels.loadMoreFailed": "クリップをさらに読み込めませんでした。接続を確認してください。スクロールすると再試行します。",
   "media.reels.soundOnAria": "音声オン。オフにする",
   "media.reels.soundOffAria": "音声オフ。オンにする",

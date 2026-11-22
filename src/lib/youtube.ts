@@ -120,6 +120,35 @@ export async function getChannelShorts(channelId: string, since: Date): Promise<
   return (await getYouTubeVideos(ids)).filter((v) => v.duration === null || v.duration <= 180);
 }
 
+/** YouTube said Smashy's daily allowance is used up (403 quotaExceeded). */
+export class YouTubeQuotaError extends Error {}
+
+/**
+ * Smash Shorts matching a search, from any channel (round 716: Reels search). Expensive: a YouTube
+ * search costs 100 of the 10,000 daily units, so callers cache and cap it. Safe search is strict and
+ * "smash bros" is added to the words; only videos of 3 minutes or less that name a Smash game in their
+ * title, description or tags are kept.
+ */
+export async function searchShorts(words: string): Promise<(YouTubeVideo & { game: GameKey })[]> {
+  const key = process.env.YOUTUBE_API_KEY;
+  if (!key) return [];
+  const res = await fetch(
+    `${API}/search?${new URLSearchParams({ part: "id", q: `${words} smash bros`, type: "video", videoDuration: "short", safeSearch: "strict", maxResults: "25", key })}`,
+    { signal: AbortSignal.timeout(15000) },
+  );
+  if (res.status === 403 && /quota/i.test(await res.text().catch(() => ""))) throw new YouTubeQuotaError("YouTube quota used up");
+  if (!res.ok) throw new Error(`YouTube search failed: ${res.status}`); // never the URL: it has the key
+  const { items = [] } = (await res.json()) as { items?: { id: { videoId?: string } }[] };
+  const ids = items.map((i) => i.id.videoId).filter((id): id is string => !!id);
+  const out: (YouTubeVideo & { game: GameKey })[] = [];
+  for (const v of await getYouTubeVideos(ids)) {
+    if (v.duration === null || v.duration > 180) continue;
+    const game = guessGame(v, null);
+    if (game) out.push({ ...v, game });
+  }
+  return out;
+}
+
 /**
  * Whether a video is a Short. The API can't tell, but youtube.com/shorts/<id> opens for a Short and
  * redirects to the normal watch page for anything else. Null if YouTube couldn't be reached.
@@ -145,8 +174,9 @@ export async function isYouTubeShort(videoId: string): Promise<boolean | null> {
 
 const GAME_WORDS: [GameKey, RegExp][] = [
   // Hashtags run words together (#smashultimate, #smashmelee), so those are matched too.
-  ["melee", /\bmelee\b|\bssbm\b|smash ?melee/i],
-  ["ultimate", /\bultimate\b|\bssbu\b|smash ?ultimate/i],
+  // スマブラDX / スマブラSP: how Japanese titles name Melee and Ultimate (round 716).
+  ["melee", /\bmelee\b|\bssbm\b|smash ?melee|スマブラ ?dx/i],
+  ["ultimate", /\bultimate\b|\bssbu\b|smash ?ultimate|スマブラ ?sp/i],
   ["pplus", /project ?\+|project ?plus|\bp\+|\bpplus\b/i],
   ["smash64", /\bssb ?64\b|smash ?64\b|\bn64\b/i],
   ["brawl", /\bbrawl\b|\bssbb\b|smash ?brawl/i],

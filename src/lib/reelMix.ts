@@ -7,9 +7,9 @@
 
 export const POST_EVERY = 5;
 
-/** How many post videos sit before list position `offset` (0-based), with `total` post videos in all. */
-export function postsBefore(offset: number, total: number): number {
-  return Math.min(total, Math.floor(offset / POST_EVERY));
+/** How many post videos sit before list position `offset` (0-based), with `total` post videos in all. `every`: they take every so-many-th spot (search results use it too). */
+export function postsBefore(offset: number, total: number, every = POST_EVERY): number {
+  return Math.min(total, Math.floor(offset / every));
 }
 
 /**
@@ -17,12 +17,12 @@ export function postsBefore(offset: number, total: number): number {
  * offset - postsBefore(offset), at least `limit` of them if there are that many; `clipsHaveMore` =
  * there are clips after the ones passed.
  */
-export function mixPage<T>(offset: number, limit: number, posts: T[], clips: T[], clipsHaveMore: boolean): { items: T[]; hasMore: boolean } {
-  let p = postsBefore(offset, posts.length);
+export function mixPage<T>(offset: number, limit: number, posts: T[], clips: T[], clipsHaveMore: boolean, every = POST_EVERY): { items: T[]; hasMore: boolean } {
+  let p = postsBefore(offset, posts.length, every);
   let c = 0;
   const items: T[] = [];
   for (let k = offset; items.length < limit; k++) {
-    if ((k + 1) % POST_EVERY === 0 && p < posts.length) items.push(posts[p++]);
+    if ((k + 1) % every === 0 && p < posts.length) items.push(posts[p++]);
     else if (c < clips.length) items.push(clips[c++]);
     else if (p < posts.length) items.push(posts[p++]); // clips ran out: the rest of the post videos
     else break;

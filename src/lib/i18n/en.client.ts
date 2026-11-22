@@ -1767,6 +1767,8 @@ export const en = {
   "media.reels.searchNoneBody": "Search looks at clip titles and channel names. Try a player's tag, a character or a channel.",
   "media.reels.searchBack": "Back to Reels",
   "media.reels.searchEnd": "That's every match",
+  "media.reels.fromYouTube": "from YouTube",
+  "media.reels.fromYouTubeSearchNote": "Found on YouTube for your search. Smashy doesn't keep this one, so it has no likes or comments here.",
   "media.reels.loadMoreFailed": "Couldn't load more clips. Check your connection; Reels tries again as you scroll.",
   "media.reels.soundOnAria": "Sound on. Turn it off",
   "media.reels.soundOffAria": "Sound off. Turn it on",

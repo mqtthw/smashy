@@ -25,3 +25,47 @@ export function reelSearchWords(q: string): string[] {
 export function reelSearchFilters(q: string): string[] {
   return reelSearchWords(q).map((w) => `title.ilike.*${w}*,channel_name.ilike.*${w}*,channel_login.ilike.*${w}*`);
 }
+
+/** The same words in a fixed form, so "Plup", "plup " and "PLUP" share one cached YouTube search. */
+export function reelSearchKey(q: string): string {
+  return reelSearchWords(q).join(" ");
+}
+
+// ---------- Live YouTube searches (round 716) ----------
+// Each new search costs 100 of YouTube's 10,000 free daily units (collecting Shorts from approved
+// channels uses a few hundred a day). Searches are cached for a day, and each server asks YouTube at
+// most this many times a day; if YouTube says the allowance is used up anyway, live searches pause.
+
+/** Live Shorts take every third spot in search results. */
+export const LIVE_SHORT_EVERY = 3;
+export const LIVE_SEARCHES_PER_DAY = 50;
+const PAUSE_MS = 3 * 3600e3;
+
+let day = "";
+let used = 0;
+let pausedUntil = 0;
+
+/** May this server ask YouTube for one more search now? Counts it if so. */
+export function takeLiveSearch(now: number): boolean {
+  if (now < pausedUntil) return false;
+  const today = new Date(now).toISOString().slice(0, 10);
+  if (today !== day) {
+    day = today;
+    used = 0;
+  }
+  if (used >= LIVE_SEARCHES_PER_DAY) return false;
+  used++;
+  return true;
+}
+
+/** YouTube said the allowance is used up: stop asking for a few hours. */
+export function pauseLiveSearch(now: number) {
+  pausedUntil = now + PAUSE_MS;
+}
+
+/** For tests. */
+export function resetLiveSearches() {
+  day = "";
+  used = 0;
+  pausedUntil = 0;
+}

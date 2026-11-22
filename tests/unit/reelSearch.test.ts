@@ -1,6 +1,42 @@
 // Reels search (round 713): what people type becomes safe database filters.
-import { describe, expect, it } from "vitest";
-import { cleanReelQuery, reelSearchFilters, reelSearchWords } from "@/lib/reelSearch";
+import { describe, expect, it, vi } from "vitest";
+vi.mock("server-only", () => ({}));
+import { LIVE_SEARCHES_PER_DAY, LIVE_SHORT_EVERY, cleanReelQuery, pauseLiveSearch, reelSearchFilters, reelSearchKey, reelSearchWords, resetLiveSearches, takeLiveSearch } from "@/lib/reelSearch";
+import { mixPage, postsBefore } from "@/lib/reelMix";
+import { guessGame } from "@/lib/youtube";
+
+describe("live YouTube Shorts in search (round 716)", () => {
+  it("share one cached search for the same words", () => {
+    expect(reelSearchKey("  PLUP  sheik")).toBe(reelSearchKey("plup sheik"));
+  });
+  it("ask YouTube at most the daily number of times, then again the next day", () => {
+    resetLiveSearches();
+    const day1 = Date.parse("2026-11-22T10:00:00Z");
+    for (let i = 0; i < LIVE_SEARCHES_PER_DAY; i++) expect(takeLiveSearch(day1)).toBe(true);
+    expect(takeLiveSearch(day1)).toBe(false);
+    expect(takeLiveSearch(day1 + 86400e3)).toBe(true);
+  });
+  it("pause for a few hours when YouTube says the allowance is used up", () => {
+    resetLiveSearches();
+    const now = Date.parse("2026-11-22T10:00:00Z");
+    pauseLiveSearch(now);
+    expect(takeLiveSearch(now + 3600e3)).toBe(false);
+    expect(takeLiveSearch(now + 4 * 3600e3)).toBe(true);
+  });
+  it("take every third spot, and pages carry on where the last one stopped", () => {
+    const shorts = ["s1", "s2"];
+    const clips = ["c1", "c2", "c3", "c4", "c5", "c6"];
+    const first = mixPage(0, 4, shorts, clips, false, LIVE_SHORT_EVERY);
+    expect(first.items).toEqual(["c1", "c2", "s1", "c3"]);
+    const before = postsBefore(4, shorts.length, LIVE_SHORT_EVERY);
+    const second = mixPage(4, 4, shorts, clips.slice(4 - before), false, LIVE_SHORT_EVERY);
+    expect(second.items).toEqual(["c4", "s2", "c5", "c6"]);
+  });
+  it("read Japanese titles' game names", () => {
+    expect(guessGame({ title: "ウルフの即死連携【スマブラSP】", tags: [] }, null)).toBe("ultimate");
+    expect(guessGame({ title: "スマブラDX 名シーン", tags: [] }, null)).toBe("melee");
+  });
+});
 
 describe("Reels search", () => {
   it("splits a search into words, letters and numbers only", () => {

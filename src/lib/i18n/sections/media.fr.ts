@@ -62,6 +62,8 @@ export const mediaFr: Record<keyof typeof mediaEn, string> = {
   "media.reels.searchNoneBody": "La recherche regarde les titres des clips et les noms des chaînes. Essaie le pseudo d'un joueur, un perso ou une chaîne.",
   "media.reels.searchBack": "Retour aux Reels",
   "media.reels.searchEnd": "C'est tout ce qui correspond",
+  "media.reels.fromYouTube": "depuis YouTube",
+  "media.reels.fromYouTubeSearchNote": "Trouvé sur YouTube pour ta recherche. Smashy ne le garde pas, donc il n'a ni j'aime ni commentaires ici.",
   "media.reels.loadMoreFailed": "Impossible de charger plus de clips. Vérifie ta connexion ; Reels réessaie quand tu fais défiler.",
   "media.reels.soundOnAria": "Son activé. Le couper",
   "media.reels.soundOffAria": "Son coupé. L'activer",

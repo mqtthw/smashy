@@ -11,10 +11,10 @@ import { createGuestClient } from "./supabase/guest";
 import { cacheLife } from "next/cache";
 import { TWITCH_GAMES, getChannelClips, getTopGameClips, getTwitchUsers, getTwitchUsersByIds, type TwitchClip } from "./twitch";
 import { TOP_CLIP_WINDOWS_DAYS, isLowQualityClip, topClipMinViews } from "./reelQuality";
-import { findYouTubeChannel, getChannelShorts, getYouTubeVideos, guessGame, hasYouTubeKey, type YouTubeVideo } from "./youtube";
+import { YouTubeQuotaError, findYouTubeChannel, getChannelShorts, getYouTubeVideos, guessGame, hasYouTubeKey, searchShorts, type YouTubeVideo } from "./youtube";
 import type { ReelPlatform } from "./reelLinks";
 import { rankTopClips } from "./topClips";
-import { reelSearchFilters } from "./reelSearch";
+import { LIVE_SHORT_EVERY, reelSearchFilters, reelSearchKey, takeLiveSearch, pauseLiveSearch } from "./reelSearch";
 import { mixPage, postsBefore, rankPostVideos } from "./reelMix";
 import { getReelPostVideos, type Post } from "./posts";
 
@@ -43,6 +43,8 @@ export type Reel = {
   comments: number;
   likes: number;
   sharedBy: { tag: string; handle: string } | null; // a clip someone shared (null for teens, to guests)
+  /** A YouTube Short found live for a search (round 716): not saved by Smashy, so no clip page, likes or comments. */
+  fromYouTubeSearch?: boolean;
   /** Set for a video from a post: the post, the file, and whether the viewer liked the post. */
   post?: { id: string; videoUrl: string; width: number; height: number; likedByMe: boolean; authorHandle: string };
 };
@@ -361,13 +363,18 @@ export async function getGuestReels(game: GameKey | null, limit: number): Promis
 
 /**
  * Clips whose title or channel matches what someone typed in Reels' search (round 713), most viewed
- * first. Every game unless one is picked; Twitch and YouTube clips only (not videos from posts). Hidden and taken-down clips are already left out by the table's rules.
+ * first. Every game unless one is picked; Twitch and YouTube clips only (not videos from posts). Hidden
+ * and taken-down clips are already left out by the table's rules. Round 716: YouTube Shorts found live
+ * for the search (liveYouTubeShorts) take every third spot, so the search finds Shorts from channels
+ * Smashy doesn't collect too.
  */
 export async function searchReels(opts: { q: string; game?: GameKey | null; offset?: number; limit?: number }): Promise<{ reels: Reel[]; hasMore: boolean }> {
   const filters = reelSearchFilters(opts.q);
   if (!filters.length) return { reels: [], hasMore: false };
   const limit = opts.limit ?? 15;
   const offset = opts.offset ?? 0;
+  const shorts = await liveShortsFor(opts.q, opts.game ?? null);
+  const before = postsBefore(offset, shorts.length, LIVE_SHORT_EVERY);
   let q = createGuestClient()
     .from("reels")
     .select(`${REEL_COLUMNS}, comments:posts!posts_reel_clip_id_fkey ( count ), sharer:profiles!reels_submitted_by_fkey ( tag, handle )`)
@@ -377,10 +384,61 @@ export async function searchReels(opts: { q: string; game?: GameKey | null; offs
   const { data, error } = await q
     .order("view_count", { ascending: false })
     .order("created_at", { ascending: false })
-    .range(offset, offset + limit); // one extra, to know if there's more
+    .range(offset - before, offset - before + limit); // one extra, to know if there's more
   if (error) throw error;
   const rows = (data ?? []) as unknown as ReelRow[];
-  return { reels: rows.slice(0, limit).map(toReel), hasMore: rows.length > limit };
+  const page = mixPage<Reel>(offset, limit, shorts, rows.slice(0, limit).map(toReel), rows.length > limit, LIVE_SHORT_EVERY);
+  return { reels: page.items, hasMore: page.hasMore };
+}
+
+/**
+ * The live YouTube Shorts for a search, ready to mix in: one game if picked, minus Shorts Smashy
+ * already has (those come through the table, with likes and comments) and channels an admin blocked.
+ * Never fails: without YouTube, the search is just Smashy's own clips.
+ */
+async function liveShortsFor(q: string, game: GameKey | null): Promise<Reel[]> {
+  let found: Reel[];
+  try {
+    found = await liveYouTubeShorts(reelSearchKey(q));
+  } catch (e) {
+    if (e instanceof YouTubeQuotaError) pauseLiveSearch(Date.now());
+    else if (!(e instanceof LiveSearchCapped)) console.error("YouTube search for Reels failed", e instanceof Error ? e.message : e);
+    return [];
+  }
+  if (game) found = found.filter((r) => r.game === game);
+  if (!found.length) return [];
+  const db = createAdminClient();
+  const [{ data: known }, { data: blocked }] = await Promise.all([
+    db.from("reels").select("clip_id").in("clip_id", found.map((r) => r.clipId)),
+    db.from("reel_channels").select("login").eq("platform", "youtube").eq("blocked", true),
+  ]);
+  const skip = new Set([...(known ?? []).map((r) => r.clip_id as string), ...(blocked ?? []).map((c) => c.login as string)]);
+  return found.filter((r) => !skip.has(r.clipId) && !skip.has(r.channelLogin));
+}
+
+class LiveSearchCapped extends Error {}
+
+/**
+ * YouTube's own search for these words, kept for a day and shared by every server, so each search
+ * costs YouTube's allowance once a day at most. New searches past the daily cap (takeLiveSearch) throw
+ * instead of asking YouTube, and a throw isn't kept, so the search is tried again later.
+ */
+async function liveYouTubeShorts(key: string): Promise<Reel[]> {
+  "use cache: remote";
+  cacheLife({ stale: 3600, revalidate: 86400, expire: 2 * 86400 });
+  if (!hasYouTubeKey()) return [];
+  if (!takeLiveSearch(Date.now())) throw new LiveSearchCapped("Live YouTube searches are used up for today");
+  const out: Reel[] = [];
+  for (const v of await searchShorts(key)) {
+    const title = cleanPublicText(v.title.slice(0, 200));
+    if (title.flagged) continue; // anything worse than swearing stays out
+    out.push({
+      clipId: v.id, platform: "youtube", channelLogin: v.channelId, channelName: v.channelTitle, title: title.text, game: v.game,
+      views: v.views, duration: v.duration, thumbnailUrl: v.thumbnailUrl, videoId: null, vodOffset: null, createdAt: v.publishedAt,
+      comments: 0, likes: 0, sharedBy: null, fromYouTubeSearch: true,
+    });
+  }
+  return out;
 }
 
 /** A post's video as a Reel (its comments are the post's replies, its likes the post's likes). */

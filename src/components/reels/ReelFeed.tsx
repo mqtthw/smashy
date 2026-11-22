@@ -106,8 +106,9 @@ function MoreMenu({ reel, signedIn, active }: { reel: Reel; signedIn: boolean; a
         <a href={clipUrl({ platform: reel.platform === "youtube" ? "youtube" : "twitch", clipId: reel.clipId })} target="_blank" rel="noopener noreferrer" className="rounded-lg px-3 py-2 hover:bg-white/10">
           {t(reel.platform === "youtube" ? "media.reels.openYouTube" : "media.reels.openTwitch")}
         <NewTab /></a>
-        <Link href={`/reels/${encodeURIComponent(reel.clipId)}`} className="rounded-lg px-3 py-2 hover:bg-white/10">{t("media.reels.clipPage")}</Link>
-        {signedIn && (
+        {!reel.fromYouTubeSearch && <Link href={`/reels/${encodeURIComponent(reel.clipId)}`} className="rounded-lg px-3 py-2 hover:bg-white/10">{t("media.reels.clipPage")}</Link>}
+        {reel.fromYouTubeSearch && <p className="px-3 py-2 text-xs text-white/60">{t("media.reels.fromYouTubeSearchNote")}</p>}
+        {signedIn && !reel.fromYouTubeSearch && (
           <span className="px-3 py-2">
             <LiveReportButton kind="reel" targetId={reel.clipId} above className="text-sm text-white/70 hover:text-white" />
           </span>
@@ -171,7 +172,10 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
   const [postLiked, setPostLiked] = useState(post?.likedByMe ?? false);
   const liked = post ? postLiked : clipLiked;
   const likedAtLoad = post ? post.likedByMe : clipLikedAtLoad;
-  const pagePath = post ? `/post/${post.id}` : `/reels/${encodeURIComponent(reel.clipId)}`;
+  // A Short found live on YouTube for a search (round 716) isn't saved by Smashy: sharing gives its
+  // YouTube link, and liking, commenting and saving (which need Smashy's copy) are left out.
+  const live = !!reel.fromYouTubeSearch;
+  const pagePath = post ? `/post/${post.id}` : live ? clipUrl({ platform: "youtube", clipId: reel.clipId }) : `/reels/${encodeURIComponent(reel.clipId)}`;
   // Twitch's player only takes "muted or not" when it loads, so changing it reloads the clip. Decide it
   // when the clip comes on screen, and again only when someone presses the sound button (not when sound
   // switches on by itself after their first tap, which would restart the clip).
@@ -237,7 +241,7 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
       <div className="relative flex flex-col gap-3 px-4 pb-4 pt-3 md:px-16">
         <div className="flex min-w-0 flex-col gap-1">
           <h2 className="line-clamp-2 text-lg font-bold leading-snug drop-shadow">{reel.title || t("media.reels.untitled")}</h2>
-          {reel.title && <TranslateButton text={reel.title} source={{ kind: "reel", id: reel.clipId }} tone="dark" />}
+          {reel.title && !live && <TranslateButton text={reel.title} source={{ kind: "reel", id: reel.clipId }} tone="dark" />}
           <p className="flex flex-wrap items-center gap-x-1.5 text-sm text-white/75">
             <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold text-white">{GAMES[reel.game].short}</span>
             {post ? (
@@ -252,6 +256,7 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
               </>
             )}
             <ReelAge at={reel.createdAt} />
+            {live && <span>· {t("media.reels.fromYouTube")}</span>}
             {reel.sharedBy && (
               <span>
                 · {t("media.reels.sharedBy")} <Link href={`/u/${reel.sharedBy.handle}`} className="font-semibold text-white hover:underline">{reel.sharedBy.tag}</Link>
@@ -259,8 +264,8 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
             )}
           </p>
         </div>
-        <div className="flex items-start justify-between gap-2">
-          <Action label={t("media.reels.like")} count={likes > 0 ? compact.format(likes) : t("media.reels.like")}>
+        <div className={`flex items-start gap-2 ${live ? "justify-end gap-6" : "justify-between"}`}>
+          {!live && <><Action label={t("media.reels.like")} count={likes > 0 ? compact.format(likes) : t("media.reels.like")}>
             {signedIn ? (
               <button type="button" onClick={like} aria-pressed={liked} aria-label={t(liked ? "media.reels.unlike" : "media.reels.like")} className={roundBtn}>
                 <svg viewBox="0 0 24 24" aria-hidden="true" className={`h-6 w-6 ${liked ? "fill-like stroke-like" : "fill-none stroke-current"}`} strokeWidth={2}>
@@ -279,8 +284,8 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
             <Link href={pagePath} aria-label={t("media.reels.commentsCount", { n: reel.comments })} className={roundBtn}>
               <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 fill-none stroke-current" strokeWidth={2}><path d="M4 5h16v11H8l-4 4z" /></svg>
             </Link>
-          </Action>
-          {!post && <Action label={t(saved ? "media.reels.saved" : "media.reels.save")}>
+          </Action></>}
+          {!post && !live && <Action label={t(saved ? "media.reels.saved" : "media.reels.save")}>
             {signedIn ? (
               <button type="button" onClick={save} aria-pressed={saved} aria-label={t(saved ? "media.reels.unsave" : "media.reels.saveClip")} className={roundBtn}>
                 <svg viewBox="0 0 24 24" aria-hidden="true" className={`h-6 w-6 stroke-current ${saved ? "fill-current" : "fill-none"}`} strokeWidth={2}><path d="M6 3h12v18l-6-4-6 4z" /></svg>
