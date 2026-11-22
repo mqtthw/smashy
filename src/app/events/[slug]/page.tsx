@@ -7,6 +7,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import GameBadge from "@/components/GameBadge";
 import EventRulesets from "@/components/scenes/EventRulesets";
+import NearbyEvents from "@/components/events/NearbyEvents";
 import LiveStream from "@/components/majors/LiveStream";
 import { LiveDot } from "@/components/majors/MajorParts";
 import { getMajor } from "@/lib/majors";
@@ -298,6 +299,12 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
           seriesId={seriesIdFor(t.name, t.city)}
           seriesName={seriesNameFor(t.name)}
         />
+
+        {t.region && (
+          <Suspense fallback={null}>
+            <NearbyEvents region={t.region} slug={t.slug} signedIn={!!userId} lang={lang} t={tr} />
+          </Suspense>
+        )}
       </div>
     </article>
     </LangProvider>

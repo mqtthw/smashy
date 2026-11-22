@@ -3,7 +3,7 @@
 
 import { cacheLife } from "next/cache";
 import { GAMES, GAME_KEYS, gameOfEvent, type GameKey } from "./games";
-import { HOME_REGION, startggRegionFilter } from "./regions";
+import { HOME_REGION, regionFromGeo, startggRegionFilter } from "./regions";
 
 const API_URL = "https://api.start.gg/gql/alpha";
 export const SUPPORTED_GAME_IDS = GAME_KEYS.flatMap((key) => GAMES[key].startggIds);
@@ -246,6 +246,8 @@ export type SmashyTournament = {
   registerUrl: string;
   events: SmashyEvent[];
   streams: { source: string; name: string }[]; // e.g. { source: "TWITCH", name: "vgbootcamp" }
+  /** Smashy's region code from the venue's country and state (round 704), e.g. "US-TX"; null if not a listed region. */
+  region?: string | null;
 };
 
 // ---------- Raw start.gg response shapes ----------
@@ -275,10 +277,12 @@ type RawTournament = {
   images: { type: string; url: string }[] | null;
   events: RawEvent[] | null;
   streams?: { streamName: string | null; streamSource: string | null }[] | null;
+  addrState?: string | null;
+  countryCode?: string | null;
 };
 
 const TOURNAMENT_FIELDS = `
-  id name slug city venueName venueAddress startAt endAt timezone numAttendees isRegistrationOpen
+  id name slug city addrState countryCode venueName venueAddress startAt endAt timezone numAttendees isRegistrationOpen
   images { type url }
   streams { streamName streamSource }
   events(filter: { videogameId: $videogameIds }) {
@@ -322,6 +326,7 @@ function toSmashyTournament(raw: RawTournament, keep: Keep = "in_person"): Smash
     registerUrl: `https://www.start.gg/tournament/${slug}/register`,
     events,
     streams: (raw.streams ?? []).flatMap((st) => (st.streamName && st.streamSource ? [{ source: st.streamSource, name: st.streamName }] : [])),
+    region: regionFromGeo(raw.countryCode, raw.addrState),
   };
 }
 
