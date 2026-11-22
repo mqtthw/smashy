@@ -84,7 +84,7 @@ export default function PrivacyPage() {
       <h2>What&apos;s public</h2>
       <p>
         An adult&apos;s profile, posts, photos and highlights can be seen by anyone, including guests and search
-        engines. A teen&apos;s are visible only to signed-in Smashy users. Your birthdate, email and reports are never
+        engines. A teen&apos;s are visible only to Smashy members who have made a profile. Your birthdate, email and reports are never
         public.
       </p>
 

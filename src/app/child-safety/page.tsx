@@ -38,9 +38,10 @@ export default function ChildSafetyPage() {
       <h2>How Smashy protects young players</h2>
       <ul>
         <li>Accounts are for people 13 and older. We ask for a birthdate when someone joins, and accounts we learn belong to someone under 13 are deleted.</li>
+        <li>Until an account adds its birthdate, it gets the teen protections and can&apos;t message anyone, send or get play requests, or join the online ladder.</li>
         <li>Teen accounts (13 to 17) are always protected: the teen approves who follows them.</li>
-        <li>Teens&apos; profiles and posts are only shown to signed-in members, never to guests or in link previews.</li>
-        <li>Teens can only message other teens, and adults can only message adults.</li>
+        <li>Teens&apos; profiles and posts are only shown to members who have made a Smashy profile, never to guests or in link previews.</li>
+        <li>Teens can only message other teens, and adults can only message adults. The same goes for play requests and the online ladder.</li>
         <li>Posts from teens that contain phone numbers, emails or social media handles are blocked, to keep contact on Smashy.</li>
         <li>Every photo uploaded to a post or a message, and still frames from every video, is checked automatically for adult and violent content before anyone else can see it.</li>
         <li>Anyone can block another account, so the two can no longer message or follow each other.</li>
