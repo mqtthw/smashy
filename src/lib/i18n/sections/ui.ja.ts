@@ -37,6 +37,9 @@ export const uiJa: Record<keyof typeof uiEn, string> = {
   "ui.install.title": "Smashy アプリを入手",
   "ui.install.storeBody": "返信が来たときや、イベントの前日に通知が届きます。無料です。",
   "ui.install.notNow": "今はしない",
+  "ui.rate.title": "Smashyを気に入っていますか？",
+  "ui.rate.body": "Google Playで評価していただくと、ほかのスマブラプレイヤーが見つけやすくなります。",
+  "ui.rate.rate": "評価する",
 
   // Keyboard shortcuts
   "ui.keys.title": "キーボードショートカット",

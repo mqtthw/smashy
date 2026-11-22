@@ -37,6 +37,9 @@ export const uiEs: Record<keyof typeof uiEn, string> = {
   "ui.install.title": "Obtén la app de Smashy",
   "ui.install.storeBody": "Recibe un aviso cuando alguien te responda o tu evento sea mañana. Gratis.",
   "ui.install.notNow": "Ahora no",
+  "ui.rate.title": "¿Te gusta Smashy?",
+  "ui.rate.body": "Una valoración rápida en Google Play ayuda a que otros jugadores de smash lo encuentren.",
+  "ui.rate.rate": "Valorar",
 
   // Keyboard shortcuts
   "ui.keys.title": "Atajos de teclado",

@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import SideColumn from "@/components/SideColumn";
 import Toaster from "@/components/ui/Toaster";
 import InstallPrompt from "@/components/InstallPrompt";
+import RateAppPrompt from "@/components/RateAppPrompt";
 import NativeAppBridge from "@/components/NativeAppBridge";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import ServiceWorker from "@/components/push/ServiceWorker";
@@ -95,6 +96,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* It reads the page address (usePathname), which can't be prerendered outside Suspense. */}
         <Suspense fallback={null}>
           <InstallPrompt />
+        </Suspense>
+        <Suspense fallback={null}>
+          <RateAppPrompt />
         </Suspense>
         <NativeAppBridge />
         <ScrollIndicator />

@@ -35,6 +35,9 @@ export const uiEn = {
   "ui.install.title": "Get the Smashy app",
   "ui.install.storeBody": "Get a ping when someone replies or your event is tomorrow. Free.",
   "ui.install.notNow": "Not now",
+  "ui.rate.title": "Enjoying Smashy?",
+  "ui.rate.body": "A quick rating on Google Play helps other smash players find it.",
+  "ui.rate.rate": "Rate",
 
   // Keyboard shortcuts
   "ui.keys.title": "Keyboard shortcuts",
