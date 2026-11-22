@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { POST_MAX_LENGTH } from "@/lib/postConstants";
 import { postErrorMessage } from "@/lib/postErrors";
 import { submitClip } from "@/lib/reelSubmissions";
-import { getReel, getReels } from "@/lib/reels";
+import { getReel, getReels, searchReels } from "@/lib/reels";
+import { cleanReelQuery } from "@/lib/reelSearch";
 import { createClient, getVerifiedUserId } from "@/lib/supabase/server";
 import { getMyGames } from "@/lib/viewer";
 import { isGameKey } from "@/lib/games";
@@ -25,9 +26,11 @@ export async function shareClip(_prev: ShareClipState, formData: FormData): Prom
   return { ok: Date.now() };
 }
 
-/** The next batch of Reels for whoever is scrolling. `seen` = clips this device already watched (sent last). `game` = one game only. */
-export async function loadMoreReels(offset: number, seen: string[] = [], game: string | null = null) {
+/** The next batch of Reels for whoever is scrolling. `seen` = clips this device already watched (sent last). `game` = one game only. `query` = search results instead. */
+export async function loadMoreReels(offset: number, seen: string[] = [], game: string | null = null, query: string | null = null) {
   if (!Number.isInteger(offset) || offset < 0 || offset > 1000) return { reels: [], hasMore: false };
+  const q = cleanReelQuery(query);
+  if (q) return searchReels({ q, game: isGameKey(game) ? game : null, offset, limit: 15 });
   const seenIds = Array.isArray(seen) ? seen.filter((id) => typeof id === "string" && /^[\w-]{1,120}$/.test(id)).slice(-MAX_SEEN_REELS) : [];
   const userId = await getVerifiedUserId();
   const myGames = await getMyGames(userId);

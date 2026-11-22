@@ -58,7 +58,7 @@ const ENDPOINTS: { title: string; items: Endpoint[] }[] = [
   {
     title: "Reels",
     items: [
-      { path: "/api/v1/reels", params: "game, sort (new or top), days (1 to 30, for top), limit (up to 50), offset", what: "Twitch clips and YouTube Shorts from Smash channels, newest or most viewed. Each has a link to the clip on Twitch or YouTube and its page on Smashy. Videos members post themselves aren't included." },
+      { path: "/api/v1/reels", params: "game, q (search words), sort (new or top), days (1 to 30, for top), limit (up to 50), offset", what: "Twitch clips and YouTube Shorts from Smash channels, newest or most viewed. q keeps clips whose title or channel name has every word (a player's tag, a character). Each has a link to the clip on Twitch or YouTube and its page on Smashy. Videos members post themselves aren't included." },
       { path: "/api/v1/reels/{clipId}", what: "One clip by its Twitch clip slug or YouTube video id." },
     ],
   },

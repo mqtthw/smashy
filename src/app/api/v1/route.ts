@@ -25,6 +25,7 @@ export function GET() {
         rulesets: at("/api/v1/rulesets?game=melee"),
         ruleset: at("/api/v1/rulesets/{id}"),
         reels: at("/api/v1/reels?game=melee&sort=top&days=7"),
+        reelSearch: at("/api/v1/reels?q=plup"),
         reel: at("/api/v1/reels/{clipId}"),
       },
     },

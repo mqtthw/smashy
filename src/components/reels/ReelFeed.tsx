@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import Form from "next/form";
 import Link from "next/link";
 import { clipUrl, embedUrl, platformName } from "@/lib/reelLinks";
 import type { Reel } from "@/lib/reels";
@@ -307,15 +308,22 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
   );
 }
 
-/** "For you" plus one tab per game (each opens /reels?game=...). */
-function GameTabs({ games, current, t }: { games: GameKey[]; current: GameKey | null; t: TFn }) {
+/** "For you" plus one tab per game (each opens /reels?game=...). While searching, the tabs keep the search. */
+function GameTabs({ games, current, query, t }: { games: GameKey[]; current: GameKey | null; query: string | null; t: TFn }) {
+  const href = (g: GameKey | null) => {
+    const p = new URLSearchParams();
+    if (g) p.set("game", g);
+    if (query) p.set("q", query);
+    const qs = p.toString();
+    return qs ? `/reels?${qs}` : "/reels";
+  };
   const tab = (active: boolean) =>
     `shrink-0 rounded-full px-3 py-1 text-sm font-semibold backdrop-blur transition ${active ? "bg-white text-black" : "bg-black/40 text-white/85 hover:bg-black/60"}`;
   return (
     <nav aria-label={t("media.reels.chooseGame")} className="flex min-w-0 gap-1.5 overflow-x-auto [scrollbar-width:none]">
-      <Link href="/reels" className={tab(current === null)} aria-current={current === null ? "page" : undefined}>{t("media.reels.forYou")}</Link>
+      <Link href={href(null)} className={tab(current === null)} aria-current={current === null ? "page" : undefined}>{t(query ? "media.reels.allGames" : "media.reels.forYou")}</Link>
       {games.map((g) => (
-        <Link key={g} href={`/reels?game=${g}`} className={tab(current === g)} aria-current={current === g ? "page" : undefined}>
+        <Link key={g} href={href(g)} className={tab(current === g)} aria-current={current === g ? "page" : undefined}>
           {GAMES[g].short}
         </Link>
       ))}
@@ -330,15 +338,18 @@ export default function ReelFeed({
   signedIn = false,
   games = [],
   game = null,
+  query = null,
 }: {
   initial: Reel[];
   hasMore: boolean;
-  loadMore: (offset: number, seen: string[], game: string | null) => Promise<{ reels: Reel[]; hasMore: boolean }>;
+  loadMore: (offset: number, seen: string[], game: string | null, query: string | null) => Promise<{ reels: Reel[]; hasMore: boolean }>;
   signedIn?: boolean;
   games?: GameKey[];
   game?: GameKey | null;
+  query?: string | null; // search results (round 713) instead of the usual feed
 }) {
   const t = useT();
+  const [searchOpen, setSearchOpen] = useState(false);
   const [reels, setReels] = useState<Reel[]>(initial);
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
@@ -470,10 +481,10 @@ export default function ReelFeed({
     const seen = readSeen();
     seenAtStart.current = seen;
     const seenSet = new Set(seen);
-    const needsReorder = initial.some((r) => seenSet.has(r.clipId));
+    const needsReorder = !query && initial.some((r) => seenSet.has(r.clipId)); // search results keep their order
     let cancelled = false;
     loading.current = true;
-    (needsReorder ? loadMore(0, seen, game) : Promise.resolve(null))
+    (needsReorder ? loadMore(0, seen, game, null) : Promise.resolve(null))
       .then((first) => {
         if (cancelled || !first) return;
         setReels(first.reels);
@@ -487,7 +498,7 @@ export default function ReelFeed({
     return () => {
       cancelled = true;
     };
-  }, [initial, loadMore, game]);
+  }, [initial, loadMore, game, query]);
 
   // A clip that stays on screen for a couple of seconds counts as watched; moving on hides the hint.
   const activeId = ready ? reels[active]?.clipId : undefined;
@@ -580,7 +591,7 @@ export default function ReelFeed({
     if (loading.current || !hasMore || !ready) return;
     loading.current = true;
     try {
-      const next = await loadMore(reels.length, seenAtStart.current, game);
+      const next = await loadMore(reels.length, seenAtStart.current, game, query);
       setReels((cur) => [...cur, ...next.reels.filter((r) => !cur.some((c) => c.clipId === r.clipId))]);
       setHasMore(next.hasMore);
     } catch {
@@ -588,19 +599,48 @@ export default function ReelFeed({
     } finally {
       loading.current = false;
     }
-  }, [hasMore, loadMore, reels.length, ready, game, t]);
+  }, [hasMore, loadMore, reels.length, ready, game, query, t]);
 
   // Load the next batch a few clips before the end.
   useEffect(() => {
     if (active >= reels.length - 3) void more();
   }, [active, reels.length, more]);
 
+  const roundTop = "pointer-events-auto shrink-0 rounded-full bg-white/15 p-1.5 text-white backdrop-blur hover:bg-white/25";
+  const searchIcon = <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2}><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5" /></svg>;
+  const clearHref = game ? `/reels?game=${game}` : "/reels";
   const topBar = (
-    <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center gap-2 bg-gradient-to-b from-black/70 to-transparent px-3 pb-6 pt-3">
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex flex-col gap-2 bg-gradient-to-b from-black/70 to-transparent px-3 pb-6 pt-3">
+    <div className="flex items-center gap-2">
       <h1 className="sr-only">{t("media.reels.heading")}</h1>
+      {searchOpen ? (
+        // Search: player tags, characters, channels (the words in clip titles and channel names).
+        <Form action="/reels" role="search" className="pointer-events-auto flex min-w-0 flex-1 items-center gap-1.5 rounded-full bg-black/60 py-1 pl-3 pr-1 ring-1 ring-white/25 backdrop-blur" onSubmit={() => setSearchOpen(false)}>
+          {game && <input type="hidden" name="game" value={game} />}
+          <input
+            name="q"
+            type="search"
+            required
+            autoFocus
+            maxLength={60}
+            defaultValue={query ?? ""}
+            enterKeyHint="search"
+            placeholder={t("media.reels.searchPlaceholder")}
+            aria-label={t("media.reels.searchLabel")}
+            className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/50"
+          />
+          <button type="submit" aria-label={t("media.reels.searchGo")} className="shrink-0 rounded-full bg-white/15 p-1 text-white hover:bg-white/25">{searchIcon}</button>
+          <button type="button" onClick={() => setSearchOpen(false)} aria-label={t("media.reels.searchClose")} className="shrink-0 rounded-full p-1 text-white/80 hover:bg-white/15">
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2}><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
+        </Form>
+      ) : (<>
       <div className="pointer-events-auto min-w-0 flex-1">
-        <GameTabs games={games} current={game} t={t} />
+        <GameTabs games={games} current={game} query={query} t={t} />
       </div>
+      <button type="button" onClick={() => setSearchOpen(true)} aria-label={t("media.reels.searchLabel")} title={t("media.reels.searchLabel")} className={roundTop}>
+        {searchIcon}
+      </button>
       <button
         type="button"
         onClick={() => {
@@ -614,7 +654,7 @@ export default function ReelFeed({
         aria-pressed={sound}
         aria-label={t(sound ? "media.reels.soundOnAria" : "media.reels.soundOffAria")}
         title={t(sound ? "media.reels.soundOn" : "media.reels.soundOff")}
-        className="pointer-events-auto shrink-0 rounded-full bg-white/15 p-1.5 text-white backdrop-blur hover:bg-white/25"
+        className={roundTop}
       >
         {sound ? (
           <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2}><path d="M4 9h4l5-4v14l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" /></svg>
@@ -625,6 +665,18 @@ export default function ReelFeed({
       <Link href="/reels/share" className="pointer-events-auto shrink-0 rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-white backdrop-blur hover:bg-white/25">
         {t("media.reels.shareButton")}
       </Link>
+      </>)}
+    </div>
+    {query && !searchOpen && (
+      <div className="pointer-events-auto flex max-w-full items-center gap-2 self-start rounded-full bg-black/60 py-1 pl-3 pr-1 text-sm text-white ring-1 ring-white/20 backdrop-blur">
+        <button type="button" onClick={() => setSearchOpen(true)} className="min-w-0 truncate text-left">
+          {t("media.reels.searchResults", { q: query })}
+        </button>
+        <Link href={clearHref} aria-label={t("media.reels.searchClear")} className="shrink-0 rounded-full p-1 text-white/80 hover:bg-white/15">
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current" strokeWidth={2.5}><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </Link>
+      </div>
+    )}
     </div>
   );
 
@@ -632,9 +684,15 @@ export default function ReelFeed({
     return (
       <div className="relative flex h-[calc(100dvh-5rem-env(safe-area-inset-bottom))] flex-col items-center justify-center gap-3 bg-neutral-950 px-6 text-center text-white md:h-dvh">
         {topBar}
+        {query ? (<>
+          <p className="text-lg font-bold">{t("media.reels.searchNone", { q: query })}</p>
+          <p className="text-sm text-white/70">{t("media.reels.searchNoneBody")}</p>
+          <Link href={clearHref} className="btn btn-md btn-primary">{t("media.reels.searchBack")}</Link>
+        </>) : (<>
         <p className="text-lg font-bold">{t("media.reels.noneTitle")}</p>
         <p className="text-sm text-white/70">{t("media.reels.noneBody")}</p>
         <Link href="/reels/share" className="btn btn-md btn-primary">{t("media.reels.shareAClip")}</Link>
+        </>)}
       </div>
     );
   }
@@ -679,9 +737,9 @@ export default function ReelFeed({
         ))}
         {!hasMore && (
           <div className="flex h-full snap-start flex-col items-center justify-center gap-2 px-6 text-center text-white">
-            <p className="text-lg font-bold">{t("media.reels.caughtUp")}</p>
+            <p className="text-lg font-bold">{t(query ? "media.reels.searchEnd" : "media.reels.caughtUp")}</p>
             <p className="text-sm text-white/70">{t("media.reels.caughtUpBody")}</p>
-            <Link href="/reels/share" className="btn btn-sm btn-primary mt-2">{t("media.reels.shareAClip")}</Link>
+            <Link href={query ? clearHref : "/reels/share"} className="btn btn-sm btn-primary mt-2">{t(query ? "media.reels.searchBack" : "media.reels.shareAClip")}</Link>
           </div>
         )}
       </div>
@@ -703,7 +761,7 @@ export default function ReelFeed({
             setActivated(true);
             setSoundPress((n) => n + 1);
           }}
-          className="absolute left-1/2 top-16 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-black/70 px-4 py-2 text-sm font-semibold text-white shadow-lg ring-1 ring-white/20 backdrop-blur"
+          className={`absolute left-1/2 ${query ? "top-28" : "top-16"} z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-black/70 px-4 py-2 text-sm font-semibold text-white shadow-lg ring-1 ring-white/20 backdrop-blur`}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current" strokeWidth={2}><path d="M4 9h4l5-4v14l-5-4H4zM17 9l5 6M22 9l-5 6" /></svg>
           {t("media.reels.tapForSound")}

@@ -14,6 +14,7 @@ import { TOP_CLIP_WINDOWS_DAYS, isLowQualityClip, topClipMinViews } from "./reel
 import { findYouTubeChannel, getChannelShorts, getYouTubeVideos, guessGame, hasYouTubeKey, type YouTubeVideo } from "./youtube";
 import type { ReelPlatform } from "./reelLinks";
 import { rankTopClips } from "./topClips";
+import { reelSearchFilters } from "./reelSearch";
 import { mixPage, postsBefore, rankPostVideos } from "./reelMix";
 import { getReelPostVideos, type Post } from "./posts";
 
@@ -356,6 +357,30 @@ export async function getGuestReels(game: GameKey | null, limit: number): Promis
   "use cache: remote";
   cacheLife({ stale: 30, revalidate: 60, expire: 600 });
   return getReels({ myGames: [], game, limit, userId: null });
+}
+
+/**
+ * Clips whose title or channel matches what someone typed in Reels' search (round 713), most viewed
+ * first. Every game unless one is picked; Twitch and YouTube clips only (not videos from posts). Hidden and taken-down clips are already left out by the table's rules.
+ */
+export async function searchReels(opts: { q: string; game?: GameKey | null; offset?: number; limit?: number }): Promise<{ reels: Reel[]; hasMore: boolean }> {
+  const filters = reelSearchFilters(opts.q);
+  if (!filters.length) return { reels: [], hasMore: false };
+  const limit = opts.limit ?? 15;
+  const offset = opts.offset ?? 0;
+  let q = createGuestClient()
+    .from("reels")
+    .select(`${REEL_COLUMNS}, comments:posts!posts_reel_clip_id_fkey ( count ), sharer:profiles!reels_submitted_by_fkey ( tag, handle )`)
+    .eq("low_quality", false);
+  for (const f of filters) q = q.or(f); // each word must match somewhere
+  if (opts.game) q = q.eq("game", opts.game);
+  const { data, error } = await q
+    .order("view_count", { ascending: false })
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit); // one extra, to know if there's more
+  if (error) throw error;
+  const rows = (data ?? []) as unknown as ReelRow[];
+  return { reels: rows.slice(0, limit).map(toReel), hasMore: rows.length > limit };
 }
 
 /** A post's video as a Reel (its comments are the post's replies, its likes the post's likes). */
