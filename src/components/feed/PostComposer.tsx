@@ -96,6 +96,19 @@ export default function PostComposer({
   const [body, setBody] = useState("");
   const [game, setGameState] = useState<FeedGame>(defaultGame);
   const [character, setCharacter] = useState("");
+  // The game follows the Feed tab you're on (round 721). Switching tabs keeps this same composer on
+  // screen, so its first game stuck and had to be picked by hand for every post. A game you picked
+  // yourself for a post you've started writing stays until you post it.
+  const [tabGame, setTabGame] = useState<FeedGame>(defaultGame);
+  const [pickedGame, setPickedGame] = useState(false);
+  if (tabGame !== defaultGame) {
+    setTabGame(defaultGame);
+    if (!pickedGame || !body.trim()) {
+      setPickedGame(false);
+      setGameState(defaultGame);
+      setCharacter(""); // characters differ per game
+    }
+  }
   const [images, setImages] = useState<DraftImage[]>([]);
   const [videos, setVideos] = useState<DraftVideo[]>([]);
   // A poll (new posts only): null = no poll.
@@ -180,10 +193,14 @@ export default function PostComposer({
       setVideos([]);
       setPoll(null);
       setSpoiler(false);
+      // Back to the tab's game for the next post.
+      setPickedGame(false);
+      setGameState(defaultGame);
+      setCharacter("");
       onPosted?.();
       askForReviewAfterWin(); // a post went up: a good moment to ask for a store rating (round 643)
     }
-  }, [plainState.ok, tplState.ok, onPosted]);
+  }, [plainState.ok, tplState.ok, onPosted, defaultGame]);
 
   const choose = (picked: Template) => {
     setTemplate(picked);
@@ -365,7 +382,10 @@ export default function PostComposer({
             <select
               name="game"
               value={game}
-              onChange={(e) => setGame(e.target.value as FeedGame)}
+              onChange={(e) => {
+                setGame(e.target.value as FeedGame);
+                setPickedGame(true);
+              }}
               aria-label={t("feed.compose.game")}
               className="rounded-full border border-line bg-field px-2 py-1 text-sm"
             >
