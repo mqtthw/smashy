@@ -9,6 +9,8 @@ import InboxLive from "@/components/messages/InboxLive";
 import Avatar from "@/components/ui/Avatar";
 import { conversationName, getInbox, type InboxEntry } from "@/lib/messages";
 import { getUserId } from "@/lib/supabase/server";
+import { hasBirthday } from "@/lib/viewer";
+import AddBirthday from "@/components/AddBirthday";
 import { CardListSkeleton } from "@/components/ui/Skeleton";
 import Icon from "@/components/ui/Icon";
 import { LangProvider, T } from "@/lib/i18n/client";
@@ -68,7 +70,7 @@ function Row({ c, t }: { c: InboxEntry; t: TFn }) {
 async function Inbox({ tab, q }: { tab: "chats" | "requests"; q: string }) {
   const userId = await getUserId();
   if (!userId) redirect(signInPath("/messages"));
-  const [t, lang] = await Promise.all([getT(), getLang()]);
+  const [t, lang, birthday] = await Promise.all([getT(), getLang(), hasBirthday(userId)]);
   const needle = q.trim().toLowerCase().replace(/^@/, "");
   const all = (await getInbox(userId)).filter(
     (c) => !needle || conversationName(c).toLowerCase().includes(needle) || c.members.some((m) => m.handle.includes(needle) || m.tag.toLowerCase().includes(needle)),
@@ -79,6 +81,12 @@ async function Inbox({ tab, q }: { tab: "chats" | "requests"; q: string }) {
   return (
     <LangProvider lang={lang}>
       <InboxLive />
+      {/* Messages need a birthday on file (round 692): say so up front, with the form (round 696). */}
+      {!birthday && (
+        <div className="px-4 pb-3">
+          <AddBirthday currentYear={new Date().getFullYear()} next="/messages" title={t("people.birthday.toMessageTitle")} body={t("people.birthday.toMessageBody")} />
+        </div>
+      )}
       <form role="search" className="px-4 pb-2">
         {tab === "requests" && <input type="hidden" name="tab" value="requests" />}
         <label htmlFor="inbox-q" className="sr-only">{t("play.msg.search")}</label>

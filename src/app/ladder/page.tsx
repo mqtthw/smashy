@@ -17,6 +17,8 @@ import { getLadderState, getMyRating, getStandings, waitingCounts } from "@/lib/
 import { isRegion, regionName } from "@/lib/regions";
 import { pageMeta } from "@/lib/siteMeta";
 import { createClient, getUserId } from "@/lib/supabase/server";
+import { hasBirthday } from "@/lib/viewer";
+import AddBirthday from "@/components/AddBirthday";
 
 export const metadata: Metadata = pageMeta("Ladder", "Ranked netplay on Smashy: find a match, play a best of 3, report it and climb your game's ladder this season.");
 
@@ -39,11 +41,12 @@ async function Content({ searchParams }: { searchParams: SP }) {
     myRegion = (data as { region: string | null } | null)?.region ?? null;
   }
   const region = sp.region === "mine" ? myRegion : isRegion(sp.region) ? sp.region : null;
-  const [standings, state, mine, waiting] = await Promise.all([
+  const [standings, state, mine, waiting, birthday] = await Promise.all([
     getStandings(season, game, region),
     userId ? getLadderState(userId) : Promise.resolve(null),
     userId ? getMyRating(current, game, userId) : Promise.resolve(null),
     waitingCounts(),
+    hasBirthday(userId),
   ]);
   const link = (o: { game?: LadderGame; region?: string | null; season?: string }) => {
     const p = new URLSearchParams();
@@ -59,6 +62,11 @@ async function Content({ searchParams }: { searchParams: SP }) {
 
   return (
     <LangProvider lang={lang}>
+      {!birthday && (
+        <div className="mb-3">
+          <AddBirthday currentYear={now.getFullYear()} next={link({})} title={t("people.birthday.toMessageTitle")} body={t("people.birthday.toMessageBody")} />
+        </div>
+      )}
       <nav aria-label={t("play.ladder.games")} className="flex flex-wrap gap-2">
         {LADDER_GAMES.map((g) => (
           <Link key={g} href={link({ game: g })} aria-current={g === game ? "page" : undefined} className="chip">

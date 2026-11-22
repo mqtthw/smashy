@@ -9,6 +9,21 @@ const myProfile = cache(async (userId: string): Promise<{ games: string[] } | nu
   return data ? { games: (data.games as string[] | null) ?? [] } : null;
 });
 
+/**
+ * Whether the signed-in player has a birthday on file (round 696). Messages, play requests and the ladder need
+ * one (round 692), so those pages offer the form. Guests: true (nothing to offer). A failed read: true (no nagging).
+ */
+export const hasBirthday = cache(async (userId: string | null): Promise<boolean> => {
+  if (!userId) return true;
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from("private_profile_data").select("user_id").eq("user_id", userId).maybeSingle();
+    return error ? true : !!data;
+  } catch {
+    return true;
+  }
+});
+
 /** The games the signed-in player picked on their profile ([] for guests). */
 export async function getMyGames(userId: string | null): Promise<string[]> {
   if (!userId) return [];

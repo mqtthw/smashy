@@ -399,6 +399,8 @@ export const peopleEs: Record<keyof typeof peopleEn, string> = {
   "people.birthday.why": "Nunca se muestra en tu perfil. Hasta que lo agregues, tu cuenta mantiene los ajustes de seguridad para adolescentes: oculta para quien no ha iniciado sesión, y solo gente de tu edad puede escribirte. Puedes agregarlo cuando quieras en tu perfil.",
   "people.birthday.partial": "Elige mes, día y año, o deja los tres en blanco.",
   "people.birthday.addTitle": "Agrega tu cumpleaños",
+  "people.birthday.toMessageTitle": "Añade tu cumpleaños para enviar mensajes y jugar",
+  "people.birthday.toMessageBody": "Lo necesitas para mensajes, invitaciones a jugar y la escalera. Nunca se muestra y mantiene separados a adolescentes y adultos. Solo se puede poner una vez.",
   "people.birthday.addBody": "Nunca se muestra en tu perfil. Hasta que lo agregues, Smashy mantiene los ajustes de seguridad para adolescentes en tu cuenta. Solo se puede poner una vez.",
   "people.birthday.adultTip": "¿Tienes 18 o más? Cuando esté guardado, puedes hacer pública tu cuenta en Editar perfil.",
   "people.birthday.save": "Guardar cumpleaños",

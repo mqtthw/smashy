@@ -397,6 +397,8 @@ export const peopleEn = {
   "people.birthday.why": "Never shown on your profile. Until you add it, your account keeps the teen safety settings: hidden from people who aren't signed in, and only people your age can message you. You can add it any time on your profile.",
   "people.birthday.partial": "Pick a month, day and year, or leave all three blank.",
   "people.birthday.addTitle": "Add your birthday",
+  "people.birthday.toMessageTitle": "Add your birthday to message and play",
+  "people.birthday.toMessageBody": "Messages, play requests and the ladder need it. It's never shown, and it keeps teens and adults apart. You can set it once.",
   "people.birthday.addBody": "Never shown on your profile. Until you add it, Smashy keeps the teen safety settings on your account. You can set it once.",
   "people.birthday.adultTip": "18 or older? Once it's saved, you can make your account public in Edit profile.",
   "people.birthday.save": "Save birthday",

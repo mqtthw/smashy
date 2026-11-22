@@ -399,6 +399,8 @@ export const peopleFr: Record<keyof typeof peopleEn, string> = {
   "people.birthday.why": "Jamais affiché sur ton profil. Tant que tu ne l'as pas ajouté, ton compte garde les réglages de sécurité pour ados : caché aux personnes non connectées, et seules les personnes de ton âge peuvent t'écrire. Tu peux l'ajouter quand tu veux depuis ton profil.",
   "people.birthday.partial": "Choisis le mois, le jour et l'année, ou laisse les trois vides.",
   "people.birthday.addTitle": "Ajoute ton anniversaire",
+  "people.birthday.toMessageTitle": "Ajoute ta date de naissance pour discuter et jouer",
+  "people.birthday.toMessageBody": "Il en faut une pour les messages, les invitations à jouer et le classement. Elle n’est jamais affichée et sépare les ados des adultes. Tu ne peux la saisir qu’une fois.",
   "people.birthday.addBody": "Jamais affiché sur ton profil. Tant que tu ne l'as pas ajouté, Smashy garde les réglages de sécurité pour ados sur ton compte. Il ne se règle qu'une fois.",
   "people.birthday.adultTip": "18 ans ou plus ? Une fois enregistré, tu peux rendre ton compte public dans Modifier le profil.",
   "people.birthday.save": "Enregistrer",

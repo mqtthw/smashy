@@ -3,8 +3,10 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { refresh } from "next/cache";
 import { AGE_BLOCK_COOKIE, MIN_AGE, ageFromBirthdate, birthdateFromForm } from "@/lib/age";
 import { getT } from "@/lib/i18n/server";
+import { safeReturnPath } from "@/lib/returnTo";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient, getVerifiedUserId } from "@/lib/supabase/server";
 
@@ -32,5 +34,7 @@ export async function addBirthdate(_prev: BirthdayState, formData: FormData): Pr
     console.error("addBirthdate failed", error.code, error.message);
     return { error: t("people.birthday.err") };
   }
-  redirect("/profile");
+  // Pages remembered by the browser (Messages, Play, the ladder) would still show "add your birthday".
+  refresh();
+  redirect(safeReturnPath(formData.get("next")) ?? "/profile");
 }

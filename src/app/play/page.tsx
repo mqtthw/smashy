@@ -14,6 +14,8 @@ import { CHAT_ROOMS, type ChatRoom as Room } from "@/lib/guardrails";
 import { getOpenLobbies, getRecentChat } from "@/lib/play";
 import { regionName } from "@/lib/regions";
 import { createClient, getUserId } from "@/lib/supabase/server";
+import { hasBirthday } from "@/lib/viewer";
+import AddBirthday from "@/components/AddBirthday";
 import TabBar from "@/components/ui/TabBar";
 import { GAMES, gamesFor } from "@/lib/games";
 import { getMyGames } from "@/lib/viewer";
@@ -62,19 +64,25 @@ async function PlayContent({ searchParams }: { searchParams: PageProps<"/play">[
   }
 
   const supabase = await createClient();
-  const [lobbies, chat, { data: profile }, requests, friends, settings] = await Promise.all([
+  const [lobbies, chat, { data: profile }, requests, friends, settings, birthday] = await Promise.all([
     getOpenLobbies(game),
     getRecentChat(room),
     supabase.from("profiles").select("home_city, region").eq("id", userId).maybeSingle(),
     getPlayRequests(userId),
     getPlayFriends(),
     getMyPlaySettings(userId),
+    hasBirthday(userId),
   ]);
   const playGame = isPlayGame(room) ? room : null;
 
   return (
     <LangProvider lang={lang}>
       {tabs}
+      {!birthday && (
+        <div className="mx-3 mt-3">
+          <AddBirthday currentYear={new Date().getFullYear()} next={`/play?room=${room}`} title={t("people.birthday.toMessageTitle")} body={t("people.birthday.toMessageBody")} />
+        </div>
+      )}
       <PlayNow game={playGame} myGames={myGames.filter(isPlayGame)} requests={requests} friends={friends} settings={settings} viewerId={userId} serverNow={unixNow() * 1000} />
       {/* Each part of Play is its own glass panel (round 502). Matthew tried another order (round 507) and
           went back to this one (round 509). */}
