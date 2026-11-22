@@ -6,6 +6,8 @@ import { HOME_REGION, isRegion } from "@/lib/regions";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
+import { sendWelcomeMessage } from "@/lib/welcomeMessage";
 import { AGE_BLOCK_COOKIE, MIN_AGE, ageFromBirthdate, birthdateFromForm } from "@/lib/age";
 import { GAME_KEYS, type GameKey } from "@/lib/games";
 import { contactInfoReason } from "@/lib/guardrails";
@@ -134,6 +136,9 @@ export async function completeProfile(_prev: WelcomeState, formData: FormData): 
     await giveCodeBack();
     return { error: t("feed.welcome.err.profile") };
   }
+
+  // A brand-new profile (not a second submit): a welcome message from @smashyhq, after the page has moved on.
+  if (!error) after(() => sendWelcomeMessage(userId, tag, birthdate, t));
 
   cookieStore.delete(INVITE_COOKIE);
   // New account: on to the page that asked them to sign in (e.g. Host an event), else their profile.

@@ -44,6 +44,8 @@ export const peopleEn = {
   "people.profile.yourFeed": "Your feed",
   "people.profile.privacy": "Privacy",
   "people.profile.discord": "Smashy Discord",
+  "people.welcomeDm.adult": "Hey {tag}, welcome to Smashy, and thanks for joining! We're building this for the whole Smash community, so we'd love to hear what you think. Ideas, bugs, anything: come tell us in the Smashy Discord: {link}",
+  "people.welcomeDm.teen": "Hey {tag}, welcome to Smashy, and thanks for joining! We're building this for the whole Smash community, so we'd love to hear what you think. Ideas, bugs, anything: the Smashy Discord link is at the bottom of your Profile page.",
   "people.profile.seeStats": "See your stats →",
   "people.profile.saved": "Saved",
   "people.profile.mySets": "My sets",

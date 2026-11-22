@@ -16,6 +16,8 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 import Icon from "@/components/ui/Icon";
 import { useT } from "@/lib/i18n/client";
 import NewTab from "@/components/ui/NewTab";
+import { OFFICIAL_HANDLE } from "@/lib/officialHost";
+import { linkParts } from "@/lib/linkParts";
 
 const MAX = 1000;
 // In the reader's own time zone.
@@ -62,6 +64,8 @@ export default function ChatView({
   const [firstUnreadId] = useState(() =>
     myLastReadAt ? initial.find((m) => m.senderId !== viewerId && Date.parse(m.createdAt) > Date.parse(myLastReadAt))?.id ?? null : null,
   );
+  // Smashy's own account (@smashyhq): its links are clickable (the welcome message's Discord invite, round 705).
+  const isOfficial = (id: string | null) => !!id && people.find((p) => p.id === id)?.handle === OFFICIAL_HANDLE;
   const avatarOf = (id: string | null) => people.find((p) => p.id === id)?.avatarUrl ?? null;
   const [otherReadAt, setOtherReadAt] = useState(otherReadAtFirst);
   const [hasOlder, setHasOlder] = useState(hasOlderFirst);
@@ -362,7 +366,13 @@ export default function ChatView({
                           <img src={m.image.url} alt={t("play.msg.photo")} width={m.image.width} height={m.image.height} onError={() => refreshPhoto(m.id)} className="max-h-80 w-auto object-cover" />
                         <NewTab /></a>
                       )}
-                      {m.body && <p className="whitespace-pre-wrap break-words px-3 py-2">{m.body}</p>}
+                      {m.body && (
+                        <p className="whitespace-pre-wrap break-words px-3 py-2">
+                          {isOfficial(m.senderId)
+                            ? linkParts(m.body).map((part, i) => part.href ? <a key={i} href={part.href} target="_blank" rel="noopener noreferrer" className="underline">{part.text}<NewTab /></a> : part.text)
+                            : m.body}
+                        </p>
+                      )}
                     </>
                   )}
                 </div>

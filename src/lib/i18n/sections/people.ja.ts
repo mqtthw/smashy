@@ -46,6 +46,8 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
   "people.profile.yourFeed": "フィード",
   "people.profile.privacy": "プライバシー",
   "people.profile.discord": "SmashyのDiscord",
+  "people.welcomeDm.adult": "{tag}さん、Smashyへようこそ！参加してくれてありがとうございます。スマブラコミュニティ全体のために作っているので、ぜひご意見を聞かせてください。アイデアやバグなど、なんでもSmashyのDiscordへどうぞ：{link}",
+  "people.welcomeDm.teen": "{tag}さん、Smashyへようこそ！参加してくれてありがとうございます。スマブラコミュニティ全体のために作っているので、ぜひご意見を聞かせてください。アイデアやバグなど、なんでもどうぞ。SmashyのDiscordへのリンクはプロフィールページの一番下にあります。",
   "people.profile.seeStats": "成績を見る →",
   "people.profile.saved": "保存済み",
   "people.profile.mySets": "自分のセット",
