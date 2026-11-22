@@ -73,9 +73,9 @@ export async function dismissReports(postId: string) {
 }
 
 /** Chat message or lobby: hide it (if it still exists) and close its reports. */
-export async function actOnLive(kind: "chat" | "lobby" | "highlight" | "reel" | "message" | "profile" | "event", targetId: string, decision: "remove" | "dismiss", reason?: string) {
+export async function actOnLive(kind: "chat" | "lobby" | "highlight" | "reel" | "message" | "profile" | "event" | "league" | "vod", targetId: string, decision: "remove" | "dismiss", reason?: string) {
   const moderatorId = await requireModerator();
-  if (!["chat", "lobby", "highlight", "reel", "message", "profile", "event"].includes(kind) || !["remove", "dismiss"].includes(decision)) return;
+  if (!["chat", "lobby", "highlight", "reel", "message", "profile", "event", "league", "vod"].includes(kind) || !["remove", "dismiss"].includes(decision)) return;
   const db = createAdminClient();
   const { data: report } = await db.from("live_reports").select("snapshot").eq("kind", kind).eq("target_id", targetId).limit(1).maybeSingle();
 
@@ -84,6 +84,8 @@ export async function actOnLive(kind: "chat" | "lobby" | "highlight" | "reel" | 
     else if (kind === "lobby") await db.from("lobbies").update({ closed_at: new Date().toISOString() }).eq("id", targetId);
     else if (kind === "reel") await db.from("reels").update({ hidden: true }).eq("clip_id", targetId);
     else if (kind === "profile") await clearProfile(targetId);
+    else if (kind === "league") await db.from("leagues").update({ removed_at: new Date().toISOString() }).eq("id", targetId); // hidden from everyone but its organizer
+    else if (kind === "vod") await db.from("set_vods").delete().eq("id", targetId);
     else if (kind === "event") {
       // An event's extra brackets (Redemption, a second game) go with it.
       const hidden = { removed_at: new Date().toISOString(), removed_reason: reason ?? "other" };

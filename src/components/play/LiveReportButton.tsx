@@ -23,7 +23,7 @@ export default function LiveReportButton({
   className = "text-xs text-muted hover:text-brand",
   above = false,
 }: {
-  kind: "chat" | "lobby" | "highlight" | "reel" | "message" | "profile" | "event";
+  kind: "chat" | "lobby" | "highlight" | "reel" | "message" | "profile" | "event" | "league" | "vod";
   targetId: string;
   className?: string;
   above?: boolean;

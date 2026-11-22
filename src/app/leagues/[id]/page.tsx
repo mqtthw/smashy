@@ -17,6 +17,7 @@ import { JoinLeagueButton, RemovePlayerButton } from "../parts";
 import { MyLeagueSet } from "../weekly";
 import { startDirect } from "@/app/messages/actions";
 import { divisionStandings } from "@/lib/leagueStandings";
+import LiveReportButton from "@/components/play/LiveReportButton";
 
 export async function generateMetadata({ params }: PageProps<"/leagues/[id]">): Promise<Metadata> {
   const league = await getLeague((await params).id).catch(() => null);
@@ -59,6 +60,8 @@ async function LeagueContent({ params }: { params: PageProps<"/leagues/[id]">["p
         )}
       </header>
       {league.description && <p className="whitespace-pre-wrap text-sm">{league.description}</p>}
+      {/* Round 719: members can report a league; a moderator can then hide it. */}
+      {userId && !isHost && !league.removed && <span className="self-end"><LiveReportButton kind="league" targetId={league.id} /></span>}
 
       {league.status === "signups" && !league.removed && (
         <section className="card flex flex-col gap-2 p-4">

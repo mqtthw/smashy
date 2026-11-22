@@ -9,6 +9,7 @@ import type { VodSource } from "@/lib/vods";
 import { RemoveVod, VodForm } from "./VodForm";
 import { getT } from "@/lib/i18n/server";
 import NewTab from "@/components/ui/NewTab";
+import LiveReportButton from "@/components/play/LiveReportButton";
 
 export default async function SetVods({ source, setId, userId, className = "" }: { source: VodSource; setId: string; userId: string | null; className?: string }) {
   const vods = await getSetVods(source, setId).catch(() => []);
@@ -26,11 +27,16 @@ export default async function SetVods({ source, setId, userId, className = "" }:
       {first && (
         <div className="flex flex-col gap-1">
           <EmbedPlayer embed={first.embed!} />
-          {(mine.has(first.v.id) || admin) && (
+          {/* Your own (or an admin): remove. Someone else's: report (round 719). */}
+          {(mine.has(first.v.id) || admin) ? (
             <div className="flex justify-end">
               <RemoveVod id={first.v.id} />
             </div>
-          )}
+          ) : userId ? (
+            <div className="flex justify-end">
+              <LiveReportButton kind="vod" targetId={first.v.id} />
+            </div>
+          ) : null}
         </div>
       )}
       {rest.length > 0 && (
@@ -40,7 +46,7 @@ export default async function SetVods({ source, setId, userId, className = "" }:
               <a href={v.url} target="_blank" rel="nofollow ugc noopener noreferrer" className="min-w-0 flex-1 truncate link">
                 {embed!.provider}: {v.url.replace(/^https:\/\/(www\.)?/, "")}
               <NewTab /></a>
-              {(mine.has(v.id) || admin) && <RemoveVod id={v.id} />}
+              {(mine.has(v.id) || admin) ? <RemoveVod id={v.id} /> : userId ? <LiveReportButton kind="vod" targetId={v.id} /> : null}
             </li>
           ))}
         </ul>

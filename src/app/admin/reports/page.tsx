@@ -51,7 +51,7 @@ async function Queue() {
               </span>
               <span className="font-bold">{r.author.tag}</span>
               {r.author.isMinor && <span className="badge border border-line font-normal">Teen account</span>}
-              <span className="text-muted">· {r.kind === "chat" ? `Chat (${r.room})` : r.kind === "lobby" ? `Lobby (${r.room})` : r.kind === "reel" ? `Reels clip (${r.room})` : r.kind === "message" ? "Private message" : r.kind === "profile" ? "Profile" : r.kind === "event" ? `Hosted event (${r.room})` : `Highlight (${r.room})`}</span>
+              <span className="text-muted">· {r.kind === "chat" ? `Chat (${r.room})` : r.kind === "lobby" ? `Lobby (${r.room})` : r.kind === "reel" ? `Reels clip (${r.room})` : r.kind === "message" ? "Private message" : r.kind === "profile" ? "Profile" : r.kind === "event" ? `Hosted event (${r.room})` : r.kind === "league" ? `League (${r.room})` : r.kind === "vod" ? `Set video (${r.room})` : `Highlight (${r.room})`}</span>
             </header>
             <blockquote className="whitespace-pre-wrap break-words rounded-xl bg-surface p-3">{r.snapshot.replace(/\s*\[photo:[^\]]+\]/, "")}</blockquote>
             {r.kind === "message" && photoPath(r.snapshot) && (
@@ -72,7 +72,7 @@ async function Queue() {
             <div className="flex flex-wrap items-center gap-2 border-t border-line pt-3">
               <form action={actOnLive.bind(null, r.kind, r.targetId, "remove", r.reports[0].reason)}>
                 <button className="btn btn-sm btn-primary">
-                  {r.kind === "chat" ? "Remove message" : r.kind === "lobby" ? "Close lobby" : r.kind === "reel" ? "Hide clip" : r.kind === "message" ? "Remove message" : r.kind === "profile" ? "Reset name, handle, bio & picture" : r.kind === "event" ? "Hide event" : "Remove highlight"}
+                  {r.kind === "chat" ? "Remove message" : r.kind === "lobby" ? "Close lobby" : r.kind === "reel" ? "Hide clip" : r.kind === "message" ? "Remove message" : r.kind === "profile" ? "Reset name, handle, bio & picture" : r.kind === "event" ? "Hide event" : r.kind === "league" ? "Hide league" : r.kind === "vod" ? "Remove video" : "Remove highlight"}
                 </button>
               </form>
               <form action={actOnLive.bind(null, r.kind, r.targetId, "dismiss", undefined)}>

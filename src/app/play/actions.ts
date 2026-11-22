@@ -120,10 +120,10 @@ const REPORTS_PER_HOUR = 10;
  * Report a chat message or lobby. The server copies the text so moderators can still
  * see it after the 24-hour cleanup.
  */
-export async function reportLive(kind: "chat" | "lobby" | "highlight" | "reel" | "message" | "profile" | "event", targetId: string, reason: string, details: string): Promise<{ ok?: boolean; error?: string }> {
+export async function reportLive(kind: "chat" | "lobby" | "highlight" | "reel" | "message" | "profile" | "event" | "league" | "vod", targetId: string, reason: string, details: string): Promise<{ ok?: boolean; error?: string }> {
   const userId = await requireUser();
   const t = await getT();
-  if (!REASONS.includes(reason) || !["chat", "lobby", "highlight", "reel", "message", "profile", "event"].includes(kind)) return { error: t("play.err.pickReason") };
+  if (!REASONS.includes(reason) || !["chat", "lobby", "highlight", "reel", "message", "profile", "event", "league", "vod"].includes(kind)) return { error: t("play.err.pickReason") };
   if (typeof targetId !== "string" || targetId.length > 120) return { error: t("play.err.gone") };
 
   // Read the target as the reporter: you can only report what you can see.
@@ -173,6 +173,17 @@ export async function reportLive(kind: "chat" | "lobby" | "highlight" | "reel" |
   } else if (kind === "event") {
     const { data } = await supabase.from("hosted_events").select("host_id, name, description, location, game").eq("id", targetId).maybeSingle();
     if (data) snapshot = { author_id: data.host_id, text: `Event: ${data.name}${data.location ? ` · ${data.location}` : ""}${data.description ? `\n${data.description.slice(0, 1500)}` : ""}`, room: data.game };
+  } else if (kind === "league") {
+    // Round 719. Read as the reporter, like the rest.
+    const { data } = await supabase.from("leagues").select("host_id, name, description, location, game").eq("id", targetId).is("removed_at", null).maybeSingle();
+    if (data) snapshot = { author_id: data.host_id, text: `League: ${data.name}${data.location ? ` · ${data.location}` : ""}${data.description ? `\n${data.description.slice(0, 1500)}` : ""}`, room: data.game };
+  } else if (kind === "vod") {
+    // A video someone attached to a set (round 719). Who added it isn't public, so that comes from the server's own read.
+    const { data } = await supabase.from("set_vods").select("id, url, game, p1_tag, p2_tag, tournament").eq("id", targetId).maybeSingle();
+    if (data) {
+      const { data: owner } = await db.from("set_vods").select("added_by").eq("id", targetId).maybeSingle();
+      snapshot = { author_id: (owner?.added_by as string | null) ?? null, text: `Set video: ${data.url} (${data.p1_tag ?? "?"} vs ${data.p2_tag ?? "?"}${data.tournament ? `, ${data.tournament}` : ""})`, room: data.game };
+    }
   } else if (kind === "reel") {
     // A Reels clip: its "author" is whoever shared it (null for clips collected from channels).
     const { data } = await supabase.from("reels").select("title, channel_name, channel_login, platform, game, submitted_by").eq("clip_id", targetId).maybeSingle();

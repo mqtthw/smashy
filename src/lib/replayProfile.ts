@@ -2,6 +2,7 @@
 // /replays works out in their browser, minus anything about other people (opponents' names and connect
 // codes) and the member's own connect code. Also checks what a browser sends before it's saved.
 import type { ReplayTotals, Tally } from "./slippiStats";
+import { SLIPPI_CHARACTER_NAMES, SLIPPI_STAGE_NAMES } from "./slippiNames";
 
 type Row = Tally & { name: string };
 
@@ -39,7 +40,12 @@ const int = (v: unknown, max: number): number | null => (typeof v === "number" &
 const rate = (v: unknown, max: number): number | null | undefined =>
   v === null ? null : typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= max ? Math.round(v * 1000) / 1000 : undefined;
 
-function rows(v: unknown): Row[] | null {
+/**
+ * `allowed`: the only names a row may carry (round 719). They're shown on a public profile, so free
+ * text here was a way around the profile's contact and word rules. "Unknown" is what a replay with a
+ * missing character gives.
+ */
+function rows(v: unknown, allowed: ReadonlySet<string>): Row[] | null {
   if (!Array.isArray(v) || v.length > LIST_MAX) return null;
   const out: Row[] = [];
   for (const r of v as Record<string, unknown>[]) {
@@ -48,7 +54,7 @@ function rows(v: unknown): Row[] | null {
     const games = int(r.games, 100000);
     const wins = int(r.wins, 100000);
     const losses = int(r.losses, 100000);
-    if (!name || /[<>@#]/.test(name) || games === null || wins === null || losses === null || wins + losses > games) return null;
+    if (!name || (!allowed.has(name) && name !== "Unknown") || games === null || wins === null || losses === null || wins + losses > games) return null;
     out.push({ name, games, wins, losses });
   }
   return out;
@@ -73,7 +79,7 @@ export function readSavedSummary(raw: unknown): SavedReplaySummary | null {
     lCancelRate: rate(s.lCancelRate, 1),
   };
   if (Object.values(rates).some((r) => r === undefined)) return null;
-  const [byCharacter, byOpponentCharacter, byStage] = [rows(s.byCharacter), rows(s.byOpponentCharacter), rows(s.byStage)];
+  const [byCharacter, byOpponentCharacter, byStage] = [rows(s.byCharacter, SLIPPI_CHARACTER_NAMES), rows(s.byOpponentCharacter, SLIPPI_CHARACTER_NAMES), rows(s.byStage, SLIPPI_STAGE_NAMES)];
   if (!byCharacter || !byOpponentCharacter || !byStage) return null;
   return { games, wins, losses, minutes, kills, ...(rates as { [K in keyof typeof rates]: number | null }), byCharacter, byOpponentCharacter, byStage };
 }

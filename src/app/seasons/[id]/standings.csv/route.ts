@@ -3,6 +3,7 @@ import { getSeason, getSeasonEvents, getStandings } from "@/lib/seasons";
 import { standingsCsv } from "@/lib/seasonsMath";
 import { getUserId } from "@/lib/supabase/server";
 import { getT } from "@/lib/i18n/server";
+import { memberId } from "@/lib/viewer";
 
 export async function GET(_request: Request, { params }: RouteContext<"/seasons/[id]/standings.csv">) {
   const { id } = await params;
@@ -10,7 +11,7 @@ export async function GET(_request: Request, { params }: RouteContext<"/seasons/
   if (!season || season.removed) return new Response("Season not found", { status: 404 });
   const [userId, t] = await Promise.all([getUserId(), getT()]);
   const events = await getSeasonEvents(season.id);
-  const rows = await getStandings(season, events, userId);
+  const rows = await getStandings(season, events, await memberId(userId)); // a login with no profile reads as a guest
   const hidden = new Set(rows.filter((r) => r.hidden).map((r) => r.key));
   const body = standingsCsv(rows, (r) => hidden.has(r.key), t("season.hiddenPlayer"), events);
   const file = season.name.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "season";

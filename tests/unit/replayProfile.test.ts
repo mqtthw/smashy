@@ -31,6 +31,11 @@ describe("saved replay stats", () => {
     expect(readSavedSummary({ ...s, openingsPerKill: "4" })).toBeNull();
     expect(readSavedSummary({ ...s, byStage: [{ name: "XYZ#999", games: 1, wins: 1, losses: 0 }] })).toBeNull(); // a connect code
     expect(readSavedSummary({ ...s, byCharacter: Array.from({ length: 13 }, () => s.byCharacter[0]) })).toBeNull();
+    // Round 719: only real character and stage names, so no free text reaches a public profile.
+    expect(readSavedSummary({ ...s, byCharacter: [{ name: "call 555 123 4567", games: 1, wins: 1, losses: 0 }] })).toBeNull();
+    expect(readSavedSummary({ ...s, byStage: [{ name: "Fox", games: 1, wins: 1, losses: 0 }] })).toBeNull(); // a character isn't a stage
+    expect(readSavedSummary({ ...s, byCharacter: [{ name: "Unknown", games: 1, wins: 1, losses: 0 }] })).not.toBeNull();
+    expect(readSavedSummary({ ...s, byStage: [{ name: "Pokémon Stadium", games: 1, wins: 1, losses: 0 }] })).not.toBeNull();
     // Extra fields (like opponents) are dropped.
     expect(readSavedSummary({ ...s, opponents: totals.opponents })).not.toHaveProperty("opponents");
   });

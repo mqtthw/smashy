@@ -20,6 +20,7 @@ import { regionName } from "@/lib/regions";
 import { canManageSeason, getSeason, getSeasonAdmins, getSeasonEvents, getStandings, hasSeasonInvite, type ShownRow } from "@/lib/seasons";
 import { ownPictureMeta } from "@/lib/siteMeta";
 import { getUserId } from "@/lib/supabase/server";
+import { memberId } from "@/lib/viewer";
 import { dayLabel, dayRange } from "../parts";
 
 export async function generateMetadata({ params }: PageProps<"/seasons/[id]">): Promise<Metadata> {
@@ -38,7 +39,8 @@ async function SeasonView({ params }: { params: PageProps<"/seasons/[id]">["para
   if (season.removed && !moderator) notFound();
   const [admins, events, canManage, invited] = await Promise.all([getSeasonAdmins(season), getSeasonEvents(season.id), canManageSeason(season, userId), hasSeasonInvite(season.id, userId)]);
   const manage = canManage && !season.removed;
-  const rows = await getStandings(season, events, userId);
+  // Teens are named only to members with a profile (a bare login counts as a guest, round 719).
+  const rows = await getStandings(season, events, await memberId(userId));
   // The text to paste somewhere public is written as a signed-out visitor sees it (teens unnamed).
   // (The same rows with a visitor's hiding: no second standings run.)
   const publicRows = userId ? rows.map((r) => ({ ...r, hidden: r.hiddenFromGuests })) : rows;

@@ -7,11 +7,12 @@ import { standingRowId } from "@/lib/seasonsMath";
 import { currentSeasonsIn, seasonRanksFor, seasonsCounting, seasonsToAdd } from "@/lib/seasons";
 import { addSeasonEvent } from "@/app/seasons/actions";
 import GameBadge from "@/components/GameBadge";
+import { memberId } from "@/lib/viewer";
 
 /** Where this player is ranked (keys: their Smashy member key and/or start.gg player key). */
 /** `empty`: a line to show when they're ranked nowhere (the Seasons page, which has its own heading, so no hidden title there). */
 export async function SeasonRanks({ keys, viewerId, className = "", empty }: { keys: string[]; viewerId: string | null; className?: string; empty?: string }) {
-  const ranks = await seasonRanksFor(keys, viewerId).catch(() => []);
+  const ranks = await seasonRanksFor(keys, await memberId(viewerId)).catch(() => []); // a login with no profile reads as a guest
   if (!ranks.length) return empty ? <p className={`text-sm text-muted ${className}`}>{empty}</p> : null;
   const t = await getT();
   return (

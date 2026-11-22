@@ -38,8 +38,12 @@ export async function createLeague(_prev: LeagueFormState, formData: FormData): 
   const online = formData.get("online") !== "in_person";
   const location = online ? null : str(formData, "location", 120) || null;
   if (!online && (!location || location.length < 2)) return { error: t("league.err.location") };
-  const description = str(formData, "description", 2000) || null;
-  if ((description && contactInfoReason(description)) || (location && contactInfoReason(location))) return { error: t("league.err.contact") };
+  const rawDescription = str(formData, "description", 2000) || null;
+  if ((rawDescription && contactInfoReason(rawDescription)) || (location && contactInfoReason(location))) return { error: t("league.err.contact") };
+  // The description goes through the word filter like the name (round 719): swearing masked, worse refused.
+  const cleanDescription = rawDescription ? cleanPublicText(rawDescription) : null;
+  if (cleanDescription?.flagged) return { error: t("league.err.contact") };
+  const description = cleanDescription?.text ?? null;
   const tzSent = str(formData, "timezone", 60);
   const tz = isTimeZone(tzSent) ? tzSent : "America/Chicago"; // round 635
   const playoffs = formData.get("playoffs") === "on";

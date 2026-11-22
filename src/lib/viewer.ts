@@ -24,6 +24,20 @@ export const hasBirthday = cache(async (userId: string | null): Promise<boolean>
   }
 });
 
+/**
+ * The viewer's id if they have a Smashy profile, else null (round 719). For reads made with the
+ * service role that show teens to members: a bare login that never made a profile (and so gave no
+ * birthday) counts as a guest, like the database's own rules since round 695. A failed read: null.
+ */
+export async function memberId(userId: string | null): Promise<string | null> {
+  if (!userId) return null;
+  try {
+    return (await myProfile(userId)) ? userId : null;
+  } catch {
+    return null;
+  }
+}
+
 /** The games the signed-in player picked on their profile ([] for guests). */
 export async function getMyGames(userId: string | null): Promise<string[]> {
   if (!userId) return [];

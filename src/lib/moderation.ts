@@ -87,7 +87,7 @@ export async function countOpenReports(): Promise<number> {
 }
 
 export type LiveReport = {
-  kind: "chat" | "lobby" | "highlight" | "reel" | "message" | "profile" | "event";
+  kind: "chat" | "lobby" | "highlight" | "reel" | "message" | "profile" | "event" | "league" | "vod";
   targetId: string;
   snapshot: string; // the reported text, saved when it was reported
   room: string | null;
