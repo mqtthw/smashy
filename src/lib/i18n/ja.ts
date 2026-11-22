@@ -177,6 +177,7 @@ const main: Record<Exclude<MessageKey, SectionKey>, string> = {
   "people.accounts.savedTitle": "この端末のアカウント",
   "people.accounts.continueAs": "{name}として続ける",
   "people.accounts.switchLink": "アカウントを切り替え",
+  "people.accounts.switchTo": "@{handle}に切り替え",
   "people.signin.note": "ログイン方法をもう一つつないでおくと、片方が使えなくなってもログインできます。",
   "people.signin.connect": "{name}をつなぐ",
   "people.signin.added": "{name}をつなぎました。これからは{name}でもログインできます。",

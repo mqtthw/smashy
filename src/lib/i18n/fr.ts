@@ -177,6 +177,7 @@ const main: Record<Exclude<MessageKey, SectionKey>, string> = {
   "people.accounts.savedTitle": "Comptes sur cet appareil",
   "people.accounts.continueAs": "Continuer en tant que {name}",
   "people.accounts.switchLink": "Changer de compte",
+  "people.accounts.switchTo": "Passer à @{handle}",
   "people.signin.note": "Relie un deuxième moyen de connexion, pour pouvoir te connecter même si tu perds l'accès à l'un d'eux.",
   "people.signin.connect": "Relier {name}",
   "people.signin.added": "{name} est relié. Tu peux désormais te connecter avec.",

@@ -153,6 +153,7 @@ export const en = {
   "people.accounts.savedTitle": "Accounts on this device",
   "people.accounts.continueAs": "Continue as {name}",
   "people.accounts.switchLink": "Switch account",
+  "people.accounts.switchTo": "Switch to @{handle}",
   "people.signin.note": "Connect a second way in, so you can still sign in if you lose access to one.",
   "people.signin.connect": "Connect {name}",
   "people.signin.added": "{name} is connected. You can sign in with it from now on.",

@@ -155,6 +155,7 @@ export const es: Record<MessageKey, string> = {
   "people.accounts.savedTitle": "Cuentas en este dispositivo",
   "people.accounts.continueAs": "Continuar como {name}",
   "people.accounts.switchLink": "Cambiar de cuenta",
+  "people.accounts.switchTo": "Cambiar a @{handle}",
   "people.signin.note": "Conecta una segunda forma de entrar, para no quedarte fuera si pierdes el acceso a una.",
   "people.signin.connect": "Conectar {name}",
   "people.signin.added": "{name} está conectado. Desde ahora puedes entrar con él.",
