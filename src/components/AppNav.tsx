@@ -81,7 +81,8 @@ function ActiveTabList() {
   return <TabList pathname={usePathname()} />;
 }
 
-export default function AppNav() {
+/** `accounts`: other saved accounts for one-tap switching (server-rendered, round 701; empty when none). */
+export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
   const t = useT();
   return (
     <nav
@@ -97,11 +98,14 @@ export default function AppNav() {
       <Suspense fallback={<TabList pathname={null} />}>
         <ActiveTabList />
       </Suspense>
-      {/* In the narrow icon sidebar (tablets) only the globe shows; the language list sits invisibly over it. */}
-      <LanguageSwitch
-        className="hidden md:relative md:mx-auto md:mt-auto md:mb-4 md:flex md:justify-center md:p-3 lg:mx-0 lg:mb-0 lg:justify-start lg:px-5 lg:pb-4 lg:pt-4"
-        selectClassName="md:max-lg:absolute md:max-lg:inset-0 md:max-lg:max-w-none md:max-lg:opacity-0"
-      />
+      <div className="hidden md:mt-auto md:flex md:flex-col">
+        {accounts}
+        {/* In the narrow icon sidebar (tablets) only the globe shows; the language list sits invisibly over it. */}
+        <LanguageSwitch
+          className="hidden md:relative md:mx-auto md:mb-4 md:flex md:justify-center md:p-3 lg:mx-0 lg:mb-0 lg:justify-start lg:px-5 lg:pb-4 lg:pt-4"
+          selectClassName="md:max-lg:absolute md:max-lg:inset-0 md:max-lg:max-w-none md:max-lg:opacity-0"
+        />
+      </div>
     </nav>
   );
 }

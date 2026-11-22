@@ -2,6 +2,7 @@ import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Source_Sans_3 } from "next/font/google";
 import AppNav from "@/components/AppNav";
+import SideAccounts from "@/components/accounts/SideAccounts";
 import { PageCounter } from "@/components/ui/BackLink";
 import { Suspense } from "react";
 import SideColumn from "@/components/SideColumn";
@@ -80,7 +81,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           <T k="nav.skip" />
         </a>
-        <AppNav />
+        <AppNav accounts={<Suspense fallback={null}><SideAccounts /></Suspense>} />
         <Suspense fallback={null}>
           <PageCounter />
         </Suspense>
