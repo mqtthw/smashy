@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Sign in to Smashy</title>
+</head>
+<body style="margin:0;padding:0;background:#fbe7e3">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#fbe7e3">Your sign-in link and code for Smashy.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#fbe7e3" style="background:#fbe7e3;background-image:linear-gradient(180deg,#f7d4cc 0%,#fbe7e3 260px)">
+  <tr><td align="center" style="padding:28px 12px">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;border-radius:20px;overflow:hidden;background:#ffffff;border:1px solid #f1c9c1;box-shadow:0 8px 24px rgba(120,30,20,0.12)">
+      <tr><td align="center" bgcolor="#a80f0c" style="padding:26px 20px 22px;background:#a80f0c;background-image:linear-gradient(180deg,#4a0707 0%,#a80f0c 55%,#de2416 100%)">
+        <a href="https://smashy.gg" target="_blank" style="text-decoration:none"><img src="https://smashy.gg/email/wordmark.png" width="200" height="53" alt="SMASHY" style="display:block;border:0;width:200px;height:53px;color:#ffffff;font-family:Georgia,serif;font-size:32px;font-weight:900"></a>
+      </td></tr>
+      <tr><td style="padding:30px 28px 26px">
+        <h1 style="margin:0 0 10px;font-family:'Source Sans 3','Segoe UI',Helvetica,Arial,sans-serif;font-size:24px;line-height:30px;font-weight:800;color:#2a0b0a;text-align:center">Sign in to Smashy</h1>
+        <p style="margin:0 0 20px;font-family:'Source Sans 3','Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:23px;color:#7a4842;text-align:center">Tap the button to finish signing in. The link works once and expires soon.</p>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:8px auto 4px">
+  <tr><td align="center" bgcolor="#c4170c" style="border-radius:999px;background:#c4170c;background-image:linear-gradient(180deg,#ff8a7c 0%,#e8301f 50%,#c4170c 51%,#e8402f 100%);box-shadow:0 2px 6px rgba(196,23,12,0.35)">
+    <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email" target="_blank" style="display:inline-block;padding:14px 34px;font-family:'Source Sans 3','Segoe UI',Helvetica,Arial,sans-serif;font-size:17px;font-weight:700;line-height:20px;color:#ffffff;text-decoration:none;border-radius:999px;text-shadow:0 1px 1px rgba(80,0,0,0.35)">Sign in to Smashy</a>
+  </td></tr>
+</table>
+<p style="margin:22px 0 8px;font-family:'Source Sans 3','Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#7a4842;text-align:center">Or type this code in Smashy:</p>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto">
+  <tr><td align="center" bgcolor="#fff6f4" style="padding:12px 22px;border:1px solid #f1c9c1;border-radius:12px;background:#fff6f4">
+    <span style="font-family:Consolas,'SF Mono',Menlo,monospace;font-size:28px;font-weight:700;letter-spacing:6px;color:#2a0b0a">{{ .Token }}</span>
+  </td></tr>
+</table>
+        <p style="margin:26px 0 0;padding-top:18px;border-top:1px solid #f6dcd6;font-family:'Source Sans 3','Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:19px;color:#7a4842;text-align:center">Didn't ask for this? You can ignore this email; nobody can sign in without it.</p>
+      </td></tr>
+    </table>
+    <p style="margin:18px 0 0;font-family:'Source Sans 3','Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#7a4842;text-align:center">
+      <a href="https://smashy.gg" target="_blank" style="color:#c4170c;font-weight:700;text-decoration:none">smashy.gg</a> · the Smash community's home for events, results, clips and friends
+    </p>
+  </td></tr>
+</table>
+</body>
+</html>

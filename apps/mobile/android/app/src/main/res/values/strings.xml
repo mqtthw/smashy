@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Smashy</string>
+    <string name="title_activity_main">Smashy</string>
+    <string name="package_name">gg.smashy.app</string>
+    <string name="custom_url_scheme">gg.smashy.app</string>
+</resources>

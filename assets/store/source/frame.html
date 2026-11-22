@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- A store picture: a headline over Smashy's dark, flame-lit background, with a screenshot below that
+     runs off the bottom edge. Rendered by assets/store/source/render.py (Windows or Mac) or render.sh (Mac) with headless Chrome; the
+     address carries the screenshot, the words and the canvas size (?shot=&t1=&t2=&sub=&w=&h=). -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Playfair+Display:wght@900&display=block" rel="stylesheet">
+<style>
+  :root { --w: 1320px; --h: 2868px; --u: 1px; }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: var(--w); height: var(--h); overflow: hidden; background: #160505; }
+  body {
+    position: relative; color: #f4f1ee; font-family: Geist, Arial, sans-serif;
+    background:
+      radial-gradient(ellipse 85% 45% at 78% 78%, rgba(200, 16, 46, .55), transparent 70%),
+      radial-gradient(ellipse 70% 30% at 10% 8%, rgba(255, 100, 28, .18), transparent 70%),
+      linear-gradient(180deg, #2a0b0a 0%, #170505 45%, #240707 100%); /* oxblood, as the app since round 488 */
+  }
+  /* The link card's diagonal slashes */
+  .slash { position: absolute; top: -10%; width: calc(6 * var(--u)); height: 140%; background: rgba(255,255,255,.07); transform: rotate(24deg); }
+  .slash.a { left: 62%; } .slash.b { left: 66%; width: calc(3 * var(--u)); }
+  /* Flame stripe down the left edge, as on the link card */
+  .edge { position: absolute; left: 0; top: 0; bottom: 0; width: calc(18 * var(--u)); background: linear-gradient(180deg, #ff641c, #d91d15 45%, #860909); }
+  header { position: absolute; left: calc(110 * var(--u)); right: calc(110 * var(--u)); top: calc(150 * var(--u)); }
+  .logo { height: calc(78 * var(--u)); display: block; margin-bottom: calc(56 * var(--u)); }
+  h1 {
+    font-family: "Playfair Display", Georgia, serif; font-weight: 900;
+    font-size: calc(150 * var(--u)); line-height: 1.02; letter-spacing: -0.01em; text-wrap: balance;
+  }
+  h1 em {
+    font-style: normal; display: block;
+    background: linear-gradient(180deg, #ffb04a 0%, #ff641c 40%, #d91d15 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 calc(6 * var(--u)) calc(24 * var(--u)) rgba(217, 29, 21, .45));
+  }
+  p { margin-top: calc(40 * var(--u)); font-size: calc(54 * var(--u)); line-height: 1.3; color: #d7b9b3; font-weight: 400; max-width: 92%; text-wrap: balance; }
+  .shot {
+    position: absolute; left: 50%; transform: translateX(-50%) rotate(-2deg);
+    width: calc(var(--shotw) * var(--u)); top: calc(var(--shott) * var(--u));
+    border-radius: calc(var(--radius) * var(--u)); overflow: hidden;
+    border: calc(10 * var(--u)) solid #3a1614;
+    box-shadow: 0 0 0 calc(3 * var(--u)) rgba(255,255,255,.08), 0 calc(40 * var(--u)) calc(120 * var(--u)) rgba(0,0,0,.7), 0 0 calc(160 * var(--u)) rgba(217, 29, 21, .35);
+  }
+  .shot img { display: block; width: 100%; }
+</style>
+</head>
+<body>
+  <div class="slash a"></div><div class="slash b"></div><div class="edge"></div>
+  <header>
+    <img class="logo" src="../../logo/wordmark.png" alt="">
+    <h1><span id="t1"></span><em id="t2"></em></h1>
+    <p id="sub"></p>
+  </header>
+  <div class="shot"><img id="shot" alt=""></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const w = +q.get("w"), h = +q.get("h");
+  const root = document.documentElement.style;
+  root.setProperty("--w", w + "px");
+  root.setProperty("--h", h + "px");
+  // Everything is drawn for a 1320-wide phone; the iPad canvas scales it up.
+  const u = w / 1320 > 1 ? 1.25 : 1;
+  root.setProperty("--u", u + "px");
+  const tablet = w / h > 0.6;
+  root.setProperty("--shotw", tablet ? 1360 : 1000);
+  root.setProperty("--shott", +(q.get("top") || 1010) / u);
+  root.setProperty("--radius", tablet ? 44 : 84);
+  document.getElementById("t1").textContent = q.get("t1");
+  document.getElementById("t2").textContent = q.get("t2");
+  document.getElementById("sub").textContent = q.get("sub");
+  document.getElementById("shot").src = "../raw/" + q.get("shot");
+</script>
+</body>
+</html>

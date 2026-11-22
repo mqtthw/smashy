@@ -1,0 +1,12 @@
+Smashy stock icons (default costumes), one folder per game, resized to 64x64 webp.
+
+ultimate/  Recreated by Max_Hamm (reddit.com/user/Max_Hamm, r/smashbros): "People can use them however they
+           want, no credit required." Ridley uses costume 5 (the default wasn't in the set).
+smash64/   The Spriters Resource, ripped by Storice (Pikachu/Jigglypuff extras by Poke-Brother).
+melee/     The Spriters Resource, ripped by Cotton Candy 2C.
+brawl/     The Spriters Resource, ripped by Cotton Candy 2C.
+smash4/    The Spriters Resource, ripped by Random Talking Bush.
+
+Characters and icon designs (c) Nintendo / HAL Laboratory. Smashy isn't affiliated with Nintendo.
+To stop using them: set STOCK_ICONS = false in src/lib/mainBadge.ts (badges fall back to text codes).
+Re-import: scripts/import-stock-icons.mjs (Ultimate) and scripts/import-sheet-stock-icons.mjs (the rest).

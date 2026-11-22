@@ -1,0 +1,722 @@
+@import "tailwindcss";
+
+/*
+  Smashy design system. The live reference is the /design page.
+  Change colors, type and shapes here, not inside components.
+
+  The look (round 487, docs/design-review-plan.md): Frutiger Aero, the glossy Y2K look of the Wii
+  and Brawl years. A sky behind everything (day in light mode, night with an aurora in dark mode),
+  frosted glass panels, glossy "jelly" buttons in flame red. Round 488 moved every color to the
+  app icon's: blush white by day, deep oxblood with ember glows at night, and the icon's dark
+  outline (by day) or white band (at night) as the selection color.
+
+  Themes: light values on :root, dark values in the two dark blocks.
+  The visitor's choice (System / Light / Dark) sets data-theme on <html>; with no
+  choice, the phone or computer's own setting decides.
+*/
+:root {
+  /* Day: a soft blush, from the app icon's reds, fading to white */
+  --background: #fbe7e3; /* the sky at the top of the screen: sticky bars and menus */
+  --foreground: #2a0b0a;
+  --surface: rgb(255 255 255 / 0.55); /* hover fills, avatar discs, quiet panels */
+  --surface-2: rgb(255 255 255 / 0.85); /* pressed / selected fills */
+  --line: rgb(120 30 20 / 0.13); /* dividers between posts */
+  --line-strong: rgb(120 30 20 / 0.3); /* inputs, outline buttons */
+  --muted: #7a4842; /* timestamps, counts, secondary text */
+  /* Glass: cards and panels (card), the tab bar, text fields */
+  --glass: rgb(255 255 255 / 0.62);
+  --glass-line: rgb(255 255 255 / 0.95);
+  --glass-highlight: rgb(255 255 255 / 0.95);
+  --glass-shadow: 0 6px 18px rgb(120 30 20 / 0.1);
+  --glass-bar: rgb(255 255 255 / 0.72);
+  --field: rgb(255 255 255 / 0.85);
+  --panel: #fffafa; /* an opaque glass-look panel, for boxes drawn over lines (bracket sets) */
+  --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.95) 0%, rgb(255 255 255 / 0.65) 50%, rgb(250 220 214 / 0.75) 51%, rgb(255 255 255 / 0.88) 100%);
+  --primary-glow: 0 2px 6px rgb(196 23 12 / 0.35);
+  /* The sky behind every page (body::after) */
+  --sky:
+    radial-gradient(70% 30% at 20% 18%, rgb(255 255 255 / 0.7), transparent 70%),
+    radial-gradient(60% 25% at 85% 75%, rgb(255 140 90 / 0.12), transparent 70%),
+    linear-gradient(180deg, #fbe7e3 0%, #fdf1ee 35%, #fff9f8 70%, #ffffff 100%);
+
+  /* Brand: flame red, taken from the logo */
+  --brand: #c4170c;
+  --brand-hover: #9e120a;
+  --on-brand: #ffffff;
+  --focus: #c4170c;
+  /* The logo's flame (still used by the logo-style pictures). Same in both themes. */
+  --flame: linear-gradient(180deg, #4a0707 0%, #a80f0c 50%, #de2416 100%);
+  --flame-hover: linear-gradient(180deg, #5e0909 0%, #c2130e 50%, #f0321c 100%);
+  /* Glossy "jelly" fills: a bright top half, a hard line at the middle, a deeper bottom half. Same in both themes. */
+  --jelly-red: linear-gradient(180deg, #ff8a7c 0%, #e8301f 50%, #c4170c 51%, #e8402f 100%);
+  --jelly-red-hover: linear-gradient(180deg, #ff9d90 0%, #f03d2b 50%, #d01d10 51%, #f04c3a 100%);
+  /* Selections, Follow, Sign in: the icon's dark outline as glossy black by day; the icon's white
+     band as glossy pearl at night (set in the dark blocks). */
+  --jelly-select: linear-gradient(180deg, #5a4a49 0%, #2a1c1b 50%, #120808 51%, #2c1a19 100%);
+  --jelly-select-hover: linear-gradient(180deg, #6a5958 0%, #382625 50%, #1e0f0f 51%, #3a2423 100%);
+  --jelly-select-fill: #2a1c1b;
+  --on-select: #ffffff;
+  --select-shade: 0 2px 6px rgb(18 8 8 / 0.3);
+  /* Placement tiles (components/ui/PlaceMark.tsx): medal metals, the same in both themes. */
+  --gold: #e8b931;
+  --on-gold: #3b2a00;
+  --silver: #c9d1d8;
+  --on-silver: #1f262c;
+  --bronze: #c98552;
+  --on-bronze: #2e1606;
+
+  /* Meaning (separate from the brand) */
+  --like: #c4170c;
+  --repost: #04855a;
+  --success: #046c4e;
+  --warning: #9a4508;
+  --danger: #c81e1e;
+  --player-2: #0369a1; /* the second player where two players take turns (stage striking) */
+
+  /* Games */
+  --melee: #b03a0b;
+  --ultimate: #1d55d6;
+  --pplus: #7c3aed;
+  --smash64: #166d35;
+  --brawl: #0c6680;
+  --smash4: #be185d;
+
+  --overlay: rgb(42 11 10 / 0.4);
+
+  /* Scoreboard: the dark panels on tournament screens (a set, your set, On now).
+     Deep oxblood in both themes, like the app icon, so a set looks the same everywhere. See "board" below. */
+  --board: #1c0607;
+  --board-line: var(--board);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Night: deep oxblood, like the app icon, with warm ember glows and a few faint stars */
+    --background: #140405; /* the sky at the top of the screen: sticky bars and menus */
+    --foreground: #fff1ee;
+    --surface: rgb(255 255 255 / 0.07);
+    --surface-2: rgb(255 255 255 / 0.13);
+    --line: rgb(255 170 150 / 0.15);
+    --line-strong: rgb(255 170 150 / 0.36);
+    --muted: #d9aaa2;
+    --glass: rgb(255 255 255 / 0.06);
+    --glass-line: rgb(255 180 160 / 0.24);
+    --glass-highlight: rgb(255 255 255 / 0.18);
+    --glass-shadow: 0 8px 22px rgb(0 0 0 / 0.32);
+    --glass-bar: rgb(40 8 8 / 0.62);
+    --field: rgb(20 4 5 / 0.55);
+  --panel: #2a0c0c;
+    --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.24) 0%, rgb(255 255 255 / 0.08) 50%, rgb(255 150 120 / 0.07) 51%, rgb(255 150 120 / 0.16) 100%);
+    --primary-glow: 0 0 14px rgb(232 48 31 / 0.5);
+    --sky:
+      radial-gradient(circle at 23px 17px, rgb(255 255 255 / 0.55) 0.6px, transparent 1.2px) 0 0 / 173px 151px,
+      radial-gradient(circle at 91px 64px, rgb(255 255 255 / 0.3) 0.6px, transparent 1.2px) 0 0 / 127px 197px,
+      radial-gradient(60% 22% at 30% 20%, rgb(255 90 40 / 0.16), transparent 70%),
+      radial-gradient(55% 30% at 85% 78%, rgb(222 36 22 / 0.22), transparent 70%),
+      linear-gradient(180deg, #140405 0%, #2a0909 50%, #4a1210 100%);
+    --brand: #ff8a7c;
+    --brand-hover: #ffb0a6;
+    --on-brand: #ffffff;
+    --focus: #ff8a5c;
+  --jelly-select: linear-gradient(180deg, #ffffff 0%, #f1e6e4 50%, #d9c6c3 51%, #f5ecea 100%);
+  --jelly-select-hover: linear-gradient(180deg, #ffffff 0%, #f7eeec 50%, #e4d3d0 51%, #fbf4f2 100%);
+  --jelly-select-fill: #f1e6e4;
+  --on-select: #2a0b0a;
+  --select-shade: 0 0 10px rgb(255 255 255 / 0.18);
+    --like: #ff6a55;
+    --repost: #00ba7c;
+    --success: #34d399;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --player-2: #38bdf8;
+    --melee: #fb923c;
+    --ultimate: #7fb2ff;
+    --pplus: #b79bff;
+    --smash64: #4ade80;
+    --brawl: #22d3ee;
+    --smash4: #f472b6;
+    --overlay: rgb(20 4 5 / 0.6);
+    --board: #1c0607;
+    --board-line: rgb(255 170 150 / 0.24);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  /* Night: deep oxblood, like the app icon, with warm ember glows and a few faint stars */
+  --background: #140405; /* the sky at the top of the screen: sticky bars and menus */
+  --foreground: #fff1ee;
+  --surface: rgb(255 255 255 / 0.07);
+  --surface-2: rgb(255 255 255 / 0.13);
+  --line: rgb(255 170 150 / 0.15);
+  --line-strong: rgb(255 170 150 / 0.36);
+  --muted: #d9aaa2;
+  --glass: rgb(255 255 255 / 0.06);
+  --glass-line: rgb(255 180 160 / 0.24);
+  --glass-highlight: rgb(255 255 255 / 0.18);
+  --glass-shadow: 0 8px 22px rgb(0 0 0 / 0.32);
+  --glass-bar: rgb(40 8 8 / 0.62);
+  --field: rgb(20 4 5 / 0.55);
+  --panel: #2a0c0c;
+  --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.24) 0%, rgb(255 255 255 / 0.08) 50%, rgb(255 150 120 / 0.07) 51%, rgb(255 150 120 / 0.16) 100%);
+  --primary-glow: 0 0 14px rgb(232 48 31 / 0.5);
+  --sky:
+    radial-gradient(circle at 23px 17px, rgb(255 255 255 / 0.55) 0.6px, transparent 1.2px) 0 0 / 173px 151px,
+    radial-gradient(circle at 91px 64px, rgb(255 255 255 / 0.3) 0.6px, transparent 1.2px) 0 0 / 127px 197px,
+    radial-gradient(60% 22% at 30% 20%, rgb(255 90 40 / 0.16), transparent 70%),
+    radial-gradient(55% 30% at 85% 78%, rgb(222 36 22 / 0.22), transparent 70%),
+    linear-gradient(180deg, #140405 0%, #2a0909 50%, #4a1210 100%);
+  --brand: #ff8a7c;
+  --brand-hover: #ffb0a6;
+  --on-brand: #ffffff;
+  --focus: #ff8a5c;
+  --jelly-select: linear-gradient(180deg, #ffffff 0%, #f1e6e4 50%, #d9c6c3 51%, #f5ecea 100%);
+  --jelly-select-hover: linear-gradient(180deg, #ffffff 0%, #f7eeec 50%, #e4d3d0 51%, #fbf4f2 100%);
+  --jelly-select-fill: #f1e6e4;
+  --on-select: #2a0b0a;
+  --select-shade: 0 0 10px rgb(255 255 255 / 0.18);
+  --like: #ff6a55;
+  --repost: #00ba7c;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --player-2: #38bdf8;
+  --melee: #fb923c;
+  --ultimate: #7fb2ff;
+  --pplus: #b79bff;
+  --smash64: #4ade80;
+  --brawl: #22d3ee;
+  --smash4: #f472b6;
+  --overlay: rgb(20 4 5 / 0.6);
+  --board: #1c0607;
+  --board-line: rgb(255 170 150 / 0.24);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-on-brand: var(--on-brand);
+  --color-like: var(--like);
+  --color-repost: var(--repost);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-player-2: var(--player-2);
+  --color-melee: var(--melee);
+  --color-ultimate: var(--ultimate);
+  --color-pplus: var(--pplus);
+  --color-smash64: var(--smash64);
+  --color-brawl: var(--brawl);
+  --color-smash4: var(--smash4);
+  --color-overlay: var(--overlay);
+  --color-field: var(--field);
+  --color-panel: var(--panel);
+
+  --font-sans: var(--font-body-face), "Segoe UI", Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-body-face), "Segoe UI", Arial, sans-serif; /* headings: the same humanist face, bold */
+
+  /* Type scale (X-style: 15px body, 13px meta, 20px titles) */
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1rem;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.25rem;
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.5rem;
+  --text-display: 1.9375rem;
+  --text-display--line-height: 2.25rem;
+}
+
+/* The embed page (a bracket inside another website) shows none of the site's own menus or prompts. */
+body:has([data-embed]) > :not(main, script, next-route-announcer) {
+  display: none !important;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  /* The phone's clock and battery strip (only non-zero inside the store apps, which draw under it;
+     browsers report 0). The page starts below it, sticky bars stick below it, and a background-
+     coloured band covers it so scrolled content doesn't show through behind the clock. */
+  padding-top: env(safe-area-inset-top, 0px);
+  font-family: var(--font-body-face), "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+}
+
+.sticky.top-0 {
+  top: env(safe-area-inset-top, 0px);
+}
+
+/* The sky behind every page: day in light mode, night with an aurora and stars in dark mode. A
+   fixed layer under all content (not a fixed background, which iPhones ignore), so it stays put
+   while the page scrolls. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--sky);
+  pointer-events: none;
+}
+
+/* Page headers (Feed, Events, Play, Discuss, My sets): in the apps the clock strip above already
+   leaves room, so they start just below it. Browsers report 0 for the strip, so there they keep their
+   usual 1.5rem. */
+header.pt-6 {
+  padding-top: max(0.25rem, calc(1.5rem - env(safe-area-inset-top, 0px)));
+}
+
+/* Scroll bars: a slim flame-red bar with no grey track, on the page and on every scrolling row or
+   panel. Chrome, Edge, Android and desktop Safari use the -webkit- rules; Firefox the standard ones.
+   (iPhone and iPad Safari draw their own and ignore both; the iPhone app draws Smashy's instead,
+   see components/ScrollIndicator.tsx.) */
+:root {
+  --scroll-thumb: color-mix(in srgb, var(--brand) 55%, transparent);
+  --scroll-thumb-hover: var(--brand);
+}
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-thumb) transparent;
+  }
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+  background-clip: padding-box;
+}
+
+/* The iPhone app's own scroll bar (ScrollIndicator). The track runs between the clock strip and the
+   bottom tab bar (4rem tall plus the home-bar strip; no tab bar from md up). */
+:root {
+  --scroll-track-top: calc(env(safe-area-inset-top, 0px) + 6px);
+  --scroll-track-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px) + 6px);
+}
+@media (min-width: 768px) {
+  :root {
+    --scroll-track-bottom: calc(env(safe-area-inset-bottom, 0px) + 6px);
+  }
+}
+.scroll-indicator {
+  position: fixed;
+  top: 0;
+  right: 2px;
+  z-index: 70;
+  width: 4px;
+  height: 0;
+  border-radius: 999px;
+  background: var(--flame);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--brand) 45%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--background);
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* Headings: page titles (h1) and section titles (h2 at title size) are bold, slightly tight, in the
+   body face (round 487 replaced the serif). Add "font-sans" to a heading to leave it at its own weight. */
+@layer base {
+  h1:not(.font-sans),
+  h2.text-title:not(.font-sans) {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums; /* full-height figures: event names are full of numbers ("#225") */
+  }
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand) 25%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Reusable pieces (use these instead of re-typing long class lists) ---------- */
+
+/* Buttons: always "btn" + a size + a tone, e.g. "btn btn-md btn-primary" */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 150ms, color 150ms, border-color 150ms, opacity 150ms;
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  /* Busy ("Posting…"): stays in full color. Fading it while its label grew looked broken on iPhones,
+     half bright and half faded (round 623). */
+  &:disabled[aria-busy="true"] {
+    opacity: 1;
+    cursor: progress;
+  }
+}
+@utility btn-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: var(--text-meta);
+  line-height: var(--text-meta--line-height);
+  min-height: 2rem;
+}
+@utility btn-md {
+  padding: 0.375rem 1rem;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  min-height: 2.25rem;
+}
+@utility btn-lg {
+  padding: 0.75rem 1.25rem;
+  font-size: 1.0625rem;
+  line-height: 1.5rem;
+  min-height: 3rem;
+}
+/* Main action on a screen: Post, Save, Join. A glossy red "jelly" button: bright top half, a hard
+   line at the middle, a highlight along the top edge. It glows a little at night. */
+@utility btn-primary {
+  background: #e8301f var(--jelly-red);
+  color: #ffffff;
+  border-color: rgb(150 12 4 / 0.35);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), var(--primary-glow);
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.3);
+  &:hover:not(:disabled) {
+    background: #f03d2b var(--jelly-red-hover);
+  }
+}
+/* The one big action on a page (sign up for this event, see the results, Join Smashy when signed
+   out): the same jelly with a stronger glow. Use with btn-primary, at most once per screen:
+   "btn btn-lg btn-primary btn-hero". */
+@utility btn-hero {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 4px 14px rgb(232 48 31 / 0.45), 0 0 22px rgb(232 48 31 / 0.25);
+}
+/* Follow, Sign in: the selection jelly (glossy black by day, glossy pearl at night) */
+@utility btn-inverse {
+  background: var(--jelly-select-fill) var(--jelly-select);
+  color: var(--on-select);
+  border-color: rgb(0 0 0 / 0.25);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), var(--select-shade);
+  &:hover:not(:disabled) {
+    background: var(--jelly-select-fill) var(--jelly-select-hover);
+  }
+}
+/* Secondary actions: Edit profile, Cancel, Following. A glass button. */
+@utility btn-outline {
+  background: var(--glass-button);
+  border-color: var(--glass-line);
+  color: var(--foreground);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 2px 6px rgb(120 30 20 / 0.1);
+  &:hover:not(:disabled) {
+    border-color: var(--line-strong);
+  }
+}
+/* Low-key actions in toolbars */
+@utility btn-ghost {
+  color: var(--muted);
+  &:hover:not(:disabled) {
+    background: var(--surface);
+    color: var(--foreground);
+  }
+}
+/* Delete, Remove, Report */
+@utility btn-danger {
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+  color: var(--danger);
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--danger) 10%, transparent);
+  }
+}
+
+/* A frosted glass panel. Add your own padding (p-3 / p-4). (No backdrop blur: over the smooth sky it
+   adds little and long lists of cards would scroll slowly on phones.) */
+@utility card {
+  border-radius: 1.25rem;
+  border: 1px solid var(--glass-line);
+  background: var(--glass);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+}
+
+/* The big "happening now" card (home): a glossy flame-red panel with a highlight across its top
+   half. Same in both themes. Text on it is white. */
+@utility hero-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  color: #ffffff;
+  background: linear-gradient(180deg, #ff5a3c 0%, #c4170c 60%, #7d0d06 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 200 190 / 0.45), 0 8px 24px rgb(196 23 12 / 0.35);
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 50% 0;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.38), rgb(255 255 255 / 0.04));
+    border-radius: 1.5rem 1.5rem 60% 60% / 1.5rem 1.5rem 1.75rem 1.75rem;
+    pointer-events: none;
+  }
+}
+
+/* A date bubble ("NOV" over "18"): a small glossy glass tile. */
+@utility date-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  border-radius: 0.875rem;
+  border: 1px solid var(--glass-line);
+  background: var(--glass-button);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 2px 6px rgb(120 30 20 / 0.12);
+  line-height: 1;
+}
+
+/* A date bubble for something running right now: red jelly with white text. Use with date-bubble. */
+@utility date-bubble-live {
+  border-color: rgb(150 12 4 / 0.35);
+  background: #e8301f var(--jelly-red);
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), var(--primary-glow);
+}
+
+/* A logo or picture in a glossy glass frame (event logos). Add a size. */
+@utility glass-frame {
+  border-radius: 1rem;
+  border: 1px solid var(--glass-line);
+  background: var(--glass-button);
+  padding: 0.25rem;
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+}
+
+/* A round glossy bubble for a character portrait (player pages): a white highlight top-left warming
+   to ember at the edge, with a soft glow. Same in both themes. Add a size. */
+@utility portrait-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 25%, rgb(255 255 255 / 0.95) 0 14%, rgb(255 255 255 / 0.45) 38%, rgb(255 170 120 / 0.3) 72%, rgb(232 89 12 / 0.4) 100%);
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.75), 0 0 28px rgb(255 110 60 / 0.35);
+}
+
+/* Bars that stay on screen while the page scrolls under them (sticky tab rows, filter bars): frosted
+   glass with no border of its own (add border-b border-line). */
+@utility glass-sticky {
+  background: var(--glass-bar);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+
+/* Bars that float over the page (the phone tab bar): frosted glass with a glass edge. */
+@utility glass-bar {
+  background: var(--glass-bar);
+  border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+
+/* Scoreboard panel (components/host/Scoreboard.tsx): a dark island in both themes. Inside it the
+   neutral and brand colors take dark values, so the ordinary classes just work on it: text-muted,
+   text-foreground, border-line, bg-surface, btn-inverse (the main action), btn-outline, link.
+   Add your own padding. */
+@utility board {
+  --background: var(--board);
+  --foreground: #ffffff;
+  --surface: #2e0d0d;
+  --surface-2: #3e1513;
+  --line: #4a1c1a;
+  --line-strong: #a3726b;
+  --muted: #d9aaa2;
+  --brand: #ff4b33;
+  --brand-hover: #ff6a4d;
+  --focus: #ff7a5c;
+  --success: #00ba7c;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  color-scheme: dark;
+  border-radius: 1rem;
+  border: 1px solid var(--board-line);
+  background: var(--board);
+  color: var(--foreground);
+  /* On paper, browsers leave backgrounds out: a board prints black on white with an outline. */
+  @media print {
+    --background: #ffffff;
+    --foreground: #000000;
+    --surface: #ffffff;
+    --surface-2: #eeeeee;
+    --line: #cccccc;
+    --line-strong: #888888;
+    --muted: #444444;
+    --brand: #000000;
+    background: #ffffff;
+    border-color: #888888;
+    color-scheme: light;
+    /* Filled pieces on it (the LIVE badge, the Ready pill, the action button) keep their fill. */
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+/* Text inputs, text areas and dropdowns */
+@utility field {
+  border-radius: 0.5rem;
+  border: 1px solid var(--line-strong);
+  background: var(--field);
+  color: var(--foreground);
+  padding: 0.5rem 0.75rem;
+  &::placeholder {
+    color: var(--muted);
+  }
+  &:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 1px var(--brand);
+  }
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+/* Small rounded label: "Melee", "Pending", "Coming soon". Add a tone class for color. */
+@utility badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+}
+
+/* Pick-one or pick-many pills wrapping a hidden radio/checkbox */
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  border: 1px solid var(--glass-line);
+  background: var(--glass);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+  &:hover {
+    border-color: var(--line-strong);
+  }
+  &:has(:checked),
+  &[aria-pressed="true"],
+  &[aria-current="page"] {
+    border-color: rgb(0 0 0 / 0.25);
+    background: var(--jelly-select-fill) var(--jelly-select);
+    color: var(--on-select);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), var(--select-shade);
+  }
+  &:has(:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Inline text links inside sentences */
+@utility link {
+  color: var(--brand);
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Viewers can hide the main icons next to names (Profile > Theme; saved in their browser). */
+[data-hide-mains] .main-badge {
+  display: none;
+}
+
+/* Spoilers (components/ui/Spoiler.tsx). A marked post stays blurred until tapped. Results (placements,
+   set scores) are only hidden when the reader turned on Spoiler mode (Profile; saved in their browser). */
+.spoiler {
+  position: relative;
+}
+.spoiler:not([data-open]) > .spoiler-content {
+  filter: blur(12px);
+  user-select: none;
+  pointer-events: none;
+}
+.spoiler-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-height: 2.75rem;
+}
+:root:not([data-spoiler-mode]) .spoiler[data-results] > .spoiler-content {
+  filter: none;
+  user-select: auto;
+  pointer-events: auto;
+}
+:root:not([data-spoiler-mode]) .spoiler[data-results] > .spoiler-cover {
+  display: none;
+}
+.spoiler-inline {
+  border-radius: 0.25rem;
+  padding: 0 0.15em;
+}
+.spoiler-inline:not([data-open]) {
+  background: var(--foreground);
+  cursor: pointer;
+}
+/* visibility (not a transparent colour) so colour emoji and links are hidden too */
+.spoiler-inline:not([data-open]) .spoiler-inline-text {
+  visibility: hidden;
+}
+
+/* iPhones zoom the page in when you tap a field whose text is smaller than 16px (and don't zoom
+   back out). On phones every text field, dropdown and text area is 16px. Not in a layer, so it
+   wins over size classes like text-sm on individual fields. */
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea {
+    font-size: 1rem;
+  }
+}

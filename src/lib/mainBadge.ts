@@ -1,0 +1,40 @@
+// The little "main" badge next to a player's name: their main's stock icon, or a short code badge
+// (FOX, CF, PCH) when there's no icon. Project+ borrows Brawl's icons (see BORROWED_ICONS). Safe in the browser.
+//
+// Stock icons (public/stock/<game>): Ultimate ones are recreations by Max_Hamm (r/smashbros, shared
+// "use however you want, no credit required"); Smash 64, Melee, Brawl and Smash 4 ones are rips from
+// The Spriters Resource (Storice, Cotton Candy 2C, Random Talking Bush). The characters and icon designs
+// are © Nintendo / HAL Laboratory; Smashy isn't affiliated with Nintendo. To stop using the icons (e.g.
+// if Nintendo asks), set STOCK_ICONS to false: every badge falls back to the code badge.
+import { characterName, parseMains, type Main } from "./characters";
+import { STOCK_ICON_KEYS } from "./stockIconKeys";
+
+export const STOCK_ICONS = true;
+
+/** Which main to show: their first main that has a stock icon, otherwise their first main. */
+export function badgeMain(mains: unknown): Main | null {
+  const list = parseMains(mains);
+  return list.find((m) => stockIconUrl(m)) ?? list[0] ?? null;
+}
+
+/**
+ * Games with no icon set of their own borrow from others, in order. Project+ is built on Brawl, so it
+ * uses Brawl's icons, then Melee's for Roy and Mewtwo and Smash 4's for Charizard. (Squirtle, Ivysaur
+ * and Knuckles have none yet and keep the code badge.)
+ */
+const BORROWED_ICONS: Partial<Record<Main["game"], Main["game"][]>> = { pplus: ["brawl", "melee", "smash4"] };
+
+export function stockIconUrl(main: Main): string | null {
+  if (!STOCK_ICONS) return null;
+  for (const game of [main.game, ...(BORROWED_ICONS[main.game] ?? [])]) {
+    if (STOCK_ICON_KEYS[game]?.has(main.character)) return `/stock/${game}/${main.character}.webp`;
+  }
+  return null;
+}
+
+/** "Fox" -> FOX, "Captain Falcon" -> CF, "Mr. Game & Watch" -> MGW, "R.O.B." -> ROB. */
+export function mainCode(main: Main): string {
+  const name = characterName(main.game, main.character) ?? main.character;
+  const words = name.replace(/[.&]/g, " ").split(/\s+/).filter(Boolean);
+  return (words.length > 1 ? words.map((w) => w[0]).join("") : words[0].slice(0, 3)).slice(0, 3).toUpperCase();
+}

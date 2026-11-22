@@ -1,0 +1,47 @@
+// Runs before each request. Keeps the login session fresh, keeps crawlers off the pages that cost
+// start.gg requests, and slows down one signed-out address that opens start.gg-backed pages faster
+// than a person would (see lib/guestPages.ts).
+import { NextResponse, type NextRequest } from "next/server";
+import { GUEST_PAGES_RETRY_S, countsAsGuestPage, crawlerOffLimits, isAiTrainingCrawler, isCrawler, notABrowser, takeGuestPage } from "@/lib/guestPages";
+import { updateSession } from "@/lib/supabase/proxy";
+
+export async function proxy(request: NextRequest) {
+  // robots.txt asks crawlers to skip these pages; the ones that say who they are get told here too.
+  // Round 475: and so are scrapers that pose as a browser but don't load pages the way one does.
+  const ua = request.headers.get("user-agent");
+  // AI training crawlers (round 655): robots.txt asks them to stay off; the ones that come anyway get a
+  // cheap refusal here, before any page is built. robots.txt itself stays readable.
+  if (isAiTrainingCrawler(ua) && request.nextUrl.pathname !== "/robots.txt") {
+    return new NextResponse("Smashy isn't open to AI training crawlers. See /robots.txt.\n", {
+      status: 403,
+      headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex", "Cache-Control": "public, max-age=86400" },
+    });
+  }
+  if (crawlerOffLimits(request.nextUrl.pathname) && (isCrawler(ua) || notABrowser(ua, (name) => request.headers.get(name)))) {
+    return new NextResponse("This page isn't open to crawlers. See /robots.txt.\n", {
+      status: 403,
+      headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex", "Cache-Control": "no-store" },
+    });
+  }
+  const { response, signedIn } = await updateSession(request);
+  if (countsAsGuestPage(request.nextUrl.pathname, signedIn, (name) => request.headers.get(name))) {
+    const address = (request.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || request.headers.get("x-real-ip") || "unknown";
+    const { ok, left } = takeGuestPage(address, Date.now());
+    if (!ok) {
+      return new NextResponse(
+        "You're opening a lot of bracket and event pages in a short time. Wait a couple of minutes and try again, or sign in to keep going.\n",
+        { status: 429, headers: { "Retry-After": String(GUEST_PAGES_RETRY_S), "RateLimit-Remaining": "0", "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" } },
+      );
+    }
+    // Say how many are left, the usual way (it also shows whether the count is holding on the live servers).
+    response.headers.set("RateLimit-Remaining", String(left));
+  }
+  return response;
+}
+
+export const config = {
+  matcher: [
+    // Everything except static files and images.
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
+};

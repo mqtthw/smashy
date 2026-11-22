@@ -1,0 +1,22 @@
+{
+  "appId": "gg.smashy.app",
+  "appName": "Smashy",
+  "webDir": "www",
+  "server": {
+    "url": "https://smashy.gg",
+    "cleartext": false,
+    "allowNavigation": ["smashy.gg", "www.smashy.gg", "pemwbclxvdjqbyomumjc.supabase.co", "discord.com", "*.discord.com"]
+  },
+  "android": {
+    "backgroundColor": "#0f1419"
+  },
+  "ios": {
+    "backgroundColor": "#0f1419",
+    "contentInset": "never"
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}

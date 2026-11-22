@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "56709373905",
+    "project_id": "smashy-13ee9",
+    "storage_bucket": "smashy-13ee9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56709373905:android:aa6ff0ad8e3182f816caf0",
+        "android_client_info": {
+          "package_name": "gg.smashy.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoy9sXDb5Lb7wAKN4Wg7ClG83n54IgpS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
