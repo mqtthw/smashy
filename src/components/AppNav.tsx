@@ -4,7 +4,7 @@ import Link from "next/link";
 import { GAMECUBE_PATH } from "@/lib/gamecubeIcon";
 import { isTabActive } from "@/lib/navActive";
 import { usePathname } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
 import LanguageSwitch from "./LanguageSwitch";
 import { useT } from "@/lib/i18n/client";
@@ -84,8 +84,30 @@ function ActiveTabList() {
 /** `accounts`: other saved accounts for one-tap switching (server-rendered, round 701; empty when none). */
 export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
   const t = useT();
+  // Phones: how much of the bottom of the screen the floating dock covers (its top edge to the bottom),
+  // as --dock-space, so full-screen pages like Reels end right above it. The dock's real height varies
+  // (iPhone text size, the home-bar strip), so it's measured instead of guessed (round 714).
+  const navRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const root = document.documentElement;
+    const update = () => {
+      if (getComputedStyle(nav).position !== "fixed") root.style.removeProperty("--dock-space");
+      else root.style.setProperty("--dock-space", `${Math.max(0, Math.round(window.innerHeight - nav.getBoundingClientRect().top))}px`);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(nav);
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
   return (
     <nav
+      ref={navRef}
       aria-label={t("nav.main")}
       // Phones: a floating frosted-glass dock above the home-bar strip. Bigger screens: a side bar.
       className="fixed inset-x-3 bottom-[calc(0.5rem+env(safe-area-inset-bottom))] z-10 rounded-3xl glass-bar shadow-[0_10px_26px_rgb(80_10_8/0.25)] print:hidden

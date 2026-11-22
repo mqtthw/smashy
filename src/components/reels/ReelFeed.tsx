@@ -320,7 +320,8 @@ function GameTabs({ games, current, query, t }: { games: GameKey[]; current: Gam
   const tab = (active: boolean) =>
     `shrink-0 rounded-full px-3 py-1 text-sm font-semibold backdrop-blur transition ${active ? "bg-white text-black" : "bg-black/40 text-white/85 hover:bg-black/60"}`;
   return (
-    <nav aria-label={t("media.reels.chooseGame")} className="flex min-w-0 gap-1.5 overflow-x-auto [scrollbar-width:none]">
+    // The last tab fades out at the edge (instead of being cut off) to show the row scrolls.
+    <nav aria-label={t("media.reels.chooseGame")} className="flex min-w-0 gap-1.5 overflow-x-auto pr-4 [mask-image:linear-gradient(to_right,black_calc(100%-1.5rem),transparent)] [scrollbar-width:none]">
       <Link href={href(null)} className={tab(current === null)} aria-current={current === null ? "page" : undefined}>{t(query ? "media.reels.allGames" : "media.reels.forYou")}</Link>
       {games.map((g) => (
         <Link key={g} href={href(g)} className={tab(current === g)} aria-current={current === g ? "page" : undefined}>
@@ -611,7 +612,7 @@ export default function ReelFeed({
   const clearHref = game ? `/reels?game=${game}` : "/reels";
   const topBar = (
     <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex flex-col gap-2 bg-gradient-to-b from-black/70 to-transparent px-3 pb-6 pt-3">
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5 sm:gap-2">
       <h1 className="sr-only">{t("media.reels.heading")}</h1>
       {searchOpen ? (
         // Search: player tags, characters, channels (the words in clip titles and channel names).
@@ -662,7 +663,11 @@ export default function ReelFeed({
           <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2}><path d="M4 9h4l5-4v14l-5-4H4zM17 9l5 6M22 9l-5 6" /></svg>
         )}
       </button>
-      <Link href="/reels/share" className="pointer-events-auto shrink-0 rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-white backdrop-blur hover:bg-white/25">
+      {/* Phones: just a round "+" (the top bar was crowded, round 714); wider screens keep the words. */}
+      <Link href="/reels/share" aria-label={t("media.reels.shareAClip")} title={t("media.reels.shareAClip")} className={`${roundTop} sm:hidden`}>
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2.5}><path d="M12 5v14M5 12h14" /></svg>
+      </Link>
+      <Link href="/reels/share" className="pointer-events-auto hidden shrink-0 rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-white backdrop-blur hover:bg-white/25 sm:block">
         {t("media.reels.shareButton")}
       </Link>
       </>)}
@@ -682,7 +687,7 @@ export default function ReelFeed({
 
   if (!reels.length) {
     return (
-      <div className="relative flex h-[calc(100dvh-5rem-env(safe-area-inset-bottom))] flex-col items-center justify-center gap-3 bg-neutral-950 px-6 text-center text-white md:h-dvh">
+      <div className="relative flex h-[calc(100dvh-var(--dock-space,calc(5rem+env(safe-area-inset-bottom))))] flex-col items-center justify-center gap-3 bg-neutral-950 px-6 text-center text-white md:h-dvh">
         {topBar}
         {query ? (<>
           <p className="text-lg font-bold">{t("media.reels.searchNone", { q: query })}</p>
@@ -704,7 +709,7 @@ export default function ReelFeed({
         ref={box}
         tabIndex={0}
         aria-label={t("media.reels.feedAria")}
-        className="h-[calc(100dvh-5rem-env(safe-area-inset-bottom))] snap-y snap-mandatory overflow-y-scroll overscroll-contain outline-none [scrollbar-width:none] md:h-dvh"
+        className="h-[calc(100dvh-var(--dock-space,calc(5rem+env(safe-area-inset-bottom))))] snap-y snap-mandatory overflow-y-scroll overscroll-contain outline-none [scrollbar-width:none] md:h-dvh"
       >
         {reels.map((r, i) => (
           <div key={r.clipId} data-index={i} className="h-full snap-start snap-always">

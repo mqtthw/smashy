@@ -39,7 +39,7 @@ async function Chat({ params }: { params: PageProps<"/messages/[id]">["params"] 
 
   return (
     <LangProvider lang={lang}>
-    <div className="flex h-[calc(100dvh-5rem-env(safe-area-inset-bottom))] flex-col md:h-dvh">
+    <div className="flex h-[calc(100dvh-var(--dock-space,calc(5rem+env(safe-area-inset-bottom))))] flex-col md:h-dvh">
       <header className="relative flex items-center gap-3 border-b border-line px-4 py-3">
         <Link href="/messages" className="text-muted hover:text-foreground" aria-label={t("play.msg.back")}>←</Link>
         <div className="min-w-0 flex-1">

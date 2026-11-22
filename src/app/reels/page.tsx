@@ -37,7 +37,7 @@ async function Reels({ searchParams }: { searchParams: PageProps<"/reels">["sear
 
 export default function ReelsPage(props: PageProps<"/reels">) {
   return (
-    <Suspense fallback={<div className="h-[calc(100dvh-5rem-env(safe-area-inset-bottom))] md:h-dvh"><ClipSkeleton full /></div>}>
+    <Suspense fallback={<div className="h-[calc(100dvh-var(--dock-space,calc(5rem+env(safe-area-inset-bottom))))] md:h-dvh"><ClipSkeleton full /></div>}>
       <Reels searchParams={props.searchParams} />
     </Suspense>
   );
