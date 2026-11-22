@@ -59,8 +59,14 @@ export async function getRecentSets(playerId: string): Promise<PlayerSet[]> {
   if (!/^\d+$/.test(playerId)) return [];
   const out: PlayerSet[] = [];
   const seen: SeenPlayer[] = []; // both players of every set, for Smashy's saved list of players
-  const ask = async (page: number, per: number) =>
-    (await startggQuery<{ player: { sets: { nodes: RawPlayerSet[] | null } } | null }>(QUERY, { p: playerId, page, per })).player?.sets.nodes ?? [];
+  const ask = async (page: number, per: number) => {
+    const data = await startggQuery<{ player: { sets: { nodes: RawPlayerSet[] | null } | null } | null }>(QUERY, { p: playerId, page, per });
+    // A known player whose sets come back empty-handed is start.gg failing part of the answer (seen 15 times in a
+    // week as "reading 'nodes' of null"). Fail the lookup rather than return no sets: an error isn't kept, an
+    // empty list would be kept for hours (round 698).
+    if (data.player && !data.player.sets) throw new Error("start.gg request failed: no sets in the reply (PlayerSets)");
+    return data.player?.sets?.nodes ?? [];
+  };
   // A page of long sets (many games, each with characters) can pass start.gg's 1,000-object cap
   // (round 517): then the same sets come as three pages of 5.
   const fetchPage = (page: number) =>
