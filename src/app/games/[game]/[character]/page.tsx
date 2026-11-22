@@ -11,7 +11,8 @@ import { logError } from "@/lib/errorLog";
 import { GAMES, GAME_KEYS, type GameKey } from "@/lib/games";
 import { getMatchupCounts, getTopHighlights } from "@/lib/highlights";
 import MatchupGrid from "@/components/hub/MatchupGrid";
-import CharacterHistory from "@/components/history/CharacterHistory";
+import CharacterHistory, { characterHistoryData } from "@/components/history/CharacterHistory";
+import { top8Characters } from "@/lib/historyFirsts";
 import CharacterYears from "@/components/history/CharacterYears";
 import { getCharacterPosts } from "@/lib/posts";
 import { getUserId } from "@/lib/supabase/server";
@@ -59,6 +60,10 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
   const name = isGame(game) ? characterName(game, character) : null;
   if (!isGame(game) || !name) notFound();
   const activeType = parseType(type);
+  // The two history sections' records start loading now, alongside the posts and guides below (round 709);
+  // each section used to start its own only once those had loaded, a second wait in a row.
+  const historyData = characterHistoryData(game, character);
+  const yearsData = top8Characters(game).catch(() => null);
   const userId = await getUserId();
   const base = `/games/${game}/${character}`;
   // The library, Discord and frame data never touch the database, so a slow database (e.g. a brief
@@ -209,10 +214,10 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
       </section>
 
       <Suspense fallback={null}>
-        <CharacterHistory game={game} character={character} name={name} t={t} />
+        <CharacterHistory game={game} character={character} name={name} t={t} data={historyData} />
       </Suspense>
       <Suspense fallback={null}>
-        <CharacterYears game={game} character={character} name={name} t={t} />
+        <CharacterYears game={game} character={character} name={name} t={t} majors={yearsData} />
       </Suspense>
 
       <MatchupGrid game={game} character={character} name={name} counts={matchupCounts ?? new Map()} />

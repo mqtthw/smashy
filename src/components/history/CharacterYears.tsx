@@ -3,13 +3,13 @@
 // are known; a count of what was played, not a judgement of how strong the character was.
 import Link from "next/link";
 import type { GameKey } from "@/lib/games";
-import { characterByYear, top8Characters } from "@/lib/historyFirsts";
+import { characterByYear, top8Characters, type MajorTop8Characters } from "@/lib/historyFirsts";
 import type { MessageKey, Values } from "@/lib/i18n/core";
 
 type Translate = (key: MessageKey, values?: Values) => string;
 
-export default async function CharacterYears({ game, character, name, t }: { game: GameKey; character: string; name: string; t: Translate }) {
-  const majors = await top8Characters(game).catch(() => null);
+export default async function CharacterYears({ game, character, name, t, majors: started }: { game: GameKey; character: string; name: string; t: Translate; majors?: Promise<MajorTop8Characters[] | null> }) {
+  const majors = await (started ?? top8Characters(game).catch(() => null));
   if (!majors) return null;
   const years = characterByYear(majors, character);
   if (!years.some((y) => y.n > 0)) return null;

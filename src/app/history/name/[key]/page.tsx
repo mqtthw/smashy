@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cacheLife, cacheTag } from "next/cache";
 import { Suspense } from "react";
 import GameBadge from "@/components/GameBadge";
 import PlaceMark from "@/components/ui/PlaceMark";
@@ -19,24 +20,36 @@ import { getT } from "@/lib/i18n/server";
 import { getMajorCharacters, tagOnly, type MajorCharacters } from "@/lib/majorSets";
 import { rankingPlaces } from "@/lib/officialRankings";
 import { getNameLinks, linksForGame, nameKey } from "@/lib/playerLinks";
+import { MAJORS_TAG } from "@/lib/majors";
 
 const validKey = (key: string) => /^[\p{L}\p{N}]{1,40}$/u.test(key);
 
-/** Every game's placings under the name (each game's records are the shared copy the year pages use). */
+/**
+ * Every game's placings under the name (each game's records are the shared copy the year pages use). The
+ * answer is kept per name for a few minutes (round 706): the page and its title each asked for it, and
+ * crawlers open a name a few times in a row, so the same scan of every game's brackets (about 600 KB of
+ * records) ran 3 times per name. An admin's new name link shows within 15 minutes.
+ */
 async function gather(key: string): Promise<{ game: GameKey; placings: NamePlacing[] }[]> {
-  const links = await getNameLinks().catch(() => new Map<string, string>());
+  "use cache: remote";
+  cacheTag(MAJORS_TAG);
+  let failed = false; // a failed lookup is kept for seconds, not minutes
+  const fail = <T,>(fallback: T) => () => ((failed = true), fallback);
+  const links = await getNameLinks().catch(fail(new Map<string, string>()));
   const games = (
     await Promise.all(
-      GAME_KEYS.map(async (game) => ({ game, placings: namePlacings(await winBrackets(game).catch(() => []), game, linksForGame(links, game), key) })),
+      GAME_KEYS.map(async (game) => ({ game, placings: namePlacings(await winBrackets(game).catch(fail([])), game, linksForGame(links, game), key) })),
     )
   ).filter((g) => g.placings.length > 0);
   // Placings at start.gg majors (ZeRo's 2017 ones) have no characters of their own: the sets saved there keep
   // them under the tag, as "name:<key>", when the player had no account.
   const missing = games.flatMap((g) => g.placings).filter((p) => !p.characters?.length);
   if (missing.length) {
-    const chars = await getMajorCharacters([...new Set(missing.map((p) => p.slug))]).catch((): MajorCharacters => new Map());
+    const chars = await getMajorCharacters([...new Set(missing.map((p) => p.slug))]).catch(fail<MajorCharacters>(new Map()));
     for (const p of missing) p.characters = chars.get(`${p.slug}|${p.eventId}`)?.get(`name:${key}`) ?? p.characters;
   }
+  if (failed) cacheLife("seconds");
+  else cacheLife({ stale: 300, revalidate: 900, expire: 3600 });
   return games;
 }
 

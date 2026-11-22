@@ -3,7 +3,7 @@ import { detachRuleset } from "@/app/scenes/actions";
 import GameBadge from "@/components/GameBadge";
 import type { GameKey } from "@/lib/games";
 import { allFields, displayValue } from "@/lib/rulesetFields";
-import { getAttachedRulesets, getMyAdminRulesets } from "@/lib/scenes";
+import { getAttachedRulesets, getMyAdminRulesets, type Attachment } from "@/lib/scenes";
 import { getUserId } from "@/lib/supabase/server";
 import AttachRulesetForm from "./AttachRulesetForm";
 import { getT } from "@/lib/i18n/server";
@@ -16,15 +16,18 @@ export default async function EventRulesets({
   tournamentSlug,
   seriesId,
   seriesName,
+  attached: started,
 }: {
   games: GameKey[];
   tournamentSlug?: string;
   seriesId?: string | null;
   seriesName?: string;
+  /** The attached rulesets, when the page already started loading them (round 708: the event page starts them alongside its other lookups). */
+  attached?: Promise<Attachment[]>;
 }) {
   const userId = await getUserId();
   const [attached, mine, t] = await Promise.all([
-    getAttachedRulesets({ tournamentSlug, seriesId: seriesId ?? undefined }),
+    started ?? getAttachedRulesets({ tournamentSlug, seriesId: seriesId ?? undefined }),
     getMyAdminRulesets(userId),
     getT(),
   ]);

@@ -21,6 +21,7 @@ import GoingButton from "@/components/events/GoingButton";
 import ShareButton from "@/components/ui/ShareButton";
 import { bracketName, byStart, zoneLabel } from "@/components/events/EventTimes";
 import { getGoing } from "@/lib/rsvps";
+import { getAttachedRulesets } from "@/lib/scenes";
 import { getUserId } from "@/lib/supabase/server";
 import { eventJsonLd } from "@/lib/eventSchema";
 import { siteUrl } from "@/lib/siteMeta";
@@ -94,6 +95,11 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
   if (!t) notFound();
   await connection(); // "live now" depends on the current time, so render per visit
   const live = isRunning(t); // from the first bracket's start, not start.gg's tournament start
+  // The attached rulesets load from here, alongside who's going (round 708): the section used to start its
+  // own lookup only once the page above it was ready, a third database wait in a row.
+  const seriesId = seriesIdFor(t.name, t.city);
+  const rulesets = getAttachedRulesets({ tournamentSlug: t.slug, seriesId: seriesId ?? undefined });
+  rulesets.catch(() => {}); // EventRulesets reports a failure; this only stops an unhandled rejection
   const userId = await getUserId();
   const over = isOver(t.startAt, t.endAt);
   // Once it has started, the main thing to do is follow the bracket: the
@@ -296,8 +302,9 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
         <EventRulesets
           games={[...new Set(t.events.map((e) => e.game))]}
           tournamentSlug={t.slug}
-          seriesId={seriesIdFor(t.name, t.city)}
+          seriesId={seriesId}
           seriesName={seriesNameFor(t.name)}
+          attached={rulesets}
         />
 
         {t.region && (

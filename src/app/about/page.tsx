@@ -138,6 +138,9 @@ export default function AboutPage() {
         <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="btn btn-md btn-outline self-start">
           <T k="ui.about.discordJoin" /> ↗
         </a>
+        <p className="mt-2 text-sm text-muted">
+          <T k="ui.about.api" /> <Link href="/developers" className="link"><T k="ui.about.apiLink" /></Link>
+        </p>
       </section>
 
       <footer className="flex flex-col gap-1 text-meta text-muted">

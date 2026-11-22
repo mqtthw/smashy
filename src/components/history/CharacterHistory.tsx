@@ -5,14 +5,20 @@
 import Link from "next/link";
 import type { GameKey } from "@/lib/games";
 import { majorHref } from "@/lib/handMajors";
-import { characterWins, firstCharacterWins, nameHref } from "@/lib/historyFirsts";
+import { characterWins, firstCharacterWins, nameHref, type CharacterWin } from "@/lib/historyFirsts";
 import type { MessageKey, Values } from "@/lib/i18n/core";
 import { startggCharacterKey } from "@/lib/majorSets";
 import { playersHidingStats } from "@/lib/playerStats";
 
 type Translate = (key: MessageKey, values?: Values) => string;
 
-export default async function CharacterHistory({ game, character, name, t }: { game: GameKey; character: string; name: string; t: Translate }) {
+export type CharacterHistoryData = { all: { wins: CharacterWin[]; majors: number }; shown: CharacterWin[] } | null;
+
+/**
+ * The character's major wins, minus those of players who hide their stats. The page starts this as it opens
+ * (round 709), alongside its posts and guides: the section used to start it only once those had loaded.
+ */
+export async function characterHistoryData(game: GameKey, character: string): Promise<CharacterHistoryData> {
   const all = await characterWins(game).catch(() => null);
   if (!all) return null;
   const mine = all.wins.filter((w) => w.characters.some((c) => startggCharacterKey(c) === character));
@@ -21,7 +27,13 @@ export default async function CharacterHistory({ game, character, name, t }: { g
   const hidden = ids.length ? await playersHidingStats(ids).catch(() => null) : new Set<string>();
   if (!hidden) return null;
   const shown = mine.filter((w) => !w.playerId || !hidden.has(w.playerId));
-  if (!shown.length) return null;
+  return shown.length ? { all, shown } : null;
+}
+
+export default async function CharacterHistory({ game, character, name, t, data }: { game: GameKey; character: string; name: string; t: Translate; data?: Promise<CharacterHistoryData> }) {
+  const got = await (data ?? characterHistoryData(game, character));
+  if (!got) return null;
+  const { all, shown } = got;
   const byPlayer = new Map<string, { key: string; playerId: string | null; name: string; wins: number }>();
   for (const w of shown) {
     const had = byPlayer.get(w.key);

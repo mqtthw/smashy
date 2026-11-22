@@ -4,6 +4,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { GUEST_PAGES_RETRY_S, countsAsGuestPage, crawlerOffLimits, isAiTrainingCrawler, isCrawler, notABrowser, takeGuestPage } from "@/lib/guestPages";
 import { updateSession } from "@/lib/supabase/proxy";
+import { apiBucket, takeApiCall } from "@/lib/apiLimit";
 
 export async function proxy(request: NextRequest) {
   // robots.txt asks crawlers to skip these pages; the ones that say who they are get told here too.
@@ -16,6 +17,25 @@ export async function proxy(request: NextRequest) {
       status: 403,
       headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex", "Cache-Control": "public, max-age=86400" },
     });
+  }
+  // The public API (round 708): always answered as a signed-out visitor would see it, so a sign-in cookie
+  // sent along never changes the answer (answers are shared through Vercel's network). Each address has
+  // a per-minute allowance.
+  if (request.nextUrl.pathname === "/api/v1" || request.nextUrl.pathname.startsWith("/api/v1/")) {
+    const address = (request.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || request.headers.get("x-real-ip") || "unknown";
+    const { ok, limit } = takeApiCall(address, apiBucket(request.nextUrl.pathname), Date.now());
+    if (!ok) {
+      return NextResponse.json(
+        { error: "Too many requests from this address. Wait a minute and try again." },
+        { status: 429, headers: { "Retry-After": "60", "RateLimit-Limit": String(limit), "RateLimit-Remaining": "0", "Access-Control-Allow-Origin": "*", "Cache-Control": "no-store" } },
+      );
+    }
+    const headers = new Headers(request.headers);
+    headers.delete("cookie");
+    headers.delete("authorization");
+    const response = NextResponse.next({ request: { headers } });
+    response.headers.set("RateLimit-Limit", String(limit)); // no "Remaining" here: answers kept by the network would show an old count
+    return response;
   }
   if (crawlerOffLimits(request.nextUrl.pathname) && (isCrawler(ua) || notABrowser(ua, (name) => request.headers.get(name)))) {
     return new NextResponse("This page isn't open to crawlers. See /robots.txt.\n", {

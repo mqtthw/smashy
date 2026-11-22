@@ -152,6 +152,8 @@ export const uiEs: Record<keyof typeof uiEn, string> = {
   "ui.about.discordTitle": "Únete al Discord de Smashy",
   "ui.about.discordBody": "Dinos qué arreglar y qué hacer después, reporta errores y habla de smash con otros jugadores y TOs.",
   "ui.about.discordJoin": "Unirse al Discord",
+  "ui.about.api": "¿Haces una app o un bot? Smashy tiene una API pública y gratuita de torneos, brackets, historia de Smash y reglamentos.",
+  "ui.about.apiLink": "Documentación de la API",
   "ui.about.terms": "Términos",
   "ui.translate.unavailable": "La traducción no está disponible ahora.",
   "ui.translate.signIn": "Inicia sesión para traducir.",

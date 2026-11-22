@@ -7,8 +7,9 @@ import type { MajorEvent } from "./majorEvents";
 import { sideId, tagOnly } from "./majorSets";
 import { applyNameLinks, getNameLinks, linksForGame } from "./playerLinks";
 import { playersHidingStats } from "./playerStats";
-import { createClient } from "./supabase/server";
-import { MAJOR_THRESHOLDS, getPastMajors } from "./majors";
+import { cacheLife, cacheTag } from "next/cache";
+import { createAdminClient } from "./supabase/admin";
+import { MAJOR_THRESHOLDS, MAJORS_TAG, getPastMajors } from "./majors";
 import { getMajorEvents } from "./majorEvents";
 import { yearTally } from "./yearTally";
 
@@ -107,6 +108,25 @@ export function gridPlayers(byMajor: MajorEvent[][], game: GameKey, hidden: Set<
 }
 
 /**
+ * The sets played at these majors in one game (public records, saved by the background fill). Kept in the
+ * shared cache for up to 15 minutes (round 707): the head-to-head page is History's most visited, and each
+ * visit read up to a couple of thousand sets.
+ */
+async function yearSets(slugs: string[], game: GameKey): Promise<GridSet[]> {
+  "use cache: remote";
+  cacheLife({ stale: 300, revalidate: 900, expire: 3600 });
+  cacheTag(MAJORS_TAG);
+  const { data, error } = await createAdminClient({ forPage: true })
+    .from("major_sets")
+    .select("set_id, major_slug, round, sort_order, p1_id, p1_name, p1_score, p2_id, p2_name, p2_score, winner")
+    .in("major_slug", slugs)
+    .eq("game", game)
+    .limit(20000);
+  if (error) throw error; // not kept: the next visit asks again
+  return (data ?? []) as GridSet[];
+}
+
+/**
  * A year's grid for one game, with how many of the year's majors have sets saved so far (they're
  * saved in the background over weeks). Null when it can't be checked who asked not to be listed.
  */
@@ -117,6 +137,10 @@ export async function getYearGrid(
 ): Promise<(Grid & { majors: number; withSets: number; majorNames: Map<string, string>; record: (YearRecord & GridPlayer) | null }) | null> {
   const majors = (await getPastMajors(year)).filter((m) => m.games.includes(game)).sort((a, b) => b.startAt.localeCompare(a.startAt));
   const slugs = majors.map((m) => m.slug);
+  // The year's sets only need the majors: read alongside the rest (round 707; they waited for the
+  // results and the privacy check before).
+  const setsLoad = slugs.length ? yearSets(slugs, game) : Promise.resolve([] as GridSet[]);
+  setsLoad.catch(() => {}); // awaited below; this only keeps an early failure from going unhandled
   const [events, allLinks] = await Promise.all([getMajorEvents(slugs), getNameLinks().catch(() => new Map<string, string>())]);
   const byMajor = majors.map((m) => applyNameLinks(events.get(m.slug) ?? [], allLinks));
   const links = linksForGame(allLinks, game); // the grid is one game's sets
@@ -124,17 +148,7 @@ export async function getYearGrid(
   const hidden = tallied.length ? await playersHidingStats(tallied).catch(() => null) : new Set<string>();
   if (!hidden) return null;
   const players = gridPlayers(byMajor, game, hidden);
-  let sets: GridSet[] = [];
-  if (slugs.length && (players.length > 1 || playerId)) {
-    const { data, error } = await (await createClient())
-      .from("major_sets")
-      .select("set_id, major_slug, round, sort_order, p1_id, p1_name, p1_score, p2_id, p2_name, p2_score, winner")
-      .in("major_slug", slugs)
-      .eq("game", game)
-      .limit(20000);
-    if (error) throw error;
-    sets = (data ?? []) as GridSet[];
-  }
+  const sets: GridSet[] = slugs.length && (players.length > 1 || playerId) ? await setsLoad : [];
   // A player's whole year (only the grid's players: they're the ones checked as fine to list).
   const who = playerId ? players.find((p) => p.playerId === playerId) : undefined;
   let record: (YearRecord & GridPlayer) | null = null;

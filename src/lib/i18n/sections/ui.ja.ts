@@ -152,6 +152,8 @@ export const uiJa: Record<keyof typeof uiEn, string> = {
   "ui.about.discordTitle": "SmashyのDiscordに参加",
   "ui.about.discordBody": "直してほしいことや次に欲しい機能、バグ報告をどうぞ。ほかのプレイヤーや大会運営とスマブラの話もできます。",
   "ui.about.discordJoin": "Discordに参加",
+  "ui.about.api": "アプリやBotを作っていますか？Smashyには大会、ブラケット、スマブラの歴史、ルールの無料公開APIがあります。",
+  "ui.about.apiLink": "APIドキュメント",
   "ui.about.terms": "利用規約",
   "ui.translate.unavailable": "現在、翻訳は利用できません。",
   "ui.translate.signIn": "翻訳するにはログインしてください。",

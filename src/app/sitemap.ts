@@ -23,6 +23,7 @@ async function entries(): Promise<MetadataRoute.Sitemap> {
     { url: url("/strike"), changeFrequency: "monthly", priority: 0.5 },
     { url: url("/play"), changeFrequency: "monthly", priority: 0.5 },
     { url: url("/about"), changeFrequency: "monthly", priority: 0.7 },
+    { url: url("/developers"), changeFrequency: "monthly", priority: 0.3 },
     { url: url("/host/about"), changeFrequency: "monthly", priority: 0.7 },
     { url: url("/host/demo"), changeFrequency: "monthly", priority: 0.7 },
     { url: url("/host/results-file"), changeFrequency: "monthly", priority: 0.5 },
@@ -96,11 +97,13 @@ type SavedList = { tournaments?: { slug?: string; startAt?: number | string | nu
 
 async function upcomingTournamentSlugs(): Promise<{ slugs: string[]; failed: boolean }> {
   const db = createAdminClient();
+  // Only each saved list's upcoming tournaments (round 710): the finished ones ("recent") were 87% of the
+  // 7.4 MB read for every region, and the database took about 0.37 s to send it all.
   const [regions, texas] = await Promise.all([
-    db.from("region_events").select("data"),
-    db.from("events_sync").select("data").eq("id", 1).maybeSingle(),
+    db.from("region_events").select("tournaments:data->tournaments"),
+    db.from("events_sync").select("tournaments:data->tournaments").eq("id", 1).maybeSingle(),
   ]);
-  const lists = [...(regions.data ?? []).map((r) => r.data as SavedList), texas.data?.data as SavedList];
+  const lists = [...(regions.data ?? []), texas.data].map((r) => ({ tournaments: (r?.tournaments ?? undefined) as NonNullable<SavedList>["tournaments"] }));
   const now = Math.floor(Date.now() / 1000);
   const slugs = new Set<string>();
   for (const list of lists) {

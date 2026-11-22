@@ -150,6 +150,8 @@ export const uiEn = {
   "ui.about.discordTitle": "Join the Smashy Discord",
   "ui.about.discordBody": "Tell us what to fix and what to build next, report bugs, and talk smash with other players and TOs.",
   "ui.about.discordJoin": "Join the Discord",
+  "ui.about.api": "Building an app or a bot? Smashy has a free public API for tournaments, brackets, Smash history and rulesets.",
+  "ui.about.apiLink": "API docs",
   "ui.about.terms": "Terms",
   "ui.translate.unavailable": "Translation isn't available right now.",
   "ui.translate.signIn": "Sign in to translate.",
