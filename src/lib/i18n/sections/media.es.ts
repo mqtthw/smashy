@@ -151,6 +151,8 @@ export const mediaEs: Record<keyof typeof mediaEn, string> = {
   "media.hl.open": "Abrir ↗",
   "media.hl.video": "Video de {provider}",
   "media.hl.watchOn": "Ver en {provider} ↗",
+  "media.hl.playVideo": "Reproducir video",
+  "media.hl.tweetBy": "Publicación de {name} en X",
   "media.hl.signInToUpvote": "Inicia sesión para votar",
   "media.hl.upvotesOnYours": "Votos en tu highlight",
   "media.hl.removeUpvote": "Quitar voto",

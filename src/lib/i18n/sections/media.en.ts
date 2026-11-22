@@ -149,6 +149,8 @@ export const mediaEn = {
   "media.hl.open": "Open ↗",
   "media.hl.video": "{provider} video",
   "media.hl.watchOn": "Watch on {provider} ↗",
+  "media.hl.playVideo": "Play video",
+  "media.hl.tweetBy": "Post by {name} on X",
   "media.hl.signInToUpvote": "Sign in to upvote",
   "media.hl.upvotesOnYours": "Upvotes on your highlight",
   "media.hl.removeUpvote": "Remove upvote",

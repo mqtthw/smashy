@@ -51,6 +51,9 @@ describe("the tweet card", () => {
     const card = toTweetCard({ ...raw, mediaDetails: [{ ...raw.mediaDetails[0], type: "video" }] });
     expect(card?.picture?.video).toBe(true);
   });
+  it("reads the id from a link to a tweet's video (round 720)", () => {
+    expect(tweetIdFrom("https://x.com/kactosophile/status/2124429086789353494/video/1?a=x&s=46")).toBe("2124429086789353494");
+  });
   it("gives null for deleted tweets and data it doesn't know", () => {
     expect(toTweetCard({ __typename: "TweetTombstone" })).toBeNull();
     expect(toTweetCard(null)).toBeNull();

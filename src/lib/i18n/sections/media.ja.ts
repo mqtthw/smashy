@@ -151,6 +151,8 @@ export const mediaJa: Record<keyof typeof mediaEn, string> = {
   "media.hl.open": "開く ↗",
   "media.hl.video": "{provider}の動画",
   "media.hl.watchOn": "{provider}で見る ↗",
+  "media.hl.playVideo": "動画を再生",
+  "media.hl.tweetBy": "{name}さんのXの投稿",
   "media.hl.signInToUpvote": "ログインして高評価",
   "media.hl.upvotesOnYours": "あなたのハイライトへの高評価",
   "media.hl.removeUpvote": "高評価を取り消す",
