@@ -1,7 +1,7 @@
 // The public API (round 708): per-address allowances and the shape of its answers.
 import { beforeEach, describe, expect, it } from "vitest";
 import { API_LIMITS, API_WINDOW_MS, apiBucket, resetApiCalls, takeApiCall } from "@/lib/apiLimit";
-import { apiError, apiJson, apiTournament } from "@/lib/publicApi";
+import { apiError, apiJson, apiReel, apiTournament } from "@/lib/publicApi";
 import type { SmashyTournament } from "@/lib/startgg";
 
 describe("public API allowance", () => {
@@ -46,5 +46,15 @@ describe("public API answers", () => {
     expect(out.url).toMatch(/\/events\/test-local$/);
     expect(out.events[0]).toEqual({ id: "9", name: "Melee Singles", game: "melee", startAt: "2027-01-15T08:00:00.000Z", entrants: 12, state: "CREATED", online: false });
     expect(out).not.toHaveProperty("id");
+  });
+  it("link a clip to Twitch or YouTube and its channel, and leave out who shared it", () => {
+    const base = { channel_login: "vgbootcamp", channel_name: "VGBootCamp", title: "Clip", game: "melee", view_count: 10, duration: 30, thumbnail_url: null, created_at: "2026-11-20T00:00:00Z", like_count: null };
+    const twitch = apiReel({ ...base, clip_id: "FunnyClip-abc", platform: "twitch" });
+    expect(twitch.url).toBe("https://clips.twitch.tv/FunnyClip-abc");
+    expect(twitch.channel.url).toBe("https://www.twitch.tv/vgbootcamp");
+    expect(twitch.smashyUrl).toMatch(/\/reels\/FunnyClip-abc$/);
+    expect(twitch.likes).toBe(0);
+    expect(twitch).not.toHaveProperty("sharedBy");
+    expect(apiReel({ ...base, clip_id: "dQw4w9WgXcQ", platform: "youtube", channel_login: "UCabc" }).url).toBe("https://www.youtube.com/shorts/dQw4w9WgXcQ");
   });
 });

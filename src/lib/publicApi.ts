@@ -4,6 +4,7 @@
 import type { HostedEvent } from "./hostedEvents";
 import type { Major } from "./majors";
 import type { MajorEvent } from "./majorEvents";
+import { channelUrl, clipUrl, type ReelPlatform } from "./reelLinks";
 import type { StandingRow } from "./majorStandings";
 import type { RulesetSummary, RulesetVersion } from "./scenes";
 import { siteUrl } from "./siteMeta";
@@ -135,5 +136,39 @@ export function apiRuleset(r: RulesetSummary, versions?: RulesetVersion[]) {
     scene: { slug: r.sceneSlug, name: r.sceneName, url: site(`/scenes/${r.sceneSlug}`) },
     latest: r.latest ? apiVersion(r.latest) : null,
     ...(versions ? { versions: versions.map(apiVersion) } : {}),
+  };
+}
+
+/** A Reels clip as saved by Smashy (the reels table): a Twitch clip or a YouTube Short. */
+export type ApiReelRow = {
+  clip_id: string;
+  platform: ReelPlatform;
+  channel_login: string;
+  channel_name: string | null;
+  title: string;
+  game: string;
+  view_count: number;
+  duration: number | null;
+  thumbnail_url: string | null;
+  created_at: string;
+  like_count: number | null;
+};
+export const API_REEL_COLUMNS = "clip_id, platform, channel_login, channel_name, title, game, view_count, duration, thumbnail_url, created_at, like_count";
+
+/** Only Twitch and YouTube clips: videos members attach to their own posts aren't in the API. Who shared a clip isn't either. */
+export function apiReel(r: ApiReelRow) {
+  return {
+    clipId: r.clip_id,
+    platform: r.platform,
+    url: clipUrl({ platform: r.platform, clipId: r.clip_id }),
+    smashyUrl: site(`/reels/${encodeURIComponent(r.clip_id)}`),
+    title: r.title,
+    game: r.game,
+    channel: { login: r.channel_login, name: r.channel_name, url: channelUrl({ platform: r.platform, login: r.channel_login }) },
+    views: r.view_count,
+    likes: r.like_count ?? 0,
+    durationSeconds: r.duration,
+    thumbnailUrl: r.thumbnail_url,
+    createdAt: r.created_at,
   };
 }

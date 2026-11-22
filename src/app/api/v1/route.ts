@@ -24,6 +24,8 @@ export function GET() {
         headToHead: at("/api/v1/head-to-head?year=2025&game=melee"),
         rulesets: at("/api/v1/rulesets?game=melee"),
         ruleset: at("/api/v1/rulesets/{id}"),
+        reels: at("/api/v1/reels?game=melee&sort=top&days=7"),
+        reel: at("/api/v1/reels/{clipId}"),
       },
     },
     "long",

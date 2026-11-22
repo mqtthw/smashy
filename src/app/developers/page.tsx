@@ -10,7 +10,7 @@ import { pageMeta } from "@/lib/siteMeta";
 
 export const metadata: Metadata = pageMeta(
   "Smashy public API",
-  "A free, read-only API for Super Smash Bros. tournaments, brackets, Smash history and community rulesets. No key needed.",
+  "A free, read-only API for Super Smash Bros. tournaments, brackets, Smash history, community rulesets and clips. No key needed.",
 );
 
 type Endpoint = { path: string; what: string; params?: string };
@@ -55,6 +55,13 @@ const ENDPOINTS: { title: string; items: Endpoint[] }[] = [
       { path: "/api/v1/rulesets/{id}", what: "One ruleset with every published version, newest first." },
     ],
   },
+  {
+    title: "Reels",
+    items: [
+      { path: "/api/v1/reels", params: "game, sort (new or top), days (1 to 30, for top), limit (up to 50), offset", what: "Twitch clips and YouTube Shorts from Smash channels, newest or most viewed. Each has a link to the clip on Twitch or YouTube and its page on Smashy. Videos members post themselves aren't included." },
+      { path: "/api/v1/reels/{clipId}", what: "One clip by its Twitch clip slug or YouTube video id." },
+    ],
+  },
 ];
 
 const EXAMPLE = `fetch("https://smashy.gg/api/v1/events?region=US-CA&game=melee")
@@ -67,7 +74,7 @@ export default function DevelopersPage() {
   return (
     <LegalPage title="Smashy public API" updated="November 22, 2026">
       <p>
-        A free, read-only API for tournaments, brackets, Smash history and community rulesets. There&apos;s no key and
+        A free, read-only API for tournaments, brackets, Smash history, community rulesets and Reels clips. There&apos;s no key and
         no sign-up: call it from a website, an app, a bot or a script. Answers are JSON, and any website may call it
         from the browser.
       </p>
@@ -103,6 +110,7 @@ export default function DevelopersPage() {
       <h2>Limits and fair use</h2>
       <ul>
         <li>Each internet address can make {API_LIMITS.general} calls a minute ({API_LIMITS.startgg} a minute for single tournaments, which may need a start.gg lookup). Past that you get a 429 answer: wait a minute.</li>
+        <li>Clips stay on Twitch and YouTube: show them with those sites&apos; own players or link to them, and credit the channel.</li>
         <li>Answers are kept for a few minutes (history for an hour), so calling more often than that won&apos;t give you newer data.</li>
         <li>Tournament data comes from start.gg. If you need lots of it, use <a href="https://developer.start.gg/" target="_blank" rel="noopener noreferrer" className="link">start.gg&apos;s own API<NewTab /></a>.</li>
         <li>Please say where the data comes from (&ldquo;from Smashy&rdquo; with a link) and don&apos;t present it as your own.</li>
