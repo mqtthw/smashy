@@ -687,7 +687,7 @@ export default function ReelFeed({
 
   if (!reels.length) {
     return (
-      <div className="relative flex h-[calc(100dvh-var(--dock-space,calc(5rem+env(safe-area-inset-bottom))))] flex-col items-center justify-center gap-3 bg-neutral-950 px-6 text-center text-white md:h-dvh">
+      <div className="relative flex h-above-dock flex-col items-center justify-center gap-3 bg-neutral-950 px-6 text-center text-white">
         {topBar}
         {query ? (<>
           <p className="text-lg font-bold">{t("media.reels.searchNone", { q: query })}</p>
@@ -709,7 +709,7 @@ export default function ReelFeed({
         ref={box}
         tabIndex={0}
         aria-label={t("media.reels.feedAria")}
-        className="h-[calc(100dvh-var(--dock-space,calc(5rem+env(safe-area-inset-bottom))))] snap-y snap-mandatory overflow-y-scroll overscroll-contain outline-none [scrollbar-width:none] md:h-dvh"
+        className="h-above-dock snap-y snap-mandatory overflow-y-scroll overscroll-contain outline-none [scrollbar-width:none]"
       >
         {reels.map((r, i) => (
           <div key={r.clipId} data-index={i} className="h-full snap-start snap-always">

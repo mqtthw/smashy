@@ -404,6 +404,16 @@ body::before {
   line-height: var(--text-body--line-height);
   min-height: 2.25rem;
 }
+/* Full-screen pages (Reels, an open chat): from below the clock strip to just above the phone's
+   floating dock, whose own height AppNav measures into --dock-h (round 715). The clock strip is only
+   non-zero in the store apps, where the page starts below it (body padding), so it has to come off
+   too or the bottom of the page slides under the dock. Bigger screens have no dock. */
+@utility h-above-dock {
+  height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 0.5rem - var(--dock-h, 4.5rem));
+  @media (width >= 48rem) {
+    height: calc(100dvh - env(safe-area-inset-top, 0px));
+  }
+}
 @utility btn-lg {
   padding: 0.75rem 1.25rem;
   font-size: 1.0625rem;

@@ -84,26 +84,20 @@ function ActiveTabList() {
 /** `accounts`: other saved accounts for one-tap switching (server-rendered, round 701; empty when none). */
 export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
   const t = useT();
-  // Phones: how much of the bottom of the screen the floating dock covers (its top edge to the bottom),
-  // as --dock-space, so full-screen pages like Reels end right above it. The dock's real height varies
-  // (iPhone text size, the home-bar strip), so it's measured instead of guessed (round 714).
+  // Phones: the floating dock's own height, as --dock-h, so full-screen pages like Reels end right
+  // above it (the h-above-dock rule in globals.css). It varies with the phone's text size, so it's
+  // measured instead of guessed (rounds 714–715). Only its height: where it sits is worked out in CSS,
+  // which is more reliable in the iPhone app than reading positions here.
   const navRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
     const root = document.documentElement;
-    const update = () => {
-      if (getComputedStyle(nav).position !== "fixed") root.style.removeProperty("--dock-space");
-      else root.style.setProperty("--dock-space", `${Math.max(0, Math.round(window.innerHeight - nav.getBoundingClientRect().top))}px`);
-    };
+    const update = () => root.style.setProperty("--dock-h", `${Math.ceil(nav.getBoundingClientRect().height)}px`);
     update();
     const ro = new ResizeObserver(update);
     ro.observe(nav);
-    window.addEventListener("resize", update);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", update);
-    };
+    return () => ro.disconnect();
   }, []);
   return (
     <nav
