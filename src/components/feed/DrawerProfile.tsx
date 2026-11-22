@@ -28,6 +28,7 @@ export default async function DrawerProfile() {
           <span className="truncate text-sm text-muted">@{me.handle}</span>
         </span>
       </Link>
+      <Link href="/profile#accounts" className="self-start text-sm text-muted hover:underline">{t("people.accounts.switchLink")}</Link>
       {counts && (
         <div className="flex gap-4 text-sm">
           <Link href={`/u/${me.handle}/following`} className="hover:underline"><b>{counts.following}</b> <span className="text-muted">{t("people.u.following")}</span></Link>

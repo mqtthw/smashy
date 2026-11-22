@@ -1,4 +1,5 @@
 import { authErrorText, readAuthErrorCode } from "@/lib/authErrors";
+import SavedAccounts from "@/components/accounts/SavedAccounts";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
@@ -51,6 +52,8 @@ async function Steps({ searchParams }: Pick<PageProps<"/signin">, "searchParams"
   return (
     <div className="flex flex-col gap-5">
       {errorCode && <p role="alert" className="rounded-lg bg-surface p-3 text-sm text-danger">{authErrorText(t, errorCode)}</p>}
+      {/* Accounts saved on this device (round 699): back in with one tap. */}
+      <SavedAccounts mode="signin" next={next || "/"} />
       <AppleSignInButton next={next} />
       {providers.google && (
         <WebOnly>

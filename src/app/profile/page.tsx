@@ -22,6 +22,7 @@ import PushToggle from "@/components/push/PushToggle";
 import SignOutButton from "@/components/push/SignOutButton";
 import MutedWords from "./MutedWords";
 import SignInMethods from "./SignInMethods";
+import SavedAccounts from "@/components/accounts/SavedAccounts";
 import { getMyUpcomingRsvps } from "@/lib/rsvps";
 import LocalTime from "@/components/ui/LocalTime";
 import { countOpenReports } from "@/lib/moderation";
@@ -310,6 +311,10 @@ async function ProfileContent({ searchParams }: { searchParams: PageProps<"/prof
           <Link href={`/u/${profile.handle}?tab=stats`} className="link self-start text-meta">{t("people.profile.seeStats")}</Link>
         </section>
       )}
+
+      <Suspense fallback={null}>
+        <SavedAccounts mode="profile" />
+      </Suspense>
 
       <div className="flex flex-wrap items-center gap-4 text-sm">
         <SignOutButton action={signOut} />
