@@ -6,7 +6,7 @@ import { connection } from "next/server";
 import { isGameKey } from "./games";
 import type { MajorEvent, Top8Row } from "./majorEvents";
 import { createAdminClient } from "./supabase/admin";
-import { createClient } from "./supabase/server";
+import { createGuestClient } from "./supabase/guest";
 
 /** A name as links compare it: lowercased, letters and digits only ("C9 | Mang0" → "c9mang0", "Dr. PeePee" → "drpeepee"). */
 export function nameKey(name: string): string {
@@ -18,7 +18,10 @@ export function nameKey(name: string): string {
  * in one game only (Smash 64's "Zero" isn't Smash 4's "ZeRo"). Read them with linkedId or linksForGame.
  */
 export async function getNameLinks(): Promise<Map<string, string>> {
-  const { data, error } = await (await createClient()).from("player_name_links").select("name_key, player_id, game").limit(5000);
+  // The guest connection: links are public, and kept answers ("use cache") call this, where the
+  // sign-in-aware one isn't allowed. Round 706's name pages called it that way, so every load failed
+  // quietly and no link was applied (round 717).
+  const { data, error } = await createGuestClient().from("player_name_links").select("name_key, player_id, game").limit(5000);
   if (error) throw error;
   return new Map((data ?? []).map((r) => [linkKey(r.name_key as string, (r.game as string) || null), r.player_id as string]));
 }

@@ -15,7 +15,7 @@ import { YouTubeQuotaError, findYouTubeChannel, getChannelShorts, getYouTubeVide
 import type { ReelPlatform } from "./reelLinks";
 import { rankTopClips } from "./topClips";
 import { LIVE_SHORT_EVERY, reelSearchFilters, reelSearchKey, takeLiveSearch, pauseLiveSearch } from "./reelSearch";
-import { mixPage, postsBefore, rankPostVideos } from "./reelMix";
+import { mixPage, postsBefore, postsBeforeWhenClipsEnd, rankPostVideos } from "./reelMix";
 import { getReelPostVideos, type Post } from "./posts";
 
 export type { ReelPlatform } from "./reelLinks";
@@ -374,20 +374,31 @@ export async function searchReels(opts: { q: string; game?: GameKey | null; offs
   const limit = opts.limit ?? 15;
   const offset = opts.offset ?? 0;
   const shorts = await liveShortsFor(opts.q, opts.game ?? null);
-  const before = postsBefore(offset, shorts.length, LIVE_SHORT_EVERY);
-  let q = createGuestClient()
-    .from("reels")
-    .select(`${REEL_COLUMNS}, comments:posts!posts_reel_clip_id_fkey ( count ), sharer:profiles!reels_submitted_by_fkey ( tag, handle )`)
-    .eq("low_quality", false);
-  for (const f of filters) q = q.or(f); // each word must match somewhere
-  if (opts.game) q = q.eq("game", opts.game);
-  const { data, error } = await q
-    .order("view_count", { ascending: false })
-    .order("created_at", { ascending: false })
-    .range(offset - before, offset - before + limit); // one extra, to know if there's more
-  if (error) throw error;
+  // Built fresh for each request: a Supabase query can't be sent twice.
+  const clips = () => {
+    let q = createGuestClient()
+      .from("reels")
+      .select(`${REEL_COLUMNS}, comments:posts!posts_reel_clip_id_fkey ( count ), sharer:profiles!reels_submitted_by_fkey ( tag, handle )`)
+      .eq("low_quality", false);
+    for (const f of filters) q = q.or(f); // each word must match somewhere
+    if (opts.game) q = q.eq("game", opts.game);
+    return q.order("view_count", { ascending: false }).order("created_at", { ascending: false });
+  };
+  // Where this page's clips start depends on how many Shorts came before it, which depends on how many
+  // clips there are in all (round 717). The first page has no Shorts before it; later ones count first.
+  let before = 0;
+  if (offset > 0 && shorts.length) {
+    let c = createGuestClient().from("reels").select("clip_id", { count: "exact", head: true }).eq("low_quality", false);
+    for (const f of filters) c = c.or(f);
+    if (opts.game) c = c.eq("game", opts.game);
+    const { count, error: countError } = await c;
+    if (countError) throw countError;
+    before = postsBeforeWhenClipsEnd(offset, shorts.length, count ?? 0, LIVE_SHORT_EVERY);
+  }
+  const { data, error } = await clips().range(offset - before, offset - before + limit); // one extra, to know if there's more
+  if (error && error.code !== "PGRST103") throw error; // PGRST103: past the last clip (only Shorts are left)
   const rows = (data ?? []) as unknown as ReelRow[];
-  const page = mixPage<Reel>(offset, limit, shorts, rows.slice(0, limit).map(toReel), rows.length > limit, LIVE_SHORT_EVERY);
+  const page = mixPage<Reel>(offset, limit, shorts, rows.slice(0, limit).map(toReel), rows.length > limit, LIVE_SHORT_EVERY, before);
   return { reels: page.items, hasMore: page.hasMore };
 }
 
@@ -397,14 +408,9 @@ export async function searchReels(opts: { q: string; game?: GameKey | null; offs
  * Never fails: without YouTube, the search is just Smashy's own clips.
  */
 async function liveShortsFor(q: string, game: GameKey | null): Promise<Reel[]> {
-  let found: Reel[];
-  try {
-    found = await liveYouTubeShorts(reelSearchKey(q));
-  } catch (e) {
-    if (e instanceof YouTubeQuotaError) pauseLiveSearch(Date.now());
-    else if (!(e instanceof LiveSearchCapped)) console.error("YouTube search for Reels failed", e instanceof Error ? e.message : e);
-    return [];
-  }
+  // liveYouTubeShorts never throws (it handles the cap and YouTube's refusals itself); the catch is
+  // for the cache layer itself failing.
+  let found = await liveYouTubeShorts(reelSearchKey(q)).catch(() => [] as Reel[]);
   if (game) found = found.filter((r) => r.game === game);
   if (!found.length) return [];
   const db = createAdminClient();
@@ -416,20 +422,32 @@ async function liveShortsFor(q: string, game: GameKey | null): Promise<Reel[]> {
   return found.filter((r) => !skip.has(r.clipId) && !skip.has(r.channelLogin));
 }
 
-class LiveSearchCapped extends Error {}
-
 /**
  * YouTube's own search for these words, kept for a day and shared by every server, so each search
- * costs YouTube's allowance once a day at most. New searches past the daily cap (takeLiveSearch) throw
- * instead of asking YouTube, and a throw isn't kept, so the search is tried again later.
+ * costs YouTube's allowance once a day at most. Past the daily cap (takeLiveSearch), or when YouTube
+ * refuses or fails, the answer is "none" kept only for seconds, so the search is tried again later.
+ * All of that is handled in here (round 717): an error thrown out of a kept function reaches the
+ * caller as a plain error, so the caller couldn't tell "YouTube's allowance is used up" from anything
+ * else and never paused.
  */
 async function liveYouTubeShorts(key: string): Promise<Reel[]> {
   "use cache: remote";
+  if (!hasYouTubeKey() || !takeLiveSearch(Date.now())) {
+    cacheLife("seconds");
+    return [];
+  }
+  let videos: Awaited<ReturnType<typeof searchShorts>>;
+  try {
+    videos = await searchShorts(key);
+  } catch (e) {
+    if (e instanceof YouTubeQuotaError) pauseLiveSearch(Date.now());
+    else console.error("YouTube search for Reels failed", e instanceof Error ? e.message : e);
+    cacheLife("seconds");
+    return [];
+  }
   cacheLife({ stale: 3600, revalidate: 86400, expire: 2 * 86400 });
-  if (!hasYouTubeKey()) return [];
-  if (!takeLiveSearch(Date.now())) throw new LiveSearchCapped("Live YouTube searches are used up for today");
   const out: Reel[] = [];
-  for (const v of await searchShorts(key)) {
+  for (const v of videos) {
     const title = cleanPublicText(v.title.slice(0, 200));
     if (title.flagged) continue; // anything worse than swearing stays out
     out.push({

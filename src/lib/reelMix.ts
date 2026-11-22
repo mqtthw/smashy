@@ -17,8 +17,8 @@ export function postsBefore(offset: number, total: number, every = POST_EVERY): 
  * offset - postsBefore(offset), at least `limit` of them if there are that many; `clipsHaveMore` =
  * there are clips after the ones passed.
  */
-export function mixPage<T>(offset: number, limit: number, posts: T[], clips: T[], clipsHaveMore: boolean, every = POST_EVERY): { items: T[]; hasMore: boolean } {
-  let p = postsBefore(offset, posts.length, every);
+export function mixPage<T>(offset: number, limit: number, posts: T[], clips: T[], clipsHaveMore: boolean, every = POST_EVERY, before?: number): { items: T[]; hasMore: boolean } {
+  let p = before ?? postsBefore(offset, posts.length, every); // `before`: see postsBeforeWhenClipsEnd
   let c = 0;
   const items: T[] = [];
   for (let k = offset; items.length < limit; k++) {
@@ -28,6 +28,15 @@ export function mixPage<T>(offset: number, limit: number, posts: T[], clips: T[]
     else break;
   }
   return { items, hasMore: c < clips.length || clipsHaveMore || p < posts.length };
+}
+
+/**
+ * Like postsBefore, for a list whose clips can run out (search results, round 717): once the
+ * `totalClips` clips are used up every spot is a post video, so more of them sit before `offset` than
+ * one per `every`. Without this, later pages started too early and repeated videos already shown.
+ */
+export function postsBeforeWhenClipsEnd(offset: number, total: number, totalClips: number, every = POST_EVERY): number {
+  return Math.min(total, Math.max(Math.floor(offset / every), offset - totalClips));
 }
 
 /** Order of post videos: newer and more liked first; ones this device already watched go last. */

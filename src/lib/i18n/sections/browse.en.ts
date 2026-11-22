@@ -80,6 +80,7 @@ export const browseEn = {
   "browse.stream.streams": "Streams",
   "browse.stream.liveOnTwitch": "{name} live on Twitch",
   "browse.stream.playsHere": "The stream plays here once the tournament starts.",
+  "browse.stream.close": "Close the stream",
 
   // Majors
   "browse.majors.nowLabel": "Majors happening now",

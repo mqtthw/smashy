@@ -6,6 +6,7 @@ import SideAccounts from "@/components/accounts/SideAccounts";
 import { PageCounter } from "@/components/ui/BackLink";
 import { Suspense } from "react";
 import SideColumn from "@/components/SideColumn";
+import StreamDock from "@/components/majors/StreamDock";
 import Toaster from "@/components/ui/Toaster";
 import InstallPrompt from "@/components/InstallPrompt";
 import RateAppPrompt from "@/components/RateAppPrompt";
@@ -92,6 +93,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         {/* Wide screens: Live now, coming up and majors on the right (round 500). */}
         <SideColumn />
+        {/* The live stream that keeps playing while you move between pages (round 718). */}
+        <StreamDock />
         <Toaster />
         {/* It reads the page address (usePathname), which can't be prerendered outside Suspense. */}
         <Suspense fallback={null}>

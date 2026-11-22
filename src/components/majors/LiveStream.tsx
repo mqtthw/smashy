@@ -1,10 +1,9 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useRef } from "react";
 import { useT } from "@/lib/i18n/client";
 import NewTab from "@/components/ui/NewTab";
-
-const noop = () => () => {};
+import { releaseStreamSlot, showStream } from "@/lib/streamDock";
 
 type Stream = { source: string; name: string };
 
@@ -18,12 +17,22 @@ function streamUrl(s: Stream) {
  * The tournament's streams. While it's live, the main Twitch stream plays right here;
  * the other streams (side stages, other games) are links. Once it's over, just the links (no promise
  * that the stream will play here).
+ *
+ * The player itself lives in the layout (StreamDock, round 718): this page only marks the spot. When
+ * you leave for the bracket the same player floats in a corner, so Twitch doesn't restart (and show
+ * its ad again) when you come back.
  */
-export default function LiveStream({ streams, live, over = false }: { streams: Stream[]; live: boolean; over?: boolean }) {
+export default function LiveStream({ streams, live, over = false, eventName, eventPath }: { streams: Stream[]; live: boolean; over?: boolean; eventName: string; eventPath: string }) {
   const t = useT();
-  // Twitch only plays embeds when told which site they're on ("parent"); that's known in the browser.
-  const hostname = useSyncExternalStore(noop, () => window.location.hostname, () => null);
   const main = streams.find((s) => s.source === "TWITCH");
+  const slot = useRef<HTMLDivElement>(null);
+  const channel = live && main ? main.name : null;
+  useEffect(() => {
+    const el = slot.current;
+    if (!channel || !el) return;
+    showStream({ channel, eventName, eventPath }, el);
+    return () => releaseStreamSlot(el); // also when the page is kept but hidden: the stream floats
+  }, [channel, eventName, eventPath]);
   const links = streams.flatMap((s) => {
     const href = streamUrl(s);
     return href ? [{ ...s, href }] : [];
@@ -34,19 +43,8 @@ export default function LiveStream({ streams, live, over = false }: { streams: S
     <section id="watch" className="flex scroll-mt-4 flex-col gap-3">
       <h2 className="font-bold">{live ? t("browse.stream.watchLive") : t("browse.stream.streams")}</h2>
       {live && main && (
-        <div className="aspect-video w-full overflow-hidden rounded-xl bg-surface">
-          {hostname && (
-            <iframe
-              src={`https://player.twitch.tv/?channel=${encodeURIComponent(main.name)}&parent=${hostname}&muted=true`}
-              title={t("browse.stream.liveOnTwitch", { name: main.name })}
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-              sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
-              className="h-full w-full"
-            />
-          )}
-        </div>
+        // The spot the layout's player is laid over.
+        <div ref={slot} className="aspect-video w-full rounded-xl bg-surface" />
       )}
       <ul className="flex flex-wrap gap-2">
         {links.map((s) => (

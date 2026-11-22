@@ -19,8 +19,9 @@ export function welcomeMessageBody(t: Tr, adult: boolean, tag: string): string {
 
 /** Sends it once (one chat per pair of accounts: an existing chat means it was already sent). Never throws. */
 export async function sendWelcomeMessage(userId: string, tag: string, birthdate: string | null, t: Tr): Promise<void> {
+  const db = createAdminClient();
+  let made: string | null = null; // the chat, once created
   try {
-    const db = createAdminClient();
     const { data: official } = await db.from("profiles").select("id").eq("handle", OFFICIAL_HANDLE).maybeSingle();
     if (!official || official.id === userId) return;
     const adult = !!birthdate && ageFromBirthdate(birthdate) >= ADULT_AGE;
@@ -34,6 +35,7 @@ export async function sendWelcomeMessage(userId: string, tag: string, birthdate:
       if (error.code !== "23505") console.error("welcome message: chat not made", error.code, error.message);
       return;
     }
+    made = conv.id;
     const { error: membersError } = await db.from("conversation_members").insert([
       { conversation_id: conv.id, user_id: official.id, status: "active" },
       { conversation_id: conv.id, user_id: userId, status: "active" },
@@ -43,5 +45,8 @@ export async function sendWelcomeMessage(userId: string, tag: string, birthdate:
     if (messageError) throw messageError;
   } catch (e) {
     console.error("welcome message failed", e instanceof Error ? e.message : e);
+    // Don't leave a chat with no members or no message behind (round 717): it would hold the pair's
+    // one chat key, so the member could never open a chat with the official account.
+    if (made) await db.from("conversations").delete().eq("id", made).then(({ error }) => error && console.error("welcome message: cleanup failed", error.message), () => {});
   }
 }

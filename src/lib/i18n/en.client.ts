@@ -1687,6 +1687,7 @@ export const en = {
   "browse.stream.streams": "Streams",
   "browse.stream.liveOnTwitch": "{name} live on Twitch",
   "browse.stream.playsHere": "The stream plays here once the tournament starts.",
+  "browse.stream.close": "Close the stream",
   "browse.majors.nowLabel": "Majors happening now",
   "browse.majors.watch": "Watch",
   "browse.majors.happeningNow": "Happening now",

@@ -2,7 +2,7 @@
 import { describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 import { LIVE_SEARCHES_PER_DAY, LIVE_SHORT_EVERY, cleanReelQuery, pauseLiveSearch, reelSearchFilters, reelSearchKey, reelSearchWords, resetLiveSearches, takeLiveSearch } from "@/lib/reelSearch";
-import { mixPage, postsBefore } from "@/lib/reelMix";
+import { mixPage, postsBefore, postsBeforeWhenClipsEnd } from "@/lib/reelMix";
 import { guessGame } from "@/lib/youtube";
 
 describe("live YouTube Shorts in search (round 716)", () => {
@@ -31,6 +31,25 @@ describe("live YouTube Shorts in search (round 716)", () => {
     const before = postsBefore(4, shorts.length, LIVE_SHORT_EVERY);
     const second = mixPage(4, 4, shorts, clips.slice(4 - before), false, LIVE_SHORT_EVERY);
     expect(second.items).toEqual(["c4", "s2", "c5", "c6"]);
+  });
+  it("show every clip and Short exactly once, however few clips there are (round 717)", () => {
+    for (const [clipCount, shortCount] of [[0, 25], [4, 25], [6, 2], [40, 25], [3, 0]]) {
+      const clips = Array.from({ length: clipCount }, (_, i) => `c${i}`);
+      const shorts = Array.from({ length: shortCount }, (_, i) => `s${i}`);
+      const seen: string[] = [];
+      let hasMore = true;
+      for (let offset = 0, guard = 0; hasMore && guard < 20; guard++) {
+        const before = offset > 0 && shorts.length ? postsBeforeWhenClipsEnd(offset, shorts.length, clips.length, LIVE_SHORT_EVERY) : 0;
+        const from = clips.slice(offset - before, offset - before + 16); // one extra, like the database read
+        const page = mixPage(offset, 15, shorts, from.slice(0, 15), from.length > 15, LIVE_SHORT_EVERY, before);
+        seen.push(...page.items);
+        offset += page.items.length;
+        hasMore = page.hasMore;
+      }
+      expect(hasMore).toBe(false);
+      expect(seen).toHaveLength(clipCount + shortCount);
+      expect(new Set(seen).size).toBe(seen.length);
+    }
   });
   it("read Japanese titles' game names", () => {
     expect(guessGame({ title: "ウルフの即死連携【スマブラSP】", tags: [] }, null)).toBe("ultimate");

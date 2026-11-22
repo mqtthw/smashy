@@ -187,7 +187,7 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
 
         {t.streams.length > 0 && (
           <div id="watch" className="scroll-mt-4">
-            <LiveStream streams={t.streams} live={live} over={over} />
+            <LiveStream streams={t.streams} live={live} over={over} eventName={t.name} eventPath={`/events/${t.slug}`} />
           </div>
         )}
 

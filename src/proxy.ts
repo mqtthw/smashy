@@ -63,5 +63,8 @@ export const config = {
   matcher: [
     // Everything except static files and images.
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // The public API always, even an address that ends like an image (round 717): otherwise it would
+    // skip the per-address limit and keep its sign-in cookies.
+    "/api/v1/:path*",
   ],
 };

@@ -82,6 +82,7 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
   "browse.stream.streams": "配信",
   "browse.stream.liveOnTwitch": "{name}がTwitchで配信中",
   "browse.stream.playsHere": "大会が始まるとここで配信が再生されます。",
+  "browse.stream.close": "配信を閉じる",
 
   // Majors
   "browse.majors.nowLabel": "開催中のメジャー大会",

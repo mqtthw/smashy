@@ -82,6 +82,7 @@ export const browseFr: Record<keyof typeof browseEn, string> = {
   "browse.stream.streams": "Streams",
   "browse.stream.liveOnTwitch": "{name} en direct sur Twitch",
   "browse.stream.playsHere": "Le stream s'affichera ici quand le tournoi commencera.",
+  "browse.stream.close": "Fermer le stream",
 
   // Majors
   "browse.majors.nowLabel": "Majors en cours",
