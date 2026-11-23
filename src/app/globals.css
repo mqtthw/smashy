@@ -15,8 +15,8 @@
   choice, the phone or computer's own setting decides.
 */
 :root {
-  /* Day: a blue morning sky fading to white; text and the brand keep the app icon's reds */
-  --background: #a9d8f9; /* the sky at the top of the screen: sticky bars and menus */
+  /* Day: a soft blush, from the app icon's reds, fading to white */
+  --background: #ffe9d2; /* the sky at the top of the screen: sticky bars and menus */
   --foreground: #2a0b0a;
   --surface: rgb(255 255 255 / 0.55); /* hover fills, avatar discs, quiet panels */
   --surface-2: rgb(255 255 255 / 0.85); /* pressed / selected fills */
@@ -34,22 +34,19 @@
   --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.95) 0%, rgb(255 255 255 / 0.65) 50%, rgb(250 220 214 / 0.75) 51%, rgb(255 255 255 / 0.88) 100%);
   --primary-glow: 0 2px 6px rgb(196 23 12 / 0.35);
   /* The sky behind every page (body::after) */
-  /* Day ("a bright new day for smash"; blue since round 775, Matthew: "Try blue sky"): the classic
-     Frutiger Aero sky. Clear blue at the top with sunlight coming in from the top left, where the
-     logo's sun sits; soft clouds and a few glass bubbles; fading to white lower down, where the
-     reading happens. The brand stays flame red on top of it. */
+  /* Day (round 774, "a bright new day for smash"): a morning sky. Sunlight comes in from the top
+     left, where the logo's sun sits; a few glass bubbles drift in it (the Frutiger Aero touch); it
+     fades through blush to white lower down, where the reading happens. Still the app icon's warm
+     colors only: gold, ember, blush. */
   --sky:
-    radial-gradient(circle at 82% 14%, transparent 0 44px, rgb(255 255 255 / 0.85) 45px 46px, rgb(255 255 255 / 0.2) 47px 60px, transparent 61px),
-    radial-gradient(circle at 93% 31%, transparent 0 19px, rgb(255 255 255 / 0.9) 20px 21px, rgb(255 255 255 / 0.22) 22px 28px, transparent 29px),
-    radial-gradient(circle at 70% 6%, transparent 0 11px, rgb(255 255 255 / 0.9) 12px 13px, transparent 14px),
-    radial-gradient(circle at 6% 62%, transparent 0 27px, rgb(255 255 255 / 0.8) 28px 29px, rgb(255 255 255 / 0.16) 30px 38px, transparent 39px),
-    radial-gradient(ellipse 16% 4.5% at 58% 9%, rgb(255 255 255 / 0.95), transparent 72%),
-    radial-gradient(ellipse 11% 3.5% at 68% 12%, rgb(255 255 255 / 0.9), transparent 72%),
-    radial-gradient(ellipse 13% 4% at 30% 21%, rgb(255 255 255 / 0.85), transparent 72%),
-    radial-gradient(ellipse 9% 3% at 39% 24%, rgb(255 255 255 / 0.8), transparent 72%),
-    radial-gradient(ellipse 14% 4% at 90% 44%, rgb(255 255 255 / 0.7), transparent 72%),
-    radial-gradient(50% 40% at 9% 0%, rgb(255 240 170 / 0.85), rgb(255 250 220 / 0.3) 55%, transparent 75%),
-    linear-gradient(180deg, #7fc4f6 0%, #a9d8f9 18%, #d6eefd 42%, #f3faff 66%, #ffffff 100%);
+    radial-gradient(circle at 82% 14%, transparent 0 44px, rgb(255 255 255 / 0.75) 45px 46px, rgb(255 255 255 / 0.16) 47px 60px, transparent 61px),
+    radial-gradient(circle at 93% 31%, transparent 0 19px, rgb(255 255 255 / 0.8) 20px 21px, rgb(255 255 255 / 0.18) 22px 28px, transparent 29px),
+    radial-gradient(circle at 70% 6%, transparent 0 11px, rgb(255 255 255 / 0.8) 12px 13px, transparent 14px),
+    radial-gradient(circle at 6% 62%, transparent 0 27px, rgb(255 255 255 / 0.7) 28px 29px, rgb(255 255 255 / 0.14) 30px 38px, transparent 39px),
+    radial-gradient(55% 42% at 10% 0%, rgb(255 196 84 / 0.55), rgb(255 170 90 / 0.18) 55%, transparent 75%),
+    radial-gradient(70% 30% at 55% 16%, rgb(255 255 255 / 0.75), transparent 70%),
+    radial-gradient(60% 25% at 85% 78%, rgb(255 140 90 / 0.14), transparent 70%),
+    linear-gradient(180deg, #ffe9d2 0%, #ffeee4 26%, #fff7f3 58%, #ffffff 100%);
   /* The sun behind the logo: shown by day, gone at night (see .logo-sun). */
   --sun: 1;
 
@@ -765,24 +762,62 @@ body::before {
   opacity: var(--sun);
   pointer-events: none;
 }
-/* The rays and the wide glow. */
+/* The rays and the wide glow: they turn slowly, so the ball shines. */
 .logo-sun::before {
   width: 7.2em;
   height: 7.2em;
   background:
-    repeating-conic-gradient(from 4deg, rgb(255 214 110 / 0.5) 0deg 7deg, transparent 7deg 22.5deg),
+    repeating-conic-gradient(from 4deg, rgb(255 214 110 / 0.55) 0deg 7deg, transparent 7deg 22.5deg),
     radial-gradient(closest-side, rgb(255 205 96 / 0.55), rgb(255 190 90 / 0.2) 55%, transparent 100%);
   -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
   mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+  animation: sun-turn 90s linear infinite;
 }
-/* The disc: white-hot in the middle, gold at the rim, with the glossy highlight every Aero orb has. */
+/* The Smashy ball (round 776, Matthew: "make the sun into a smashy ball that shines"): a glossy
+   orb, white-hot in the middle and ember at the rim, crossed by the two tilted lines from the S in
+   Smashy's own logo, drawn dark and curved as if they wrap around the ball (Matthew's sketch). Each
+   line is a slice of a big circle whose middle sits off the ball. Its glow breathes. Layers, top
+   first: the gloss, the two lines, the orb. */
 .logo-sun::after {
   width: 2.9em;
   height: 2.9em;
   background:
-    radial-gradient(60% 38% at 50% 22%, rgb(255 255 255 / 0.85), transparent 100%),
-    radial-gradient(closest-side, #fffbe6 0%, #ffe27a 45%, #ffbe3d 80%, #ff9d2e 100%);
-  box-shadow: 0 0 1.1em 0.3em rgb(255 200 80 / 0.6);
+    radial-gradient(62% 36% at 50% 20%, rgb(255 255 255 / 0.8), transparent 100%),
+    radial-gradient(circle at 2.3em 3.1em, transparent calc(2.6em - 0.045em), rgb(42 11 10 / 0.9) calc(2.6em - 0.03em) calc(2.6em + 0.03em), transparent calc(2.6em + 0.045em)),
+    radial-gradient(circle at 3.25em -0.45em, transparent calc(2.6em - 0.045em), rgb(42 11 10 / 0.9) calc(2.6em - 0.03em) calc(2.6em + 0.03em), transparent calc(2.6em + 0.045em)),
+    radial-gradient(circle at 42% 40%, #fffbe6 0%, #ffe27a 28%, #ffb62e 58%, #ff7d1c 84%, #e2481a 100%);
+  box-shadow:
+    inset 0 0 0.25em rgb(255 255 255 / 0.7),
+    inset 0 -0.3em 0.5em rgb(190 40 10 / 0.35),
+    0 0 1.1em 0.3em rgb(255 200 80 / 0.6);
+  animation: sun-glow 3.6s ease-in-out infinite alternate;
+}
+@keyframes sun-turn {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes sun-glow {
+  from {
+    box-shadow:
+      inset 0 0 0.25em rgb(255 255 255 / 0.7),
+      inset 0 -0.3em 0.5em rgb(190 40 10 / 0.35),
+      0 0 0.8em 0.15em rgb(255 200 80 / 0.5);
+    filter: brightness(1);
+  }
+  to {
+    box-shadow:
+      inset 0 0 0.35em rgb(255 255 255 / 0.9),
+      inset 0 -0.3em 0.5em rgb(190 40 10 / 0.35),
+      0 0 1.6em 0.55em rgb(255 210 100 / 0.8);
+    filter: brightness(1.08);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-sun::before,
+  .logo-sun::after {
+    animation: none;
+  }
 }
 
 /* Words that differ by day and night (the guest headline). */
