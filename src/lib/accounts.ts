@@ -1,8 +1,10 @@
 // Account suspension for site admins (server-only). Uses Supabase Auth's ban: a suspended person can't
-// sign in, and their session stops working within the hour (their sign-in token isn't renewed). Their
+// sign in, Smashy's actions refuse them at once (they ask the sign-in service every time), and their
+// session ends within the hour (its token isn't renewed). Until then the database refuses their writes. Their
 // posts and profile stay as they are (remove those separately in Reports if needed). Who suspended them,
 // when and why is kept on the account itself.
 import "server-only";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "./supabase/admin";
 
 const FOREVER = "876000h"; // ~100 years
@@ -49,6 +51,19 @@ export async function suspendAccount(id: string, reason: string, by: string) {
     app_metadata: { suspended_reason: reason.slice(0, 300), suspended_at: new Date().toISOString(), suspended_by: by },
   });
   if (error) throw error;
+  await listAsSuspended(id, true);
+}
+
+/**
+ * The database's own list of suspended accounts (round 768): its rules refuse writes from anyone on
+ * it, so a suspended person's still-open session can't post straight to the database for the hour
+ * its token lasts. The ban above is what suspends; a failure here is logged, not thrown.
+ */
+async function listAsSuspended(id: string, suspended: boolean) {
+  // Loosely typed until the database types are made again after the migration.
+  const table = (createAdminClient() as unknown as SupabaseClient).from("suspended_accounts");
+  const { error } = suspended ? await table.upsert({ user_id: id }, { onConflict: "user_id" }) : await table.delete().eq("user_id", id);
+  if (error) console.error("Updating the suspended list failed", error.message);
 }
 
 export async function unsuspendAccount(id: string) {
@@ -57,6 +72,7 @@ export async function unsuspendAccount(id: string) {
     app_metadata: { suspended_reason: null, suspended_at: null, suspended_by: null },
   });
   if (error) throw error;
+  await listAsSuspended(id, false);
 }
 
 /** Free-plan limits, for the usage check. */
