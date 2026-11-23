@@ -77,6 +77,10 @@ const nextConfig: NextConfig = {
       // the largest piece of script on a first visit. tests/unit/enClient.test.ts keeps it complete,
       // and a phrase it misses fetches the full English (src/lib/i18n/client.tsx).
       "@/lib/i18n/en": { browser: "./src/lib/i18n/en.client.ts" },
+      // The same for Spanish, Japanese and French (round 746).
+      "@/lib/i18n/es": { browser: "./src/lib/i18n/es.client.ts" },
+      "@/lib/i18n/ja": { browser: "./src/lib/i18n/ja.client.ts" },
+      "@/lib/i18n/fr": { browser: "./src/lib/i18n/fr.client.ts" },
       path: { browser: "./src/lib/emptyModule.ts" },
     },
   },

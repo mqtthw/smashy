@@ -8,6 +8,8 @@ import { ADULT_AGE, ageFromBirthdate } from "./age";
 import { avatarUrl } from "./avatarLinks";
 import { createAdminClient } from "./supabase/admin";
 import { createClient } from "./supabase/server";
+import { createGuestClient } from "./supabase/guest";
+import { cacheLife } from "next/cache";
 
 export type Suggestion = { id: string; tag: string; handle: string; homeCity: string | null; avatarUrl: string | null; protected: boolean; why: string; whyKey: "discover.alsoIn" | "discover.playsYourGames"; whyPlace: string | null; main: Main | null };
 
@@ -66,11 +68,18 @@ export async function getWhoToFollow(userId: string, limit = 4): Promise<Suggest
     }));
 }
 
-/** Hashtags used most in the last 7 days (from posts the viewer can see). */
+/**
+ * Hashtags used most in the last 7 days. Counted from posts anyone can see (a guest's view), so the
+ * answer is the same for everybody and is kept for 5 minutes and shared (round 748); it used to be
+ * recounted from up to 500 posts on every open of Search.
+ */
 export async function getTrendingTags(limit = 10): Promise<{ tag: string; count: number }[]> {
-  const supabase = await createClient();
+  "use cache: remote";
+  cacheLife({ stale: 120, revalidate: 300, expire: 3600 });
+  const supabase = createGuestClient();
   const since = new Date(Date.now() - 7 * 86400e3).toISOString();
-  const { data } = await supabase.from("posts").select("body").gt("created_at", since).like("body", "%#%").order("created_at", { ascending: false }).limit(500);
+  const { data, error } = await supabase.from("posts").select("body").gt("created_at", since).like("body", "%#%").order("created_at", { ascending: false }).limit(500);
+  if (error) cacheLife("seconds"); // a failed read isn't kept as "no tags" for minutes
   const counts = new Map<string, { tag: string; count: number }>();
   for (const { body } of data ?? []) {
     const seen = new Set<string>();

@@ -13,10 +13,12 @@ import { Bone } from "@/components/ui/Skeleton";
 import { useLang, useT } from "@/lib/i18n/client";
 import type { TweetCard } from "@/lib/tweetCard";
 import NewTab from "@/components/ui/NewTab";
+import { usePageShown } from "@/lib/usePageShown";
 
 export default function TweetEmbed({ id, href }: { id: string; href: string }) {
   const [tweet, setTweet] = useState<TweetCard | null | undefined>(undefined);
   const [playing, setPlaying] = useState(false);
+  usePageShown(() => setPlaying(false)); // leaving the page stops the video (back to the card)
   const t = useT();
   const lang = useLang();
 

@@ -23,7 +23,16 @@ export default function NewPostsBanner({ since, game, following = false, viewerI
     let alive = true;
     const check = async () => {
       if (document.visibilityState !== "visible") return;
-      // The first check is a minute after the page loads; the library downloads then.
+      // Guests (round 748): a small shared answer instead of downloading the database library to count
+      // rows; it lists when the newest public posts were made (up to 20).
+      if (!viewerId && !following) {
+        const res = await fetch(`/api/feed/latest${shown ? `?game=${encodeURIComponent(shown)}` : ""}`).catch(() => null);
+        if (!res?.ok || !alive) return;
+        const { at } = (await res.json().catch(() => ({ at: [] }))) as { at?: string[] };
+        if (alive) setCount((at ?? []).filter((time) => Date.parse(time) > Date.parse(from)).length);
+        return;
+      }
+      // Members: the first check is a minute after the page loads; the library downloads then.
       const supabase = await loadBrowserClient().catch(() => null);
       if (!supabase || !alive) return;
       // Count only what this feed would show: new top-level posts (not clip/set/ruleset talk), in this

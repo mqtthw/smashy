@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { embedUrl, platformName, type ReelPlatform } from "@/lib/reelLinks";
 import { useT } from "@/lib/i18n/client";
 import NewTab from "@/components/ui/NewTab";
+import { usePageShown } from "@/lib/usePageShown";
 
 const noop = () => () => {};
 
@@ -28,9 +29,10 @@ export function YouTubeNotice() {
 export default function ClipEmbed({ clipId, platform, title, autoplay = false }: { clipId: string; platform: ReelPlatform; title: string; autoplay?: boolean }) {
   const hostname = useSyncExternalStore(noop, () => window.location.hostname, () => null);
   const t = useT();
+  const shown = usePageShown(); // the player goes away while its page is hidden, so its sound stops
   return (
     <div className={`overflow-hidden rounded-xl bg-black ${clipFrameClass(platform)}`}>
-      {hostname && (
+      {shown && hostname && (
         <iframe
           src={embedUrl({ clipId, platform }, hostname, autoplay)}
           title={title || t("media.reels.frameTitle", { platform: platformName(platform) })}

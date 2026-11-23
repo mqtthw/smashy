@@ -6,7 +6,8 @@
 // English and switches straight away.
 //
 // Only English is built in. Spanish, Japanese and French are separate files fetched when someone
-// uses them (round 514): all four together were 1 MB of script on every page.
+// uses them (round 514): all four together were 1 MB of script on every page. Like English, each is
+// trimmed in the browser to the phrases browser code shows (round 746, <lang>.client.ts).
 import { createContext, use, useCallback, useContext, useSyncExternalStore, type ReactNode } from "react";
 import { DEFAULT_LANG, isLang, LANG_COOKIE, phrase, setFullEnglish, setMissingPhraseHandler, type Dict, type Lang, type MessageKey, type Values } from "./base";
 // The browser's English is trimmed to the phrases browser code shows (round 565, see en.client.ts).
@@ -22,15 +23,23 @@ export function LangProvider({ lang, children }: { lang: Lang; children: ReactNo
 // The languages fetched so far, and the fetches under way (one each, so React sees the same promise).
 const loaded: Partial<Record<Lang, Dict>> = { en };
 const loading: Partial<Record<Lang, Promise<void>>> = {};
+// Imported by their "@/lib/i18n/…" names: next.config.ts swaps those for the trimmed files in the browser.
 const importDict = (lang: Lang): Promise<Dict> =>
+  lang === "es" ? import("@/lib/i18n/es").then((m) => m.es)
+  : lang === "ja" ? import("@/lib/i18n/ja").then((m) => m.ja)
+  : lang === "fr" ? import("@/lib/i18n/fr").then((m) => m.fr)
+  : Promise.resolve(en);
+// All of a language, by its own path (so the swap doesn't apply), for when a trimmed copy lacks a phrase.
+const importFullDict = (lang: Lang): Promise<Dict> | null =>
   lang === "es" ? import("./es").then((m) => m.es)
   : lang === "ja" ? import("./ja").then((m) => m.ja)
   : lang === "fr" ? import("./fr").then((m) => m.fr)
-  : Promise.resolve(en);
+  : null;
 
 // A phrase the trimmed English lacks (a key the scan in tests/unit/enClient.test.ts didn't see): fetch
 // the full English once and redraw. Until then the phrase's key shows for a moment.
 let fullEnglish: Promise<void> | null = null;
+const fullLang: Partial<Record<Lang, boolean>> = {};
 if (typeof window !== "undefined") {
   setMissingPhraseHandler((key) => {
     console.warn("Phrase not in the browser's English, fetching all of it:", key);
@@ -42,6 +51,19 @@ if (typeof window !== "undefined") {
       },
       () => {},
     );
+    // The trimmed Spanish, Japanese and French hold the same phrases as the trimmed English, so the
+    // visitor's own language lacks it too: fetch all of that as well, or they'd see it in English.
+    const lang = fromDocument();
+    if (lang !== "en" && !fullLang[lang]) {
+      fullLang[lang] = true;
+      void importFullDict(lang)?.then(
+        (dict) => {
+          loaded[lang] = dict;
+          window.dispatchEvent(new Event(EVENT));
+        },
+        () => {},
+      );
+    }
   });
 }
 

@@ -1,0 +1,1118 @@
+@manual/2006-mlg-dallas-2006 manual-melee-1 melee https://liquipedia.net/smash/MLG/2006/Dallas/Singles_Bracket
+#Winners Round 1
+PC Chris~3~DoH~0~1
+TIxTetra~0~Eddie~3~2
+KoreanDJ~3~Leprechaun~0~1
+drew~0~Mew2King~3~2
+Neo~3~Xelic~1~1
+Zulu~2~Razorium~3~2
+Husband~2~Dope~3~2
+King~3~Tink~1~1
+ChuDat~3~Forward~1~1
+Zelgadis~0~Wife~3~2
+Rob$~3~z~1~1
+FastLikeTree~3~Isai~2~1
+JBlaze~3~Taj~1~1
+BloodOfTheFallen~1~Caveman~3~2
+HugS~3~KillaOR~2~1
+S.O.S.~0~Ken~3~2
+#Winners Round 2
+PC Chris~3~Eddie~0~1
+KoreanDJ~0~Mew2King~3~2
+Neo~3~Razorium~0~1
+Dope~1~King~3~2
+ChuDat~1~Wife~3~2
+Rob$~1~FastLikeTree~3~2
+JBlaze~3~Caveman~0~1
+HugS~1~Ken~3~2
+#Winners Round 3
+PC Chris~3~Mew2King~0~1
+Neo~1~King~3~2
+Wife~2~FastLikeTree~3~2
+JBlaze~0~Ken~3~2
+#Winners Round 4
+PC Chris~3~King~1~1
+FastLikeTree~0~Ken~3~2
+#Losers Round 1
+DoH~0~TIxTetra~3~2
+Leprechaun~1~drew~3~2
+Xelic~3~Zulu~0~1
+Husband~2~Tink~3~2
+Forward~2~Zelgadis~3~2
+z~0~Isai~3~2
+Taj~3~BloodOfTheFallen~0~1
+KillaOR~3~S.O.S.~0~1
+#Losers Round 2
+HugS~3~TIxTetra~0~1
+Caveman~3~drew~2~1
+Rob$~W~Xelic~~1
+ChuDat~3~Tink~1~1
+Dope~3~Zelgadis~0~1
+Razorium~0~Isai~3~2
+KoreanDJ~3~Taj~0~1
+Eddie~3~KillaOR~0~1
+#Losers Round 3
+HugS~1~Caveman~3~2
+Rob$~1~ChuDat~3~2
+Dope~3~Isai~0~1
+KoreanDJ~3~Eddie~0~1
+#Losers Round 4
+Mew2King~3~Caveman~1~1
+Neo~1~ChuDat~3~2
+Wife~1~Dope~3~2
+JBlaze~0~KoreanDJ~3~2
+#Losers Round 5
+Mew2King~2~ChuDat~3~2
+Dope~2~KoreanDJ~3~2
+#Losers Round 6
+FastLikeTree~0~ChuDat~3~2
+King~2~KoreanDJ~3~2
+#7th Place Match
+Mew2King~~Dope~W~2
+#5th Place Match
+FastLikeTree~~King~W~2
+#Losers Finals
+PC Chris~2~ChuDat~3~2
+#Grand Finals
+Ken~3~ChuDat~0~1
+
+@manual/2006-mlg-anaheim-2006 manual-melee-1 melee https://liquipedia.net/smash/MLG/2006/Anaheim/Singles_Bracket
+#Winners Round 1
+Ken~3~Mr. Pbody~0~1
+KillaOR~0~Husband~3~2
+Rob$~3~The GERM~0~1
+SilentSpectre~1~Tink~3~2
+Mew2King~3~Knivez~1~1
+Forward~0~King~3~2
+FastLikeTree~3~BloodOfTheFallen~2~1
+Arash~0~KoreanDJ~3~2
+ChuDat~3~Mike Y~1~1
+Taj~0~Dope~3~2
+HugS~3~Kaiser~0~1
+Wolf~0~Caveman~3~2
+Isai~3~DieSuperFly~1~1
+Straight~1~Wife~3~2
+Eddie~W~Manacloud~~1
+PandaX~0~PC Chris~3~2
+#Winners Round 2
+Ken~3~Husband~1~1
+Rob$~2~Tink~3~2
+Mew2King~3~King~0~1
+FastLikeTree~2~KoreanDJ~3~2
+ChuDat~3~Dope~1~1
+HugS~3~Caveman~2~1
+Isai~3~Wife~1~1
+Eddie~0~PC Chris~3~2
+#Winners Round 3
+Ken~3~Tink~0~1
+Mew2King~3~KoreanDJ~0~1
+ChuDat~3~HugS~1~1
+Isai~2~PC Chris~3~2
+#Winners Round 4
+Ken~3~Mew2King~0~1
+ChuDat~3~PC Chris~1~1
+#Losers Round 1
+Mr. Pbody~0~KillaOR~3~2
+The GERM~1~SilentSpectre~3~2
+Knivez~0~Forward~3~2
+BloodOfTheFallen~3~Arash~1~1
+Mike Y~0~Taj~3~2
+Kaiser~3~Wolf~1~1
+DieSuperFly~3~Straight~1~1
+Manacloud~3~PandaX~1~1
+#Losers Round 2
+Eddie~3~KillaOR~2~1
+Wife~1~SilentSpectre~3~2
+Caveman~3~Forward~2~1
+Dope~3~BloodOfTheFallen~0~1
+FastLikeTree~3~Taj~1~1
+King~3~Kaiser~1~1
+Rob$~3~DieSuperFly~1~1
+Husband~W~Manacloud~~1
+#Losers Round 3
+Eddie~1~SilentSpectre~3~2
+Caveman~1~Dope~3~2
+FastLikeTree~2~King~3~2
+Rob$~3~Husband~0~1
+#Losers Round 4
+KoreanDJ~3~SilentSpectre~1~1
+Tink~0~Dope~3~2
+Isai~W~King~~1
+HugS~3~Rob$~0~1
+#Losers Round 5
+KoreanDJ~3~Dope~2~1
+Isai~W~HugS~~1
+#Losers Round 6
+PC Chris~3~KoreanDJ~2~1
+Mew2King~2~Isai~3~2
+#7th Place Match
+Dope~~HugS~W~2
+#5th Place Match
+KoreanDJ~~Mew2King~W~2
+#Losers Finals
+ChuDat~4~PC Chris~6~2
+#Grand Finals
+Ken~1/3~PC Chris~3/2~1
+
+@manual/2006-mlg-chicago-2006 manual-melee-1 melee https://liquipedia.net/smash/MLG/2006/Chicago/Singles_Bracket
+#Winners Round 1
+Ken~3~Jiano~0~1
+Chillin~3~Manacloud~1~1
+Caveman~0~Bushman~3~2
+KishPrime~0~Rob$~3~2
+Mew2King~3~Mathos~2~1
+IK_GOST~2~King~3~2
+Wife~3~Zulu~1~1
+Trail~0~KoreanDJ~3~2
+ChuDat~3~Doraki~0~1
+Kaiser GL~2~Eddie~3~2
+Dope~3~Darkrain~2~1
+The Doug~2~Isai~3~2
+Tink~3~dmac~0~1
+Azen~3~HugS~1~1
+Husband~2~Zanguzen~3~2
+Tapion~0~PC Chris~3~2
+#Winners Round 2
+Ken~3~Chillin~0~1
+Bushman~3~Rob$~1~1
+Mew2King~3~King~1~1
+Wife~3~KoreanDJ~0~1
+ChuDat~3~Eddie~2~1
+Dope~3~Isai~1~1
+Tink~3~Azen~1~1
+Zanguzen~2~PC Chris~3~2
+#Winners Round 3
+Ken~3~Bushman~0~1
+Mew2King~3~Wife~0~1
+ChuDat~3~Dope~1~1
+Tink~2~PC Chris~3~2
+#Winners Round 4
+Ken~3~Mew2King~1~1
+ChuDat~3~PC Chris~0~1
+#Losers Round 1
+Jiano~~Manacloud~W~2
+Caveman~3~KishPrime~0~1
+Mathos~3~IK_GOST~2~1
+Zulu~2~Trail~3~2
+Doraki~0~Kaiser GL~3~2
+Darkrain~W~The Doug~~1
+dmac~0~HugS~3~2
+Husband~3~Tapion~0~1
+#Losers Round 2
+Zanguzen~3~Manacloud~0~1
+Azen~3~Caveman~0~1
+Isai~3~Mathos~1~1
+Eddie~3~Trail~1~1
+KoreanDJ~3~Kaiser GL~0~1
+King~3~Darkrain~1~1
+Rob$~0~HugS~3~2
+Chillin~3~Husband~0~1
+#Losers Round 3
+Zanguzen~0~Azen~3~2
+Isai~3~Eddie~0~1
+KoreanDJ~3~King~0~1
+HugS~0~Chillin~3~2
+#Losers Round 4
+Bushman~0~Azen~3~2
+Wife~1~Isai~3~2
+Dope~0~KoreanDJ~3~2
+Tink~1~Chillin~3~2
+#Losers Round 5
+Azen~3~Isai~1~1
+KoreanDJ~1~Chillin~3~2
+#Losers Round 6
+PC Chris~0~Azen~3~2
+Mew2King~3~Chillin~1~1
+#7th Place Match
+Isai~~KoreanDJ~W~2
+#5th Place Match
+PC Chris~W~Chillin~~1
+#Losers Finals
+Ken~3~Mew2King~0~1
+#Grand Finals
+ChuDat~1~Ken~4~2
+
+@manual/2006-mlg-orlando-2006 manual-melee-1 melee https://liquipedia.net/smash/MLG/2006/Orlando/Singles_Bracket
+#Winners Round 1
+Ken~3~Lambchops~0~1
+Chillindude~3~Husband~2~1
+Dope~3~Maverick~2~1
+Vidjogamer~3~HugS~0~1
+KoreanDJ~3~RockCrock~0~1
+IK_GOST~1~Rob$~3~2
+King~3~Darkrain~1~1
+KeepSpeedn~1~Mew2King~3~2
+ChuDat~3~Watty~2~1
+Kaiser~2~Eddie~3~2
+Caveman~3~Dmac~0~1
+Thomas Tipman~0~Isai~3~2
+Tink~3~Mike G~0~1
+Drephen~3~Wife~1~1
+JBlaze~0~Azen~3~2
+DaShizWiz~0~PC Chris~3~2
+#Winners Round 2
+Ken~3~Chillindude~0~1
+Dope~3~Vidjogamer~2~1
+KoreanDJ~3~Rob$~0~1
+King~2~Mew2King~3~2
+ChuDat~3~Eddie~2~1
+Caveman~1~Isai~3~2
+Tink~2~Drephen~3~2
+Azen~3~PC Chris~1~1
+#Winners Round 3
+Ken~3~Dope~2~1
+KoreanDJ~3~Mew2King~1~1
+ChuDat~3~Isai~1~1
+Drephen~1~Azen~3~2
+#Winners Round 4
+Ken~1~KoreanDJ~3~2
+ChuDat~0~Azen~3~2
+#Losers Round 1
+Lambchops~2~Husband~3~2
+Maverick~1~HugS~3~2
+RockCrock~3~IK_GOST~0~1
+Darkrain~3~KeepSpeedn~2~1
+Watty~3~Kaiser~0~1
+Dmac~0~Thomas Tipman~3~2
+Mike G~0~Wife~3~2
+JBlaze~1~DaShizWiz~3~2
+#Losers Round 2
+PC Chris~3~Husband~0~1
+Tink~0~HugS~3~2
+Caveman~3~RockCrock~0~1
+Eddie~2~Darkrain~3~2
+King~3~Watty~0~1
+Rob$~3~Thomas Tipman~0~1
+Vidjogamer~3~Wife~0~1
+Chillindude~3~DaShizWiz~0~1
+#Losers Round 3
+PC Chris~1~HugS~3~2
+Caveman~0~Darkrain~3~2
+King~0~Rob$~3~2
+Vidjogamer~0~Chillindude~3~2
+#Losers Round 4
+Dope~1~HugS~3~2
+Mew2King~3~Darkrain~2~1
+Isai~3~Rob$~0~1
+Drephen~0~Chillindude~3~2
+#Losers Round 5
+HugS~1~Mew2King~3~2
+Isai~3~Chillindude~2~1
+#Losers Round 6
+ChuDat~3~Mew2King~1~1
+Ken~1~Isai~3~2
+#Placement match
+HugS~3~Chillindude~0~1
+Mew2King~~Ken~W~2
+#Losers Finals
+KoreanDJ~2~ChuDat~3~2
+#Grand Finals
+Azen~3~ChuDat~2~1
+
+@manual/2006-mlg-new-york-2006 manual-melee-1 melee https://liquipedia.net/smash/MLG/2006/New_York/Singles_Bracket
+#Winners Round 1
+Ken~3~Rayzorium~0~1
+Wes~3~Hayato~2~1
+Rob$~3~Tink~2~1
+Chinesah~2~Oro~3~2
+PC Chris~3~Zanguzen~1~1
+Comp~1~Chillin~3~2
+HugS~3~Aho~0~1
+JBlaze~3~Husband~2~1
+Isai~3~G-regulate~0~1
+Javier~3~Manacloud~1~1
+Caveman~3~Mew2King~2~1
+KoreanDJ~3~KillaOR~2~1
+Neo~3~Tetra~1~1
+Pyro~0~Eddie~3~2
+Wife~0~unknownforce~3~2
+Kirbstir~0~ChuDat~3~2
+#Winners Round 2
+Ken~3~Wes~0~1
+Rob$~3~Oro~1~1
+PC Chris~3~Chillin~1~1
+HugS~1~JBlaze~3~2
+Isai~3~Javier~1~1
+Caveman~2~KoreanDJ~3~2
+Neo~3~Eddie~0~1
+unknownforce~2~ChuDat~3~2
+#Winners Round 3
+Ken~3~Rob$~0~1
+PC Chris~3~JBlaze~0~1
+Isai~3~KoreanDJ~2~1
+Neo~2~ChuDat~3~2
+#Winners Round 4
+Ken~2~PC Chris~3~2
+Isai~1~ChuDat~3~2
+#Losers Round 1
+Rayzorium~3~Hayato~1~1
+Tink~3~Chinesah~0~1
+Zanguzen~3~Comp~0~1
+Aho~1~Husband~3~2
+G-regulate~0~Manacloud~3~2
+Mew2King~W~KillaOR~~1
+Tetra~0~Pyro~3~2
+Wife~3~Kirbstir~0~1
+#Losers Round 2
+unknownforce~0~Rayzorium~3~2
+Eddie~0~Tink~3~2
+Caveman~3~Zanguzen~2~1
+Javier~2~Husband~3~2
+HugS~3~Manacloud~1~1
+Chillin~1~Mew2King~3~2
+Oro~1~Pyro~3~2
+Wes~1~Wife~3~2
+#Losers Round 3
+Rayzorium~0~Tink~3~2
+Caveman~3~Husband~2~1
+HugS~0~Mew2King~3~2
+Pyro~3~Wife~2~1
+#Losers Round 4
+Rob$~4~Tink~6~2
+JBlaze~3~Caveman~2~1
+KoreanDJ~2~Mew2King~3~2
+Neo~3~Pyro~0~1
+#Losers Round 5
+Tink~3~JBlaze~0~1
+Mew2King~2~Neo~3~2
+#Losers Round 6
+Isai~1~Tink~3~2
+Ken~3~Neo~0~1
+#7th Place Match
+JBlaze~~Mew2King~W~2
+#5th Place Match
+Isai~~Neo~W~2
+#Losers Finals
+ChuDat~~Ken~W~2
+#Grand Finals
+PC Chris~3~Ken~3~1
+
+@manual/2006-melee-fc6 manual-melee-1 melee https://liquipedia.net/smash/MELEE-FC/6/Singles_Bracket
+#Winners Round 1
+Mew2King~3~FastLikeTree~0~1
+Azen~0~Vidjogamer~3~2
+#Winners Round 2
+Mew2King~3~Rob$~2~1
+Vidjogamer~3~PC Chris~2~1
+#Winners Round 3
+Mew2King~W~Darkrain~~1
+ChuDat~~Vidjogamer~W~2
+#Losers Round 1
+Tink~3~FastLikeTree~0~1
+#Losers Round 2
+Tink~W~CunningKitsune~~1
+#Losers Round 3
+Drephen~~Tink~W~2
+#Losers Round 4
+KoreanDJ~~Rob$~W~2
+Tink~0~PC Chris~3~2
+#Losers Round 5
+ChuDat~3~Rob$~1~1
+Darkrain~0~PC Chris~3~2
+#Losers Finals
+Vidjogamer~1~PC Chris~3~2
+#Grand Finals
+Mew2King~1/1~PC Chris~3/3~2
+
+@manual/2006-zero-challenge-2 manual-melee-1 melee https://liquipedia.net/smash/Zero_Challenge/2/Singles_Bracket
+#Winners Round 1
+ChuDat~2~Hella~0~1
+Wolf~~Trevyn~W~2
+chesterr01~2~B-stick~0~1
+Kei~W~Doraki~~1
+Mew2King~W~Derilink~~1
+Hayato~~HugS~W~2
+FalseFalco~W~Clod Zero~~1
+Kaiser-GL~~Azn Lep~W~2
+DieSuperFly~W~Hitsugaya~~1
+Manacloud~W~Enix Moogle~~1
+Omar~W~Simna ibn Sind~~1
+Tetra~W~Tenyear~~1
+Hoshino Kirby~W~CAOTIC~~1
+MikeMonkey~~Kentaross~W~2
+The King~W~Yagi~~1
+Shu~W~Frotaz~~1
+Ken~W~Snap~~1
+The GERM~W~Eddie~~1
+Helios~W~Aesis~~1
+Sastopher~W~Vwins~~1
+Hiko~W~N2K6~~1
+CowEar~W~RacerX~~1
+Zelgadis~~Blair~W~2
+Captain Jack~2~Kizzo Girl~0~1
+KoreanDJ~W~Ultra Luigi~~1
+Bob$~W~Dr. Z~~1
+PKMvodka~~S.O.S.~W~2
+Cort~W~Meep~~1
+PC Chris~W~Taj~~1
+Champ~~Forward~W~2
+Lunaris~W~KillaOR~~1
+Tori~~Rob$~W~2
+#Winners Round 2
+ChuDat~2~Trevyn~0~1
+chesterr01~~Kei~W~2
+Mew2King~W~HugS~~1
+FalseFalco~W~Azn Lep~~1
+DieSuperFly~W~Manacloud~~1
+Omar~W~Tetra~~1
+Hoshino Kirby~2~Kentaross~0~1
+The King~2~Shu~0~1
+Ken~W~The GERM~~1
+Helios~~Sastopher~W~2
+Hiko~2~CowEar~0~1
+Blair~0~Captain Jack~2~2
+KoreanDJ~W~Bob$~~1
+S.O.S.~~Cort~W~2
+PC Chris~2~Forward~1~1
+Lunaris~~Rob$~W~2
+#Winners Round 3
+ChuDat~1~Kei~2~2
+Mew2King~W~FalseFalco~~1
+DieSuperFly~2~Omar~0~1
+Hoshino Kirby~2~The King~1~1
+Ken~2~Sastopher~0~1
+Hiko~0~Captain Jack~2~2
+KoreanDJ~W~Cort~~1
+PC Chris~2~Rob$~0~1
+#Winners Round 4
+Kei~0~Mew2King~2~2
+DieSuperFly~0~Hoshino Kirby~2~2
+Ken~2~Captain Jack~0~1
+KoreanDJ~W~PC Chris~~1
+#Winners Round 5
+Mew2King~2~Hoshino Kirby~0~1
+Ken~2~KoreanDJ~1~1
+#Losers Round 1
+Hella~~Wolf~W~2
+B-stick~~Doraki~W~2
+Derilink~~Hayato~W~2
+Clod Zero~~Kaiser-GL~W~2
+Hitsugaya~W~Enix Moogle~~1
+Simna ibn Sind~W~Tenyear~~1
+CAOTIC~~MikeMonkey~W~2
+Yagi~W~Frotaz~~1
+Snap~W~Eddie~~1
+Aesis~W~Vwins~~1
+N2K6~W~RacerX~~1
+Zelgadis~W~Kizzo Girl~~1
+Ultra Luigi~W~Dr. Z~~1
+PKMvodka~W~Meep~~1
+Taj~W~Champ~~1
+KillaOR~2~Tori~1~1
+#Losers Round 2
+The GERM~2~Wolf~1~1
+Helios~W~Doraki~~1
+CowEar~~Hayato~W~2
+Blair~W~Kaiser-GL~~1
+Bob$~~Hitsugaya~W~2
+S.O.S.~W~Simna ibn Sind~~1
+Forward~W~MikeMonkey~~1
+Lunaris~W~Yagi~~1
+Trevyn~W~Snap~~1
+chesterr01~W~Aesis~~1
+HugS~W~N2K6~~1
+Azn Lep~~Zelgadis~W~2
+Manacloud~W~Ultra Luigi~~1
+Tetra~~PKMvodka~W~2
+Kentaross~~Taj~W~2
+Shu~W~KillaOR~~1
+#Losers Round 3
+The GERM~2~Helios~1~1
+Hayato~W~Blair~~1
+Hitsugaya~~S.O.S.~W~2
+Forward~W~Lunaris~~1
+Trevyn~~chesterr01~W~2
+HugS~W~Zelgadis~~1
+Manacloud~W~PKMvodka~~1
+Taj~1~Shu~2~2
+#Losers Round 4
+Omar~W~The GERM~~1
+The King~2~Hayato~1~1
+ChuDat~W~S.O.S.~~1
+FalseFalco~0~Forward~2~2
+Cort~W~chesterr01~~1
+Rob$~2~HugS~1~1
+Sastopher~W~Manacloud~~1
+Hiko~0~Shu~2~2
+#Losers Round 5
+Omar~1~The King~2~2
+ChuDat~2~Forward~0~1
+Cort~~Rob$~W~2
+Sastopher~0~Shu~2~2
+#Losers Round 6
+Captain Jack~2~The King~1~1
+PC Chris~0~ChuDat~2~2
+Kei~2~Rob$~1~1
+DieSuperFly~0~Shu~2~2
+#Losers Round 7
+Captain Jack~1~ChuDat~2~2
+Kei~1~Shu~2~2
+#Losers Round 8
+Hoshino Kirby~1~ChuDat~2~2
+KoreanDJ~2~Shu~0~1
+#Losers Finals
+Mew2King~0~ChuDat~3~2
+#Grand Finals
+Ken~3~ChuDat~0~1
+
+@manual/2007-viva-la-smashtaclysm manual-melee-1 melee https://liquipedia.net/smash/Viva_La_Smashtaclysm/Singles_Bracket
+#Winners Round 1
+Drephen~W~Cactuar~~1
+Hayato~W~Colbol~~1
+Dope~W~Green Mario~~1
+Lord Knight~W~XIF~~1
+Eggm~W~Dmon~~1
+G-regulate~W~Falcomist~~1
+Jiano~W~Velocity~~1
+Wife~W~QDVS~~1
+Chaddd~W~Kaiser~~1
+Kirbstir~W~Sensei~~1
+Bam~~Bob$~W~2
+KoreanDJ~W~ByeBye~~1
+Scar~~Omni~W~2
+Kel~~Plank~W~2
+Chillindude~W~PKMVodka~~1
+Swiftbass~W~Inui~~1
+Husband~W~Dr. Z~~1
+#Winners Round 2
+Drephen~W~th0rn~~1
+Sliq~~Hayato~W~2
+Dope~W~Teczero~~1
+Mew2King~W~Lord Knight~~1
+Starzoneedge~~Eggm~W~2
+Darc~W~G-regulate~~1
+Jiano~~ChuDat~W~2
+Wife~W~Dazwa~~1
+HBK~~Chaddd~W~2
+Azen~W~Kirbstir~~1
+Doll~W~Bob$~~1
+KoreanDJ~W~Omni~~1
+Skler~W~Plank~~1
+PC Chris~W~Chillindude~~1
+Cort~W~Swiftbass~~1
+Husband~W~Vidjogamer~~1
+#Winners Round 3
+Drephen~W~Hayato~~1
+Dope~~Mew2King~W~2
+Eggm~~Darc~W~2
+ChuDat~W~Wife~~1
+Chaddd~~Azen~W~2
+Doll~~KoreanDJ~W~2
+Skler~~PC Chris~W~2
+Cort~W~Husband~~1
+#Winners Round 4
+Drephen~W~Mew2King~~1
+Darc~~ChuDat~W~2
+Azen~W~KoreanDJ~~1
+PC Chris~W~Cort~~1
+#Winners Round 5
+Drephen~~ChuDat~W~2
+Azen~3~PC Chris~1~1
+#Losers Round 1
+Starzoneedge~~Cactuar~W~2
+G-regulate~~Colbol~W~2
+Jiano~W~Green Mario~~1
+Dazwa~W~XIF~~1
+th0rn~W~Dmon~~1
+Sliq~~Falcomist~W~2
+Teczero~W~Velocity~~1
+Lord Knight~~QDVS~W~2
+Plank~~Kaiser~W~2
+Chillindude~W~Sensei~~1
+Swiftbass~W~Bam~~1
+Vidjogamer~~Scar~W~2
+HBK~W~Kel~~1
+Kirbstir~W~PKMVodka~~1
+Inui~~Bob$~W~2
+Omni~W~Dr. Z~~1
+#Losers Round 2
+Cactuar~~Colbol~W~2
+Jiano~W~Dazwa~~1
+th0rn~~Falcomist~W~2
+Teczero~W~QDVS~~1
+Kaiser~~Chillindude~W~2
+Swiftbass~~Scar~W~2
+HBK~~Kirbstir~W~2
+Bob$~W~Omni~~1
+#Losers Round 3
+Doll~~Colbol~W~2
+Chaddd~~Jiano~W~2
+Husband~~Falcomist~W~2
+Skler~W~Teczero~~1
+Dope~~Chillindude~W~2
+Hayato~~Scar~W~2
+Wife~~Kirbstir~W~2
+Eggm~W~Bob$~~1
+#Losers Round 4
+Colbol~W~Jiano~~1
+Falcomist~W~Skler~~1
+Chillindude~W~Scar~~1
+Kirbstir~W~Eggm~~1
+#Losers Round 5
+Darc~W~Colbol~~1
+Mew2King~W~Falcomist~~1
+Cort~~Chillindude~W~2
+KoreanDJ~W~Kirbstir~~1
+#Losers Round 6
+Darc~~Mew2King~W~2
+Chillindude~~KoreanDJ~W~2
+#Losers Round 7
+PC Chris~~Mew2King~W~2
+Drephen~~KoreanDJ~W~2
+#Losers Finals
+ChuDat~3~KoreanDJ~0~1
+#Grand Finals
+Azen~3~ChuDat~1~1
+
+@manual/2007-super-champ-combo manual-melee-1 melee https://liquipedia.net/smash/Super_Champ_Combo/Singles_Bracket
+#Winners Round 1
+emerican~W~HydroKirby~~1
+DC~~Zarelid~W~2
+Azeem~~Taj~W~2
+SA2Jeff~~LunInSpectra~W~2
+Mango~W~Frotaz~~1
+Bob$~W~Mikael~~1
+ROFL~~MEXICAN~W~2
+Falcomist~W~Eggz~~1
+Mike Y~~Zhu~W~2
+Tang~~Ultra Luigi~W~2
+Wobbles~W~Plank~~1
+Isai~W~Knivez~~1
+Lee Puff~~Romeo~W~2
+Zelgadis~W~Simna ibn Sind~~1
+Evilnemesis~W~BoA~~1
+Chillindude~W~Azn Lep~~1
+#Winners Round 2
+Forward~W~emerican~~1
+PC Chris~W~Zarelid~~1
+Azen~W~Taj~~1
+Light~W~LunInSpectra~~1
+Edrees~~Mango~W~2
+HugS~W~Bob$~~1
+Silent Wolf~~MEXICAN~W~2
+SilentSpectre~~Falcomist~W~2
+Zhu~~Cort~W~2
+Ultra Luigi~~DJ Combo~W~2
+Wobbles~W~Cactuar~~1
+Isai~0~Ken~2~2
+Romeo~~Mew2King~W~2
+Zelgadis~W~DieSuperFly~~1
+Evilnemesis~~ChuDat~W~2
+Chillindude~W~Aesis~~1
+#Winners Round 3
+Forward~1~PC Chris~2~2
+Azen~W~Light~~1
+Mango~W~HugS~~1
+MEXICAN~~Falcomist~W~2
+Cort~W~DJ Combo~~1
+Wobbles~2~Ken~1~1
+Mew2King~W~Zelgadis~~1
+ChuDat~~Chillindude~W~2
+#Winners Round 4
+PC Chris~W~Azen~~1
+Mango~W~Falcomist~~1
+Cort~2~Wobbles~1~1
+Mew2King~2~Chillindude~0~1
+#Winners Round 5
+PC Chris~2~Mango~3~2
+Cort~~Mew2King~W~2
+#Losers Round 1
+Edrees~W~HydroKirby~~1
+Bob$~~DC~W~2
+Silent Wolf~W~Azeem~~1
+SilentSpectre~W~SA2Jeff~~1
+emerican~W~Frotaz~~1
+Zarelid~W~Mikael~~1
+Taj~W~ROFL~~1
+LunInSpectra~W~Eggz~~1
+Romeo~W~Mike Y~~1
+DieSuperFly~~Tang~W~2
+Evilnemesis~W~Plank~~1
+Aesis~~Knivez~W~2
+Zhu~~Lee Puff~W~2
+Ultra Luigi~~Simna ibn Sind~W~2
+Cactuar~~BoA~W~2
+Isai~~Azn Lep~W~2
+#Losers Round 2
+Edrees~~DC~W~2
+Silent Wolf~~SilentSpectre~W~2
+emerican~W~Zarelid~~1
+Taj~W~LunInSpectra~~1
+Romeo~~Tang~W~2
+Evilnemesis~W~Knivez~~1
+Lee Puff~~Simna ibn Sind~W~2
+BoA~~Azn Lep~W~2
+#Losers Round 3
+Ken~W~DC~~1
+DJ Combo~~SilentSpectre~W~2
+ChuDat~W~emerican~~1
+Zelgadis~~Taj~W~2
+Light~~Tang~W~2
+Forward~W~Evilnemesis~~1
+MEXICAN~W~Simna ibn Sind~~1
+HugS~W~Azn Lep~~1
+#Losers Round 4
+Ken~2~SilentSpectre~0~1
+ChuDat~W~Taj~~1
+Tang~~Forward~W~2
+MEXICAN~~HugS~W~2
+#Losers Round 5
+Falcomist~~Ken~W~2
+Azen~1~ChuDat~2~2
+Chillindude~~Forward~W~2
+Wobbles~2~HugS~0~1
+#Losers Round 6
+Ken~0~ChuDat~2~2
+Forward~~Wobbles~W~2
+#Losers Round 7
+Cort~3~ChuDat~2~1
+PC Chris~3~Wobbles~0~1
+#Losers Finals
+Mango~2~PC Chris~4~2
+#Grand Finals
+Mew2King~3~PC Chris~1~1
+
+@manual/2007-zero-challenge-3 manual-melee-1 melee https://liquipedia.net/smash/Zero_Challenge/3/Singles_Bracket
+#Winners Round 5
+Ken~W~Vidjogamer~~1
+Mew2King~2~PC Chris~1~1
+Drephen~2~The King~1~1
+Falcomist~~ChuDat~W~2
+#Winners Round 6
+Ken~1~Mew2King~2~2
+Drephen~~ChuDat~W~2
+#Losers Round 1
+DJ Combo~W~South Paw~~1
+Zhu~W~Kira~~1
+DieSuperFly~W~Foxroar~~1
+Wobbles~W~Zarelid~~1
+Dirthead~~Delphiki~W~2
+Bob$~W~emerican~~1
+Wolf~W~T0MMY~~1
+NoobKing~W~Aftermath~~1
+Eggz~W~Rickety~~1
+Light~W~YangFuShang~~1
+ILikeMen~~KOS-MOS~W~2
+Myko~~Mr. Pbody~W~2
+Dread101~~DRGN~W~2
+Eddie~W~spiritdragon~~1
+Jadin Xquire~~creepy fingers~W~2
+Loki~W~Zoap~~1
+ROFL~W~Tavo~~1
+Manacloud~W~jugfingers~~1
+Straight~~BlueMycon~W~2
+BoA~W~DC~~1
+MikeMonkey~W~Nekrubis~~1
+ShadowBTZO~W~SNS~~1
+Hella~~Mango~W~2
+DEHF~W~Deth~~1
+Bone~W~Etch~~1
+The Boss~~Zeal~W~2
+Ultra Luigi~~FireFly~W~2
+Mathos~W~Dark Mike~~1
+Aero~~Saint Patrick~W~2
+RacerX!~W~Blitz~~1
+Mike Y~W~maXXXpower~~1
+Fletcher~~Maple~W~2
+#Losers Round 2
+DJ Combo~W~Zhu~~1
+DieSuperFly~~Wobbles~W~2
+Delphiki~~Bob$~W~2
+Wolf~~NoobKing~W~2
+Eggz~W~Light~~1
+KOS-MOS~W~Mr. Pbody~~1
+DRGN~~Eddie~W~2
+creepy fingers~~Loki~W~2
+ROFL~~Manacloud~W~2
+BlueMycon~~BoA~W~2
+MikeMonkey~~ShadowBTZO~W~2
+Mango~W~DEHF~~1
+Bone~W~Zeal~~1
+FireFly~~Mathos~W~2
+Saint Patrick~~RacerX!~W~2
+Mike Y~W~Maple~~1
+#Losers Round 3
+Disc~~DJ Combo~W~2
+BloodOfTheFallen~~Wobbles~W~2
+Bombsoldier~W~Bob$~~1
+SA2Jeff~~NoobKing~W~2
+LunInSpectra~W~Eggz~~1
+The Germ~W~KOS-MOS~~1
+Tang~W~Eddie~~1
+Isai~W~Loki~~1
+Zelgadis~W~Manacloud~~1
+Lucky~W~BoA~~1
+IK_GOST~~ShadowBTZO~W~2
+Knivez~~Mango~W~2
+chesterr01~W~Bone~~1
+EdreesesPieces~W~Mathos~~1
+HugS~W~RacerX!~~1
+Lunaris~W~Mike Y~~1
+#Losers Round 4
+DJ Combo~~Wobbles~W~2
+Bombsoldier~2~NoobKing~1~1
+LunInSpectra~W~The Germ~~1
+Tang~W~Isai~~1
+Zelgadis~~Lucky~W~2
+ShadowBTZO~W~Mango~~1
+chesterr01~~EdreesesPieces~W~2
+HugS~W~Lunaris~~1
+#Losers Round 5
+Taj~~Wobbles~W~2
+Forward~2~Bombsoldier~0~1
+Silent Wolf~W~LunInSpectra~~1
+Cactuar~W~Tang~~1
+PKMvodka~W~Lucky~~1
+Aesis~W~ShadowBTZO~~1
+SK92~~EdreesesPieces~W~2
+SilentSpectre~1~HugS~2~2
+#Losers Round 6
+Wobbles~~Forward~W~2
+Silent Wolf~W~Cactuar~~1
+PKMvodka~W~Aesis~~1
+EdreesesPieces~~HugS~W~2
+#Losers Round 7
+The King~2~Forward~1~1
+Falcomist~~Silent Wolf~W~2
+Vidjogamer~W~PKMvodka~~1
+PC Chris~2~HugS~1~1
+#Losers Round 8
+The King~2~Silent Wolf~0~1
+Vidjogamer~~PC Chris~W~2
+#Losers Round 9
+Ken~2~The King~1~1
+Drephen~1~PC Chris~2~2
+#Losers Finals
+ChuDat~1~PC Chris~3~2
+#Grand Finals
+Mew2King~2~PC Chris~4~2
+
+@manual/2007-pound-2 manual-melee-1 melee https://liquipedia.net/smash/Pound/2/Singles_Bracket
+#Winners Round 1
+Jiano~W~Dr. Z~~1
+Roga~~Queen DVS~W~2
+Husband~W~Bass.~~1
+Mikey Lenetia~~G-regulate~W~2
+Cort~W~Dot Eater~~1
+Chinesah~DQ~Hayato~W~2
+InfernoOmni~~PikaPika!~W~2
+th0rn~~DaShizWiz~W~2
+Ky~~Sliq~W~2
+Chillindude~W~Tope~~1
+AeroShadow~~Darc~W~2
+Drephen~W~Reik~~1
+MeepxZero~~Sensei~W~2
+Wife~W~Mathos~~1
+DosV~~KM~W~2
+CunningKitsune~W~DewDaDash~~1
+Watty~W~Kaiser~~1
+XIF~W~RockCrock~~1
+LoZR~W~Plank~~1
+Forward~W~Cyrain~~1
+Ryoko~W~DoYoung2Win~~1
+PC Chris~W~Fonz~~1
+Aho~W~Dazwa~~1
+ChuDat~W~Pakman~~1
+OneAndOnlyK.I.P~W~Redd~~1
+GameFreak~~Mew2King~W~2
+Colbol~~Cactuar~W~2
+Sol~~Taj~W~2
+KeepSpeedn~W~Viperboy~~1
+JoeBushman111~~Tink~W~2
+Green Mario~W~Treble~~1
+The Law~~Kirbstir~W~2
+#Winners Round 2
+Jiano~2~Queen DVS~0~1
+Husband~W~G-regulate~~1
+Cort~W~Hayato~~1
+PikaPika!~~DaShizWiz~W~2
+Sliq~~Chillindude~W~2
+Darc~~Drephen~W~2
+Sensei~~Wife~W~2
+KM~W~CunningKitsune~~1
+Watty~~XIF~W~2
+LoZR~~Forward~W~2
+Ryoko~~PC Chris~W~2
+Aho~~ChuDat~W~2
+OneAndOnlyK.I.P~~Mew2King~W~2
+Cactuar~0~Taj~2~2
+KeepSpeedn~W~Tink~~1
+Green Mario~W~Kirbstir~~1
+#Winners Round 3
+Jiano~W~Husband~~1
+Cort~W~DaShizWiz~~1
+Chillindude~W~Drephen~~1
+Wife~~KM~W~2
+XIF~~Forward~W~2
+PC Chris~1~ChuDat~2~2
+Mew2King~W~Taj~~1
+KeepSpeedn~W~Green Mario~~1
+#Winners Round 4
+Jiano~W~Cort~~1
+Chillindude~W~KM~~1
+Forward~~ChuDat~W~2
+Mew2King~W~KeepSpeedn~~1
+#Winners Round 5
+Jiano~W~Chillindude~~1
+ChuDat~2~Mew2King~0~1
+#Losers Round 1
+Dr. Z~W~Roga~~1
+Bass.~~Mikey Lenetia~W~2
+Dot Eater~W~Chinesah~DQ~1
+InfernoOmni~~th0rn~W~2
+Ky~~Tope~W~2
+AeroShadow~~Reik~W~2
+MeepxZero~W~Mathos~~1
+DosV~~DewDaDash~W~2
+Kaiser~~RockCrock~W~2
+Plank~W~Cyrain~~1
+DoYoung2Win~~Fonz~W~2
+Dazwa~W~Pakman~~1
+Redd~W~GameFreak~~1
+Colbol~W~Sol~~1
+Viperboy~W~JoeBushman111~~1
+Treble~W~The Law~~1
+#Losers Round 2
+Sliq~~Dr. Z~W~2
+Darc~~Mikey Lenetia~W~2
+Sensei~W~Dot Eater~~1
+CunningKitsune~W~th0rn~~1
+Queen DVS~~Tope~W~2
+G-regulate~W~Reik~~1
+Hayato~W~MeepxZero~~1
+PikaPika!~W~DewDaDash~~1
+OneAndOnlyK.I.P~~RockCrock~W~2
+Cactuar~~Plank~W~2
+Tink~W~Fonz~~1
+Kirbstir~~Dazwa~W~2
+Watty~W~Redd~~1
+LoZR~~Colbol~W~2
+Ryoko~W~Viperboy~~1
+Aho~W~Treble~~1
+#Losers Round 3
+Dr. Z~~Mikey Lenetia~W~2
+Sensei~~CunningKitsune~W~2
+Tope~~G-regulate~W~2
+Hayato~~PikaPika!~W~2
+RockCrock~W~Plank~~1
+Tink~W~Dazwa~~1
+Watty~W~Colbol~~1
+Ryoko~W~Aho~~1
+#Losers Round 4
+PC Chris~W~Mikey Lenetia~~1
+XIF~~CunningKitsune~W~2
+Green Mario~~G-regulate~W~2
+Taj~W~PikaPika!~~1
+DaShizWiz~W~RockCrock~~1
+Husband~~Tink~W~2
+Wife~W~Watty~~1
+Drephen~W~Ryoko~~1
+#Losers Round 5
+PC Chris~W~CunningKitsune~~1
+G-regulate~~Taj~W~2
+DaShizWiz~2~Tink~0~1
+Wife~~Drephen~W~2
+#Losers Round 6
+KM~~PC Chris~W~2
+Cort~~Taj~W~2
+KeepSpeedn~~DaShizWiz~W~2
+Forward~1~Drephen~2~2
+#Losers Round 7
+PC Chris~2~Taj~0~1
+DaShizWiz~1~Drephen~2~2
+#Losers Round 8
+Mew2King~2~PC Chris~1~1
+Chillindude~W~Drephen~~1
+#Losers Finals
+Jiano~1~Mew2King~3~2
+#Grand Finals
+ChuDat~3~Mew2King~2~1
+
+@manual/2007-cataclysm-3 manual-melee-1 melee https://liquipedia.net/smash/Cataclysm/3/Singles_Bracket
+#Winners Round 5
+ChuDat~W~Wife~~1
+Husband~~KoreanDJ~W~2
+Mew2King~W~Forward~~1
+DireVulcan~~PC Chris~W~2
+#Winners Round 6
+ChuDat~W~KoreanDJ~~1
+Mew2King~W~PC Chris~~1
+#Losers Round 5
+Milktea~~Pakman~W~2
+Omni~W~Samusexplorer~~1
+Backward~~Kaiser GL~W~2
+Alejandro P~W~Treble~~1
+NusCirtap~~Banks~W~2
+Eggm~W~dot_eater~~1
+Brookman~~Darc~W~2
+Zoso~W~GameFreak~~1
+#Losers Round 6
+th0rn~W~Pakman~~1
+Eve~~Omni~W~2
+KrazyJones~~Kaiser GL~W~2
+Cort~W~Alejandro P~~1
+Cactuar~W~Banks~~1
+Isai~W~Eggm~~1
+omegablackmage~~Darc~W~2
+KirbySan~W~Zoso~~1
+#Losers Round 7
+th0rn~~Omni~W~2
+Kaiser GL~~Cort~W~2
+Cactuar~W~Isai~~1
+Darc~W~KirbySan~~1
+#Losers Round 8
+Husband~W~Omni~~1
+Wife~~Cort~W~2
+DireVulcan~~Cactuar~W~2
+Forward~W~Darc~~1
+#Losers Round 9
+Husband~W~Cort~~1
+Cactuar~~Forward~W~2
+#Losers Round 10
+PC Chris~W~Husband~~1
+KoreanDJ~W~Forward~~1
+#Losers Finals
+ChuDat~1~KoreanDJ~3~2
+#Grand Finals
+Mew2King~3~KoreanDJ~2~1
+
+@manual/2007-mlg-long-island-2007 manual-melee-1 melee https://liquipedia.net/smash/MLG/2007/Long_Island/Singles_Bracket
+#Winners Round 1
+PC Chris~W~Dave~~1
+Alejandro P~~Husband~W~2
+Isai~1~Bum~3~2
+Ace Marth~~Mew2King~W~2
+KoreanDJ~W~WarriorKnight~~1
+DJ Nintendo~~Plank~W~2
+Chillin~W~KillaFox~~1
+Hayato~1~ChuDat~3~2
+#Winners Round 2
+PC Chris~3~Husband~0~1
+Bum~1~Mew2King~3~2
+KoreanDJ~W~Plank~~1
+Chillin~1~ChuDat~3~2
+#Winners Round 3
+PC Chris~0~Mew2King~3~2
+KoreanDJ~3~ChuDat~0~1
+#Losers Round 1
+Dave~~Alejandro P~W~2
+Isai~W~Ace Marth~~1
+WarriorKnight~W~DJ Nintendo~~1
+KillaFox~W~Hayato~~1
+#Losers Round 2
+Chillin~W~Alejandro P~~1
+Plank~~Isai~W~2
+Bum~W~WarriorKnight~~1
+Husband~2~KillaFox~3~2
+#Losers Round 3
+Chillin~W~Isai~~1
+Bum~3~KillaFox~2~1
+#Losers Round 4
+PC Chris~W~Chillin~~1
+ChuDat~1~Bum~3~2
+#5th Place Match
+Chillin~~ChuDat~W~2
+#Losers Finals
+Mew2King~3~PC Chris~3~1
+#Grand Finals
+KoreanDJ~3~Mew2King~2~1

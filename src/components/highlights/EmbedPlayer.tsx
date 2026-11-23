@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from "react";
 import type { Embed } from "@/lib/embeds";
 import { useT } from "@/lib/i18n/client";
 import NewTab from "@/components/ui/NewTab";
+import { usePageShown } from "@/lib/usePageShown";
 
 const noop = () => () => {};
 
@@ -13,6 +14,9 @@ export default function EmbedPlayer({ embed }: { embed: Embed }) {
   const hostname = useSyncExternalStore(noop, () => window.location.hostname, () => null);
   const t = useT();
   const [started, setStarted] = useState(false);
+  // Leaving the page (it stays alive, hidden) takes the player away, so its sound stops; coming back
+  // shows the still picture again.
+  const shown = usePageShown(() => setStarted(false));
 
   if (embed.kind === "link") {
     return (
@@ -45,7 +49,7 @@ export default function EmbedPlayer({ embed }: { embed: Embed }) {
               <span className="flex size-14 items-center justify-center rounded-full bg-black/60 pl-1 text-2xl text-white group-hover:bg-black/75">▶</span>
             </span>
           </button>
-        ) : src && (
+        ) : shown && src && (
           <iframe
             src={src}
             title={t("media.hl.video", { provider: embed.provider })}
