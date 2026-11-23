@@ -1,0 +1,582 @@
+@manual/2012-apex-2012 manual-brawl-3 brawl https://liquipedia.net/smash/Apex/2012/Brawl/Singles_Bracket
+#Winners Round 1
+Brood~W~Fino~~1
+Trela~W~Leon~~1
+Zex~W~Poltergust~~1
+Ally~W~GDX~~1
+Rich Brown~W~Jtails~~1
+Razer~W~Shadow~~1
+Tyrant~W~Dark Peach~~1
+ADHD~2~MikeRay~0~1
+Z~0~Gnes~2~2
+DEHF~W~Pwii~~1
+Bloodcross~1~Otori~2~2
+Coney~W~4god~~1
+ESAM~W~False~~1
+Holy~~Logic~W~2
+Dabuz~W~Sky Williams~~1
+RAIN~W~Denti~~1
+Illmatic~0~Nietono~2~2
+NAKAT~2~X~1~1
+Fatal~W~Kismet~~1
+MikeHaze~~Will~W~2
+Atomsk~W~Toronto Joe~~1
+Havok~W~San~~1
+Nick Riddle~~Shugo~W~2
+Nairo~W~Salem~~1
+Kakera~W~Orion~~1
+Reflex~W~Vinnie~~1
+Dojo~~Trevonte~W~2
+ZeRo~W~DRN~~1
+Seibrik~W~Bassem~~1
+Mew2King~W~FOW~~1
+Mr. R~W~Seagull~~1
+DeLux~0~OCEAN~2~2
+#Winners Round 2
+Brood~2~Trela~0~1
+Zex~0~Ally~2~2
+Rich Brown~~Razer~W~2
+Tyrant~~ADHD~W~2
+Gnes~~DEHF~W~2
+Otori~W~Coney~~1
+ESAM~W~Logic~~1
+Dabuz~~RAIN~W~2
+Nietono~W~NAKAT~~1
+Fatal~W~Will~~1
+Atomsk~~Havok~W~2
+Shugo~~Nairo~W~2
+Kakera~W~Reflex~~1
+Trevonte~0~ZeRo~2~2
+Seibrik~~Mew2King~W~2
+Mr. R~1~OCEAN~2~2
+#Winners Round 3
+Brood~0~Ally~2~2
+Razer~W~ADHD~~1
+DEHF~~Otori~W~2
+ESAM~W~RAIN~~1
+Nietono~W~Fatal~~1
+Havok~~Nairo~W~2
+Kakera~W~ZeRo~~1
+Mew2King~1~OCEAN~2~2
+#Winners Round 4
+Ally~W~Razer~~1
+Otori~2~ESAM~0~1
+Nietono~~Nairo~W~2
+Kakera~2~OCEAN~0~1
+#Winners Round 5
+Ally~0~Otori~3~2
+Nairo~3~Kakera~0~1
+#Losers Round 1
+Fino~~Leon~W~2
+Poltergust~W~GDX~~1
+Jtails~2~Shadow~1~1
+Dark Peach~~MikeRay~W~2
+Z~W~Pwii~~1
+Bloodcross~W~4god~~1
+False~~Holy~W~2
+Sky Williams~~Denti~W~2
+Illmatic~W~X~~1
+Kismet~~MikeHaze~W~2
+Toronto Joe~2~San~0~1
+NickRiddle~~Salem~W~2
+Orion~W~Vinnie~~1
+Dojo~~DRN~W~2
+Bassem~~FOW~W~2
+Seagull~~DeLux~W~2
+#Losers Round 2
+Gnes~W~Leon~~1
+Coney~W~Poltergust~~1
+Logic~~Jtails~W~2
+Dabuz~2~MikeRay~0~1
+Trela~~Z~W~2
+Zex~W~Bloodcross~~1
+Rich Brown~W~Holy~~1
+Tyrant~W~Denti~~1
+Reflex~W~Illmatic~~1
+Trevonte~0~MikeHaze~2~2
+Seibrik~W~Toronto Joe~~1
+Mr. R~2~Salem~1~1
+NAKAT~~Orion~W~2
+Will~W~DRN~~1
+Atomsk~W~FOW~~1
+Shugo~W~DeLux~~1
+#Losers Round 3
+Gnes~W~Coney~~1
+Jtails~1~Dabuz~2~2
+Z~W~Zex~~1
+Rich Brown~W~Tyrant~~1
+Reflex~~MikeHaze~W~2
+Seibrik~0~Mr. R~2~2
+Orion~W~Will~~1
+Atomsk~1~Shugo~2~2
+#Losers Round 4
+Havok~~Gnes~W~2
+Fatal~~Dabuz~W~2
+Mew2King~2~Z~0~1
+ZeRo~~Rich Brown~W~2
+ADHD~W~MikeHaze~~1
+Brood~2~Mr. R~0~1
+RAIN~W~Orion~~1
+DEHF~W~Shugo~~1
+#Losers Round 5
+Gnes~W~Dabuz~~1
+Mew2King~1~Rich Brown~2~2
+ADHD~W~Brood~~1
+RAIN~~DEHF~W~2
+#Losers Round 6
+ESAM~W~Gnes~~1
+Razer~W~Rich Brown~~1
+OCEAN~0~ADHD~2~2
+Nietono~2~DEHF~0~1
+#Losers Round 7
+ESAM~2~Razer~1~1
+ADHD~0~Nietono~2~2
+#Losers Round 8
+Kakera~1~ESAM~2~2
+Ally~1~Nietono~2~2
+#Losers Finals
+Nairo~0~Nietono~3~2
+#Grand Finals
+Otori~3~Nietono~1~1
+
+@manual/2011-genesis-2 manual-brawl-2 brawl https://liquipedia.net/smash/GENESIS/2/Brawl/Singles_Bracket
+#Winners Round 1
+Choice~W~BigLou~~1
+HAVOK~W~Denti~~1
+Seibrik~W~Zekey~~1
+Rain~W~falln~~1
+Trevonte~W~Nerd~~1
+kismet2~~Earth~W~2
+Anuar~W~weruop~~1
+Trela~W~supersmastwin？~~1
+MVD~W~GimR~~1
+Logic~W~JeepySol~~1
+Adroscos~~zex~W~2
+Shaky~~KiraFlax~W~2
+Filip~~FishBait73~W~2
+Krystedez~W~Poltergust~~1
+HRnut~W~Sky~~1
+NickRiddle~W~The Nanerz~~1
+#Winners Round 2
+Ally~2~Choice~0~1
+FOW~W~HAVOK~~1
+Gnes~W~Seibrik~~1
+MikeHaze~0~Rain~2~2
+Larry Lurr~2~Trevonte~1~1
+X~~Earth~W~2
+ADHD~W~Anuar~~1
+Inui~W~Trela~~1
+Mew2King~W~MVD~~1
+SK92~~Logic~W~2
+ESAM~W~zex~~1
+Rich Brown~W~KiraFlax~~1
+Tyrant~W~Fishbait73~~1
+Atomsk~W~Krystedez~~1
+UltimateRazer~~HRnut~W~2
+TearBear~W~NickRiddle~~1
+#Winners Round 3
+Ally~W~FOW~~1
+Gnes~2~Rain~1~1
+Larry Lurr~W~Earth~~1
+ADHD~W~Inui~~1
+Mew2King~W~Logic~~1
+ESAM~W~Rich Brown~~1
+Tyrant~W~Atomsk~~1
+HRnut~~TearBear~W~2
+#Winners Round 4
+Ally~W~Gnes~~1
+Larry Lurr~0~ADHD~3~2
+Mew2King~3~ESAM~1~1
+Tyrant~W~TearBear~~1
+#Winners Round 5
+Ally~1~ADHD~3~2
+Mew2King~W~Tyrant~~1
+#Losers Round 1
+Trevonte~W~BigLou~~1
+X~~Denti~W~2
+Anuar~W~Zekey~~1
+Trela~W~falln~~1
+Choice~W~Nerd~~1
+HAVOK~W~kismet2~~1
+Seibrik~W~weruop~~1
+MikeHaze~W~Supersmashtwins~~1
+FishBait73~~GimR~W~2
+Krystedez~W~JeepySol~~1
+UltimateRazer~W~Adroscos~~1
+NickRiddle~~Shaky~W~2
+MVD~W~Filip~~1
+SK92~W~Poltergust~~1
+zex~W~Sky~~1
+KiraFlax~W~The Nanerz~~1
+#Losers Round 2
+Trevonte~W~Denti~~1
+Anuar~~Trela~W~2
+Choice~~HAVOK~W~2
+Seibrik~W~MikeHaze~~1
+GimR~~Krystedez~W~2
+UltimateRazer~W~Shaky~~1
+MVD~~SK92~W~2
+zex~W~KiraFlax~~1
+#Losers Round 3
+Rich Brown~W~Trevonte~~1
+Logic~~Trela~W~2
+HRnut~~HAVOK~W~2
+Atomsk~W~Seibrik~~1
+Rain~~Krystedez~W~2
+FOW~~UltimateRazer~W~2
+Inui~~SK92~W~2
+Earth~~zex~W~2
+#Losers Round 4
+Rich Brown~W~Trela~~1
+HAVOK~~Atomsk~W~2
+Krystedez~~UltimateRazer~W~2
+zex~2~SK92~1~1
+#Losers Round 5
+Larry Lurr~~Rich Brown~W~2
+Gnes~2~Atomsk~1~1
+TearBear~W~UltimateRazer~~1
+ESAM~~zex~W~2
+#Losers Round 6
+Rich Brown~~Gnes~W~2
+TearBear~0~zex~3~2
+#Losers Round 7
+Tyrant~~Gnes~W~2
+Ally~3~zex~0~1
+#Placement match
+Tyrant~W~zex~~1
+Tearbear~W~Rich Brown~~1
+#Losers Finals
+ADHD~1~Ally~3~2
+#Grand Finals
+Mew2King~3~Ally~1~1
+
+@manual/2011-pound-v manual-brawl-2 brawl https://liquipedia.net/smash/Pound/V/Brawl/Singles_Bracket
+#Winners Round 1
+K.I.D.Goggles~~Bizkit~W~2
+Nicole~0~Poltergust~2~2
+Atomsk~W~GimR~~1
+Will~W~Smurf~~1
+Lie~W~Seagull Joe~~1
+Inui~~Pink Fresh~W~2
+MVD~W~Kadaj~~1
+L Cancel~~NickRiddle~W~2
+Fino~~Doom~W~2
+The Jerm~~San~W~2
+Kingtoon~W~KirinBlaze~~1
+iLove~~ChuDat~W~2
+PikaPika!~~Pierce~W~2
+Squall~~Logic~W~2
+Hylian~W~NOID~~1
+Trela~2~Chibo~0~1
+#Winners Round 2
+Mew2King~W~Bizkit~~1
+UltimateRazer~W~Poltergust~~1
+Seibrik~2~Atomsk~1~1
+Shugo~W~Will~~1
+Fatal~~Lie~W~2
+Afro Thundah~W~Pink Fresh~~1
+ADHD~W~MVD~~1
+Vex Kasrani~~NickRiddle~W~2
+Doom~~Gnes~W~2
+San~~Coney~W~2
+Kingtoon~W~Lain~~1
+ChuDat~~Anti~W~2
+Pierce~~ESAM~W~2
+Logic~~Malcolm~W~2
+Hylian~~Ally~W~2
+Trela~W~Pwii~~1
+#Winners Round 3
+Mew2King~~UltimateRazer~W~2
+Seibrik~W~Shugo~~1
+Lie~W~Afro Thundah~~1
+ADHD~2~NickRiddle~0~1
+Gnes~W~Coney~~1
+Kingtoon~~Anti~W~2
+ESAM~W~Malcolm~~1
+Ally~W~Trela~~1
+#Winners Round 4
+UltimateRazer~0~Seibrik~2~2
+Lie~0~ADHD~2~2
+Gnes~1~Anti~2~2
+ESAM~2~Ally~1~1
+#Winners Round 5
+Seibrik~2~ADHD~0~1
+Anti~2~ESAM~0~1
+#Losers Round 1
+K.I.D.Goggles~~Fatal~W~2
+Nicole~~Pink Fresh~W~2
+GimR~~MVD~W~2
+Smurf~~Vex Kasrani~W~2
+Seagull Joe~DQ~Bizkit~W~2
+Inui~~Poltergust~W~2
+Kadaj~1~Atomsk~2~2
+L Cancel~~Will~W~2
+Fino~~Pierce~W~2
+The Jerm~~Logic~W~2
+KirinBlaze~~Hylian~W~2
+iLove~~Pwii~W~2
+PikaPika!~W~Doom~~1
+Squall~~San~W~2
+NOID~DQ~Lain~W~2
+Chibo~~ChuDat~W~2
+#Losers Round 2
+Fatal~W~Pink Fresh~~1
+MVD~W~Vex Kasrani~~1
+Bizkit~~Poltergust~W~2
+Atomsk~W~Will~~1
+Pierce~~Logic~W~2
+Hylian~~Pwii~W~2
+PikaPika!~~San~W~2
+Lain~DQ~ChuDat~W~2
+#Losers Round 3
+Kingtoon~~Fatal~W~2
+Coney~~MVD~W~2
+Trela~W~Poltergust~~1
+Malcolm~~Atomsk~W~2
+Shugo~~Logic~W~2
+Mew2King~W~Pwii~~1
+NickRiddle~W~San~~1
+AfroThundah~~ChuDat~W~2
+#Losers Round 4
+Fatal~W~MVD~~1
+Trela~~Atomsk~W~2
+Logic~~Mew2King~W~2
+NickRiddle~W~ChuDat~~1
+#Losers Round 5
+Lie~~Fatal~W~2
+UltimateRazer~W~Atomsk~~1
+Ally~W~Mew2King~FF~1
+Gnes~W~NickRiddle~~1
+#Losers Round 6
+Fatal~~UltimateRazer~W~2
+Ally~W~Gnes~~1
+#Losers Round 7
+ESAM~2~UltimateRazer~0~1
+ADHD~1~Ally~2~2
+#Losers Finals
+Seibrik~0~Ally~3~2
+#Grand Finals
+Anti~1/0~Ally~3/3~2
+
+@manual/2010-mlg-raleigh-2010 manual-brawl-1 brawl https://liquipedia.net/smash/MLG/2010/Raleigh/Singles_Bracket
+#Winners Round 1
+Mew2King~W~Hunger~~1
+Choice~~Havok~W~2
+Bloodcross~W~Kismet~~1
+NinjaLink~~DEHF~W~2
+NickRiddle~~ch33s3~W~2
+Felix~W~MikeHaze~~1
+CO18~W~Bizkit~~1
+MVD~~ESAM~W~2
+Tyrant~W~Reflex~~1
+Rich Brown~W~Fatal~~1
+Big Lou~W~Will~~1
+Zex~~Lee Martin~W~2
+Atomsk~~Kel~W~2
+Grimace~W~ADHD~~1
+Seibrik~W~Chaz~~1
+Sky~W~Ally~~1
+#Winners Round 2
+Mew2King~W~Havok~~1
+Bloodcross~~DEHF~W~2
+ch33s3~~Felix~W~2
+CO18~~ESAM~W~2
+Tyrant~W~Rich Brown~~1
+Big Lou~~Lee Martin~W~2
+Kel~W~Grimace~~1
+Seibrik~W~Sky~~1
+#Winners Round 3
+Mew2King~W~DEHF~~1
+Felix~W~ESAM~~1
+Tyrant~~Lee Martin~W~2
+Kel~~Seibrik~W~2
+#Winners Round 4
+Mew2King~W~Felix~~1
+Lee Martin~W~Seibrik~~1
+#Losers Round 1
+Kismet~W~Stingers~~1
+NinjaLink~W~Vinnie~~1
+Hunger~W~Xaltis~~1
+Choice~W~Xzax~~1
+MVD~W~4God~~1
+Bizkit~W~Izumi~~1
+Nick Riddle~W~Stockfield~~1
+MikeHaze~W~Zucco~~1
+Atomsk~W~Kadaj~~1
+ADHD~W~Foxy~~1
+Ally~W~Fonz~~1
+Chaz~W~Mister Eric~~1
+Will~W~Micaelis~~1
+Zex~W~Inui~~1
+Reflex~W~KirinBlaze~~1
+Fatal~W~TurtL~~1
+#Losers Round 2
+Kismet~~NinjaLink~W~2
+Hunger~~Choice~W~2
+MVD~~Bizkit~W~2
+Nick Riddle~W~MikeHaze~~1
+Atomsk~W~ADHD~~1
+Ally~W~Chaz~~1
+Will~W~Zex~~1
+Reflex~~Fatal~W~2
+#Losers Round 3
+Grimace~~NinjaLink~W~2
+Sky~~Choice~W~2
+Rich Brown~W~Bizkit~~1
+Big Lou~~Nick Riddle~W~2
+Bloodcross~~Atomsk~W~2
+Havok~W~Ally~~1
+ch33s3~W~Will~DQ~1
+CO18~~Fatal~W~2
+#Losers Round 4
+NinjaLink~W~Choice~~1
+Rich Brown~~Nick Riddle~W~2
+Atomsk~~Havok~W~2
+ch33s3~~Fatal~W~2
+#Losers Round 5
+DEHF~W~NinjaLink~~1
+ESAM~~Nick Riddle~W~2
+Kel~~Havok~W~2
+Tyrant~W~Fatal~~1
+#Losers Round 6
+DEHF~~Nick Riddle~W~2
+Havok~~Tyrant~W~2
+#Losers Round 7
+Seibrik~W~Nick Riddle~~1
+Felix~W~Tyrant~~1
+#Placement match
+Nick Riddle~W~Tyrant~~1
+DEHF~W~Havok~~1
+#Losers Finals
+Lee Martin~W~Felix~~1
+#Grand Finals
+Mew2King~3~Lee Martin~1~1
+
+@manual/2010-mlg-washington-d-c-2010 manual-brawl-1 brawl https://liquipedia.net/smash/MLG/2010/Washington_D.C./Singles_Bracket
+#Winners Round 1
+Mew2King~W~Meep~~1
+Rich Brown~W~Tearbear~~1
+Atomsk~W~Malcolm~~1
+Logic~~Seibrik~W~2
+Slikvik~~Candy~W~2
+NinjaLink~~Fatal~W~2
+Doom~~Vinnie~W~2
+Lie~~Tyrant~W~2
+Lee Martin~W~MVD~~1
+Kel~~ADHD~W~2
+Havok~W~Nairo~~1
+ChuDat~1~ESAM~2~2
+Junebug~W~Bloodcross~~1
+Will~~Anti~W~2
+Poltergust~~MikeHaze~W~2
+Zucco~~Ally~W~2
+#Winners Round 2
+Mew2King~1~Rich Brown~2~2
+Atomsk~W~Seibrik~~1
+Candy~~Fatal~W~2
+Vinnie~~Tyrant~W~2
+Lee Martin~~ADHD~W~2
+Havok~W~ESAM~~1
+Junebug~~Anti~W~2
+MikeHaze~2~Ally~0~1
+#Winners Round 3
+Rich Brown~W~Atomsk~~1
+Fatal~W~Tyrant~~1
+ADHD~W~Havok~~1
+Anti~0~MikeHaze~2~2
+#Winners Round 4
+Rich Brown~W~Fatal~~1
+ADHD~2~MikeHaze~0~1
+#Losers Round 1
+Zucco~W~Nerd~~1
+Speed~~Poltergust~W~2
+Coney~W~Will~~1
+KiraFlax~~Bloodcross~W~2
+Xzax~W~ChuDat~~1
+Pink Fresh~1~Nairo~2~2
+Seagull Joe~~Kel~W~2
+Squall~W~MVD~~1
+Keitaro~W~Lie~~1
+Smurf~W~Doom~~1
+San~~NinjaLink~W~2
+Nick Riddle~3~Slikvik~0~1
+DEHF~W~Logic~~1
+Felix~W~Malcolm~~1
+BoJ~~Tearbear~W~2
+MeroKnight~~Meep~W~2
+#Losers Round 2
+Zucco~W~Poltergust~~1
+Coney~W~Bloodcross~~1
+Xzax~~Nairo~W~2
+Kel~~Squall~W~2
+Keitaro~W~Smurf~~1
+NinjaLink~~Nick Riddle~W~2
+DEHF~~Felix~W~2
+Tearbear~W~Meep~~1
+#Losers Round 3
+Mew2King~W~Zucco~~1
+Seibrik~W~Coney~~1
+Candy~W~Nairo~~1
+Vinnie~W~Squall~~1
+Lee Martin~W~Keitaro~~1
+ESAM~W~Nick Riddle~~1
+Junebug~1~Felix~2~2
+Ally~W~Tearbear~~1
+#Losers Round 4
+Mew2King~W~Seibrik~~1
+Candy~W~Vinnie~~1
+Lee Martin~1~ESAM~2~2
+Felix~~Ally~W~2
+#Losers Round 5
+Anti~~Mew2King~W~2
+Havok~2~Candy~0~1
+Tyrant~~ESAM~W~2
+Atomsk~~Ally~W~2
+#Losers Round 6
+Mew2King~W~Havok~~1
+ESAM~W~Ally~~1
+#Losers Round 7
+Fatal~~Mew2King~W~2
+MikeHaze~0~ESAM~2~2
+#Losers Finals
+ADHD~3~Mew2King~1~1
+#Grand Finals
+Rich Brown~1/0~ADHD~3/4~2
+
+@manual/2010-mlg-national-championship-2010 manual-brawl-1 brawl https://liquipedia.net/smash/MLG/2010/Championship/Singles_Bracket
+#Winners Round 1
+Fatal~~Gnes~W~2
+NickRiddle~~X~W~2
+Atomsk~W~Logic~~1
+Espy~3~Rich Brown~2~1
+#Winners Round 2
+Ally~0~Gnes~3~2
+Lee Martin~~X~W~2
+ESAM~W~Atomsk~~1
+Espy~3~Tyrant~0~1
+#Winners Round 3
+Gnes~3~X~0~1
+ESAM~3~Espy~2~1
+#Losers Round 1
+MJG~W~Matt~~1
+DEHF~W~NickRiddle~~1
+Dojo~W~Logic~~1
+MikeHaze~W~Rich Brown~~1
+#Losers Round 2
+Atomsk~W~MJG~~1
+Tyrant~W~DEHF~~1
+Ally~3~Dojo~2~1
+Lee Martin~3~MikeHaze~2~1
+#Losers Round 3
+Atomsk~~Tyrant~W~2
+Ally~W~Lee Martin~~1
+#Losers Round 4
+X~2~Tyrant~3~2
+Espy~0~Ally~3~2
+#Placement match
+Lee Martin~W~Atomsk~~1
+Espy~3~X~2~1
+#Losers Finals
+ESAM~1~Tyrant~3~2
+#Grand Finals
+Gnes~3~Tyrant~0~1

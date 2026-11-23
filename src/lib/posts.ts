@@ -11,7 +11,7 @@ import type { PostMediaItem } from "./postMedia";
 import { avatarUrl } from "./avatarLinks";
 import { regionName } from "./regions";
 import { hotScore, type ThreadSort, type TopWindow } from "./threadRank";
-import { CLIPS_OF_WEEK_DAYS, TWEET_LOOKUPS, isClipPost, pickClipsOfWeek } from "./clipsOfWeek";
+import { CLIPS_OF_WEEK, CLIPS_OF_WEEK_DAYS, TWEET_LOOKUPS, isClipPost, pickClipsOfWeek } from "./clipsOfWeek";
 import { tweetLinks } from "./embeds";
 import { createClient } from "./supabase/server";
 import { createGuestClient } from "./supabase/guest";
@@ -732,9 +732,9 @@ async function reelPostVideoIds(games: string[]): Promise<string[]> {
  * "Clips of the week" (round 751): the most liked clip posts of the last 7 days, one per player, best
  * first. The posts are read as the viewer, so blocks, mutes and the table's rules apply.
  */
-export async function getClipsOfWeek(game: FeedGame | undefined, userId: string | null): Promise<Post[]> {
+export async function getClipsOfWeek(game: FeedGame | undefined, userId: string | null, opts: { limit?: number; perAuthor?: number } = {}): Promise<Post[]> {
   warmMutes(userId);
-  const posts = await getPostsByIds(await clipsOfWeekIds(game ?? null), userId);
+  const posts = await getPostsByIds(await clipsOfWeekIds(game ?? null, opts.limit ?? CLIPS_OF_WEEK, opts.perAuthor ?? 1), userId);
   return withoutMuted(posts.filter((p) => !p.spoiler && !p.removedReason), userId);
 }
 
@@ -743,7 +743,7 @@ export async function getClipsOfWeek(game: FeedGame | undefined, userId: string 
  * same for everybody: kept for 10 minutes and shared. A teen's posts are hidden from guests, so they
  * are never picked; that also keeps teens out of a spotlight.
  */
-async function clipsOfWeekIds(game: FeedGame | null): Promise<string[]> {
+async function clipsOfWeekIds(game: FeedGame | null, limit: number, perAuthor: number): Promise<string[]> {
   "use cache: remote";
   cacheLife({ stale: 300, revalidate: 600, expire: 3600 });
   const since = new Date(Date.now() - CLIPS_OF_WEEK_DAYS * 86400e3).toISOString();
@@ -788,7 +788,7 @@ async function clipsOfWeekIds(game: FeedGame | null): Promise<string[]> {
       if (card?.picture?.video) r.hasVideo = true;
     }),
   );
-  return pickClipsOfWeek(rows);
+  return pickClipsOfWeek(rows, limit, perAuthor);
 }
 
 /** The still picture of the video in the first tweet a post links, or null (for the Clips of the week card). */

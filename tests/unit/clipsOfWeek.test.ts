@@ -44,6 +44,8 @@ describe("clips of the week", () => {
     ];
     expect(pickClipsOfWeek(rows)).toEqual(["a", "c", "d"]);
     expect(pickClipsOfWeek(rows, 2)).toEqual(["a", "c"]);
+    // Admin's top 10: two spots each.
+    expect(pickClipsOfWeek(rows, 10, 2)).toEqual(["a", "b", "c", "d", "e"]);
   });
 
   it("finds YouTube's still picture for a link, and nothing for other sites", () => {

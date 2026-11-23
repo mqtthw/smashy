@@ -21,15 +21,17 @@ export function isClipPost(c: Pick<ClipCandidate, "body" | "hasVideo">): boolean
  * The week's picks, best first: clip posts with at least one like or reaction, most liked first (the
  * newer one wins a tie), one spot per player so more names get shown.
  */
-export function pickClipsOfWeek(rows: ClipCandidate[], limit = CLIPS_OF_WEEK): string[] {
+export function pickClipsOfWeek(rows: ClipCandidate[], limit = CLIPS_OF_WEEK, perAuthor = 1): string[] {
   const ranked = rows
     .filter((r) => r.likes > 0 && isClipPost(r))
     .sort((a, b) => b.likes - a.likes || Date.parse(b.createdAt) - Date.parse(a.createdAt));
-  const authors = new Set<string>();
+  // `perAuthor`: 1 on the Feed's card; Admin's top 10 allows two each (round 754).
+  const authors = new Map<string, number>();
   const out: string[] = [];
   for (const r of ranked) {
-    if (authors.has(r.authorId)) continue;
-    authors.add(r.authorId);
+    const n = authors.get(r.authorId) ?? 0;
+    if (n >= perAuthor) continue;
+    authors.set(r.authorId, n + 1);
     out.push(r.id);
     if (out.length === limit) break;
   }
