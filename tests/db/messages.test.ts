@@ -54,13 +54,51 @@ describe.skipIf(!hasDb)("messages", () => {
     expect((await send(a, conv, "thanks!")).error).toBeNull();
   });
 
-  it("teens and adults can't message each other, even if they follow each other", async () => {
-    expect((await a.c.rpc("start_direct", { other: t1.id })).error?.message).toMatch(/can't message/);
-    expect((await t1.c.rpc("start_direct", { other: a.id })).error?.message).toMatch(/can't message/);
-    expect((await a.c.rpc("create_group", { title: "Mixed", people: [b.id, t1.id] })).error).not.toBeNull();
-    const { data: teenChat, error } = await t1.c.rpc("start_direct", { other: t2.id });
+  // Round 722 (Matthew): teens can message anyone; a chat with a teen in it takes no photos and no contact info.
+  it("teens and adults can message each other, and such a chat takes no photos or contact info from either side", async () => {
+    const { data: mixed, error } = await a.c.rpc("start_direct", { other: t1.id });
     expect(error).toBeNull();
+    expect((await t1.c.rpc("start_direct", { other: a.id })).data).toBe(mixed); // the same chat from the teen's side
+    expect((await send(a, mixed, "good games at the local")).error).toBeNull();
+    expect((await send(t1, mixed, "ggs!")).error).toBeNull();
+    // No contact info, from the adult either.
+    expect((await send(a, mixed, "text me 210-555-0142")).error?.message).toMatch(/phone numbers/);
+    expect((await send(t1, mixed, "my discord is player#1234")).error?.message).toMatch(/phone numbers/);
+    // No photos, from either side (the path is the one the server would use).
+    const photo = (u: TestUser, conv: string) => u.c.from("messages").insert({ conversation_id: conv, sender_id: u.id, image_path: `${conv}/${u.id}/${randomUUID()}.webp`, image_width: 1, image_height: 1 });
+    expect((await photo(a, mixed)).error?.message).toMatch(/Photos can't be sent/);
+    expect((await photo(t1, mixed)).error?.message).toMatch(/Photos can't be sent/);
+    expect((await a.c.rpc("conversation_allows_photos", { conv: mixed })).data).toBe(false);
+    // Teens together: the same rule.
+    const { data: teenChat } = await t1.c.rpc("start_direct", { other: t2.id });
     expect((await send(t1, teenChat, "practice later?")).error).toBeNull();
+    expect((await photo(t1, teenChat)).error?.message).toMatch(/Photos can't be sent/);
+    // Adults together: photos as before (the row is accepted; only the server can put a file there).
+    const { data: adultChat } = await a.c.rpc("start_direct", { other: b.id });
+    expect((await a.c.rpc("conversation_allows_photos", { conv: adultChat })).data).toBe(true);
+    expect((await photo(a, adultChat)).error).toBeNull();
+    // Someone outside a chat learns nothing from the check.
+    expect((await c.c.rpc("conversation_allows_photos", { conv: adultChat })).data).toBe(false);
+  });
+
+  it("a stranger's message to a teen still arrives as a request: one message until accepted", async () => {
+    const { data: conv, error } = await c.c.rpc("start_direct", { other: t2.id });
+    expect(error).toBeNull();
+    expect(await status(conv, t2)).toBe("request");
+    expect((await send(c, conv, "hey, saw you at the weekly")).error).toBeNull();
+    expect((await send(c, conv, "hello??")).error).not.toBeNull();
+  });
+
+  it("a group with a teen in it is a teen chat: no photos, no contact info; adding a teen makes it one", async () => {
+    const { data: group, error } = await a.c.rpc("create_group", { title: "Mixed", people: [b.id, t1.id] });
+    expect(error).toBeNull();
+    expect((await a.c.rpc("conversation_allows_photos", { conv: group })).data).toBe(false);
+    expect((await send(b, group, "call 210-555-0142")).error?.message).toMatch(/phone numbers/);
+    const { data: adults } = await a.c.rpc("create_group", { title: "Adults", people: [b.id, d.id] });
+    expect((await a.c.rpc("conversation_allows_photos", { conv: adults })).data).toBe(true);
+    expect((await a.c.rpc("add_group_members", { conv: adults, people: [t1.id] })).error).toBeNull();
+    expect((await a.c.rpc("conversation_allows_photos", { conv: adults })).data).toBe(false);
+    expect((await admin.from("conversations").select("age_band").eq("id", adults).single()).data?.age_band).toBe("teen");
   });
 
   it("teen chats block contact info; adult chats allow it", async () => {

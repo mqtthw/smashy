@@ -78,6 +78,9 @@ export async function sendMessage(conversationId: string, formData: FormData): P
     // Check they can send here before doing any work on the photo.
     const { data: allowed } = await supabase.rpc("conversation_can_send", { conv: conversationId });
     if (allowed !== true) return { error: t("play.msg.err.cantSendHere") };
+    // No photos in a chat with anyone under 18 in it (round 722; the database refuses them too).
+    const { data: photosOk } = await supabase.rpc("conversation_allows_photos", { conv: conversationId });
+    if (photosOk !== true) return { error: t("play.msg.err.noPhotosHere") };
     if (!hasImageSafetyKey()) return { error: t("play.msg.err.photosOff") };
     // At most 30 photos an hour, counted here on the server (unsent ones still count: they keep
     // their size). This used to be a database call that signed-in people lost permission to make,

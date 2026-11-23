@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function ChildSafetyPage() {
   return (
-    <LegalPage title="Child safety standards" updated="November 15, 2026">
+    <LegalPage title="Child safety standards" updated="November 22, 2026">
       <p>
         Smashy is a community for Super Smash Bros. players, and many of them are teenagers. We do not tolerate
         child sexual abuse or exploitation of any kind. This page explains what is banned, how Smashy is built to
@@ -41,7 +41,9 @@ export default function ChildSafetyPage() {
         <li>Until an account adds its birthdate, it gets the teen protections and can&apos;t message anyone, send or get play requests, or join the online ladder.</li>
         <li>Teen accounts (13 to 17) are always protected: the teen approves who follows them.</li>
         <li>Teens&apos; profiles and posts are only shown to members who have made a Smashy profile, never to guests or in link previews.</li>
-        <li>Teens can only message other teens, and adults can only message adults. The same goes for play requests and the online ladder.</li>
+        <li>Any chat that includes a teen takes no photos, from anyone in it, and blocks phone numbers, emails, links and social media handles, to keep contact on Smashy.</li>
+        <li>A message from someone a member doesn&apos;t follow back arrives as a request: one message, which they can accept, delete or block. Groups can only include people who follow each other.</li>
+        <li>The online ladder only pairs players in the same age group (teens with teens, adults with adults).</li>
         <li>Posts from teens that contain phone numbers, emails or social media handles are blocked, to keep contact on Smashy.</li>
         <li>Every photo uploaded to a post or a message, and still frames from every video, is checked automatically for adult and violent content before anyone else can see it.</li>
         <li>Anyone can block another account, so the two can no longer message or follow each other.</li>

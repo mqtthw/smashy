@@ -424,6 +424,7 @@ export const playEn = {
   // Messages: server messages (messages/actions.ts)
   "play.msg.err.generic": "Something went wrong. Please try again.",
   "play.msg.err.cantSendHere": "You can't send messages in this chat right now.",
+  "play.msg.err.noPhotosHere": "Photos can't be sent in this chat.",
   "play.msg.err.accountUnavailable": "That account isn't available.",
   "play.msg.err.chatUnavailable": "That chat isn't available.",
   "play.msg.err.tooLong": "Messages can be up to {n} characters.",

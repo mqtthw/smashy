@@ -86,6 +86,7 @@ async function Chat({ params }: { params: PageProps<"/messages/[id]">["params"] 
         people={conv.members}
         isGroup={conv.kind === "group"}
         canSend={conv.canSend}
+        photosAllowed={conv.photosAllowed}
         cantSendReason={cantSendReason}
         waitingOnThem={conv.waitingOnThem}
         isRequest={conv.myStatus === "request"}

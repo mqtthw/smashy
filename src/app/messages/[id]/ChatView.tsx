@@ -32,6 +32,7 @@ export default function ChatView({
   people,
   isGroup,
   canSend: canSendAtFirst,
+  photosAllowed = true,
   cantSendReason,
   waitingOnThem = false,
   isRequest = false,
@@ -46,6 +47,7 @@ export default function ChatView({
   people: Person[]; // everyone else (for names in groups)
   isGroup: boolean;
   canSend: boolean;
+  photosAllowed?: boolean; // false: no photo button (a chat with anyone under 18 in it, round 722)
   cantSendReason: string | null;
   waitingOnThem?: boolean; // a request they haven't accepted: one message, then wait
   isRequest?: boolean; // a request to you that you haven't accepted: reading it stays private
@@ -251,7 +253,7 @@ export default function ChatView({
   }, [text]);
 
   const pickPhoto = async (file: File | undefined) => {
-    if (!file) return;
+    if (!file || !photosAllowed) return; // also stops a pasted photo in a chat that takes none
     try {
       const small = await shrinkImage(file);
       setPhoto({ file: small, preview: URL.createObjectURL(small) });
@@ -488,9 +490,11 @@ export default function ChatView({
             )}
             <div className="flex items-end gap-2">
               <input ref={fileInput} type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onChange={(e) => void pickPhoto(e.target.files?.[0])} />
-              <button type="button" onClick={() => fileInput.current?.click()} className="btn btn-sm btn-ghost" aria-label={t("play.msg.addPhoto")} title={t("play.msg.addPhoto")}>
-                <Icon name="image" />
-              </button>
+              {photosAllowed && (
+                <button type="button" onClick={() => fileInput.current?.click()} className="btn btn-sm btn-ghost" aria-label={t("play.msg.addPhoto")} title={t("play.msg.addPhoto")}>
+                  <Icon name="image" />
+                </button>
+              )}
               <textarea
                 value={text}
                 onChange={(e) => {

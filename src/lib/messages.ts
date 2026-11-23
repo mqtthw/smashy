@@ -49,6 +49,7 @@ export type Conversation = {
   myRole: "owner" | "member";
   members: (Person & { role: "owner" | "member"; status: "active" | "request" })[]; // everyone else still in it
   canSend: boolean;
+  photosAllowed: boolean; // false in a chat with anyone under 18 in it (round 722)
   waitingOnThem: boolean; // a direct request they haven't accepted yet
   myMuted: boolean;
   otherReadAt: string | null; // direct chats: when the other person last read it (for "Seen")
@@ -153,11 +154,12 @@ export async function toChatMessages(rows: MessageRow[]): Promise<ChatMessage[]>
 export async function getConversation(id: string, viewerId: string): Promise<Conversation | null> {
   if (!/^[0-9a-f-]{36}$/.test(id)) return null;
   const supabase = await createClient();
-  const [{ data: conv }, { data: members }, { data: rows }, { data: canSend }] = await Promise.all([
+  const [{ data: conv }, { data: members }, { data: rows }, { data: canSend }, { data: photosAllowed }] = await Promise.all([
     supabase.from("conversations").select("id, kind, title").eq("id", id).maybeSingle(),
     supabase.from("conversation_members").select("user_id, role, status, last_read_at, muted, profile:profiles ( id, tag, handle, avatar_path )").eq("conversation_id", id),
     supabase.from("messages").select(MESSAGE_COLUMNS).eq("conversation_id", id).order("created_at", { ascending: false }).limit(100),
     supabase.rpc("conversation_can_send", { conv: id }),
+    supabase.rpc("conversation_allows_photos", { conv: id }),
   ]);
   if (!conv) return null;
   type M = { user_id: string; role: "owner" | "member"; status: "active" | "request" | "left"; last_read_at: string; muted: boolean; profile: (Person & { avatar_path: string | null }) | null };
@@ -175,6 +177,7 @@ export async function getConversation(id: string, viewerId: string): Promise<Con
     myRole: me.role,
     members: others.map((m) => ({ id: m.profile!.id, tag: m.profile!.tag, handle: m.profile!.handle, avatarUrl: avatarUrl(m.profile!.avatar_path), role: m.role, status: m.status === "request" ? ("request" as const) : ("active" as const) })),
     canSend: canSend === true,
+    photosAllowed: photosAllowed === true, // unknown (the check failed) counts as no
     waitingOnThem: conv.kind === "direct" && others[0]?.status === "request",
     myMuted: me.muted,
     // "Seen" only once they've accepted: someone looking at a message request isn't shown as having read it.

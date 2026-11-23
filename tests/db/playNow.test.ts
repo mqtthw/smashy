@@ -16,9 +16,11 @@ describe.skipIf(!hasDb)("play now", () => {
     expect((await c.c.from("play_codes").insert({ user_id: a.id, game: "brawl", code: "NOPE#1" })).error).not.toBeNull();
     for (const who of [b.c, c.c, guest()]) expect((await who.from("play_codes").select("code").eq("user_id", a.id)).data ?? []).toEqual([]);
 
-    // No asking yourself, a teen (different age band), or an unknown game. Tables can't be written directly.
+    // No asking yourself or an unknown game. Tables can't be written directly. (A teen can be asked since round 722.)
     expect((await a.c.rpc("ask_to_play", { p_to: a.id, p_game: "melee" })).error).not.toBeNull();
-    expect((await a.c.rpc("ask_to_play", { p_to: teen.id, p_game: "melee" })).error?.code).toBe("P0403");
+    const askedTeen = await a.c.rpc("ask_to_play", { p_to: teen.id, p_game: "melee" });
+    expect(askedTeen.error).toBeNull();
+    await admin.from("play_requests").delete().eq("id", askedTeen.data); // so it doesn't count toward the checks below
     expect((await a.c.rpc("ask_to_play", { p_to: b.id, p_game: "general" })).error).not.toBeNull();
     expect((await a.c.from("play_requests").insert({ from_id: a.id, to_id: b.id, game: "melee" })).error).not.toBeNull();
     expect((await guest().rpc("ask_to_play", { p_to: b.id, p_game: "melee" })).error).not.toBeNull();

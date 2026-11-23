@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Privacy policy", description: "What 
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy policy" updated="November 18, 2026">
+    <LegalPage title="Privacy policy" updated="November 22, 2026">
       <p>
         Smashy is a free community site for Super Smash Bros. players. This page explains, in plain words, what we
         collect, why, who else is involved, and how you can delete it. We don&apos;t sell your data, and we don&apos;t
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
         <li>Teen accounts are always <b>protected</b>: you approve who follows you.</li>
         <li>Teens&apos; profiles and posts are only visible to people who are signed in, never to guests or in link previews.</li>
         <li>Posts with phone numbers, emails or social handles are blocked for teens, to keep contact on Smashy.</li>
-        <li>Teens can only message other teens (13 to 17), and adults only adults. Anyone you don&apos;t follow each other with can send one message request, which you can accept, delete or block.</li>
+        <li>A chat that includes a teen (13 to 17) takes no photos and blocks phone numbers, emails, links and social handles, for everyone in it. Anyone you don&apos;t follow each other with can send one message request, which you can accept, delete or block.</li>
         <li>Every uploaded photo, in posts and in messages, is checked automatically before anyone can see it (see below).</li>
       </ul>
 

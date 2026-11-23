@@ -426,6 +426,7 @@ export const playFr: Record<keyof typeof playEn, string> = {
   // Messages: server messages (messages/actions.ts)
   "play.msg.err.generic": "Un problème est survenu. Réessaie.",
   "play.msg.err.cantSendHere": "Tu ne peux pas envoyer de messages dans cette discussion pour l'instant.",
+  "play.msg.err.noPhotosHere": "Les photos ne peuvent pas être envoyées dans cette discussion.",
   "play.msg.err.accountUnavailable": "Ce compte n'est pas disponible.",
   "play.msg.err.chatUnavailable": "Cette discussion n'est pas disponible.",
   "play.msg.err.tooLong": "Les messages peuvent faire jusqu'à {n} caractères.",

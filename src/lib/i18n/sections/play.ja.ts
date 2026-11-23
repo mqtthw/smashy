@@ -426,6 +426,7 @@ export const playJa: Record<keyof typeof playEn, string> = {
   // Messages: server messages (messages/actions.ts)
   "play.msg.err.generic": "問題が発生しました。もう一度お試しください。",
   "play.msg.err.cantSendHere": "今はこのチャットでメッセージを送れません。",
+  "play.msg.err.noPhotosHere": "このチャットでは写真を送れません。",
   "play.msg.err.accountUnavailable": "このアカウントは利用できません。",
   "play.msg.err.chatUnavailable": "このチャットは利用できません。",
   "play.msg.err.tooLong": "メッセージは{n}文字までです。",

@@ -152,10 +152,13 @@ describe.skipIf(!hasDb)("code review fixes", () => {
     expect((await u.c.rpc("accept_message_request", { conv })).error).toBeNull();
     expect((await t.c.rpc("conversation_can_send", { conv })).data).toBe(true);
 
-    // Both turn 18: the chat is still marked "teen", so neither can send in it...
+    // Both turn 18: they can keep sending (round 722: sending no longer depends on the chat's age label),
+    // and the chat now takes photos, since nobody in it is under 18.
+    expect((await t.c.rpc("conversation_allows_photos", { conv })).data).toBe(false);
     await admin.from("private_profile_data").update({ date_of_birth: "1990-01-01" }).in("user_id", [t.id, u.id]);
-    expect((await t.c.rpc("conversation_can_send", { conv })).data).toBe(false);
-    // ...until one of them opens it again from the other's profile.
+    expect((await t.c.rpc("conversation_can_send", { conv })).data).toBe(true);
+    expect((await t.c.rpc("conversation_allows_photos", { conv })).data).toBe(true);
+    // Opening it again from the other's profile brings the saved label up to date.
     expect((await t.c.rpc("start_direct", { other: u.id })).data).toBe(conv);
     expect((await admin.from("conversations").select("age_band").eq("id", conv).single()).data?.age_band).toBe("adult");
     expect((await t.c.rpc("conversation_can_send", { conv })).data).toBe(true);
