@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AddToSeasons, SeasonsCounting } from "@/components/seasons/SeasonParts";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
 import GameBadge from "@/components/GameBadge";
 import LinkifiedText from "@/components/feed/LinkifiedText";
 import EntrantActions from "@/components/host/EntrantActions";
@@ -77,14 +77,19 @@ import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import NewTab from "@/components/ui/NewTab";
 
+// One read per page view (round 732): the page's title and the page itself ask for the same data, and
+// Smashy's time-limited database calls aren't de-duplicated by Next, so each used to run twice.
+const eventOnce = cache((id: string) => getHostedEvent(id));
+const setsOnce = cache((eventId: string) => loadEngineSets(eventId));
+
 export async function generateMetadata({ params }: PageProps<"/host/[id]">): Promise<Metadata> {
   const { id } = await params;
-  const e = await getHostedEvent(id).catch(() => null);
+  const e = await eventOnce(id).catch(() => null);
   if (!e || e.removed) return { title: "Event not found" };
   const where = e.online ? `Online${e.region ? ` · ${e.region}` : ""}` : (e.location ?? "In person");
   // Finished events say who won in link previews and search results.
   if (e.status === "completed") {
-    const [sets, entrants] = await Promise.all([loadEngineSets(e.id), getHostedEntrants(e.id)]).catch(() => [[], []] as const);
+    const [sets, entrants] = await Promise.all([setsOnce(e.id), getHostedEntrants(e.id)]).catch(() => [[], []] as const);
     const tags = new Map(entrants.map((x) => [x.userId, x.tag]));
     const line = winnersLine(finalPlacements([...sets]), (pid) => tags.get(pid) ?? null);
     // Tools that read brackets can find the results file from the page itself.
@@ -103,13 +108,13 @@ const STATUS_KEY: Record<string, MessageKey> = {
 
 async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) {
   const { id } = await params;
-  const [event, userId, t, lang] = await Promise.all([getHostedEvent(id), getUserId(), getT(), getLang()]);
+  const [event, userId, t, lang] = await Promise.all([eventOnce(id), getUserId(), getT(), getLang()]);
   if (!event) notFound();
   // Co-TOs are set on the main event and run its extra brackets too.
   const doubles = event.teamSize === 2; // the entries are teams of two
   const [entrants, sets, editions, cohosts, brackets, myId, waitlist] = await Promise.all([
     getHostedEntrants(event.id, { teams: doubles }),
-    loadEngineSets(event.id),
+    setsOnce(event.id),
     getSeriesEditions(event),
     getCohosts(event.parentId ?? event.id),
     getEventBrackets(event).catch(() => []),

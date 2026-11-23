@@ -11,14 +11,11 @@ import { T } from "@/lib/i18n/client";
 import { getT } from "@/lib/i18n/server";
 import { majorHref } from "@/lib/handMajors";
 import { archiveYears } from "@/lib/majors";
-import { getYearGrid } from "@/lib/yearHeadToHead";
+import { FIRST_GRID_YEAR, getYearGrid, handSetYears, hasGrid } from "@/lib/yearHeadToHead";
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getT())("history.grid.metaTitle"), robots: { index: false } };
 }
-
-/** Sets are saved from start.gg (2014 on, when majors' brackets are there). */
-const FIRST_GRID_YEAR = 2014;
 
 const href = (year: number, game: GameKey, player?: string) => `/history/head-to-head?year=${year}&game=${game}${player ? `&player=${player}#record` : ""}`;
 /** A short column heading: the tag without a sponsor, cut to fit. */
@@ -30,7 +27,8 @@ const short = (name: string) => {
 async function YearGrid({ searchParams }: { searchParams: PageProps<"/history/head-to-head">["searchParams"] }) {
   const sp = await searchParams;
   await connection(); // the year list ends at this year
-  const years = archiveYears().filter((y) => y >= FIRST_GRID_YEAR);
+  const handYears = await handSetYears().catch(() => [] as number[]);
+  const years = archiveYears().filter((y) => hasGrid(y, handYears));
   const asked = Number(sp.year);
   const year = years.includes(asked) ? asked : years[0];
   const game: GameKey = isGameKey(sp.game) ? sp.game : "melee";
@@ -59,7 +57,11 @@ async function YearGrid({ searchParams }: { searchParams: PageProps<"/history/he
         <p className="card p-4 text-sm text-muted">{t("history.grid.few", { game: g, year })}</p>
       ) : (
         <>
-          <p className="text-meta text-muted">{t("history.grid.coverage", { n: grid.withSets, total: grid.majors })}</p>
+          <p className="text-meta text-muted">
+            {year < FIRST_GRID_YEAR
+              ? t("history.grid.coverageHand", { n: grid.withSets, total: grid.majors })
+              : t("history.grid.coverage", { n: grid.withSets, total: grid.majors })}
+          </p>
           {grid.sets === 0 ? (
             <p className="card p-4 text-sm text-muted">{t("history.grid.none")}</p>
           ) : (

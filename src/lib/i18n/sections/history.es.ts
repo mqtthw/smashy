@@ -161,6 +161,7 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.grid.title": "{game} en {year}: cara a cara en los majors",
   "history.grid.intro": "Los sets que jugaron entre sí los jugadores de {game} con más éxito del año en los majors, del bracket principal de individuales de cada major (desde el top 64). Se lee por filas: victorias y derrotas de cada fila contra cada columna. Un recuento, no un ranking.",
   "history.grid.coverage": "Sets guardados de {n} de {total} majors por ahora. Se añaden más cada día.",
+  "history.grid.coverageHand": "Sets de {n} de {total} majors por ahora, tomados de las páginas de brackets de Liquipedia. En años tan antiguos guardan las rondas finales, no todos los sets.",
   "history.grid.none": "Todavía no hay sets guardados entre estos jugadores. Se añaden en segundo plano cada día.",
   "history.grid.few": "Aún no hay suficientes resultados de {game} de {year} guardados para elegir a los mejores.",
   "history.grid.total": "Total",

@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
 import GameBadge from "@/components/GameBadge";
 import Avatar from "@/components/ui/Avatar";
 import { CardListSkeleton } from "@/components/ui/Skeleton";
@@ -19,15 +19,19 @@ import { startDirect } from "@/app/messages/actions";
 import { divisionStandings } from "@/lib/leagueStandings";
 import LiveReportButton from "@/components/play/LiveReportButton";
 
+// One read per page view (round 732): the page's title and the page itself ask for the same data, and
+// Smashy's time-limited database calls aren't de-duplicated by Next, so each used to run twice.
+const leagueOnce = cache((id: string) => getLeague(id));
+
 export async function generateMetadata({ params }: PageProps<"/leagues/[id]">): Promise<Metadata> {
-  const league = await getLeague((await params).id).catch(() => null);
+  const league = await leagueOnce((await params).id).catch(() => null);
   if (!league || league.removed) return { title: "League" };
   return { title: league.name, description: clip(league.description ?? `A ${league.weeks}-week league on Smashy.`, 200) };
 }
 
 async function LeagueContent({ params }: { params: PageProps<"/leagues/[id]">["params"] }) {
   const { id } = await params;
-  const [league, userId, t, lang] = await Promise.all([getLeague(id), getUserId(), getT(), getLang()]);
+  const [league, userId, t, lang] = await Promise.all([leagueOnce(id), getUserId(), getT(), getLang()]);
   if (!league) notFound();
   const [players, sets] = await Promise.all([getLeaguePlayers(league.id), league.status === "signups" ? Promise.resolve([] as LeagueSet[]) : getLeagueSets(league.id)]);
   if (sets.length) await connection(); // "this week" depends on today

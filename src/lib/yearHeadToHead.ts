@@ -126,6 +126,32 @@ async function yearSets(slugs: string[], game: GameKey): Promise<GridSet[]> {
   return (data ?? []) as GridSet[];
 }
 
+/** Sets are saved from start.gg from 2014 on, when majors' brackets are there. */
+export const FIRST_GRID_YEAR = 2014;
+
+/**
+ * The years before 2014 with sets read from Liquipedia by hand (round 734: a year at a time), oldest
+ * first. One count per year, kept in the shared cache for hours.
+ */
+export async function handSetYears(): Promise<number[]> {
+  "use cache: remote";
+  cacheLife("hours");
+  cacheTag(MAJORS_TAG);
+  const db = createAdminClient({ forPage: true });
+  const years = Array.from({ length: FIRST_GRID_YEAR - 1999 }, (_, i) => 1999 + i);
+  const counts = await Promise.all(
+    years.map(async (y) => {
+      const { count, error } = await db.from("major_sets").select("set_id", { count: "exact", head: true }).like("major_slug", `manual/${y}-%`);
+      if (error) throw error; // not kept: the next visit asks again
+      return count ?? 0;
+    }),
+  );
+  return years.filter((_, i) => counts[i] > 0);
+}
+
+/** Whether a year has a head-to-head grid: 2014 on, and earlier years with sets read by hand. */
+export const hasGrid = (year: number, handYears: number[]) => year >= FIRST_GRID_YEAR || handYears.includes(year);
+
 /**
  * A year's grid for one game, with how many of the year's majors have sets saved so far (they're
  * saved in the background over weeks). Null when it can't be checked who asked not to be listed.

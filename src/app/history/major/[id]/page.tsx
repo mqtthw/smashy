@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
 import GameBadge from "@/components/GameBadge";
 import { CardListSkeleton } from "@/components/ui/Skeleton";
 import NewTab from "@/components/ui/NewTab";
@@ -26,15 +26,19 @@ import { playersHidingStats } from "@/lib/playerStats";
 import { majorDates, majorPlace } from "@/lib/majorText";
 import { pageMeta } from "@/lib/siteMeta";
 
+// One read per page view (round 732): the page's title and the page itself ask for the same data, and
+// Smashy's time-limited database calls aren't de-duplicated by Next, so each used to run twice.
+const majorOnce = cache((id: string) => getHandMajor(id));
+
 export async function generateMetadata({ params }: PageProps<"/history/major/[id]">): Promise<Metadata> {
-  const m = await getHandMajor((await params).id).catch(() => null);
+  const m = await majorOnce((await params).id).catch(() => null);
   if (!m) return { title: "Smash history" };
   const year = new Date(m.startAt).getUTCFullYear();
   return pageMeta(`${m.name} (${year})`, `${m.name}, ${year}: top 8 results in Smash history on Smashy, with a link to their source.`);
 }
 
 async function MajorView({ params }: { params: PageProps<"/history/major/[id]">["params"] }) {
-  const m = await getHandMajor((await params).id);
+  const m = await majorOnce((await params).id);
   if (!m) notFound();
   const [t, lang, saved, vodMap, standings, chars, links] = await Promise.all([
     getT(),

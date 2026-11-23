@@ -39,6 +39,11 @@ export function reelSearchKey(q: string): string {
 /** Live Shorts take every third spot in search results. */
 export const LIVE_SHORT_EVERY = 3;
 export const LIVE_SEARCHES_PER_DAY = 50;
+/**
+ * The whole site's new live searches per (UTC) day, counted in the database (round 735): about 3,000 of
+ * YouTube's 10,000 daily units at most, leaving the rest for collecting Shorts from approved channels.
+ */
+export const LIVE_SEARCHES_SITE_WIDE = 30;
 const PAUSE_MS = 3 * 3600e3;
 
 let day = "";

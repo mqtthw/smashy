@@ -5,7 +5,7 @@ vi.mock("@/lib/supabase/admin", () => ({ createAdminClient: () => ({}) }));
 vi.mock("@/lib/supabase/server", () => ({ createClient: async () => ({}) }));
 
 import type { MajorEvent } from "@/lib/majorEvents";
-import { gridPlayers, yearGrid, yearRecord, type GridSet } from "@/lib/yearHeadToHead";
+import { gridPlayers, hasGrid, yearGrid, yearRecord, type GridSet } from "@/lib/yearHeadToHead";
 
 let n = 0;
 const set = (p1: string | null, n1: string, p2: string | null, n2: string, winner: 1 | 2, major = "m", sort = 0): GridSet => ({
@@ -59,5 +59,14 @@ describe("yearRecord", () => {
   it("leaves out opponents who asked not to be listed", () => {
     const r = yearRecord("1", [set("1", "Mang0", "4", "Hidden", 2), set("1", "Mang0", "2", "Armada", 1)], new Map(), ["m"], new Set(["4"]));
     expect([r.wins, r.losses, r.sets.length]).toEqual([1, 0, 1]);
+  });
+});
+
+describe("hasGrid", () => {
+  it("2014 on always; earlier years only with sets read by hand", () => {
+    expect(hasGrid(2014, [])).toBe(true);
+    expect(hasGrid(2013, [])).toBe(false);
+    expect(hasGrid(2013, [2013])).toBe(true);
+    expect(hasGrid(2012, [2013])).toBe(false);
   });
 });

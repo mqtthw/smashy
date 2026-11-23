@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Fragment, Suspense, type ReactNode } from "react";
+import { Fragment, Suspense, cache, type ReactNode } from "react";
 import ReportSet from "@/components/host/ReportSet";
 import SetRoom from "@/components/host/SetRoom";
 import CallHostButton from "@/components/host/CallHostButton";
@@ -45,16 +45,26 @@ function withNode(text: string, ...nodes: ReactNode[]) {
   return <>{text.split(/([\u0001\u0002])/).map((part, i) => (part === MARK ? <Fragment key={i}>{nodes[0]}</Fragment> : part === MARK2 ? <Fragment key={i}>{nodes[1]}</Fragment> : part))}</>;
 }
 
+// One read per page view (round 732): the page's title and the page itself ask for the same data, and
+// Smashy's time-limited database calls aren't de-duplicated by Next, so each used to run twice.
+const eventIdOnce = cache(async (setId: string): Promise<string | null> => {
+  const { data } = await (await createClient()).from("hosted_sets").select("event_id").eq("id", setId).maybeSingle();
+  return (data?.event_id as string | undefined) ?? null;
+});
+const eventOnce = cache((id: string) => getHostedEvent(id));
+const setsOnce = cache((eventId: string) => loadEngineSets(eventId));
+const playersOnce = cache((eventId: string) => bracketPlayers(eventId));
+
 /** "Alice vs Dan · Winners Semi-Final" in the tab and in link previews (Discord, texts), not just "Set". */
 export async function generateMetadata({ params }: PageProps<"/host/set/[id]">): Promise<Metadata> {
   const fallback: Metadata = { title: "Set", robots: { index: false } };
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) return fallback;
   try {
-    const { data: row } = await (await createClient()).from("hosted_sets").select("event_id").eq("id", id).maybeSingle();
-    const event = row ? await getHostedEvent(row.event_id as string) : null;
+    const eventId = await eventIdOnce(id);
+    const event = eventId ? await eventOnce(eventId) : null;
     if (!event || event.removed) return fallback;
-    const [sets, players] = await Promise.all([loadEngineSets(event.id), bracketPlayers(event.id)]);
+    const [sets, players] = await Promise.all([setsOnce(event.id), playersOnce(event.id)]);
     const set = sets.find((s) => s.key === id);
     if (!set) return fallback;
     const label = toBracket(event, sets, players, set.pool).rounds.flatMap((r) => r.sets).find((s) => s.id === id)?.roundLabel ?? `Set ${set.identifier ?? ""}`;
@@ -77,11 +87,11 @@ async function HostedSet({ params }: { params: PageProps<"/host/set/[id]">["para
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const supabase = await createClient();
-  const { data: row } = await supabase.from("hosted_sets").select("event_id").eq("id", id).maybeSingle();
-  if (!row) notFound();
-  const [event, userId] = await Promise.all([getHostedEvent(row.event_id as string), getUserId()]);
+  const eventId = await eventIdOnce(id);
+  if (!eventId) notFound();
+  const [event, userId] = await Promise.all([eventOnce(eventId), getUserId()]);
   if (!event) notFound();
-  const [sets, players] = await Promise.all([loadEngineSets(event.id), bracketPlayers(event.id)]);
+  const [sets, players] = await Promise.all([setsOnce(event.id), playersOnce(event.id)]);
   const set = sets.find((s) => s.key === id);
   if (!set) notFound();
   const [t, lang] = await Promise.all([getT(), getLang()]);

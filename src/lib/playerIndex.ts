@@ -43,6 +43,17 @@ export async function rememberPlayers(players: SeenPlayer[]): Promise<void> {
 type Row = { player_id: number | string; tag: string; prefix: string | null };
 const toSeen = (r: Row): SeenPlayer => ({ playerId: String(r.player_id), tag: r.tag, prefix: r.prefix });
 
+/**
+ * One saved player's tag and sponsor (round 733): what a player page shows when start.gg is too busy
+ * to ask. Null when Smashy hasn't seen them, or they asked not to be listed.
+ */
+export async function getSavedPlayer(playerId: string): Promise<{ playerId: string; tag: string; prefix: string | null } | null> {
+  if (!/^\d{1,12}$/.test(playerId)) return null;
+  const { data, error } = await createAdminClient({ forPage: true }).from(TABLE).select("tag, prefix, hidden").eq("player_id", big(playerId)).maybeSingle();
+  if (error) throw error;
+  return data && !data.hidden ? { playerId, tag: data.tag, prefix: data.prefix } : null;
+}
+
 /** Saved players whose tag contains `q` (any capitals), hidden ones left out: exact tags, then the most recently seen. */
 export async function searchSavedPlayers(q: string, limit = 30): Promise<SeenPlayer[]> {
   const needle = q.trim();

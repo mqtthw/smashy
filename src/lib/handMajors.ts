@@ -202,15 +202,19 @@ export async function updateHandMajor(slug: string, input: HandMajorInput): Prom
   const { data: before } = await db.from("major_events").select("game, top8").eq("major_slug", slug).like("event_id", "manual-%");
   const kept = new Map<string, string[]>();
   for (const e of before ?? []) for (const x of (e.top8 as Top8Row[]) ?? []) if (x.characters?.length) kept.set(keepKey(e.game as string, x), x.characters);
-  const { error: delError } = await db.from("major_events").delete().eq("major_slug", slug).like("event_id", "manual-%");
-  if (delError) return { error: { key: "history.err.saveFailed" } };
-  const { error: insError } = await db.from("major_events").insert(
+  // Brackets are updated in place, not deleted and added again: deleting one also deletes its sets read from
+  // Liquipedia (major_sets; round 734). Only brackets the form no longer has are removed.
+  const { error: upError } = await db.from("major_events").upsert(
     checked.events.map((e) => ({
       major_slug: slug, event_id: e.eventId, game: e.game, name: e.name, entrants: e.entrants, teams: e.teams, online: e.online,
       top8: e.top8.map((x) => (kept.has(keepKey(e.game, x)) ? { ...x, characters: kept.get(keepKey(e.game, x)) } : x)),
     })),
+    { onConflict: "major_slug,event_id" },
   );
-  return insError ? { error: { key: "history.err.saveFailed" } } : { ok: true };
+  if (upError) return { error: { key: "history.err.saveFailed" } };
+  const keep = checked.events.map((e) => e.eventId);
+  const { error: delError } = await db.from("major_events").delete().eq("major_slug", slug).like("event_id", "manual-%").not("event_id", "in", `(${keep.join(",")})`);
+  return delError ? { error: { key: "history.err.saveFailed" } } : { ok: true };
 }
 
 /** A placing's identity across an edit: game, place and name (capitals and spacing ignored). */

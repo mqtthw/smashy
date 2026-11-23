@@ -229,6 +229,7 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
 
   // Player pages
   "people.player.busyTitle": "プレイヤー検索が混み合っています",
+  "people.player.busySaved": "start.ggが混み合っているため、Smashyに保存済みの情報を表示しています。最近の対戦はまもなく表示されます。",
   "people.player.manyTitle": "短時間に多くのプレイヤーを調べています",
   "people.player.busy": "Smashyはstart.ggからプレイヤー情報を読み込んでいますが、1分あたりのリクエスト数に上限があり、進行中のトーナメント表が優先されます。少し待ってからもう一度お試しいただくか、ログインしてください。メンバーは待たずに使えます。",
   "people.player.many": "ゲストが調べられるプレイヤーの数は数分ごとに制限されています。しばらくしてからもう一度お試しいただくか、ログインして続けてください。",

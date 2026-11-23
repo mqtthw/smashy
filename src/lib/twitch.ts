@@ -4,6 +4,9 @@ import "server-only";
 import { cacheLife } from "next/cache";
 import type { GameKey } from "./games";
 
+/** A stalled Twitch gives up after this long (round 731), instead of holding a page for minutes. */
+const TWITCH_TIMEOUT_MS = 8000;
+
 /** Twitch category ids for smash games. P+ streams usually run under the Brawl category. */
 export const TWITCH_GAMES: Record<string, GameKey> = {
   "16282": "melee",
@@ -22,6 +25,7 @@ async function appToken(force = false): Promise<string> {
   const secret = process.env.TWITCH_CLIENT_SECRET;
   if (!id || !secret) throw new Error("TWITCH_CLIENT_ID / TWITCH_CLIENT_SECRET are missing. Add them to .env.local.");
   const res = await fetch("https://id.twitch.tv/oauth2/token", {
+    signal: AbortSignal.timeout(TWITCH_TIMEOUT_MS),
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ client_id: id, client_secret: secret, grant_type: "client_credentials" }),
@@ -35,6 +39,7 @@ async function appToken(force = false): Promise<string> {
 async function helix<T>(path: string): Promise<T> {
   for (const force of [false, true]) {
     const res = await fetch(`https://api.twitch.tv/helix/${path}`, {
+      signal: AbortSignal.timeout(TWITCH_TIMEOUT_MS),
       headers: { Authorization: `Bearer ${await appToken(force)}`, "Client-Id": process.env.TWITCH_CLIENT_ID ?? "" },
     });
     if (res.status === 401 && !force) continue; // token expired: get a new one and retry once
@@ -136,7 +141,7 @@ export type VodMoment = { videoId: string; offset: number; url: string; channel:
  * Twitch keeps VODs for 7 to 60 days depending on the channel.
  */
 export async function findVodMoment(channel: string, at: number): Promise<VodMoment | null> {
-  "use cache";
+  "use cache: remote"; // shared by every server (round 731), not kept per server
   const found = await vodMomentNow(channel, at);
   // A miss is often temporary (Twitch didn't answer, or the broadcast is still going and its VOD
   // doesn't reach that moment yet), so it's only kept for minutes; a found spot doesn't change.

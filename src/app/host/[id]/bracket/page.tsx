@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
 import BracketView from "@/components/brackets/BracketView";
 import GameBadge from "@/components/GameBadge";
 import BracketLive from "@/components/host/BracketLive";
@@ -34,9 +34,13 @@ async function myFinalReported(setId: string, slot: "1" | "2"): Promise<boolean>
   return !!(data?.live as LiveState | null)?.finals?.[slot];
 }
 
+// One read per page view (round 732): the page's title and the page itself ask for the same data, and
+// Smashy's time-limited database calls aren't de-duplicated by Next, so each used to run twice.
+const eventOnce = cache((id: string) => getHostedEvent(id));
+
 export async function generateMetadata({ params }: PageProps<"/host/[id]/bracket">): Promise<Metadata> {
   const { id } = await params;
-  const e = await getHostedEvent(id).catch(() => null);
+  const e = await eventOnce(id).catch(() => null);
   if (!e || e.removed) return { title: "Bracket not found" };
   // The preview picture: the results picture once the event is over, else the event's own card
   // (named here: this page's preview text would otherwise drop the card it inherits).
@@ -49,7 +53,7 @@ export async function generateMetadata({ params }: PageProps<"/host/[id]/bracket
 
 async function HostedBracket({ params, searchParams }: PageProps<"/host/[id]/bracket">) {
   const [{ id }, { group }] = await Promise.all([params, searchParams]);
-  const event = await getHostedEvent(id);
+  const event = await eventOnce(id);
   if (!event) notFound();
   const [sets, userId, t, lang] = await Promise.all([loadEngineSets(event.id), getUserId(), getT(), getLang()]);
   // The id you play under: your own in singles, your team's in doubles.

@@ -27,6 +27,7 @@ import type { GuestLookup } from "@/lib/guestBudget";
 import { guestLookup } from "@/lib/guestLookup";
 import { computeStats, getLinkedPlayer, getRecentSets, getVisibleRecentSets, headToHead, playerOnSmashy } from "@/lib/playerStats";
 import { getPlayerResults, getStartggPlayer } from "@/lib/startggPlayers";
+import { getSavedPlayer } from "@/lib/playerIndex";
 import { getUserId } from "@/lib/supabase/server";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
@@ -72,7 +73,13 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
     if (gate !== "ok") return <GuestLimit gate={gate} next={`/players/${id}`} t={t} />;
   }
 
-  const [player, onSmashy] = await Promise.all([getStartggPlayer(id).catch(() => undefined), playerOnSmashy(id)]);
+  const [asked, onSmashy] = await Promise.all([getStartggPlayer(id).catch(() => undefined), playerOnSmashy(id)]);
+  // start.gg didn't answer (busy, or down): carry on with the tag Smashy saved the last time it saw
+  // this player (round 733). Their majors and saved results don't need start.gg, so the page still has
+  // something to show instead of only "try again in a minute".
+  const saved = asked === undefined ? await getSavedPlayer(id).catch(() => null) : null;
+  const player = asked === undefined && saved ? { ...saved, profileUrl: null } : asked;
+  const busy = asked === undefined && !!saved;
   if (!onSmashy.allowed) {
     // They asked not to be listed, or they're a member who keeps their stats to themselves.
     // Nothing about them is shown, not even the tag.
@@ -89,6 +96,7 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
           <PlayerMainIcon playerId={player.playerId} tag={player.tag} />
         </Suspense>
         <p className="mt-2 text-meta text-muted">{t("people.player.via")}</p>
+        {busy && <p role="status" className="rounded-lg bg-surface px-3 py-1 text-meta text-muted">{t("people.player.busySaved")}</p>}
         <h1 className="flex max-w-full flex-col items-center text-3xl leading-tight break-words">
           {player.prefix && <span className="font-sans text-body font-semibold tracking-wide text-muted">{player.prefix}</span>}
           {player.tag}
@@ -176,7 +184,15 @@ async function PlayerSets({ playerId, tag, viewerId }: { playerId: string; tag: 
   // A claimed page keeps its career: the latest results are saved once the page has been sent.
   if (claimed && fresh.length) after(() => saveResults(claimed.userId, fresh));
   const results = claimed ? mergeResults(saved, fresh) : fresh;
-  if (!sets) return <p className="p-6 text-muted">{t("people.startggDown")}</p>;
+  // start.gg didn't answer: say so, and still show the results Smashy has saved (a claimed page's career).
+  if (!sets) {
+    return (
+      <section className="flex flex-col gap-3 p-4">
+        <p className="text-muted">{t("people.startggDown")}</p>
+        {results.length > 0 && <PlayerResultsCard results={results} career={!!claimed && saved.length > 0} />}
+      </section>
+    );
+  }
   const stats = computeStats(sets);
   const h2h = mySets ? headToHead(mySets, playerId) : null;
   return (

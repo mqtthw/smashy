@@ -14,7 +14,7 @@ import { TOP_CLIP_WINDOWS_DAYS, isLowQualityClip, topClipMinViews } from "./reel
 import { YouTubeQuotaError, findYouTubeChannel, getChannelShorts, getYouTubeVideos, guessGame, hasYouTubeKey, searchShorts, type YouTubeVideo } from "./youtube";
 import type { ReelPlatform } from "./reelLinks";
 import { rankTopClips } from "./topClips";
-import { LIVE_SHORT_EVERY, reelSearchFilters, reelSearchKey, takeLiveSearch, pauseLiveSearch } from "./reelSearch";
+import { LIVE_SEARCHES_SITE_WIDE, LIVE_SHORT_EVERY, reelSearchFilters, reelSearchKey, takeLiveSearch, pauseLiveSearch } from "./reelSearch";
 import { mixPage, postsBefore, postsBeforeWhenClipsEnd, rankPostVideos } from "./reelMix";
 import { getReelPostVideos, type Post } from "./posts";
 
@@ -432,7 +432,7 @@ async function liveShortsFor(q: string, game: GameKey | null): Promise<Reel[]> {
  */
 async function liveYouTubeShorts(key: string): Promise<Reel[]> {
   "use cache: remote";
-  if (!hasYouTubeKey() || !takeLiveSearch(Date.now())) {
+  if (!hasYouTubeKey() || !(await mayAskYouTube())) {
     cacheLife("seconds");
     return [];
   }
@@ -457,6 +457,24 @@ async function liveYouTubeShorts(key: string): Promise<Reel[]> {
     });
   }
   return out;
+}
+
+/**
+ * May Smashy ask YouTube for one more live search today? Counted in the database (round 735), so the
+ * daily number holds across every server and every deploy; each server's own count and its pause after
+ * YouTube says "allowance used up" still apply first. If the database can't answer (or the counter
+ * isn't installed yet), the server's own count decides, as before.
+ */
+async function mayAskYouTube(): Promise<boolean> {
+  if (!takeLiveSearch(Date.now())) return false;
+  try {
+    // "as never": the counter is newer than the generated database types until they're made again.
+    const { data, error } = await createAdminClient({ forPage: true }).rpc("take_daily_allowance" as never, { p_what: "youtube_search", p_max: LIVE_SEARCHES_SITE_WIDE } as never);
+    if (error) return true;
+    return data === true;
+  } catch {
+    return true;
+  }
 }
 
 /** A post's video as a Reel (its comments are the post's replies, its likes the post's likes). */

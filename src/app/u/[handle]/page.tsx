@@ -12,7 +12,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { after } from "next/server";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
 import PostCard from "@/components/feed/PostCard";
 import GameBadge from "@/components/GameBadge";
 import { unixNow } from "@/lib/format";
@@ -66,9 +66,13 @@ async function loadProfile(handle: string): Promise<PublicProfile | null> {
   return data as PublicProfile | null;
 }
 
+// One read per page view (round 732): the page's title and the page itself ask for the same data, and
+// Smashy's time-limited database calls aren't de-duplicated by Next, so each used to run twice.
+const profileOnce = cache(loadProfile);
+
 export async function generateMetadata({ params }: PageProps<"/u/[handle]">): Promise<Metadata> {
   const { handle } = await params;
-  const p = await loadProfile(handle.toLowerCase()).catch(() => null);
+  const p = await profileOnce(handle.toLowerCase()).catch(() => null);
   if (!p) return { title: "Profile not found", robots: { index: false } };
   // Teen profiles only load for signed-in viewers, so this never reaches a crawler.
   return ownPictureMeta(`${p.tag} (@${p.handle})`, p.bio ? clip(p.bio, 200) : `${p.tag} on Smashy${p.home_city ? ` · ${p.home_city}` : ""}`);
@@ -78,7 +82,7 @@ async function ProfileView({ params, searchParams }: Pick<PageProps<"/u/[handle]
   const [{ handle }, { before, tab }] = await Promise.all([params, searchParams]);
   const wantedTab = tab === "highlights" || tab === "stats" || tab === "replies" || tab === "media" || tab === "events" ? tab : "posts";
   const userId = await getUserId();
-  const profile = await loadProfile(handle.toLowerCase());
+  const profile = await profileOnce(handle.toLowerCase());
   // Same message whether the profile doesn't exist or is a teen's (hidden from guests),
   // so guests can't learn who's under 18.
   if (!profile) notFound();

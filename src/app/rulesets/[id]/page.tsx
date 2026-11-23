@@ -2,7 +2,7 @@ import LocalTime from "@/components/ui/LocalTime";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Fragment, Suspense, type ReactNode } from "react";
+import { Fragment, Suspense, cache, type ReactNode } from "react";
 import PostCard from "@/components/feed/PostCard";
 import PostComposer from "@/components/feed/PostComposer";
 import GameBadge from "@/components/GameBadge";
@@ -23,9 +23,13 @@ function withNode(text: string, node: ReactNode) {
   return <>{text.split(/(\u0001)/).map((part, i) => (part === MARK ? <Fragment key={i}>{node}</Fragment> : part))}</>;
 }
 
+// One read per page view (round 732): the page's title and the page itself ask for the same data, and
+// Smashy's time-limited database calls aren't de-duplicated by Next, so each used to run twice.
+const rulesetOnce = cache((id: string) => getRuleset(id));
+
 export async function generateMetadata({ params }: PageProps<"/rulesets/[id]">): Promise<Metadata> {
   const { id } = await params;
-  const r = await getRuleset(id).catch(() => null);
+  const r = await rulesetOnce(id).catch(() => null);
   return r ? { title: r.name, description: `${r.sceneName} ${GAMES[r.game].short} ruleset (v${r.latest?.version ?? 1}).` } : { title: "Ruleset not found" };
 }
 
@@ -33,7 +37,7 @@ export async function generateMetadata({ params }: PageProps<"/rulesets/[id]">):
 async function RulesetDetails({ params, searchParams }: Pick<PageProps<"/rulesets/[id]">, "params" | "searchParams">) {
   const [{ id }, { v }] = await Promise.all([params, searchParams]);
   const [userId, t, lang] = await Promise.all([getUserId(), getT(), getLang()]);
-  const ruleset = await getRuleset(id);
+  const ruleset = await rulesetOnce(id);
   if (!ruleset || !ruleset.latest) notFound();
 
   const shown = ruleset.versions.find((x) => String(x.version) === v) ?? ruleset.latest;

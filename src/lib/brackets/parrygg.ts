@@ -27,6 +27,8 @@ async function call<T>(service: string, method: string, body: object): Promise<T
   const key = process.env.PARRYGG_API_KEY;
   if (!key) throw new Error("PARRYGG_API_KEY is missing. Add it to .env.local.");
   const res = await fetch(`${API}.${service}/${method}`, {
+    // A stalled parry.gg gives up after 8 seconds (round 731) instead of holding the page for minutes.
+    signal: AbortSignal.timeout(8000),
     method: "POST",
     headers: { "Content-Type": "application/json", "X-API-KEY": key },
     body: JSON.stringify(body),
@@ -235,7 +237,7 @@ function phaseStates(event: PEvent): { phases: PhaseInfo[]; over: boolean } {
 
 /** A whole parry.gg bracket (pool) of an event. */
 export async function getParryggBracket(eventId: string, groupId?: string | null): Promise<Bracket | null> {
-  "use cache";
+  "use cache: remote"; // shared by every server (round 731)
   if (!ID.test(eventId) || (groupId && !ID.test(groupId))) {
     cacheLife(MISS_CACHE);
     return null;
@@ -273,7 +275,7 @@ export async function getParryggBracket(eventId: string, groupId?: string | null
 
 /** One parry.gg match with its games (characters and stages, when the TO recorded them). */
 export async function getParryggSet(id: string): Promise<SetDetail | null> {
-  "use cache";
+  "use cache: remote"; // shared by every server (round 731)
   if (!ID.test(id)) {
     cacheLife(MISS_CACHE);
     return null;
@@ -416,7 +418,7 @@ const SLUG = /^[a-z0-9-]{1,80}$/i;
 
 /** A parry.gg tournament by its slug (permanent, or a short one like "box"), for Smashy's page about it. Null when there's no such tournament. */
 export async function getParryggTournament(slug: string): Promise<ParryggTournament | null> {
-  "use cache";
+  "use cache: remote"; // shared by every server (round 731)
   if (!SLUG.test(slug)) {
     cacheLife(MISS_CACHE);
     return null;

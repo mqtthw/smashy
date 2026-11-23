@@ -160,6 +160,7 @@ export const historyEn = {
   "history.grid.title": "{game} in {year}: head-to-head at majors",
   "history.grid.intro": "Sets the year's most successful {game} players at majors played against each other, from each major's main singles bracket (top 64 on). Read across: each row's wins and losses against each column. A count, not a ranking.",
   "history.grid.coverage": "Sets saved for {n} of {total} majors so far. More are added every day.",
+  "history.grid.coverageHand": "Sets for {n} of {total} majors so far, read from Liquipedia's bracket pages. For years this old they keep the later rounds, not every set.",
   "history.grid.none": "No sets between these players are saved yet. They're added in the background every day.",
   "history.grid.few": "Not enough {game} results from {year} are saved yet to pick the top players.",
   "history.grid.total": "Total",

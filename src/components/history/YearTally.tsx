@@ -10,6 +10,7 @@ import { playersHidingStats } from "@/lib/playerStats";
 import { applyNameLinks, getNameLinks } from "@/lib/playerLinks";
 import { ARCHIVE_FIRST_YEAR, MAJOR_THRESHOLDS } from "@/lib/majors";
 import { yearTally } from "@/lib/yearTally";
+import { FIRST_GRID_YEAR, handSetYears, hasGrid } from "@/lib/yearHeadToHead";
 
 type Translate = (key: MessageKey, values?: Values) => string;
 const SHOWN = 20;
@@ -24,6 +25,7 @@ export default async function YearTally({ year, game, byMajor, t }: { year: numb
   const ids = (tally?.rows ?? []).flatMap((r) => (r.playerId ? [r.playerId] : []));
   const hidden = ids.length ? await playersHidingStats(ids).catch(() => null) : new Set<string>();
   const rows = tally && hidden ? tally.rows.filter((r) => !r.playerId || !hidden.has(r.playerId)).slice(0, SHOWN) : [];
+  const handYears = game && year < FIRST_GRID_YEAR ? await handSetYears().catch(() => [] as number[]) : [];
 
   if (!rows.length && !rankings.length && game) return null;
   return (
@@ -56,7 +58,7 @@ export default async function YearTally({ year, game, byMajor, t }: { year: numb
               </tbody>
             </table>
           </div>
-          {year >= 2014 && (
+          {hasGrid(year, handYears) && (
             <Link href={`/history/head-to-head?year=${year}&game=${game}`} className="self-start text-sm font-semibold text-brand">
               {t("history.grid.link", { year })}
             </Link>

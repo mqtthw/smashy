@@ -161,6 +161,7 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.grid.title": "{year}年の{game}：大型大会での対戦成績",
   "history.grid.intro": "その年の大型大会で最も活躍した{game}の選手同士の対戦セットです（各大会のシングルス本戦、トップ64から）。行ごとに読みます：各行の選手の各列の選手に対する勝敗。数を数えたもので、ランキングではありません。",
   "history.grid.coverage": "今のところ{total}大会中{n}大会のセットを保存済みです。毎日追加されます。",
+  "history.grid.coverageHand": "今のところ{total}大会中{n}大会のセットです。Liquipediaのトーナメント表から読み取っています。この頃の大会は終盤のラウンドのみで、すべてのセットではありません。",
   "history.grid.none": "この選手たちのセットはまだ保存されていません。毎日裏で追加されます。",
   "history.grid.few": "{year}年の{game}の結果がまだ十分に保存されていないため、トップ選手を選べません。",
   "history.grid.total": "合計",
