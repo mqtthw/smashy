@@ -1,7 +1,7 @@
 // Reading one Slippi replay (.slp) in the browser with the Slippi project's own library, into the
 // small summary slippiStats.ts adds up. Only singles games between two people (no teams, no computer
 // players) of 30 seconds or more are kept; anything else comes back with the reason it was skipped.
-import type { ReplayGame, ReplayPlayer } from "./slippiStats";
+import { keepCombos, type ReplayGame, type ReplayPlayer } from "./slippiStats";
 
 /** Why a replay was left out (the page shows it in the visitor's language). */
 export type SkipReason = "notSlippi" | "notOneOnOne" | "computer" | "tooShort" | "tooBig" | "unreadable";
@@ -10,7 +10,7 @@ export type ReadResult = { game: ReplayGame } | { skipped: SkipReason };
 const MIN_FRAMES = 30 * 60; // 30 seconds at 60 frames a second
 
 export async function readReplay(file: string, bytes: ArrayBuffer): Promise<ReadResult> {
-  const { SlippiGame, characters, stages } = await import("@slippi/slippi-js");
+  const { SlippiGame, characters, stages, moves, frameToGameTimer } = await import("@slippi/slippi-js");
   let game;
   try {
     game = new SlippiGame(new Uint8Array(bytes));
@@ -55,8 +55,20 @@ export async function readReplay(file: string, bytes: ArrayBuffer): Promise<Read
     };
   };
 
+  // The game clock at a frame ("06:12"), for finding a combo again in the replay. The library gives
+  // hundredths too; a game without a clock (or an old replay) has none.
+  const timer = (frame: number): string | null => {
+    try {
+      const clock = frameToGameTimer(frame, settings);
+      return /^\d+:\d\d/.test(clock) ? clock.slice(0, clock.indexOf(":") + 3) : null;
+    } catch {
+      return null;
+    }
+  };
+
   return {
     game: {
+      combos: keepCombos(stats.combos, (id) => moves.getMoveShortName(id), timer),
       file,
       startAt: meta?.startAt ?? null,
       stage: settings.stageId === undefined ? "Unknown stage" : stages.getStageName(settings.stageId),

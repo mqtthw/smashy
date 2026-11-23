@@ -21,13 +21,89 @@ export type ReplayPlayer = {
   lCancels: { success: number; fail: number };
 };
 
+/** One combo in a game (round 760): who landed it, with what, for how much. */
+export type ReplayCombo = {
+  by: number; // the player index (ReplayPlayer.index) of whoever landed it
+  moves: string[]; // short move names in order, like "nair", "utilt", "uair"
+  damage: number;
+  startPercent: number; // the other player's percent before and after
+  endPercent: number;
+  killed: boolean;
+  seconds: number; // how far into the game it started
+  timer: string | null; // the same moment on the game's own clock ("06:12"), when the game has one
+};
+
 export type ReplayGame = {
   file: string;
   startAt: string | null;
   stage: string;
   frames: number;
   players: [ReplayPlayer, ReplayPlayer];
+  /** The game's best combos by either player. Missing for games not read from a replay file (Slippipedia). */
+  combos?: ReplayCombo[];
 };
+
+/** A combo is three moves or more: fewer is a hit or a follow-up, and there are hundreds of those. */
+export const MIN_COMBO_MOVES = 3;
+const COMBOS_PER_GAME = 8;
+const KILL_BONUS = 25;
+
+/** How combos are ordered: damage dealt, and a kill counts as 25% more. */
+export const comboScore = (c: Pick<ReplayCombo, "damage" | "killed">): number => c.damage + (c.killed ? KILL_BONUS : 0);
+
+/** A combo as the Slippi library reports it. Its `playerIndex` is the player being hit; `lastHitBy` is the attacker. */
+export type RawCombo = {
+  playerIndex: number;
+  lastHitBy?: number | null;
+  startFrame: number;
+  startPercent: number;
+  currentPercent: number;
+  endPercent?: number | null;
+  didKill: boolean;
+  moves: { playerIndex: number; moveId: number; damage: number }[];
+};
+
+/**
+ * The library's combos for one game, cut down to the ones worth showing: three moves or more, all by
+ * one player on the other, the best few first. `timer` turns a frame into the game clock (null if none).
+ */
+export function keepCombos(raw: RawCombo[], moveName: (id: number) => string, timer: (frame: number) => string | null = () => null): ReplayCombo[] {
+  const out: ReplayCombo[] = [];
+  for (const c of raw) {
+    const by = c.lastHitBy ?? c.moves[0]?.playerIndex;
+    if (by === undefined || by === null || by === c.playerIndex) continue;
+    const moves = c.moves.filter((m) => m.playerIndex === by);
+    if (moves.length < MIN_COMBO_MOVES) continue;
+    out.push({
+      by,
+      moves: moves.map((m) => moveName(m.moveId)),
+      damage: Math.round(moves.reduce((n, m) => n + m.damage, 0)),
+      startPercent: Math.round(c.startPercent),
+      endPercent: Math.round(c.endPercent ?? c.currentPercent),
+      killed: c.didKill,
+      seconds: Math.max(0, Math.round(c.startFrame / 60)),
+      timer: timer(c.startFrame),
+    });
+  }
+  return out.sort((a, b) => comboScore(b) - comboScore(a)).slice(0, COMBOS_PER_GAME);
+}
+
+export type BestCombo = ReplayCombo & { file: string; startAt: string | null; stage: string; character: string; opponentCharacter: string; opponent: string | null };
+
+/** One player's best combos across their games, best first (see comboScore). */
+export function bestCombos(games: ReplayGame[], me: string, limit = 10): BestCombo[] {
+  const all: BestCombo[] = [];
+  for (const g of games) {
+    const mine = g.players.find((p) => playerKey(p) === me);
+    if (!mine) continue;
+    const opp = g.players.find((p) => p !== mine)!;
+    for (const c of g.combos ?? []) {
+      if (c.by !== mine.index) continue;
+      all.push({ ...c, file: g.file, startAt: g.startAt, stage: g.stage, character: mine.character, opponentCharacter: opp.character, opponent: playerKey(opp) });
+    }
+  }
+  return all.sort((a, b) => comboScore(b) - comboScore(a) || b.moves.length - a.moves.length).slice(0, limit);
+}
 
 export type Tally = { games: number; wins: number; losses: number };
 

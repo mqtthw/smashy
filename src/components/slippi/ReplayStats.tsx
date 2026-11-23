@@ -6,10 +6,11 @@ import { useMemo, useRef, useState } from "react";
 import NewTab from "@/components/ui/NewTab";
 import type { ReadResult, SkipReason } from "@/lib/slippiRead";
 import { useT } from "@/lib/i18n/client";
-import { likelyMe, totalsFor, type ReplayGame } from "@/lib/slippiStats";
+import { bestCombos, likelyMe, totalsFor, type ReplayGame } from "@/lib/slippiStats";
 import { SLIPPIPEDIA_MAX_BYTES } from "@/lib/slippipediaRead";
 import { toSavedSummary } from "@/lib/replayProfile";
 import { SummaryView, TallyList } from "./ReplayParts";
+import BestCombos from "./BestCombos";
 import SaveReplayPanel, { type SavedState } from "./SaveReplayPanel";
 
 const MAX_FILES = 500;
@@ -29,6 +30,8 @@ export default function ReplayStats({ signedIn = false, saved = null, handle = n
   const me = chosen && people.some((p) => p.key === chosen) ? chosen : (people[0]?.key ?? null);
   const totals = useMemo(() => (me ? totalsFor(games, me) : null), [games, me]);
   const summary = useMemo(() => (totals ? toSavedSummary(totals) : null), [totals]);
+  // Combos come from replay files only (a Slippipedia database has none).
+  const combos = useMemo(() => (me && games.some((g) => g.combos) ? bestCombos(games, me) : null), [games, me]);
 
   async function read(list: FileList | null) {
     const all = [...(list ?? [])].filter((f) => f.name.toLowerCase().endsWith(".slp"));
@@ -183,6 +186,8 @@ export default function ReplayStats({ signedIn = false, saved = null, handle = n
           </p>
         </section>
       )}
+
+      {!busy && totals && combos && <BestCombos combos={combos} />}
 
       {!busy && (summary || saved) && <SaveReplayPanel summary={summary} signedIn={signedIn} saved={saved} handle={handle} />}
 
