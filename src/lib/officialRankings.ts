@@ -12,14 +12,15 @@ import type { GameKey } from "./games";
 /**
  * One edition of a ranking. `year` (and `alsoYears`, for one spanning several) is where it's shown; `kind`
  * is left out for the year-end edition, "mid" for a mid-year or part-year one, "multi" for one spanning years,
- * "tiers" for a Contenders list that groups players in tiers (by region) instead of numbering them.
+ * "retro" for one made years later, looking back (RetroSSBMRank), "tiers" for a Contenders list that groups
+ * players in tiers (by region) instead of numbering them.
  */
 export type RankingTiers = { region: string | null; tiers: [tier: string, names: string[]][] };
 export type OfficialRanking = {
   game: GameKey;
   year: number;
   alsoYears?: number[];
-  kind?: "mid" | "multi" | "tiers";
+  kind?: "mid" | "multi" | "tiers" | "retro";
   name: string;
   page: string;
   top: [rank: number, name: string][];
@@ -66,6 +67,19 @@ export const OFFICIAL_RANKINGS: OfficialRanking[] = [
   { game: "smash4", year: 2017, name: "PGR v4 (June–December 2017)", page: "PGR_v4", top: [[1,"ZeRo"],[2,"Salem"],[3,"Nairo"],[4,"MkLeo"],[5,"Tweek"],[6,"Dabuz"],[7,"Larry Lurr"],[8,"KEN"],[9,"VoiD"],[10,"Mr.R"]] },
   { game: "smash4", year: 2018, name: "PGR v5 (first half of 2018, the last Smash 4 ranking)", page: "PGR_v5", top: [[1,"MkLeo"],[2,"Tweek"],[3,"Dabuz"],[4,"Nairo"],[5,"Salem"],[6,"Mistake"],[7,"Cosmos"],[8,"Mr.R"],[9,"CaptainZack"],[10,"komorikiri"]] },
   { game: "brawl", year: 2025, name: "SSBBRank 2025", page: "SSBBRank_2025", top: [[1,"Player-1"],[2,"Vex Kasrani"],[3,"Lux"],[4,"Kyoz"],[5,"Mikeray4"],[6,"Cody"],[7,"Hoenn"],[8,"Hinkage"],[9,"Chia"],[10,"Fino"]] },
+  // RetroSSBMRank (round 766): a top 10 for each Melee year before SSBMRank, made years later by Smash History
+  // creators Edwin Budding and Pikachu942, read by hand from its SmashWiki article on 2026-11-22. Shown on the
+  // old years with a note that it looks back; left out of the official rankings' tallies.
+  { game: "melee", year: 2012, kind: "retro", name: "RetroSSBMRank 2012", page: "RetroSSBMRank#2012", top: [[1,"Armada"],[2,"Dr. Peepee"],[3,"Mango"],[4,"Hungrybox"],[5,"Mew2King"],[6,"KirbyKaze"],[7,"ChuDat"],[8,"Wobbles"],[9,"Zhu"],[10,"Shroomed"]] },
+  { game: "melee", year: 2011, kind: "retro", name: "RetroSSBMRank 2011", page: "RetroSSBMRank#2011", top: [[1,"Armada"],[2,"Mango"],[3,"Dr. Peepee"],[4,"Hungrybox"],[5,"Mew2King"],[6,"Fly Amanita"],[7,"Lovage"],[8,"Shroomed"],[9,"Zhu"],[10,"S2J"]] },
+  { game: "melee", year: 2010, kind: "retro", name: "RetroSSBMRank 2010", page: "RetroSSBMRank#2010", top: [[1,"Hungrybox"],[2,"Mango"],[3,"Armada"],[4,"Mew2King"],[5,"Dr. Peepee"],[6,"Jman"],[7,"Amsah"],[8,"KirbyKaze"],[9,"Lucky"],[10,"Fly Amanita"]] },
+  { game: "melee", year: 2009, kind: "retro", name: "RetroSSBMRank 2009", page: "RetroSSBMRank#2009", top: [[1,"Mango"],[2,"Armada"],[3,"Hungrybox"],[4,"Mew2King"],[5,"DaShizWiz"],[6,"Jman"],[7,"Zhu"],[8,"Darkrain"],[9,"PC Chris"],[10,"Dr. Peepee"]] },
+  { game: "melee", year: 2008, kind: "retro", name: "RetroSSBMRank 2008", page: "RetroSSBMRank#2008", top: [[1,"Mew2King"],[2,"Mango"],[3,"Azen"],[4,"Cort"],[5,"PC Chris"],[6,"ChuDat"],[7,"KoreanDJ"],[8,"HugS"],[9,"Ka-Master"],[10,"Jman"]] },
+  { game: "melee", year: 2007, kind: "retro", name: "RetroSSBMRank 2007", page: "RetroSSBMRank#2007", top: [[1,"Mew2King"],[2,"KoreanDJ"],[3,"Ken"],[4,"PC Chris"],[5,"Azen"],[6,"ChuDat"],[7,"Chillin"],[8,"Drephen"],[9,"Mango"],[10,"Cort"]] },
+  { game: "melee", year: 2006, kind: "retro", name: "RetroSSBMRank 2006", page: "RetroSSBMRank#2006", top: [[1,"Ken"],[2,"Azen"],[3,"PC Chris"],[4,"ChuDat"],[5,"KoreanDJ"],[6,"Mew2King"],[7,"Isai"],[8,"Chillin"],[9,"Vidjogamer"],[10,"HugS"]] },
+  { game: "melee", year: 2005, kind: "retro", name: "RetroSSBMRank 2005", page: "RetroSSBMRank#2005", top: [[1,"Ken"],[2,"ChuDat"],[3,"Isai"],[4,"Azen"],[5,"Sastopher"],[6,"NEO"],[7,"Chillin"],[8,"Kei"],[9,"KrazyJones"],[10,"DieSuperFly"]] },
+  { game: "melee", year: 2004, kind: "retro", name: "RetroSSBMRank 2004", page: "RetroSSBMRank#2004", top: [[1,"Ken"],[2,"Azen"],[2,"Captain Jack"],[4,"Isai"],[5,"ChuDat"],[6,"Sastopher"],[7,"Wes"],[8,"Rori"],[9,"Chillin"],[10,"DA Dave"]] },
+  { game: "melee", year: 2001, alsoYears: [2002, 2003], kind: "retro", name: "RetroSSBMRank 2001-2003", page: "RetroSSBMRank#2001-2003", top: [[1,"Ken"],[2,"Recipherus"],[3,"Isai"],[4,"Azen"],[5,"Sultan of Samitude"],[6,"Justin Junio"],[7,"Zulu"],[8,"Wes"],[9,"Eddie"],[10,"The Doug"]] },
   // Every other edition (Matthew, 2026-11-19: "include all rankings"): mid-year, half-year and multi-year
   // lists, and the tiered Contenders lists, read from SmashWiki the same way.
   { game: "melee", year: 2014, kind: "mid", name: "SSBMRank Summer 2014", page: "SSBMRank_Summer_2014", top: [[1,"PPMD"],[2,"Mango"],[3,"Mew2King"],[4,"Armada"],[5,"Hungrybox"],[6,"Leffen"],[7,"Hax"],[8,"Westballz"],[9,"Fly Amanita"],[10,"Shroomed"]] },
@@ -136,7 +150,8 @@ export type RankingPlace = { ranking: OfficialRanking; rank: number };
  * capitals), oldest first. Only the game's own rankings: a "Zero" in Smash 64 isn't ZeRo of Smash 4.
  */
 export function rankingPlaces(game: GameKey, names: Set<string>, key: (name: string) => string): RankingPlace[] {
-  return OFFICIAL_RANKINGS.filter((r) => r.game === game && r.kind !== "tiers")
+  // RetroSSBMRank stays on the year pages: it was made later, so it isn't listed with the rankings of the time.
+  return OFFICIAL_RANKINGS.filter((r) => r.game === game && r.kind !== "tiers" && r.kind !== "retro")
     .flatMap((r) => r.top.filter(([, name]) => names.has(key(name))).slice(0, 1).map(([rank]) => ({ ranking: r, rank })))
     .sort((a, b) => a.ranking.year - b.ranking.year || Number(!!a.ranking.kind) - Number(!!b.ranking.kind));
 }

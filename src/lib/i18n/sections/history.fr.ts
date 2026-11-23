@@ -186,6 +186,7 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.ranking.more": "Autres classements couvrant {year}",
   "history.ranking.tiers": "Joueurs regroupés par paliers (par région quand il y en a plusieurs), sans numéros.",
   "history.ranking.tiersTitle": "{name} : les meilleurs paliers",
+  "history.ranking.retroNote": "Fait des années plus tard par des historiens de Smash qui reviennent sur {year} : il n'y avait pas de classement à l'époque. Pas celui de Smashy.",
   "history.firsts.title": "Révélations : premières victoires en major de {game} en {year}",
   "history.firsts.note": "Les joueurs dont la première victoire en major de {game} (dans les archives de l'histoire de Smash) est arrivée cette année.",
   "history.defenses.title": "Titres défendus : séries de {game} remportées à nouveau en {year}",

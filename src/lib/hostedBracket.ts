@@ -4,6 +4,7 @@
 import { offerToSeasons, refreshSeasonResults } from "./seasons";
 import { sentInAnyLanguage, translatorsFor } from "./i18n/recipients";
 import "server-only";
+import { cache } from "react";
 import { randomUUID } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { avatarUrl } from "./avatarLinks";
@@ -40,8 +41,10 @@ import { assignSetups } from "./hostedSetups";
 import { discordCalls, discordResults, discordStarted } from "./discord";
 import { createClient } from "./supabase/server";
 import { lockIsFree } from "./bracketLock";
-import { freshLive, liveScore, type LiveState } from "./liveSet";
+import { freshLive, type LiveState } from "./liveSet";
 import { pageAll } from "./pageAll";
+import { liveScoresOf, reportedOf, stationsOf, type OpenSet } from "./openSets";
+export type { OpenSet } from "./openSets";
 import { clearResults, recordResults } from "./hostedPromotion";
 
 type Row = {
@@ -630,28 +633,32 @@ export async function latestResults(eventId: string, limit = 5): Promise<{ id: s
   }));
 }
 
+/**
+ * Every open set of an event, read once per page view (round 767) as the viewer. A page used to ask
+ * for these rows up to four times (setups, live scores, player reports, my own set), on every reload
+ * of a running bracket for every viewer. Read in pages: the separate reads stopped at 200 sets, and a
+ * big round robin has more open at once.
+ */
+export const openSets = cache(async (eventId: string): Promise<OpenSet[]> => {
+  const supabase = await createClient();
+  return pageAll<OpenSet>(
+    (a, b) =>
+      supabase.from("hosted_sets").select("id, identifier, p1_id, p2_id, state, updated_at, live").eq("event_id", eventId).in("state", ["ready", "live"]).order("id").range(a, b) as unknown as PromiseLike<{ data: OpenSet[] | null; error: unknown }>,
+  );
+});
+
 /** Sets with a player-reported final score waiting for the TO (shown as "reported" on the bracket). */
 export async function reportedSetIds(eventId: string): Promise<Set<string>> {
-  const supabase = await createClient();
-  const { data } = await supabase.from("hosted_sets").select("id, live").eq("event_id", eventId).in("state", ["ready", "live"]).limit(200);
-  return new Set(((data ?? []) as { id: string; live: LiveState | null }[]).filter((r) => Object.keys(r.live?.finals ?? {}).length > 0).map((r) => r.id));
+  return reportedOf(await openSets(eventId));
 }
 
 /** Where each set being called is played ("Setup 3"), by set id (for "On now"). */
 export async function setStations(eventId: string): Promise<Record<string, string>> {
-  const supabase = await createClient();
-  const { data } = await supabase.from("hosted_sets").select("id, live").eq("event_id", eventId).in("state", ["ready", "live"]).limit(200);
-  const out: Record<string, string> = {};
-  for (const r of (data ?? []) as { id: string; live: LiveState | null }[]) if (r.live?.station) out[r.id] = r.live.station;
-  return out;
+  return stationsOf(await openSets(eventId));
 }
 
 export async function liveGameScores(eventId: string): Promise<Record<string, [number, number]>> {
-  const supabase = await createClient();
-  const { data } = await supabase.from("hosted_sets").select("id, live").eq("event_id", eventId).eq("state", "live").limit(200);
-  const out: Record<string, [number, number]> = {};
-  for (const r of (data ?? []) as { id: string; live: LiveState | null }[]) if (r.live?.games) out[r.id] = liveScore(r.live);
-  return out;
+  return liveScoresOf(await openSets(eventId));
 }
 
 /**

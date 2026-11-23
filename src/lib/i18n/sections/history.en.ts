@@ -185,6 +185,7 @@ export const historyEn = {
   "history.ranking.more": "Other rankings that cover {year}",
   "history.ranking.tiers": "Players grouped in tiers (by region where there are several), not numbered.",
   "history.ranking.tiersTitle": "{name}: the top tiers",
+  "history.ranking.retroNote": "Made years later by Smash historians looking back at {year}: there was no ranking at the time. Not Smashy's.",
   "history.firsts.title": "Breakthroughs: first {game} major wins in {year}",
   "history.firsts.note": "Players whose first major win in {game} (in Smash history's records) came this year.",
   "history.defenses.title": "Title defenses: {game} series won again in {year}",

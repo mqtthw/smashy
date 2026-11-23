@@ -14,12 +14,10 @@ import NextUpCard from "@/components/host/NextUpCard";
 import OutNote from "@/components/host/OutNote";
 import { currentSetFor, knockedOut } from "@/lib/bracketEngine";
 import { feederStatus } from "@/lib/feederStatus";
-import type { LiveState } from "@/lib/liveSet";
-import { createClient } from "@/lib/supabase/server";
 import { GAMES } from "@/lib/games";
 import { RememberBracket } from "@/components/brackets/RecentBrackets";
 import { CardListSkeleton } from "@/components/ui/Skeleton";
-import { bracketParts, bracketPlayers, bracketResults, connectCodeFor, firstPartResults, liveGameScores, loadEngineSets, pickPart, reportedSetIds, setStations, toBracket } from "@/lib/hostedBracket";
+import { bracketParts, bracketPlayers, bracketResults, connectCodeFor, firstPartResults, liveGameScores, loadEngineSets, openSets, pickPart, reportedSetIds, setStations, toBracket } from "@/lib/hostedBracket";
 import { getHostedEvent, formatSummary } from "@/lib/hostedEvents";
 import { ownPictureMeta } from "@/lib/siteMeta";
 import { getUserId } from "@/lib/supabase/server";
@@ -29,9 +27,10 @@ import { getLang, getT } from "@/lib/i18n/server";
 import { localRound } from "@/lib/i18n/rounds";
 import NewTab from "@/components/ui/NewTab";
 
-async function myFinalReported(setId: string, slot: "1" | "2"): Promise<boolean> {
-  const { data } = await (await createClient()).from("hosted_sets").select("live").eq("id", setId).maybeSingle();
-  return !!(data?.live as LiveState | null)?.finals?.[slot];
+/** Did I report my set's final score? From the page's one read of the open sets (round 767). */
+async function myFinalReported(eventId: string, setId: string, slot: "1" | "2"): Promise<boolean> {
+  const open = await openSets(eventId).catch(() => []);
+  return !!open.find((s) => s.id === setId)?.live?.finals?.[slot];
 }
 
 // One read per page view (round 732): the page's title and the page itself ask for the same data, and
@@ -100,7 +99,7 @@ async function HostedBracket({ params, searchParams }: PageProps<"/host/[id]/bra
   const opponentId = mySet ? (mySet.p[0].id === myId ? mySet.p[1].id : mySet.p[0].id) : null;
   // My report, and (online, opponent with an account) their connect code, read together.
   const [myReported, opponentCode, liveScores] = await Promise.all([
-    mySet ? myFinalReported(mySet.key, mySet.p[0].id === myId ? "1" : "2") : Promise.resolve(false),
+    mySet ? myFinalReported(event.id, mySet.key, mySet.p[0].id === myId ? "1" : "2") : Promise.resolve(false),
     mySet && event.online && opponentId && players.get(opponentId)?.handle
       ? connectCodeFor(event.id, opponentId).catch(() => undefined)
       : Promise.resolve(undefined),

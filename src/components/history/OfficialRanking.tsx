@@ -1,7 +1,9 @@
 // Smash history: the year's official community rankings (a game's year-end top 10 open, its other editions —
-// mid-year, multi-year, tiered Contenders lists — folded below; each game's #1s when no game is picked),
-// credited to the ranking and linked to its SmashWiki article (src/lib/officialRankings.ts). Names link to a
-// player's page when that name placed at the year's majors with a start.gg id (or an admin linked it).
+// mid-year, multi-year, tiered Contenders lists — folded below; each game's #1s when no game is picked), credited
+// to the ranking and linked to its SmashWiki article (src/lib/officialRankings.ts). RetroSSBMRank, made years
+// later for the years before any ranking, gets its own note (round 766).
+// Names link to a player's page when that name placed at the year's majors with a start.gg id (or an admin
+// linked it).
 import Link from "next/link";
 import NewTab from "@/components/ui/NewTab";
 import { GAMES, type GameKey } from "@/lib/games";
@@ -77,12 +79,14 @@ export default async function OfficialRanking({ year, game, byMajor, t }: { year
     </>
   );
   const [main, ...more] = rankings;
+  // Years before any ranking have only RetroSSBMRank, made later: not called "official".
+  const retro = main ? main.kind === "retro" : all.every((r) => r.kind === "retro");
   const firsts = (r: Ranking) => r.top.filter(([rank]) => rank === 1).map(([, name]) => name);
 
   return (
     <section aria-labelledby="history-ranking" className="flex flex-col gap-2">
-      <h2 id="history-ranking" className="font-bold">{main ? t(main.tiers ? "history.ranking.tiersTitle" : "history.ranking.title", { name: main.name }) : t("history.ranking.allTitle", { year })}</h2>
-      <p className="text-meta text-muted">{t("history.ranking.note", { year })}</p>
+      <h2 id="history-ranking" className="font-bold">{main ? t(main.tiers ? "history.ranking.tiersTitle" : "history.ranking.title", { name: main.name }) : retro ? all.map((r) => r.name).join(" · ") : t("history.ranking.allTitle", { year })}</h2>
+      <p className="text-meta text-muted">{t(retro ? "history.ranking.retroNote" : "history.ranking.note", { year })}</p>
       {main ? (
         <>
           {body(main)}

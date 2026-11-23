@@ -19,7 +19,7 @@ describe("official rankings", () => {
       }
       expect(r.top.length).toBe(10);
       expect(r.top.map(([rank]) => rank)).toEqual([...r.top.map(([rank]) => rank)].sort((a, b) => a - b));
-      expect(r.page).toMatch(/^[\w.%-]+$/);
+      expect(r.page).toMatch(/^[\w.%-]+(#[\w-]+)?$/); // or a section of one article (RetroSSBMRank#2007)
     }
   });
 
@@ -65,5 +65,15 @@ describe("rankingTallies", () => {
     expect([mango.firsts, mango.firstYear, mango.name]).toEqual([2, 2013, "Mang0"]); // SSBMRank 2013 and 2014
     expect(melee.find((t) => t.key === "hungrybox")?.firsts).toBe(3); // 2017-2019
     expect(rankingTallies("brawl", (n) => n.toLowerCase()).find((t) => t.key === "nairo")?.firsts).toBe(3); // 2014 tie, 2016-17, 2018-19
+  });
+});
+
+describe("RetroSSBMRank (made later)", () => {
+  it("shows on the old years, 2001-2003 as one, but not on player pages or in the tallies", () => {
+    expect(officialRankings(2007, "melee").map((r) => [r.name, r.kind, r.top[0][1]])).toEqual([["RetroSSBMRank 2007", "retro", "Mew2King"]]);
+    expect(officialRankings(2002, "melee")[0]?.name).toBe("RetroSSBMRank 2001-2003");
+    expect(officialRankings(2013, "melee").some((r) => r.kind === "retro")).toBe(false);
+    expect(rankingPlaces("melee", new Set(["ken"]), (n) => n.toLowerCase())).toEqual([]);
+    expect(rankingTallies("melee", (n) => n.toLowerCase()).some((t) => t.key === "ken")).toBe(false);
   });
 });

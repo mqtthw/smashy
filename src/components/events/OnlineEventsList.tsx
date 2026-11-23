@@ -103,7 +103,13 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
                       {r.live ? (
                         <span className="block text-meta font-semibold text-brand">{t("browse.live")}</span>
                       ) : r.finished ? (
-                        <span className="block text-meta text-muted">{t("browse.online.finished")}</span>
+                        // "Finished · Results" is wider than the time column and ran into the game badge
+                        // (round 767): one word per line.
+                        t("browse.online.finished")
+                          .split(" · ")
+                          .map((word) => (
+                            <span key={word} className="block text-meta font-normal leading-tight text-muted">{word}</span>
+                          ))
                       ) : (
                         <StartsIn iso={new Date(r.startAt * 1000).toISOString()} within={24 * 3600_000} prefix={t("event.in")} className="block text-meta font-semibold text-brand" />
                       )}

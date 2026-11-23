@@ -186,6 +186,7 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.ranking.more": "{year}年を対象とするほかのランキング",
   "history.ranking.tiers": "順位ではなくティアで分けた一覧です（複数の地域があるときは地域ごと）。",
   "history.ranking.tiersTitle": "{name}：上位ティア",
+  "history.ranking.retroNote": "後年、Smashの歴史家が{year}年を振り返って作ったランキングです（当時はランキングがありませんでした）。Smashyによるものではありません。",
   "history.firsts.title": "{year}年のブレイク：{game}の大型大会で初優勝",
   "history.firsts.note": "スマブラの歴史の記録で、{game}の大型大会での初優勝がこの年だった選手です。",
   "history.defenses.title": "{year}年のタイトル防衛：{game}の大会を連覇",

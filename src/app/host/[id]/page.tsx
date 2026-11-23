@@ -32,7 +32,6 @@ import { ConfirmAllAgreed, PendingInTitle, QuickConfirm } from "@/components/hos
 import { finalsAgree, nextFreeSetup, type LiveState } from "@/lib/liveSet";
 import { isStreamSetup, pickStreamSet } from "@/lib/streamSet";
 import { currentSetFor, firstPartDone, isElimination, knockedOut, swissProgress, swissTotalRounds } from "@/lib/bracketEngine";
-import { pageAll } from "@/lib/pageAll";
 import { feederStatus, type FeederStatus } from "@/lib/feederStatus";
 import PostEventButton from "@/components/host/PostEventButton";
 import OnNow from "@/components/host/OnNow";
@@ -45,7 +44,7 @@ import PostCard from "@/components/feed/PostCard";
 import { getHostedEventPosts } from "@/lib/posts";
 import Results from "@/components/host/Results";
 import EventShareActions from "@/components/host/EventShareActions";
-import { bracketPlayers, bracketResults, connectCodeFor, latestResults, liveGameScores, loadEngineSets, setStations, toBracket } from "@/lib/hostedBracket";
+import { bracketPlayers, bracketResults, connectCodeFor, latestResults, liveGameScores, loadEngineSets, openSets, setStations, toBracket, type OpenSet } from "@/lib/hostedBracket";
 import LiveReportButton from "@/components/play/LiveReportButton";
 import Avatar from "@/components/ui/Avatar";
 import LocalTime from "@/components/ui/LocalTime";
@@ -165,10 +164,10 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
   const mySet = myId ? currentSetFor(sets, myId) : undefined;
   const tagOf = new Map(entrants.map((x) => [x.userId, x.tag]));
   // Did I already report my set's final score? Then I'm waiting on the TO, not on my opponent.
-  const myLive = mySet
-    ? await createClient()
-        .then((c) => c.from("hosted_sets").select("live").eq("id", mySet.key).maybeSingle())
-        .then(({ data }) => (data?.live as Pick<LiveState, "finals" | "station"> | null) ?? null)
+  // (From the page's one read of the open sets, round 767.)
+  const myLive: Pick<LiveState, "finals" | "station"> | null = mySet
+    ? await openSets(event.id)
+        .then((open) => open.find((s) => s.id === mySet.key)?.live ?? null)
         .catch(() => null)
     : null;
   const myReported = !!(mySet && myLive?.finals?.[mySet.p[0].id === myId ? "1" : "2"]);
@@ -186,13 +185,11 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
   const loadRunning = async () => {
     if (!isHost || event.status !== "in_progress") return [];
     const supabase = await createClient();
-    type Row = { id: string; identifier: string | null; p1_id: string | null; p2_id: string | null; state: string; updated_at: string; live: Pick<LiveState, "finals" | "station" | "calledAt" | "stationAt" | "here" | "struck" | "banned" | "games" | "report"> | null };
+    type Row = OpenSet;
     // Every open set, however many (a big round robin has hundreds at once). This used to keep only
     // the 60 least recently updated, which dropped exactly the sets players had just reported.
-    const live = await pageAll<Row>(
-      (a, b) =>
-        supabase.from("hosted_sets").select("id, identifier, p1_id, p2_id, state, updated_at, live").eq("event_id", event.id).in("state", ["ready", "live"]).order("id").range(a, b) as unknown as PromiseLike<{ data: Row[] | null; error: unknown }>,
-    );
+    // The same one read the rest of the page uses (round 767).
+    const live = await openSets(event.id);
     // Recent "Help needed" calls to this TO, for any set (matched to the open sets below).
     const { data: calls } = live.length
       ? await supabase.from("notifications").select("event_href").eq("user_id", userId!).eq("type", "event_update").like("event_name", "Help needed:%").like("event_href", "/host/set/%").gt("created_at", new Date(nowMs - 30 * 60_000).toISOString())

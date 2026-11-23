@@ -186,6 +186,7 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.ranking.more": "Otros rankings que abarcan {year}",
   "history.ranking.tiers": "Jugadores agrupados por niveles (por región cuando hay varias), sin números.",
   "history.ranking.tiersTitle": "{name}: los niveles más altos",
+  "history.ranking.retroNote": "Hecho años después por historiadores de Smash que miran atrás a {year}: en su momento no hubo ranking. No es de Smashy.",
   "history.firsts.title": "Revelaciones: primeras victorias en majors de {game} en {year}",
   "history.firsts.note": "Jugadores cuya primera victoria en un major de {game} (según los registros de la historia de Smash) llegó este año.",
   "history.defenses.title": "Títulos defendidos: series de {game} ganadas otra vez en {year}",
