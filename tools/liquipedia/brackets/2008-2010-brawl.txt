@@ -1,0 +1,1000 @@
+@manual/2009-evo-2009 manual-brawl-1 brawl https://liquipedia.net/smash/EVO/2009/Singles_Bracket
+#Losers Finals
+mikeHAZE~1~Ally~3~2
+#Grand Finals
+Mew2King~3~Ally~1~1
+
+@manual/2009-genesis manual-brawl-2 brawl https://liquipedia.net/smash/GENESIS/1/Brawl
+#Losers Finals
+Tyrant~~Ally~W~2
+#Grand Finals
+Mew2King~1/1~Ally~3/3~2
+
+@manual/2009-apex-2009 manual-brawl-1 brawl https://liquipedia.net/smash/Apex/2009/Brawl/Singles_Bracket
+#Quarterfinals
+Ally~2~ADHD~0~1
+Atomsk~~Ksizzle~W~2
+NinjaLink~~Lain~W~2
+ANTi~~Mew2King~W~2
+#Semifinals
+Ally~2~Ksizzle~0~1
+Lain~2~Mew2King~1~1
+#Losers Round 1
+Plank~W~Puffster~~1
+Xsax~~Light~W~2
+NEO~W~ESOJ~~1
+Boss~~Jash~W~2
+PhantomX~~Slikvik~W~2
+Candy~W~Korn~~1
+Hylian~~Afro Thunder~W~2
+Meep~~Seibrik~W~2
+#Losers Round 2
+Blackwaltz~W~Plank~~1
+HolyNightmare~W~Light~~1
+Anther~W~NEO~~1
+UltimateRazer~W~Boss~~1
+Dojo~W~Slikvik~~1
+Dazwa~~Candy~W~2
+Y.b.M.~~Afro Thunder~W~2
+UTDZac~~Seibrik~W~2
+#Losers Round 3
+Blackwaltz~W~HolyNightmare~~1
+Anther~2~UltimateRazer~1~1
+Dojo~~Candy~W~2
+Afro Thunder~~Seibrik~W~2
+#Losers Round 4
+ANTi~W~Blackwaltz~~1
+NinjaLink~~Anther~W~2
+Atomsk~W~Candy~~1
+ADHD~W~Seibrik~~1
+#Losers Round 5
+ANTi~W~Anther~~1
+Atomsk~W~ADHD~~1
+#Losers Round 6
+Ksizzle~0~ANTi~2~2
+Mew2King~2~Atomsk~0~1
+#Losers Finals
+Lain~0~Mew2King~3~2
+#Grand Finals
+Ally~3~Mew2King~1~1
+
+@manual/2009-whobo manual-brawl-1 brawl https://liquipedia.net/smash/WHOBO/1/Singles_Bracket
+#Winners Round 1
+lain~W~Rudy Shaver~~1
+Domo~W~Sudai~~1
+Takeurlife~~Fogo~W~2
+mikeHAZE~W~DMG~~1
+Xyro~W~Tyson~~1
+Kosmos~W~Hyro~~1
+error~W~BadNewsBear~~1
+Broly~~Lee Martin~W~2
+Espy~W~Poptart~~1
+Dekar~~Light~W~2
+Hylian~W~Esca~~1
+Zori~~RoyR~W~2
+DieSuperFly~W~Dphat~~1
+CY~W~Chaotic~~1
+UTDZac~W~Vash~~1
+santi~W~furiousduffman~~1
+Dojo~W~The Real Inferno~~1
+Jerm~W~bwett~~1
+phantomx~W~Steeler~~1
+jnewpo~~Tyrant~W~2
+Inui~W~Amdilex~~1
+Gnes~W~KPrime~~1
+Melee1~W~Troopa~~1
+Zeton~W~Le Thien~~1
+UltimateRazer~W~Shlike~~1
+Rockettrainer~~CO18~W~2
+Ozz~W~Cyphus~~1
+Clel~~T-rex~W~2
+Infinity~W~Reznor~~1
+Kashakunaki~~Affinity~W~2
+KY~~Mr.3000~W~2
+Fliphop~~Mew2King~W~2
+#Winners Round 2
+lain~~Domo~W~2
+Fogo~~mikeHAZE~W~2
+Xyro~~Kosmos~W~2
+error~~Lee Martin~W~2
+Espy~~Light~W~2
+Hylian~~RoyR~W~2
+DieSuperFly~W~CY~~1
+UTDZac~~santi~W~2
+Dojo~W~Jerm~~1
+phantomx~~Tyrant~W~2
+Inui~W~Gnes~~1
+Melee1~W~Zeton~~1
+UltimateRazer~~CO18~W~2
+Ozz~~T-rex~W~2
+Infinity~W~Affinity~~1
+Mr.3000~~Mew2King~W~2
+#Winners Round 3
+Domo~W~mikeHAZE~~1
+Kosmos~~Lee Martin~W~2
+Light~~RoyR~W~2
+DieSuperFly~W~santi~~1
+Dojo~W~Tyrant~~1
+Inui~~Melee1~W~2
+CO18~W~T-rex~~1
+Infinity~~Mew2King~W~2
+#Winners Round 4
+Domo~~Lee Martin~W~2
+RoyR~1~DieSuperFly~2~2
+Dojo~W~Melee1~~1
+CO18~~Mew2King~W~2
+#Winners Round 5
+Lee Martin~1~DieSuperFly~2~2
+Dojo~~Mew2King~W~2
+#Losers Round 3
+Gnes~W~Zeton~~1
+Dphat~W~furiousduffman~~1
+Affinity~~DMG~W~2
+UltimateRazer~W~BadNewsBear~~1
+Rockettrainer~~error~W~2
+lain~~Fliphop~W~2
+bwett~~UTDZac~W~2
+Espy~~Hylian~W~2
+#Losers Round 4
+Light~W~Gnes~~1
+santi~~Dphat~W~2
+mikeHAZE~~DMG~W~2
+Kosmos~~UltimateRazer~W~2
+T-rex~~error~W~2
+Infinity~W~Fliphop~~1
+Tyrant~W~UTDZac~~1
+Inui~~Hylian~W~2
+#Losers Round 5
+Light~W~Dphat~~1
+DMG~~UltimateRazer~W~2
+error~~Infinity~W~2
+Tyrant~W~Hylian~~1
+#Losers Round 6
+Melee1~W~Light~~1
+CO18~W~UltimateRazer~~1
+Domo~W~Infinity~~1
+RoyR~~Tyrant~W~2
+#Losers Round 7
+Melee1~~CO18~W~2
+Domo~~Tyrant~W~2
+#Losers Round 8
+Lee Martin~W~CO18~~1
+Dojo~W~Tyrant~~1
+#Losers Finals
+DieSuperFly~~Dojo~W~2
+#Grand Finals
+Mew2King~0/3~Dojo~3/0~1
+
+@manual/2009-clash-of-the-titans-iv manual-brawl-1 brawl https://liquipedia.net/smash/Clash_of_the_Titans/4/Singles_Bracket
+#Winners Round 1
+Rookie~W~JJWolf~~1
+Dazwa~W~Cable~~1
+ZMT~W~Tristan Win~~1
+Dire~W~Le Thein~~1
+Turbogilman~W~Slivik~~1
+Kismet~W~Hylian~~1
+Kornn~~Sethlon~W~2
+Ambrose~W~Steel2nd~~1
+Percon~~Anti~W~2
+dmbrandon~W~thumbswayup~~1
+Pyronic～Star~~MalcomM~W~2
+Rogue Pit~W~GDX~~1
+King Ace~W~SSR~~1
+Polmex~~Fatal~W~2
+Pierce7d~W~Truth~~1
+Orion~W~UltimoDragon~~1
+Inui~W~Gonzo~~1
+Snakeee~W~ESOJ~~1
+Kai~~GIMR~W~2
+Ksizzle~W~Rush~~1
+Will~W~Deez~~1
+Meep~W~Pride~~1
+Greg~W~Santi~~1
+Blackanese~W~HAT~~1
+Keitaro~W~C4~~1
+Dapuffster~W~K9~~1
+Nuro~W~Umbra~~1
+Lukky~W~Quivo~~1
+Chesterr01~W~PenUmbra~~1
+TUSM~W~D1~~1
+Plan Z~~Yes~W~2
+ChiboSempai~W~JCaesar~~1
+#Winners Round 2
+Ally~W~Rookie~~1
+Infinity~W~Dazwa~~1
+AndyG~W~ZMT~~1
+Candy~W~Dire~~1
+AlphaZealot~~Turbogilman~W~2
+ChuDat~W~Kismet~~1
+Anther~W~Sethlon~~1
+Atomsk~W~Ambrose~~1
+Jash~~Anti~W~2
+Azen~W~dmbrandon~~1
+Lee Martin~W~MalcomM~~1
+Blackwaltz~~Rogue Pit~W~2
+NinjaLink~W~King Ace~~1
+Judge~~Fatal~W~2
+Reflex~W~Pierce7d~~1
+Boss~W~Orion~~1
+OmegaBlackMage~~Inui~W~2
+BigLou~~Snakeee~W~2
+Seibrik~W~GIMR~~1
+Basic Sausage~~Ksizzle~W~2
+Mew2King~W~Will~~1
+Wes~~Meep~W~2
+Holy Nightmare~~Greg~W~2
+Vex Kasrani~W~Blackanese~~1
+NEO~W~Keitaro~~1
+Eli~W~Dapuffster~~1
+Dojo~W~Nuro~~1
+Xzax~~Lukky~W~2
+HRNut~W~Chesterr01~~1
+Spammer~W~TUSM~~1
+Lain~W~Yes~~1
+Shadow~W~ChiboSempai~~1
+#Winners Round 3
+Ally~W~Infinity~~1
+AndyG~W~Candy~~1
+Turbogilman~~ChuDat~W~2
+Anther~W~Atomsk~~1
+Anti~W~Azen~~1
+Lee Martin~W~Rogue Pit~~1
+NinjaLink~W~Fatal~~1
+Reflex~W~Boss~~1
+Inui~~Snakeee~W~2
+Seibrik~~Ksizzle~W~2
+Mew2King~W~Meep~~1
+Greg~~Vex Kasrani~W~2
+NEO~W~Eli~~1
+Dojo~W~Lukky~~1
+HRNut~W~Spammer~~1
+Lain~W~Shadow~~1
+#Winners Round 4
+Ally~W~AndyG~~1
+ChuDat~W~Anther~~1
+Anti~~Lee Martin~W~2
+NinjaLink~W~Reflex~~1
+Snakeee~~Ksizzle~W~2
+NEO~~Dojo~W~2
+HRNut~~Lain~W~2
+#Quarterfinals
+Ally~2~ChuDat~0~1
+Lee Martin~W~NinjaLink~~1
+Ksizzle~~Mew2King~W~2
+Dojo~W~Lain~~1
+#Semifinals
+Ally~W~Lee Martin~~1
+Mew2King~W~Dojo~~1
+#Losers Round 1
+Blackanese~W~JCaesar~~1
+Holy Nightmare~W~Plan Z~~1
+Wes~~D1~W~2
+Will~~PenUmbra~W~2
+Basic Sausage~W~Quivo~~1
+GIMR~W~Umbra~~1
+BigLou~W~K9~~1
+OmegaBlackMage~W~C4~~1
+ChiboSempai~~HAT~W~2
+Yes~1~Santi~2~2
+TUSM~W~Pride~~1
+Chesterr01~~Deez~W~2
+Xzax~W~Rush~~1
+Nuro~W~Kai~~1
+Dapuffster~W~ESOJ~~1
+Keitaro~~Gonzo~W~2
+Ambrose~W~UltimoDragon~~1
+Sethlon~W~Truth~~1
+Kismet~W~Polmex~~1
+AlphaZealot~W~SSR~~1
+Dire~W~GDX~~1
+ZMT~~Pyronic～Star~W~2
+Dazwa~W~thumbswayup~~1
+Rookie~~Percon~W~2
+Orion~W~Steel2nd~~1
+Pierce7d~~Kornn~W~2
+Judge~W~Hylian~~1
+King Ace~W~Slikvik~~1
+Blackwaltz~~Le Thein~W~2
+MalcomM~W~Tristan Win~~1
+dmbrandon~W~Cable~~1
+Jash~W~JJWolf~~1
+#Losers Round 2
+Blackanese~~Holy Nightmare~W~2
+D1~W~PenUmbra~~1
+Basic Sausage~W~GIMR~~1
+BigLou~~OmegaBlackMage~W~2
+HAT~~Santi~W~2
+TUSM~W~Deez~~1
+Xzax~W~Nuro~~1
+Dapuffster~W~Gonzo~~1
+Ambrose~W~Sethlon~~1
+Kismet~W~AlphaZealot~~1
+Dire~W~Pyronic～Star~~1
+Dazwa~~Percon~W~2
+Orion~~Kornn~W~2
+Judge~W~King Ace~~1
+Le Thein~~MalcomM~W~2
+dmbrandon~~Jash~W~2
+#Losers Round 3
+Rogue Pit~W~Holy Nightmare~~1
+Azen~W~D1~~1
+Boss~W~Basic Sausage~~1
+Fatal~~OmegaBlackMage~W~2
+Candy~~Santi~W~2
+Infinity~W~TUSM~~1
+Atomsk~W~Xzax~~1
+Turbogilman~~Dapuffster~W~2
+Lukky~W~Ambrose~~1
+Eli~~Kismet~W~2
+Shadow~W~Dire~~1
+Spammer~W~Percon~~1
+Seibrik~W~Kornn~~1
+Inui~~Judge~W~2
+Greg~W~MalcomM~~1
+Meep~~Jash~W~2
+#Losers Round 4
+Rogue Pit~~Azen~W~2
+Boss~~OmegaBlackMage~W~2
+Santi~~Infinity~W~2
+Atomsk~~Dapuffster~W~2
+Lukky~~Kismet~W~2
+AndyG~~Spammer~W~2
+Seibrik~~Judge~W~2
+Greg~~Jash~W~2
+#Losers Round 5
+Vex Kasrani~W~Azen~~1
+Snakeee~~OmegaBlackMage~W~2
+HRNut~~Infinity~W~2
+NEO~W~Dapuffster~~1
+Anther~W~Kismet~~1
+AndyG~~Spammer~W~2
+Reflex~~Judge~W~2
+Anti~~Jash~W~2
+#Final bracket Losers Round 1
+Vex Kasrani~W~OmegaBlackMage~~1
+Infinity~W~NEO~~1
+Anther~~Spammer~W~2
+Judge~W~Jash~~1
+#Final bracket Losers Round 2
+NinjaLink~W~Vex Kasrani~~1
+ChuDat~W~Infinity~~1
+Lain~~Spammer~W~2
+Ksizzle~~Judge~W~2
+#Final bracket Losers Round 3
+NinjaLink~W~ChuDat~~1
+Spammer~W~Judge~~1
+#Final bracket Losers Round 4
+Dojo~W~NinjaLink~~1
+Lee Martin~~Spammer~W~2
+#Losers Finals
+Ally~W~Spammer~~1
+#Grand Finals
+Mew2King~W~Ally~~1
+
+@manual/2008-axisgaming manual-brawl-1 brawl https://liquipedia.net/smash/AxisGaming/Singles_Bracket
+#Winners Round 1
+DSF~W~Hitori~~1
+Creepy Fingers~W~Bone~~1
+David S~~Ice DX~W~2
+Prodigy Kid~~Blade Wise~W~2
+King~W~Solid~~1
+Lanuigi~~TM~W~2
+Aero~W~Dan D~~1
+KOS Kirby~~Sean~W~2
+Shadow Rob~~RIPN~W~2
+Romeo~~TC1~W~2
+JellyFish~~Havok~W~2
+Gishark~W~Corimon~~1
+Three Inch~W~iRow~~1
+ILLiterate~W~Oki~~1
+JTB~W~Soid~~1
+Hugs~~Ajax~W~2
+Chip~W~BRDY~~1
+Nanerz~W~Lit~~1
+Jem~W~AD~~1
+Question Mark~~Lucien~W~2
+Meep~W~Tutata~~1
+Levi~~Leo For The Win~W~2
+Eggz~W~Kira~~1
+D Side~~SK92~W~2
+Plank~W~Unknown Forrest~~1
+Delphiki~~Fly Amanita~W~2
+Wise~~MikeHaze~W~2
+Half Demon~~Germ~W~2
+Taunt~~Nanonoko~W~2
+Skazryk~W~Seris~~1
+Edrees~W~Slayn~~1
+Kvein S~~Futile~W~2
+#Winners Round 2
+DSF~W~Creepy Fingers~~1
+Ice DX~~Blade Wise~W~2
+King~W~TM~~1
+Aero~~Sean~W~2
+RIPN~~TC1~W~2
+Havok~W~Gishnak~~1
+Three Inch~W~ILLiterate~~1
+JTB~~Ajax~W~2
+Chip~~Nanerz~W~2
+Jem~0~Lucien~2~2
+Meep~W~Leo For The Win~~1
+Eggz~~SK92~W~2
+Plank~0~Fly Amanita~2~2
+MikeHaze~~Germ~W~2
+Nanonoko~~Skazyrk~W~2
+Edrees~~Futile~W~2
+#Winners Round 3
+DSF~W~Blade Wise~~1
+King~~Sean~W~2
+TC1~W~Havok~~1
+Three Inch~W~Ajax~~1
+Nanerz~~Lucien~W~2
+Meep~~SK92~W~2
+Fly Amanita~~Germ~W~2
+Skazryk~~Futile~W~2
+#Winners Round 4
+DSF~W~Sean~~1
+TC1~2~Three Inch~0~1
+Lucien~~SK92~W~2
+Germ~~Futile~W~2
+#Winners Round 5
+DSF~W~TC1~~1
+SK92~~Futile~W~2
+#Losers Round 1
+Geeky~0~ROFL~2~2
+EmoMoney~~Gamble~W~2
+Lit~~BarDull~W~2
+MassiveGuns~W~AD~~1
+Seris~~Taunt~W~2
+Sake Hato~W~The Marth Madness~~1
+Snap~~T!mmy~W~2
+Sky~W~Wise~~1
+Ame2~~Solid~W~2
+KOS Kirby~W~Gin Ichimaru~~1
+Bone~~Hitori~W~2
+CBK~~Zelgadis~W~2
+Oki~~OBEY~W~2
+Hugs~W~Soid~~1
+Raven~~Shadow Rob~W~2
+Corimon~W~Ralic~~1
+#Losers Round 2
+Gishnak~~ROFL~W~2
+RIPN~~Gamble~W~2
+JTB~W~BarDull~~1
+ILLiterate~~MassiveGuns~W~2
+Ice DX~~Taunt~W~2
+Creepy Fingers~W~Sake Hato~~1
+Aero~W~T!mmy~~1
+TM~~Sky~W~2
+MikeHaze~W~Solid~~1
+Plank~2~KOS Kirby~1~1
+Edrees~W~Hitori~~1
+Nanonoko~~Zelgadis~W~2
+Jem~W~OBEY~~1
+Chip~W~Hugs~~1
+Eggz~~Shadow Rob~W~2
+Leo For The Win~W~Corimon~~1
+#Losers Round 3
+ROFL~~Gamble~W~2
+JTB~W~MassiveGuns~~1
+Taunt~~Creepy Fingers~W~2
+Aero~W~Sky~~1
+MikeHaze~~Plank~W~2
+Edrees~W~Zelgadis~~1
+Jem~W~Chip~~1
+Shadow Rob~W~Leo For The Win~~1
+#Losers Round 4
+Meep~W~Gamble~~1
+Nanerz~2~JTB~0~1
+Skazryk~~Creepy Fingers~W~2
+Fly Amanita~~Aero~W~2
+King~~Plank~W~2
+Blade Wise~~Edrees~W~2
+Ajax~W~Jem~~1
+Havok~~Shadow Rob~W~2
+#Losers Round 5
+Meep~~Nanerz~W~2
+Creepy Fingers~~Aero~W~2
+Plank~W~Edrees~~1
+Ajax~~Shadow Rob~W~2
+#Losers Round 6
+Three Inch~W~Nanerz~~1
+Sean~~Aero~W~2
+Germ~~Plank~W~2
+Lucien~~Shadow Rob~W~2
+#Losers Round 7
+Three Inch~~Aero~W~2
+Plank~2~Shadow Rob~0~1
+#Losers Round 8
+SK92~2~Aero~1~1
+TC1~0~Plank~2~2
+#Losers Finals
+DSF~3~Plank~1~1
+#Grand Finals
+Futile~/~DSF~W/W~2
+
+@manual/2010-bushido-brawl-impact-1 manual-brawl-1 brawl https://liquipedia.net/smash/Bushido_Impact/Brawl/1/Singles_Bracket
+#Winners Round 1
+Calzorz~W~Reil~~1
+Miquel~~iStudying~W~2
+Luigi player~W~Garian~~1
+Vahn~~Deimos~W~2
+Staco~W~Glarion~~1
+FOU~~Rydle~W~2
+Leon~W~Milo~~1
+Killone~~Karma~W~2
+Ezgon~~Bjay~W~2
+Cenel~W~Bloody~~1
+Satanpuuu~~Marcbri~W~2
+Crysis~W~Yikarur~~1
+Nexoult~~Glutonny~W~2
+Biggad~~S1-14~W~2
+Haze~~Zudenka~W~2
+Joannett88~W~Zulu~~1
+Chair~~Chiiiiiiiii~W~2
+Kasper~W~UduX~~1
+Inter~~Jumpman~W~2
+Ally~W~Joseph~~1
+Yass~~JuJux~W~2
+Greward~W~Izaw~~1
+C7A~~Scarhi~W~2
+Mr.R~W~Unskilled~~1
+Charby~W~ThePunisher~~1
+L!nk~W~Anaky~~1
+Raw!~W~KiyoRsu~~1
+Neath~~Gregs~W~2
+Kaak~~Neji~W~2
+Kitsune-kun~~Kaos~W~2
+Manko~W~Tenzo~~1
+Semifer~W~T~~1
+#Winners Round 2
+Calzorz~W~iStudying~~1
+Luigi player~W~Deimos~~1
+Staco~~Rydle~W~2
+Leon~W~Karma~~1
+Bjay~W~Cenel~~1
+Marcbri~~Crysis~W~2
+Glutonny~W~S1-14~~1
+Zudenka~~Joannett88~W~2
+Chiiiiiiiii~~Kasper~W~2
+Jumpman~~Ally~W~2
+JuJux~~Greward~W~2
+Scarhi~~Mr.R~W~2
+Charby~~L!nk~W~2
+Raw!~~Gregs~W~2
+Neji~~Kaos~W~2
+Manko~W~Semifer~~1
+#Winners Round 3
+Calzorz~~Luigi player~W~2
+Rydle~~Leon~W~2
+Bjay~W~Crysis~~1
+Glutonny~W~Joannett88~~1
+Kasper~~Ally~W~2
+Greward~W~Mr.R~~1
+L!nk~~Gregs~W~2
+Kaos~W~Manko~~1
+#Winners Round 4
+Luigi player~~Leon~W~2
+Bjay~~Glutonny~W~2
+Ally~W~Greward~~1
+Gregs~~Kaos~W~2
+#Winners Round 5
+Leon~0~Glutonny~2~2
+Ally~2~Kaos~1~1
+#Losers Round 1
+Reil~~Miquel~W~2
+Garian~W~Vahn~~1
+Glarion~W~FOU~~1
+Milo~~Killone~W~2
+Ezgon~~Bloody~W~2
+Satanpuuu~~Yikarur~W~2
+Nexoult~~Biggad~W~2
+Haze~~Zulu~W~2
+Chair~~UduX~W~2
+Inter~W~Joseph~~1
+Yass~~Izaw~W~2
+C7A~W~Unskilled~~1
+ThePunisher~~Anaky~W~2
+KiyoRsu~~Neath~W~2
+Kaak~W~Kitsune-kun~~1
+Tenzo~~T~W~2
+#Losers Round 2
+Cenel~~Miquel~W~2
+Marcbri~W~Garian~~1
+S1-14~~Glarion~W~2
+Zudenka~W~Killone~~1
+iStudying~W~Bloody~~1
+Deimos~W~Yikarur~~1
+Staco~W~Biggad~~1
+Karma~~Zulu~W~2
+Charby~W~UduX~~1
+Raw!~~Inter~W~2
+Neji~W~Izaw~~1
+Semifer~W~C7A~~1
+Chiiiiiiiii~~Anaky~W~2
+Jumpman~~Neath~W~2
+JuJux~~Kaak~W~2
+Scarhi~~T~W~2
+#Losers Round 3
+Miquel~~Marcbri~W~2
+Glarion~~Zudenka~W~2
+iStudying~W~Deimos~~1
+Staco~W~Zulu~~1
+Charby~~Inter~W~2
+Neji~W~Semifer~~1
+Anaky~~Neath~W~2
+Kaak~~T~W~2
+#Losers Round 4
+Mr.R~W~Marcbri~~1
+Kasper~2~Zudenka~0~1
+Manko~~iStudying~W~2
+L!nk~~Staco~W~2
+Rydle~W~Inter~~1
+Calzorz~W~Neji~~1
+Joannett88~~Neath~W~2
+Crysis~~T~W~2
+#Losers Round 5
+Mr.R~W~Kasper~~1
+iStudying~~Staco~W~2
+Rydle~~Calzorz~W~2
+Neath~W~T~~1
+#Losers Round 6
+Bjay~~Mr.R~W~2
+Luigi player~0~Staco~2~2
+Gregs~~Calzorz~W~2
+Greward~W~Neath~~1
+#Losers Round 7
+Mr.R~2~Staco~1~1
+Calzorz~1~Greward~2~2
+#Losers Round 8
+Kaos~2~Mr.R~0~1
+Leon~2~Greward~0~1
+#Losers Finals
+Glutonny~3~Kaos~1~1
+#Grand Finals
+Ally~1/2~Glutonny~3/3~2
+
+@manual/2010-pound-4 manual-brawl-2 brawl https://liquipedia.net/smash/Pound/4/Brawl/Singles_Bracket
+#Winners Round 1
+Takeover~~Bizkit~W~2
+InfernAngelis~~NEO~W~2
+Xzax~~ChuDat~W~2
+Judge~W~Hyro~~1
+Logic~W~Pierce~~1
+Boss~W~Hunger~~1
+Jash~W~Mikey Lenetia~~1
+LingLing~~Djlskascribble~W~2
+Cable~W~HAT~~1
+Sanoscy~0~AlphaZealot~2~2
+Jtails~~Omni~W~2
+Smash64~~Ksizzle~W~2
+Dapuffster~W~Junebug~~1
+Y.B.M.~W~Bloodcross~~1
+lain~W~DMBrandom~~1
+Atomsk~W~Stingers~~1
+#Winners Round 2
+Lee Martin~W~Bizkit~~1
+Shadow~W~NEO~~1
+DEHF~1~ChuDat~2~2
+Zucco~~Judge~W~2
+NinjaLink~W~Logic~~1
+Seibrik~W~Boss~~1
+Malcolm~2~Jash~0~1
+Mew2King~W~Djlskascribble~~1
+Cable~~Ally~W~2
+AlphaZealot~1~Vex Kasrani~2~2
+Omni~~Dekar~W~2
+Ksizzle~W~Candy~~1
+Dapuffster~~Fatal~W~2
+Y.B.M.~1~ADHD~2~2
+lain~W~CO18~~1
+Atomsk~~Havok~W~2
+#Winners Round 3
+Lee Martin~~Shadow~W~2
+ChuDat~~Judge~W~2
+NinjaLink~W~Seibrik~~1
+Malcolm~~Mew2King~W~2
+Ally~2~Vex Kasrani~1~1
+Dekar~~Ksizzle~W~2
+Fatal~~ADHD~W~2
+lain~~Havok~W~2
+#Winners Round 4
+Shadow~W~Judge~~1
+NinjaLink~0~Mew2King~2~2
+Ally~0~Ksizzle~2~2
+ADHD~2~Havok~0~1
+#Winners Round 5
+Shadow~~Mew2King~W~2
+Ksizzle~0~ADHD~3~2
+#Losers Round 1
+Takeover~~Logic~W~2
+InfernAngelis~W~Boss~~1
+Xzax~W~Jash~~1
+Hyro~~Djlskascribble~W~2
+Pierce~~Bizkit~W~2
+Hunger~W~NEO~~1
+Mikey Lenetia~0~DEHF~2~2
+LingLing~W~Zucco~~1
+HAT~W~Dapuffster~~1
+Sanoscy~W~Y.B.M.~~1
+Jtails~~CO18~W~2
+Smash64~~Atomsk~W~2
+Junebug~~Cable~W~2
+Bloodcross~1~AlphaZealot~2~2
+DMBrandon~W~Omni~~1
+Stingers~~Candy~W~2
+#Losers Round 2
+Logic~W~InfernAngelis~~1
+Xzax~~Djlskascribble~W~2
+Bizkit~~Hunger~W~2
+DEHF~W~LingLing~~1
+HAT~~Sanoscy~W~2
+CO18~W~Atomsk~~1
+Cable~1~AlphaZealot~2~2
+DMBrandon~~Candy~W~2
+#Losers Round 3
+Dekar~~Logic~W~2
+Vex Kasrani~W~Djlskascribble~~1
+lain~W~Hunger~~1
+Fatal~~DEHF~W~2
+ChuDat~W~Sanoscy~~1
+Lee Martin~W~CO18~~1
+Malcolm~2~AlphaZealot~0~1
+Seibrik~W~Candy~~1
+#Losers Round 4
+Logic~W~Vex Kasrani~~1
+lain~W~DEHF~~1
+ChuDat~~Lee Martin~W~2
+Malcolm~~Seibrik~W~2
+#Losers Round 5
+NinjaLink~~Logic~W~2
+Judge~W~lain~~1
+Havok~W~Lee Martin~~1
+Ally~2~Seibrik~0~1
+#Losers Round 6
+Logic~~Judge~W~2
+Havok~1~Ally~2~2
+#Losers Round 7
+Ksizzle~W~Judge~~1
+Shadow~1~Ally~2~2
+#Losers Finals
+Mew2King~W~Ally~~1
+#Grand Finals
+ADHD~3~Mew2King~0~1
+
+@manual/2010-apex-2010 manual-brawl-2 brawl https://liquipedia.net/smash/Apex/2010/Brawl/Singles_Bracket
+#Winners Round 1
+Vinnie~~Vex Kasrani~W~2
+Suinoko~~Patg~W~2
+ANTi~W~Squall~~1
+lain~W~Dr. Grandpa~~1
+Fino~~Malcolm~W~2
+Boss~~Kel~W~2
+San~~Doom~W~2
+DEHF~W~Deltacod~~1
+Gnes~W~Snakeee~~1
+Sweet Pea~W~MintyFlesh~~1
+Logic~W~Chaos Marth~~1
+Blue Rougue~W~Jbandrew~~1
+Speed~~Atomsk~W~2
+HolyNightmare~~NinjaLink~W~2
+Big Lou~~Bloodcross~W~2
+Fujita~~UltimateRazer~W~2
+SK92~W~Inui~~1
+Junebug~W~CO18~~1
+Will~~Lee Martin~W~2
+Chudat~W~Nairo~~1
+Koolaid~W~TUSM~~1
+Orion~~Bill_~W~2
+RAIN~W~Bizkit~~1
+Jtails~W~Trela~~1
+Cable~~Brood~W~2
+Jerm~W~TeeVee~~1
+Swordgard~2~Shadow~1~1
+Shugo~W~Jash~~1
+Eggz~W~Zucco~~1
+Ally~W~Earth~~1
+Keitaro~W~Coney~~1
+#Winners Round 2
+Mew2King~W~Vex Kasrani~~1
+Patg~~ANTi~W~2
+lain~W~Malcolm~~1
+Kel~~Doom~W~2
+DEHF~W~Gnes~~1
+Sweet Pea~W~Logic~~1
+Blue Rouge~0~Atomsk~2~2
+NinjaLink~W~Bloodcross~~1
+UltimateRazer~W~SK92~~1
+Junebug~~Lee Martin~W~2
+Chudat~W~Koolaid~~1
+Bill_~~RAIN~W~2
+Jtails~~Brood~W~2
+Jerm~2~Swordgard~0~1
+Shugo~W~Eggz~~1
+Ally~W~Keitaro~~1
+#Winners Round 3
+Mew2King~2~ANTi~0~1
+lain~W~Doom~~1
+DEHF~2~Sweet Pea~1~1
+Atomsk~2~NinjaLink~1~1
+UltimateRazer~~Lee Martin~W~2
+Chudat~~RAIN~W~2
+Brood~W~Jerm~~1
+Shugo~~Ally~W~2
+#Winners Round 4
+Mew2King~W~lain~~1
+DEHF~2~Atomsk~1~1
+Lee Martin~W~RAIN~~1
+Brood~2~Ally~0~1
+#Winners Round 5
+Mew2King~1~DEHF~2~2
+Lee Martin~~Brood~W~2
+#Losers Round 1
+Suinoko~~Squall~W~2
+Dr. Grandpa~~Fino~W~2
+Boss~~San~W~2
+Deltacod~~Snakeee~W~2
+MintyFlesh~W~Chaos Marth~~1
+Jbandrew~~Speed~W~2
+HolyNightmare~W~Big Lou~~1
+Fujita~~Inui~W~2
+CO18~W~Will~~1
+Nairo~W~TUSM~~1
+Orion~~Bizkit~W~2
+Trela~~Cable~W~2
+TeeVee~~Shadow~W~2
+Jash~W~Zucco~~1
+Earth~W~Coney~~1
+#Losers Round 2
+Gnes~W~Vinnie~~1
+Logic~W~Squall~~1
+Blue Rouge~W~Fino~~1
+Bloodcross~0~san~2~2
+Vex Kasrani~W~Snakeee~~1
+Patg~W~MintyFlesh~~1
+Malcolm~W~Speed~~1
+Kel~~HolyNightmare~W~2
+Jtails~~Inui~W~2
+Swordgard~W~CO18~~1
+Eggz~~Nairo~W~2
+Keitaro~~Bizkit~W~2
+SK92~2~Cable~1~1
+Junebug~~Shadow~W~2
+Koolaid~~Jash~W~2
+Bill_~~Earth~W~2
+#Losers Round 3
+Gnes~2~Logic~1~1
+Blue Rouge~~san~W~2
+Vex Kasrani~2~Patg~1~1
+Malcolm~W~HolyNightmare~~1
+Inui~W~Swordgard~~1
+Nairo~~Bizkit~W~2
+SK92~~Shadow~W~2
+Jash~~Earth~W~2
+#Losers Round 4
+Chudat~1~Gnes~2~2
+UltimateRazer~1~san~2~2
+Shugo~W~Vex Kasrani~~1
+Jerm~~Malcolm~W~2
+Doom~~Inui~W~2
+ANTi~W~Bizkit~~1
+NinjaLink~~Shadow~W~2
+Sweet Pea~W~Earth~~1
+#Losers Round 5
+Gnes~0~san~2~2
+Shugo~W~Malcolm~~1
+Inui~~ANTi~W~2
+Shadow~W~Sweet Pea~~1
+#Losers Round 6
+Atomsk~2~san~0~1
+lain~2~Shugo~1~1
+Ally~2~ANTi~0~1
+RAIN~2~Shadow~1~1
+#Losers Round 7
+Atomsk~0~lain~2~2
+Ally~2~RAIN~0~1
+#Losers Round 8
+Lee Martin~2~lain~0~1
+Mew2King~2~Ally~0~1
+#Losers Finals
+Brood~3~Mew2King~2~1
+#Grand Finals
+DEHF~3~Brood~1~1
+
+@manual/2010-mlg-orlando-2010 manual-brawl-1 brawl https://liquipedia.net/smash/MLG/2010/Orlando/Singles_Bracket
+#Winners Round 5
+ADHD~W~Fatal~~1
+Ally~W~Big Lou~~1
+Tyrant~~DieSuperFly~W~2
+Mew2King~W~DEHF~~1
+#Winners Round 6
+ADHD~~Ally~W~2
+DieSuperFly~~Mew2King~W~2
+#Losers Round 5
+bschung~~Redhalberd~W~2
+CO18~W~Tearbear~~1
+Seibrik~~Felix~W~2
+MeroKnight~~DMBrandon~W~2
+Dao~~MikeHaze~W~2
+ChuDat~W~Shadow~~1
+Kismet~~Chaz~W~2
+ESAM~W~Candy~~1
+#Losers Round 6
+Nick Riddle~W~Redhalberd~~1
+DewDaDash~~CO18~W~2
+HRnut~W~Felix~~1
+Atomsk~W~DMBrandon~~1
+Havok~~MikeHaze~W~2
+LeeMartin~W~ChuDat~~1
+lain~~Chaz~W~2
+Mk18~~ESAM~W~2
+#Losers Round 7
+Nick Riddle~W~CO18~~1
+HRnut~~Atomsk~W~2
+MikeHaze~W~LeeMartin~~1
+Chaz~~ESAM~W~2
+#Losers Round 8
+DEHF~W~Nick Riddle~~1
+Tyrant~W~Atomsk~~1
+Big Lou~W~MikeHaze~~1
+Fatal~~ESAM~W~2
+#Losers Round 9
+DEHF~~Tyrant~W~2
+Big Lou~~ESAM~W~2
+#Losers Round 10
+ADHD~~Tyrant~W~2
+DieSuperFly~~ESAM~W~2
+#Placement match
+DEHF~W~Big Lou~~1
+DieSuperFly~W~ADHD~~1
+#Losers Finals
+Ally~W~Tyrant~~1
+#Grand Finals
+Mew2King~3~Ally~2~1
+
+@manual/2010-mlg-columbus-2010 manual-brawl-1 brawl https://liquipedia.net/smash/MLG/2010/Columbus/Singles_Bracket
+#Winners Round 5
+Mew2King~W~Judge~~1
+Tearbear~~Lee Martin~W~2
+Tyrant~~Nick Riddle~W~2
+San~1~Ally~2~2
+#Winners Round 6
+Mew2King~W~Lee Martin~~1
+Nick Riddle~2~Ally~0~1
+#Losers Round 5
+Jash~~Dojo~W~2
+Blue Rogue~~DEHF~W~2
+Grimace~~choice~W~2
+CO18~W~NinjaLink~~1
+Shugo~W~Jem.~~1
+Bizkit~W~Fino~~1
+Ook~2~mikeHAZE~1~1
+lain~~Boss~W~2
+#Losers Round 6
+Havok~~Dojo~W~2
+Atomsk~W~DEHF~~1
+Broccoli Kong~~choice~W~2
+ESAM~W~CO18~~1
+Seibrik~W~Shugo~~1
+Shaky~W~Bizkit~~1
+Rich Brown~W~Ook~~1
+Gnes~W~Boss~~1
+#Losers Round 7
+Dojo~W~Atomsk~~1
+choice~~ESAM~W~2
+Seibrik~~Shaky~W~2
+Rich Brown~~Gnes~W~2
+#Losers Round 8
+San~~Dojo~W~2
+Tyrant~~ESAM~W~2
+Tearbear~2~Shaky~1~1
+Judge~~Gnes~W~2
+#Losers Round 9
+Dojo~W~ESAM~~1
+Tearbear~~Gnes~W~2
+#Losers Round 10
+Lee Martin~W~Dojo~~1
+Ally~2~Gnes~2~1
+#Losers Finals
+Nick Riddle~0~Ally~4~2
+#Grand Finals
+Mew2King~3~Ally~1~1

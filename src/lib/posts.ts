@@ -11,6 +11,7 @@ import type { PostMediaItem } from "./postMedia";
 import { avatarUrl } from "./avatarLinks";
 import { regionName } from "./regions";
 import { hotScore, type ThreadSort, type TopWindow } from "./threadRank";
+import { CLIPS_OF_WEEK_DAYS, pickClipsOfWeek } from "./clipsOfWeek";
 import { createClient } from "./supabase/server";
 import { createGuestClient } from "./supabase/guest";
 import { cacheLife } from "next/cache";
@@ -724,6 +725,54 @@ async function reelPostVideoIds(games: string[]): Promise<string[]> {
     .limit(60);
   if (error) throw error;
   return (data ?? []).map((r) => r.id as string);
+}
+
+/**
+ * "Clips of the week" (round 751): the most liked clip posts of the last 7 days, one per player, best
+ * first. The posts are read as the viewer, so blocks, mutes and the table's rules apply.
+ */
+export async function getClipsOfWeek(game: FeedGame | undefined, userId: string | null): Promise<Post[]> {
+  warmMutes(userId);
+  const posts = await getPostsByIds(await clipsOfWeekIds(game ?? null), userId);
+  return withoutMuted(posts.filter((p) => !p.spoiler && !p.removedReason), userId);
+}
+
+/**
+ * The week's picks, as ids. Counted from posts anyone can see (a guest's view), so the answer is the
+ * same for everybody: kept for 10 minutes and shared. A teen's posts are hidden from guests, so they
+ * are never picked; that also keeps teens out of a spotlight.
+ */
+async function clipsOfWeekIds(game: FeedGame | null): Promise<string[]> {
+  "use cache: remote";
+  cacheLife({ stale: 300, revalidate: 600, expire: 3600 });
+  const since = new Date(Date.now() - CLIPS_OF_WEEK_DAYS * 86400e3).toISOString();
+  let q = createGuestClient()
+    .from("posts")
+    .select("id, author_id, body, like_count, reaction_count, created_at, videos:post_videos ( status )")
+    .is("parent_id", null)
+    .is("removed_at", null)
+    .is("ruleset_id", null)
+    .is("set_ref_id", null)
+    .is("reel_clip_id", null)
+    .eq("spoiler", false)
+    .gt("created_at", since)
+    .or("like_count.gt.0,reaction_count.gt.0");
+  if (game) q = q.eq("game", game);
+  const { data, error } = await q.order("like_count", { ascending: false }).limit(300);
+  if (error) {
+    cacheLife("seconds"); // a failed read isn't kept as "no clips" for minutes
+    return [];
+  }
+  return pickClipsOfWeek(
+    (data ?? []).map((r) => ({
+      id: r.id,
+      authorId: r.author_id,
+      body: r.body,
+      likes: r.like_count + r.reaction_count,
+      createdAt: r.created_at,
+      hasVideo: (r.videos ?? []).some((v) => v.status === "ready"),
+    })),
+  );
 }
 
 /** Recent posts tagged with a character (resource hub). */

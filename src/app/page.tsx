@@ -23,6 +23,7 @@ import MySetsTeaser from "@/components/mysets/MySetsTeaser";
 import { getMajors, majorsFor, refreshMajorsIfStale } from "@/lib/majors";
 import { GAMES, gamesFor } from "@/lib/games";
 import { getMyGames, getMyHomeCity, needsProfile } from "@/lib/viewer";
+import ClipsOfWeek from "@/components/feed/ClipsOfWeek";
 import { FeedSkeleton } from "@/components/ui/Skeleton";
 import GuestWelcome from "@/components/GuestWelcome";
 import FeedStarter from "@/components/feed/FeedStarter";
@@ -232,6 +233,13 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
           <p className="text-sm text-muted">{t("feed.guestJoin")}</p>
           <Link href="/signin" className="shrink-0 btn btn-md btn-primary btn-hero">{t("feed.join")}</Link>
         </div>
+      )}
+
+      {/* Clips of the week (round 751): the most liked clips players posted in the last 7 days. */}
+      {view === "for_you" && pageNum === 0 && !before && (
+        <Suspense fallback={null}>
+          <ClipsOfWeek game={game} userId={userId} />
+        </Suspense>
       )}
 
       {/* A quiet feed (early days): top clips, this week's events and a nudge to post, instead of emptiness. */}

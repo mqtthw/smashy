@@ -881,6 +881,8 @@ export const en = {
   "feed.clips.title": "Top clips right now",
   "feed.clips.watch": "Watch Reels →",
   "feed.clips.clip": "Clip",
+  "feed.clipsWeek.title": "Clips of the week",
+  "feed.clipsWeek.sub": "The most liked clips players posted in the last 7 days",
   "feed.card.of": "of {n}",
   "feed.card.signedUp": "Signed up",
   "feed.card.verified": "✓ verified on start.gg",

@@ -36,6 +36,8 @@ export const feedFr: Record<keyof typeof feedEn, string> = {
   "feed.clips.title": "Les meilleurs clips du moment",
   "feed.clips.watch": "Voir les Reels →",
   "feed.clips.clip": "Clip",
+  "feed.clipsWeek.title": "Clips de la semaine",
+  "feed.clipsWeek.sub": "Les clips les plus aimés publiés par les joueurs ces 7 derniers jours",
 
   // A post
   "feed.card.of": "sur {n}",

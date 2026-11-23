@@ -880,6 +880,8 @@ export const fr = {
   "feed.clips.title": "Les meilleurs clips du moment",
   "feed.clips.watch": "Voir les Reels →",
   "feed.clips.clip": "Clip",
+  "feed.clipsWeek.title": "Clips de la semaine",
+  "feed.clipsWeek.sub": "Les clips les plus aimés publiés par les joueurs ces 7 derniers jours",
   "feed.card.of": "sur {n}",
   "feed.card.signedUp": "Inscrit",
   "feed.card.verified": "✓ vérifié sur start.gg",
