@@ -4,7 +4,6 @@
 // posts and profile stay as they are (remove those separately in Reports if needed). Who suspended them,
 // when and why is kept on the account itself.
 import "server-only";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "./supabase/admin";
 
 const FOREVER = "876000h"; // ~100 years
@@ -60,8 +59,7 @@ export async function suspendAccount(id: string, reason: string, by: string) {
  * its token lasts. The ban above is what suspends; a failure here is logged, not thrown.
  */
 async function listAsSuspended(id: string, suspended: boolean) {
-  // Loosely typed until the database types are made again after the migration.
-  const table = (createAdminClient() as unknown as SupabaseClient).from("suspended_accounts");
+  const table = createAdminClient().from("suspended_accounts");
   const { error } = suspended ? await table.upsert({ user_id: id }, { onConflict: "user_id" }) : await table.delete().eq("user_id", id);
   if (error) console.error("Updating the suspended list failed", error.message);
 }

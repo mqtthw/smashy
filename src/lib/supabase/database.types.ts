@@ -4578,6 +4578,21 @@ export type Database = {
         }
         Relationships: []
       }
+      suspended_accounts: {
+        Row: {
+          suspended_at: string
+          user_id: string
+        }
+        Insert: {
+          suspended_at?: string
+          user_id: string
+        }
+        Update: {
+          suspended_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       feed_items: {
