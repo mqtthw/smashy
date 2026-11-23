@@ -101,7 +101,7 @@ export function apiMajor(m: Major) {
     entrants: m.entrants,
     city: m.city,
     country: m.country,
-    imageUrl: m.imageUrl,
+    imageUrl: m.imageUrl?.startsWith("/") ? site(m.imageUrl) : m.imageUrl, // parry.gg majors: a picture Smashy serves itself
     live: m.live,
   };
 }

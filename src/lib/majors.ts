@@ -255,7 +255,9 @@ export function parryggToMajorRow(t: ParryggTournament, opts: { force?: boolean;
     entrants: top || null,
     city: t.city,
     country: t.country,
-    image_url: null, // cards show a small square picture; parry.gg's are banners (and from a host the image optimizer doesn't allow)
+    // A small square still made by Smashy from parry.gg's picture (round 725): parry.gg's own files can be
+    // huge animated banners (Blitz Box's is 19 MB), so cards showed no picture at all.
+    image_url: t.avatarUrl || t.bannerUrl ? `/api/parrygg-image/${t.slug}/square` : null,
     stream_source: null,
     stream_name: null,
     timezone: t.timezone,

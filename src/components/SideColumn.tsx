@@ -51,7 +51,9 @@ export default function SideColumn() {
     return () => media.removeEventListener("change", load);
   }, []);
 
-  if (!data) return null;
+  // Until the lists arrive, an empty column of the same width holds the space (round 723): the page used to
+  // be centered without it, then jump 160 px to the left when it appeared, on every page load.
+  if (!data) return <div aria-hidden="true" className="hidden w-80 shrink-0 print:hidden xl:block" />;
   const events = [...data.live.map((e) => ({ e, live: true })), ...data.next.map((e) => ({ e, live: false }))];
 
   return (

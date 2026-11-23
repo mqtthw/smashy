@@ -690,22 +690,38 @@ export async function getPostsByIds(ids: string[], userId: string | null): Promi
 export async function getReelPostVideos(games: readonly string[], userId: string | null): Promise<Post[]> {
   if (!games.length) return [];
   warmMutes(userId);
-  const supabase = await dbFor(userId);
+  // The candidates come from a list shared by everyone (round 724), so only the posts themselves are read
+  // per visit, as the viewer: the table's rules still decide who sees what.
+  const posts = await getPostsByIds(await reelPostVideoIds([...games].sort()), userId);
+  // Checked again on the fresh rows: the shared list can be a minute old.
+  return withoutMuted(posts.filter((p) => p.video && p.video.durationMs <= 60_000 && !p.spoiler && !p.removedReason), userId);
+}
+
+/**
+ * Ids of the posts whose video could go in Reels for these games, newest 60. The same for every viewer, so
+ * it's kept for a minute and shared by every server (round 724): signed in, Reels used to wait for this
+ * lookup and then for the posts, one after the other, on every visit. Read with the admin connection so a
+ * signed-in teen's posts are candidates too; nothing but ids leaves here, and getPostsByIds reads each post
+ * as the viewer.
+ */
+async function reelPostVideoIds(games: string[]): Promise<string[]> {
+  "use cache: remote";
+  cacheLife({ stale: 30, revalidate: 60, expire: 600 });
+  const { createAdminClient } = await import("./supabase/admin");
   const since = new Date(Date.now() - 30 * 86400e3).toISOString();
-  const { data, error } = await supabase
+  const { data, error } = await createAdminClient({ forPage: true })
     .from("posts")
     .select("id, videos:post_videos!inner ( duration_ms )")
     .is("parent_id", null)
     .is("removed_at", null)
     .eq("spoiler", false)
-    .in("game", [...games])
+    .in("game", games)
     .lte("videos.duration_ms", 60_000)
     .gt("created_at", since)
     .order("created_at", { ascending: false })
     .limit(60);
   if (error) throw error;
-  const posts = await getPostsByIds((data ?? []).map((r) => r.id as string), userId);
-  return withoutMuted(posts.filter((p) => p.video && p.video.durationMs <= 60_000), userId);
+  return (data ?? []).map((r) => r.id as string);
 }
 
 /** Recent posts tagged with a character (resource hub). */

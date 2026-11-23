@@ -45,6 +45,11 @@ describe("parry.gg majors", () => {
     expect(isParryggMajor("genesis-11")).toBe(false);
   });
 
+  it("gives the card a small picture Smashy makes from parry.gg's banner, or none when there isn't one (round 725)", () => {
+    expect(parryggToMajorRow(blitzBox(), { nowSec: NOW })?.image_url).toBeNull();
+    expect(parryggToMajorRow(blitzBox({ bannerUrl: "https://parrygg.b-cdn.net/x.gif" }), { nowSec: NOW })?.image_url).toBe("/api/parrygg-image/blitz-box-01a1c611/square");
+  });
+
   it("needs the usual entrant bar when parry.gg doesn't feature it", () => {
     expect(parryggToMajorRow(blitzBox({ featured: false }), { nowSec: NOW })).toBeNull();
     const big = blitzBox({ featured: false, events: [{ ...blitzBox().events[0], entrants: 250 }] });

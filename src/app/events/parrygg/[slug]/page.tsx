@@ -7,6 +7,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import GameBadge from "@/components/GameBadge";
+import NearbyEvents from "@/components/events/NearbyEvents";
+import { REGIONS, regionFromGeo } from "@/lib/regions";
+import { getUserId } from "@/lib/supabase/server";
 import { LiveDot } from "@/components/majors/MajorParts";
 import NewTab from "@/components/ui/NewTab";
 import ShareButton from "@/components/ui/ShareButton";
@@ -29,6 +32,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return pageMeta(t.name, [when, t.city, "on parry.gg"].filter(Boolean).join(" · "));
 }
 
+/** "More smash in Florida": other upcoming tournaments in the same region, as on start.gg tournaments' pages. */
+async function ParryNearby({ region, slug, lang }: { region: string; slug: string; lang: string }) {
+  const [userId, tr] = await Promise.all([getUserId(), getT()]);
+  return <NearbyEvents region={region} slug={slug} signedIn={!!userId} lang={lang} t={tr} />;
+}
+
 async function Details({ params }: Props) {
   const { slug } = await params;
   const [t, major, tr, lang] = await Promise.all([
@@ -45,10 +54,19 @@ async function Details({ params }: Props) {
   // Smash events first, biggest first; other games after.
   const events = [...t.events].sort((a, b) => Number(!a.game) - Number(!b.game) || b.entrants - a.entrants);
   const firstStarted = events.find((e) => e.game && e.started);
+  const hasPicture = !!(t.bannerUrl || t.avatarUrl);
+  // parry.gg names the state ("Florida"); Smashy's regions go by code ("US-FL").
+  const area = REGIONS.find((r) => r.code.startsWith(`${t.country}-`) && r.name === t.region)?.code.split("-")[1] ?? null;
+  const region = t.online ? null : regionFromGeo(t.country, area);
 
   return (
     <LangProvider lang={lang}>
       <div className="flex flex-col gap-5 p-4">
+        {/* The organizer's banner, as a small still Smashy makes from it (round 725). */}
+        {hasPicture && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={`/api/parrygg-image/${t.slug}/banner`} alt="" width={960} height={540} className="aspect-video w-full rounded-xl border border-line bg-surface object-cover" />
+        )}
         <div className="min-w-0">
           {(major || live) && (
             <div className="mb-1 flex items-center gap-1.5">
@@ -62,6 +80,7 @@ async function Details({ params }: Props) {
               {formatEventDate(t.startAt, t.timezone, lang)} · {formatEventTime(t.startAt, t.timezone, lang)}
             </p>
           )}
+          {t.attendees > 0 && <p className="text-sm text-muted">{tr(t.over ? "browse.entrants" : "browse.event.signedUp", { n: t.attendees })}</p>}
         </div>
 
         {firstStarted && (
@@ -121,6 +140,12 @@ async function Details({ params }: Props) {
               ))}
             </ul>
           </section>
+        )}
+
+        {region && (
+          <Suspense fallback={null}>
+            <ParryNearby region={region} slug={PARRYGG_PREFIX + t.slug} lang={lang} />
+          </Suspense>
         )}
       </div>
     </LangProvider>
