@@ -7,6 +7,8 @@ Shroomed~2~Axe~1~1
 Reno~W~PB＆J~~1
 Ether~~Mr. F~W~2
 Tie~~Tied~~0
+Mew2King~FF~Hax~W~2
+Toph~W~Hello~-~1
 #Grand Finals
 Wobbles~0/1~Mango~3/3~2
 `;

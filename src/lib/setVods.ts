@@ -110,8 +110,12 @@ export async function describeSet(source: VodSource, setId: string): Promise<Vod
       game: event.game,
       p1Tag: tag(set.p[0].id),
       p2Tag: tag(set.p[1].id),
-      p1Player: set.p[0].id,
-      p2Player: set.p[1].id,
+      // The entry id is the member's account id. It's saved only for players a guest can see (round 738):
+      // a teen's tag was already saved as "Player", but the id beside it still said which account it was.
+      // (A player whose profile a guest can't read comes back with no handle; walk-ins have none either,
+      // and their ids aren't needed.)
+      p1Player: set.p[0].id && players.get(set.p[0].id)?.handle ? set.p[0].id : null,
+      p2Player: set.p[1].id && players.get(set.p[1].id)?.handle ? set.p[1].id : null,
       tournament: event.name,
       round,
       playedAt: event.startsAt,

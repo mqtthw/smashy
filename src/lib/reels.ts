@@ -468,8 +468,7 @@ async function liveYouTubeShorts(key: string): Promise<Reel[]> {
 async function mayAskYouTube(): Promise<boolean> {
   if (!takeLiveSearch(Date.now())) return false;
   try {
-    // "as never": the counter is newer than the generated database types until they're made again.
-    const { data, error } = await createAdminClient({ forPage: true }).rpc("take_daily_allowance" as never, { p_what: "youtube_search", p_max: LIVE_SEARCHES_SITE_WIDE } as never);
+    const { data, error } = await createAdminClient({ forPage: true }).rpc("take_daily_allowance", { p_what: "youtube_search", p_max: LIVE_SEARCHES_SITE_WIDE });
     if (error) return true;
     return data === true;
   } catch {

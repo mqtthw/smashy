@@ -8,7 +8,8 @@
 //   #Winners Round 1
 //   Codi~1~Vist~2~2
 // A set is "top~score~bottom~score~winner": a score of "W" (or none) is a win with no score; "1/1" against
-// "3/3" is a grand final and its reset, saved as two sets. Sets whose winner can't be told are left out.
+// "3/3" is a grand final and its reset, saved as two sets. Sets whose winner can't be told, and forfeits
+// ("FF", "DQ", "-"), are left out.
 // Fullwidth ＆ ？ ＝ (the browser read swaps them in) become & ? = again.
 
 import { readFileSync } from "node:fs";
@@ -42,6 +43,8 @@ export function parseBrackets(text) {
     const p2 = plain(b);
     const s1 = sa.split("/");
     const s2 = sb.split("/");
+    // A forfeit, disqualification or walkover ("FF", "DQ", "-") wasn't played: left out, as start.gg's are.
+    if ([...s1, ...s2].some((s) => /^(ff|dq|-)$/i.test(s.trim()))) continue;
     const sets = Math.max(s1.length, s2.length);
     for (let i = 0; i < sets; i++) {
       const x = num(s1[i]);

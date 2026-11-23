@@ -162,3 +162,5 @@
 20270125430000_event_interested.sql
 20270125440000_history_old_sets_2013_melee.sql
 20270125450000_daily_allowance.sql
+20270125460000_history_old_sets_2014_melee.sql
+20270125470000_history_old_sets_2011_2012_melee.sql

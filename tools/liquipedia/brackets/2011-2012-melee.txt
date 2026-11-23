@@ -1,0 +1,851 @@
+@manual/2012-melee-fc10r-legacy manual-melee-1 melee https://liquipedia.net/smash/MELEE-FC/10R_Legacy/Singles_Bracket
+#Winners Round 1
+Hungrybox~2~Drephen~0~1
+CunningKitsune~0~Darkrain~2~2
+Trail~2~The Good Doctor~0~1
+Meta~1~Chillindude~2~2
+Axe~0~Kage~2~2
+Little England~2~Swiftbass~1~1
+Kels~2~MattDotZeb~1~1
+baka4moe~2~G$~1~1
+Shroomed~2~Tink~0~1
+DoH~1~PikaChad~2~2
+SFAT~2~Mafia~0~1
+Nite~0~Hax~2~2
+VaNz~2~Jake13~0~1
+Mojo~2~Vudujin~1~1
+Mango~2~BigD~0~1
+Frootloop~0~Duck~2~2
+#Winners Round 2
+Hungrybox~2~Darkrain~0~1
+Trail~0~Chillindude~2~2
+Kage~1~Little England~2~2
+Kels~2~baka4moe~1~1
+Shroomed~1~PikaChad~2~2
+SFAT~2~Hax~0~1
+VaNz~2~Mojo~1~1
+Mango~2~Duck~0~1
+#Winners Round 3
+Hungrybox~2~Chillindude~0~1
+Little England~0~Kels~2~2
+PikaChad~0~SFAT~2~2
+VaNz~0~Mango~2~2
+#Losers Round 1
+Drephen~1~CunningKitsune~2~2
+The Good Doctor~0~Meta~2~2
+Axe~2~Swiftbass~0~1
+MattDotZeb~0~G$~2~2
+Tink~1~DoH~2~2
+Mafia~0~Nite~2~2
+Jake13~2~Vudujin~1~1
+BigD~1~Frootloop~2~2
+#Losers Round 2
+Shroomed~2~CunningKitsune~0~1
+Hax~2~Meta~1~1
+Mojo~0~Axe~2~2
+Duck~2~G$~0~1
+Darkrain~2~DoH~0~1
+Trail~2~Nite~0~1
+Kage~2~Jake13~0~1
+baka4moe~2~Frootloop~1~1
+#Losers Round 3
+Shroomed~0~Hax~2~2
+Axe~2~Duck~0~1
+Darkrain~2~Trail~1~1
+Kage~2~baka4moe~0~1
+#Losers Round 4
+Chillindude~0~Hax~2~2
+Little England~0~Axe~2~2
+PikaChad~0~Darkrain~2~2
+VaNz~0~Kage~2~2
+
+@manual/2012-apex-2012 manual-melee-1 melee https://liquipedia.net/smash/Apex/2012/Melee/Singles_Bracket
+#Winners Round 1
+Armada~W~Stabbedbyanipple~~1
+Bladewise~~S2J~W~2
+Plup~~Reno~W~2
+VaNz~2~Cyrain~0~1
+Shroomed~2~Teczero~0~1
+Azen~1~IB~2~2
+Linguini~0~KoreanDJ~2~2
+Axe~1~StricNYN3~2~2
+SFAT~W~Ravenlord~~1
+ChuDat~W~th0rn~~1
+Westballz~1~Silent Wolf~2~2
+Dr. PeePee~W~Zoso~~1
+Mew2King~2~Ambix~0~1
+Leffen~2~Darrell~0~1
+Wobbles~W~Unknown522~~1
+Darc~W~HugS~~1
+Amsah~W~Weon-X~~1
+MacD~W~Swiftbass~~1
+Zhu~W~Vist~~1
+Redd~~Hax~W~2
+Hungrybox~2~Eggz~0~1
+Eggm~W~Tang~~1
+HBK~1~DaShizWiz~2~2
+KirbyKaze~W~MattDotZeb~~1
+Jman~1~Chillindude~2~2
+Kage~2~PC Chris~1~1
+Lovage~2~Druggedfox~1~1
+Javi~2~Cactuar~1~1
+Tope~2~Tai~1~1
+Colbol~~PewPewU~W~2
+Sol~~Ice~W~2
+Mango~W~Vudujin~~1
+#Winners Round 2
+Armada~2~S2J~0~1
+Reno~~VaNz~W~2
+Shroomed~2~IB~0~1
+KoreanDJ~2~StricNYN3~0~1
+SFAT~2~ChuDat~1~1
+Silent Wolf~0~Dr. PeePee~2~2
+Mew2King~2~Leffen~1~1
+Wobbles~2~Darc~1~1
+Amsah~0~MacD~2~2
+Zhu~2~Hax~1~1
+Hungrybox~W~Eggm~~1
+DaShizWiz~0~KirbyKaze~2~2
+Chillindude~2~Kage~0~1
+Lovage~2~Javi~0~1
+Tope~W~PewPewU~~1
+Ice~0~Mango~2~2
+#Winners Round 3
+Armada~2~VaNz~1~1
+Shroomed~2~KoreanDJ~0~1
+SFAT~0~Dr. PeePee~2~2
+Mew2King~0~Wobbles~2~2
+MacD~2~Zhu~1~1
+Hungrybox~1~KirbyKaze~2~2
+Chillindude~0~Lovage~2~2
+Tope~0~Mango~2~2
+#Winners Round 4
+Armada~2~Shroomed~1~1
+Dr. PeePee~2~Wobbles~0~1
+MacD~1~KirbyKaze~2~2
+Lovage~~Mango~W~2
+#Winners Round 5
+Armada~3~Dr. PeePee~1~1
+KirbyKaze~0~Mango~3~2
+#Losers Round 1
+Stabbedbyanipple~~Bladewise~W~2
+Plup~2~Cyrain~0~1
+Teczero~W~Azen~~1
+Linguini~1~Axe~2~2
+Ravenlord~~th0rn~W~2
+Westballz~W~Zoso~~1
+Ambix~~Darrell~W~2
+Unknown522~W~HugS~~1
+Weon-X~W~Swiftbass~~1
+Vist~~Redd~W~2
+Eggz~W~Tang~~1
+HBK~W~MattDotZeb~~1
+Jman~W~PC Chris~~1
+Druggedfox~2~Cactuar~0~1
+Tai~W~Colbol~~1
+Sol~W~Vudujin~~1
+#Losers Round 2
+ChuDat~~Bladewise~W~2
+Silent Wolf~2~Plup~1~1
+Leffen~0~Teczero~2~2
+Darc~2~Axe~0~1
+S2J~2~th0rn~0~1
+Reno~~Westballz~W~2
+IB~2~Darrell~1~1
+StricNYN3~1~Unknown522~2~2
+Kage~~Weon-X~W~2
+Javi~W~Redd~~1
+PewPewU~W~Eggz~~1
+Ice~1~HBK~2~2
+Amsah~1~Jman~2~2
+Hax~2~Druggedfox~1~1
+Eggm~W~Tai~~1
+DaShizWiz~W~Sol~~1
+#Losers Round 3
+Bladewise~~Silent Wolf~W~2
+Teczero~0~Darc~2~2
+S2J~2~Westballz~0~1
+IB~0~Unknown522~2~2
+Weon-X~0~Javi~2~2
+PewPewU~2~HBK~1~1
+Jman~1~Hax~2~2
+Eggm~0~DaShizWiz~2~2
+#Losers Round 4
+Hungrybox~2~Silent Wolf~0~1
+Zhu~W~Darc~~1
+Tope~2~S2J~0~1
+Chillindude~0~Unknown522~2~2
+KoreanDJ~0~Javi~2~2
+VaNz~2~PewPewU~1~1
+Mew2King~FF~Hax~W~2
+SFAT~2~DaShizWiz~1~1
+#Losers Round 5
+Hungrybox~2~Zhu~0~1
+Tope~0~Unknown522~2~2
+Javi~2~VaNz~1~1
+Hax~2~SFAT~1~1
+#Losers Round 6
+Wobbles~0~Hungrybox~2~2
+Shroomed~2~Unknown522~1~1
+Lovage~0~Javi~2~2
+MacD~1~Hax~2~2
+#Losers Round 7
+Hungrybox~2~Shroomed~0~1
+Javi~2~Hax~0~1
+#Losers Round 8
+KirbyKaze~0~Hungrybox~2~2
+Dr. PeePee~0~Javi~2~2
+#Losers Finals
+Mango~1~Hungrybox~3~2
+#Grand Finals
+Armada~2/3~Hungrybox~3/0~1
+
+@manual/2012-zenith-2012 manual-melee-1 melee https://liquipedia.net/smash/Zenith/2012/Melee/Singles_Bracket
+#Winners Round 1
+MasterWGS~~Bl@ckChris~W~2
+N.T. Sac~~Vudujin~W~2
+Knut~W~Strawhats~~1
+Luc~~Swift~W~2
+T. Webb~W~Ju4n~~1
+Eggm~~The Moon~W~2
+Chain-Ace~2~Mafia~1~1
+Wenbo~W~Randell~~1
+Tec0~W~Internet Explorer~~1
+Velocity~W~Ben Grimm~~1
+Smelly Cat~0~Captain Crunch~2~2
+The Lake~0~Redd~2~2
+Everlasting Yayuhzz~~Winston~W~2
+Pi~~Green Ranger~W~2
+Swedish Delight~W~ILM~~1
+DoH~W~Dkuo~~1
+#Winners Round 2
+Lambchops~W~Bl@ckChris~~1
+ChuDat~2~Vudujin~0~1
+Jman~W~Knut~~1
+Nando~2~Swift~0~1
+G$~W~T. Webb~~1
+Phish-it~2~The Moon~1~1
+OTG~2~Chain-Ace~0~1
+Hungrybox~W~Wenbo~~1
+Tec0~W~SilentSwag~~1
+Velocity~0~Hax~2~2
+Captain Crunch~~Mew2King~W~2
+Redd~1~DJ Nintendo~2~2
+Winston~0~PC Chris~2~2
+Green Ranger~~KevinM~W~2
+Swedish Delight~~Dr. PeePee~W~2
+DoH~1~StriCNYN3~2~2
+#Winners Round 3
+Lambchops~0~ChuDat~2~2
+Jman~2~Nando~0~1
+G$~W~Phish-it~~1
+OTG~~Hungrybox~W~2
+Tec0~0~Hax~2~2
+Mew2King~2~DJ Nintendo~0~1
+PC Chris~2~KevinM~1~1
+Dr. PeePee~2~StriCNYN3~0~1
+#Winners Round 4
+ChuDat~2~Jman~1~1
+G$~~Hungrybox~W~2
+Hax~0~Mew2King~2~2
+PC Chris~0~Dr. PeePee~2~2
+#Winners Round 5
+ChuDat~3~Hungrybox~2~1
+Mew2King~3~Dr. PeePee~1~1
+#Losers Round 1
+MasterWGS~~T. Webb~W~2
+N.T. Sac~~The Moon~W~2
+Strawhats~2~Chain-Ace~1~1
+Luc~W~Wenbo~~1
+Ju4n~~Bl@ckChris~W~2
+Eggm~2~Vudujin~0~1
+Mafia~2~Knut~1~1
+Randell~~Swift~W~2
+Internet Explorer~~Winston~W~2
+Ben Grimm~W~Green Ranger~~1
+Smelly Cat~~Swedish Delight~W~2
+The Lake~0~DoH~2~2
+Everlasting Yayuhzz~2~SilentSwag~1~1
+Pi~0~Velocity~2~2
+ILM~~Captain Crunch~W~2
+Dkuo~~Redd~W~2
+#Losers Round 2
+T. Webb~0~The Moon~2~2
+Strawhats~~Luc~W~2
+Bl@ckChris~0~Eggm~2~2
+Mafia~0~Swift~2~2
+Winston~W~Ben Grimm~~1
+Swedish Delight~1~DoH~2~2
+Everlasting Yayuhzz~2~Velocity~0~1
+Captain Crunch~W~Redd~~1
+#Losers Round 3
+DJ Nintendo~W~The Moon~~1
+Tec0~W~Luc~~1
+StriCNYN3~~Eggm~W~2
+KevinM~W~Swift~~1
+Nando~~Winston~W~2
+Lambchops~1~DoH~2~2
+OTG~~Everlasting Yayuhzz~W~2
+Phish-it~W~Captain Crunch~~1
+#Losers Round 4
+DJ Nintendo~W~Tec0~~1
+Eggm~W~KevinM~~1
+Winston~0~DoH~2~2
+Everlasting Yayuhzz~W~Phish-it~~1
+#Losers Round 5
+G$~W~DJ Nintendo~~1
+Jman~W~Eggm~~1
+PC Chris~1~DoH~2~2
+Hax~W~Everlasting Yayuhzz~~1
+#Losers Round 6
+G$~~Jman~W~2
+DoH~1~Hax~2~2
+#Losers Round 7
+Dr. PeePee~W~Jman~~1
+Hungrybox~2~Hax~0~1
+#Losers Finals
+ChuDat~0~Dr. PeePee~3~2
+#Grand Finals
+Mew2King~2/2~Dr. PeePee~3/3~2
+
+@manual/2012-impulse manual-melee-1 melee https://liquipedia.net/smash/IMPULSE/2012/Melee/Singles_Bracket
+#Winners Round 1
+Toph~W~Nakamaru~~1
+CDP~~Winston~W~2
+HammerTime~~Icer~W~2
+The Pizz~~EWC~W~2
+Prince of Persia~W~Frog~~1
+Windrose~W~Anth0ny~~1
+Papa Spitfire~~TastyGoldFish~W~2
+tect~W~Jethrotex~~1
+Acidile~~Europhoria~W~2
+RoidRage~~Idea~W~2
+Watermelon~~UltimaScout~W~2
+SummonedFist~W~Toxc~~1
+HIV+~W~Gohkoo~~1
+Unknown522~W~jay tang~~1
+Riddlebox~W~zhao_guang~~1
+Jus-Tin~~Izek~W~2
+#Winners Round 2
+Mango~W~Toph~~1
+Juggleguy~~Winston~W~2
+Vudujin~W~Icer~~1
+Vwins~W~EWC~~1
+Mew2King~W~Prince of Persia~~1
+I.B~W~Windrose~~1
+KirbyKaze~W~TastyGoldFish~~1
+SFAT~W~tect~~1
+Europhoria~~Silent Wolf~W~2
+Idea~~Dr. PeePee~W~2
+UltimaScout~~RaynEX~W~2
+SummonedFist~~Kage~W~2
+Bam~W~HIV+~~1
+Unknown522~W~Nintendude~~1
+Riddlebox~~Weon-X~W~2
+Izek~~Hungrybox~W~2
+#Winners Round 3
+Mango~W~Winston~~1
+Vudujin~~Vwins~W~2
+Mew2King~2~I.B~0~1
+KirbyKaze~1~SFAT~2~2
+Silent Wolf~~Dr. PeePee~W~2
+RaynEX~2~Kage~0~1
+Bam~0~Unknown522~2~2
+Weon-X~~Hungrybox~W~2
+#Winners Round 4
+Mango~2~Vwins~0~1
+Mew2King~2~SFAT~0~1
+Dr. PeePee~2~RaynEX~0~1
+Unknown522~0~Hungrybox~2~2
+#Winners Round 5
+Mango~3~Mew2King~2~1
+Dr. PeePee~3~Hungrybox~1~1
+#Losers Round 1
+Prince of Persia~~Nakamaru~W~2
+Windrose~W~CDP~~1
+TastyGoldFish~~HammerTime~W~2
+tect~W~The Pizz~~1
+Toph~W~Frog~~1
+Juggleguy~W~Anth0ny~~1
+Icer~W~Papa Spitfire~~1
+EWC~W~Jethrotex~~1
+HIV+~W~Acidile~~1
+Nintendude~W~RoidRage~~1
+Riddlebox~W~Watermelon~~1
+Izek~W~Toxc~~1
+Europhoria~W~Gohkoo~~1
+Idea~W~jay tang~~1
+UltimaScout~W~zhao_guang~~1
+SummonedFist~W~Jus-Tin~~1
+#Losers Round 2
+Nakamaru~W~Windrose~~1
+HammerTime~~tect~W~2
+Toph~W~Juggleguy~~1
+Icer~W~EWC~~1
+HIV+~~Nintendude~W~2
+Riddlebox~~Izek~W~2
+Europhoria~~Idea~W~2
+UltimaScout~~SummonedFist~W~2
+#Losers Round 3
+Kage~W~Nakamaru~~1
+Silent Wolf~W~tect~~1
+Weon-X~2~Toph~0~1
+Bam~W~Icer~~1
+Vudujin~1~Nintendude~2~2
+Winston~W~Izek~~1
+KirbyKaze~W~Idea~~1
+I.B~W~SummonedFist~~1
+#Losers Round 4
+Kage~W~Silent Wolf~~1
+Weon-X~2~Bam~0~1
+Nintendude~2~Winston~0~1
+KirbyKaze~2~I.B~1~1
+#Losers Round 5
+SFAT~1~Kage~2~2
+Vwins~2~Weon-X~0~1
+Unknown522~W~Nintendude~~1
+RaynEX~0~KirbyKaze~2~2
+#Losers Round 6
+Kage~0~Vwins~2~2
+Unknown522~1~KirbyKaze~2~2
+#Losers Round 7
+Hungrybox~3~Vwins~0~1
+Mew2King~3~KirbyKaze~1~1
+#Losers Finals
+Mango~3~Hungrybox~2~1
+#Grand Finals
+Dr. PeePee~2/0~Mango~3/3~2
+
+@manual/2012-smashers-reunion-melee-grande manual-melee-1 melee https://liquipedia.net/smash/Smashers%27_Reunion:_Melee_Grande/Singles_Bracket
+#Winners Round 1
+Armada~W~Salevits~~1
+Baxon~2~ZetTroxX~0~1
+Overtriforce~W~Vilness~~1
+porc~W~Nedech~~1
+Zgetto~W~Thomas~~1
+Rocky~~Ek~W~2
+Dev~~NamiNami~W~2
+DJ Black~~Leffen~W~2
+Ice~W~Kriz~~1
+ROFLCOPTER~~Jon_ass~W~2
+Calle W~W~Eagle~~1
+Tonberry~~Aldwyn~W~2
+Adam~W~Doraki~~1
+Deathgazer~~Fuzzyness~W~2
+Däumling~~Paju~W~2
+Flikkflakk~~Dr. PeePee~W~2
+#Winners Round 2
+Armada~3~Baxon~0~1
+Overtriforce~W~porc~~1
+Zgetto~3~Ek~0~1
+NamiNami~~Leffen~W~2
+Ice~W~Jon_ass~~1
+Calle W~~Aldwyn~W~2
+Adam~3~Fuzzyness~1~1
+Paju~0~Dr. PeePee~3~2
+#Winners Round 3
+Armada~3~Overtriforce~0~1
+Zgetto~2~Leffen~3~2
+Ice~3~Aldwyn~1~1
+Adam~~Dr. PeePee~W~2
+#Winners Round 4
+Armada~3~Leffen~1~1
+Ice~0~Dr. PeePee~3~2
+#Losers Round 1
+Salevits~~ZetTroxX~W~2
+Vilness~~Nedech~W~2
+Thomas~~Rocky~W~2
+Dev~W~DJ Black~~1
+Kriz~W~ROFLCOPTER~~1
+Eagle~~Tonberry~W~2
+Doraki~W~Deathgazer~~1
+Däumling~W~Flikkflakk~~1
+#Losers Round 2
+Ek~W~ZetTroxX~~1
+NamiNami~3~Nedech~2~1
+Baxon~W~Rocky~~1
+porc~~Dev~W~2
+Fuzzyness~W~Kriz~~1
+Paju~W~Tonberry~~1
+Jon_ass~~Doraki~W~2
+Calle W~W~Däumling~~1
+#Losers Round 3
+Ek~2~NamiNami~3~2
+Baxon~W~Dev~~1
+Fuzzyness~3~Paju~1~1
+Doraki~0~Calle W~3~2
+#Losers Round 4
+Aldwyn~W~NamiNami~~1
+Adam~3~Baxon~0~1
+Overtriforce~3~Fuzzyness~2~1
+Zgetto~3~Calle W~1~1
+#Losers Round 5
+Aldwyn~1~Adam~3~2
+Overtriforce~2~Zgetto~3~2
+#Losers Round 6
+Leffen~3~Adam~1~1
+Ice~3~Zgetto~2~1
+#Losers Finals
+Dr. PeePee~4~Leffen~0~1
+#Grand Finals
+Armada~3/4~Dr. PeePee~4/2~1
+
+@manual/2011-revival-of-melee-4 manual-melee-1 melee https://liquipedia.net/smash/Revival_of_Melee/4/Singles_Bracket
+#Quarterfinals
+Mango~W~Azen~~1
+Hax~1~Kage~2~2
+Dr. PeePee~2~Mew2King~1~1
+Teczero~0~Jman~2~2
+#Semifinals
+Mango~2~Kage~0~1
+Dr. PeePee~3~Jman~0~1
+#Losers Round 1
+Bolt~W~No Ca$h~~1
+Animal~W~Tommy~~1
+Spife~W~Oorah~~1
+Codi~W~UltimaScout~~1
+Palpi~W~Silver~~1
+Fatuik~W~Valo~~1
+Aber~W~Winston~~1
+PB＆J~~Kwan~W~2
+#Losers Round 2
+Bolt~~Mogwai~W~2
+SOLAR~~Light Syde~W~2
+Animal~0~Mafia~2~2
+Andy~~Pakman~W~2
+Spife~~Phish-it~W~2
+Lefty~W~TheCrimsonBlur~~1
+Codi~W~Nando~~1
+OTG~W~Palpi~~1
+Nakamaru~~Benny~W~2
+Crush~~Zoso~W~2
+The Lake~2~Mofo~0~1
+HaileyM~~Black Chris~W~2
+Fatuik~W~Sneak~~1
+G$~W~Jsex~~1
+Aber~~Kwan~W~2
+ILM~~HBK~W~2
+#Losers Round 3
+th0rn~W~Mogwai~~1
+Yedi~W~Light Syde~~1
+Reno~2~Mafia~1~1
+Swiftbass~W~Pakman~~1
+Cyrain~W~Phish-it~~1
+Velocity~W~Lefty~~1
+Banks~W~Codi~~1
+Spawn~W~OTG~~1
+KevinM~W~Benny~~1
+Vudujin~~Zoso~W~2
+Overtriforce~2~The Lake~0~1
+DJ Nintendo~W~Black Chris~~1
+Niko~W~Fatuik~~1
+Ambix~W~G$~~1
+Mahone~~Kwan~W~2
+T. Webb~~HBK~W~2
+#Losers Round 4
+th0rn~W~Yedi~~1
+Reno~0~Swiftbass~2~2
+Cyrain~W~Velocity~~1
+Banks~~Spawn~W~2
+KevinM~W~Zoso~~1
+Overtriforce~0~DJ Nintendo~2~2
+Niko~2~Ambix~0~1
+Kwan~~HBK~W~2
+#Losers Round 5
+Darrell~W~th0rn~~1
+Chillindude~W~Swiftbass~~1
+Redd~W~Cyrain~~1
+SilentSwag~2~Spawn~1~1
+Tope~W~KevinM~~1
+DoH~2~DJ Nintendo~1~1
+MattDotZeb~0~Niko~2~2
+Cactuar~W~HBK~~1
+#Losers Round 6
+Darrell~2~Chillindude~0~1
+Redd~1~SilentSwag~2~2
+Tope~0~DoH~2~2
+Niko~0~Cactuar~2~2
+#Losers Round 7
+Mew2King~2~Darrell~0~1
+Teczero~W~SilentSwag~~1
+Azen~2~DoH~1~1
+Hax~2~Cactuar~1~1
+#Losers Round 8
+Mew2King~2~Teczero~0~1
+Azen~0~Hax~2~2
+#Losers Round 9
+Kage~0~Mew2King~2~2
+Jman~2~Hax~0~1
+#Losers Finals
+Dr. PeePee~3~Mew2King~1~1
+#Grand Finals
+Mango~3~Dr. PeePee~1~1
+
+@manual/2011-genesis-2 manual-melee-1 melee https://liquipedia.net/smash/GENESIS/2/Melee/Singles_Bracket
+#Winners Round 1
+Mango~3~Fuzzyness~0~1
+DoH~~Lovage~W~2
+Shroomed~W~HugS~~1
+Mew2King~2~Eddy Mexico~0~1
+Hax~2~HomeMadeWaffles~0~1
+Taj~2~DEHF~0~1
+Fly Amanita~W~PewPewU~~1
+Axe~1~MacD~2~2
+Armada~2~Bizzarro Flame~0~1
+S2J~2~Silent Wolf~1~1
+Lucky~0~Kage~2~2
+Dr. PeePee~W~Darkatma~~1
+Hungrybox~2~Dart!~0~1
+Leffen~~SFAT~W~2
+Wobbles~3~SilentSpectre~1~1
+Lucien~W~Shoyo~~1
+#Winners Round 2
+Mango~2~Lovage~0~1
+Shroomed~1~Mew2King~2~2
+Hax~~Taj~W~2
+Fly Amanita~~MacD~W~2
+Armada~2~S2J~0~1
+Kage~0~Dr. PeePee~2~2
+Hungrybox~2~SFAT~1~1
+Wobbles~2~Lucien~0~1
+#Winners Round 3
+Mango~3~Mew2King~1~1
+Taj~3~MacD~2~1
+Armada~3~Dr. PeePee~0~1
+Hungrybox~2~Wobbles~0~1
+#Winners Round 4
+Mango~2~Taj~3~2
+Armada~3~Hungrybox~1~1
+#Losers Round 1
+Fuzzyness~W~DoH~~1
+HugS~0~Eddy Mexico~2~2
+HomeMadeWaffles~~DEHF~W~2
+PewPewU~0~Axe~2~2
+Bizzarro Flame~~Silent Wolf~W~2
+Lucky~~Darkatma~W~2
+Dart!~~Leffen~W~2
+SilentSpectre~2~Shoyo~0~1
+#Losers Round 2
+Hax~2~Fuzzyness~0~1
+Fly Amanita~2~Eddy Mexico~0~1
+Lovage~2~DEHF~0~1
+Shroomed~2~Axe~0~1
+SFAT~W~Silent Wolf~~1
+Lucien~~Darkatma~W~2
+S2J~2~Leffen~1~1
+Kage~0~SilentSpectre~2~2
+#Losers Round 3
+Hax~2~Fly Amanita~0~1
+Lovage~0~Shroomed~2~2
+SFAT~W~Darkatma~~1
+S2J~2~SilentSpectre~0~1
+#Losers Round 4
+Dr. PeePee~2~Hax~0~1
+Wobbles~0~Shroomed~2~2
+Mew2King~W~SFAT~~1
+MacD~0~S2J~3~2
+#Losers Round 5
+Dr. PeePee~0~Shroomed~2~2
+Mew2King~3~S2J~1~1
+#Losers Round 6
+Mango~3~Shroomed~0~1
+Hungrybox~3~Mew2King~2~1
+#Placement match
+Dr. PeePee~2~S2J~0~1
+Shroomed~~Mew2King~W~2
+#Losers Finals
+Taj~0~Mango~2~2
+#Grand Finals
+Armada~3~Mango~2~1
+
+@manual/2011-pound-v manual-melee-1 melee https://liquipedia.net/smash/Pound/V/Melee/Singles_Bracket
+#Winners Round 1
+DJ Nintendo~W~V3ctorman~~1
+Kels~W~DoH~~1
+S2J~2~Strawhat Dahean~0~1
+Mango~W~Plank~~1
+#Winners Round 2
+Mew2King~W~DJ Nintendo~~1
+Cyrain~W~KirbyKaze~~1
+Unknown522~W~LOZR~~1
+Silent Wolf~~VaNz~W~2
+Dr. Peepee~W~Kels~~1
+Lovage~W~Teczero~~1
+Zhu~2~Hax~0~1
+Amsah~W~tect~~1
+Armada~2~S2J~0~1
+MacD~W~RaynEX~~1
+Tope~~Hungrybox~W~2
+Blunted Object~W~Shroomed~~1
+Redd~~Mango~W~2
+Cactuar~W~Chillindude~~1
+Remen~W~ChuDat~~1
+Axe~W~Colbol~~1
+#Winners Round 3
+Mew2King~W~Cyrain~~1
+Unknown522~~VaNz~W~2
+Dr. Peepee~2~Lovage~0~1
+Zhu~0~Amsah~2~2
+Armada~2~MacD~1~1
+Hungrybox~2~Blunted Object~0~1
+Mango~~Cactuar~W~2
+Remen~~Axe~W~2
+#Winners Round 4
+Mew2King~W~VaNz~~1
+Dr. Peepee~2~Amsah~0~1
+Armada~2~Hungrybox~0~1
+Cactuar~0~Axe~2~2
+#Winners Round 5
+Mew2King~0~Dr. Peepee~3~2
+Armada~3~Axe~1~1
+#Losers Round 1
+V3ctorman~~Kels~W~2
+DoH~W~DJ Nintendo~~1
+Strawhat Dahean~2~Redd~1~1
+Plank~~S2J~W~2
+#Losers Round 2
+Kels~W~Teczero~~1
+Hax~W~tect~~1
+DoH~~KirbyKaze~W~2
+LOZR~~Silent Wolf~W~2
+Strawhat Dahean~W~Chillindude~~1
+ChuDat~2~Colbol~0~1
+S2J~2~RaynEX~0~1
+Tope~~Shroomed~W~2
+#Losers Round 3
+Blunted Object~~Kels~W~2
+MacD~0~Hax~2~2
+Remen~W~KirbyKaze~~1
+Mango~~Silent Wolf~W~2
+Unknown522~W~Strawhat Dahean~~1
+Cyrain~W~ChuDat~~1
+Zhu~W~S2J~~1
+Lovage~~Shroomed~W~2
+#Losers Round 4
+Kels~1~Hax~2~2
+Remen~2~Silent Wolf~1~1
+Unknown522~0~Cyrain~2~2
+Zhu~~Shroomed~W~2
+#Losers Round 5
+Amsah~0~Hax~2~2
+VaNz~2~Remen~0~1
+Cactuar~W~Cyrain~~1
+Hungrybox~W~Shroomed~~1
+#Losers Round 6
+Hax~W~VaNz~~1
+Cactuar~~Hungrybox~W~2
+#Losers Round 7
+Axe~2~Hax~1~1
+Mew2King~FF~Hungrybox~W~2
+#Losers Finals
+Dr. PeePee~3~Hungrybox~2~1
+#Grand Finals
+Armada~2/1~Dr. PeePee~3/3~2
+
+@manual/2012-kings-of-cali manual-melee-1 melee https://liquipedia.net/smash/Kings_of_Cali/1/Singles_Bracket
+#Winners Round 1
+Mooninite~W~Peligro~~1
+HugQ~~Lucky~W~2
+Ken~1~Toph~2~2
+baka4moe~W~A Rookie~~1
+OkamiBW~W~GimR~~1
+Connor~~MikeHaze~W~2
+Tai~2~Zoap~1~1
+Mogwai~~Dr. Z~W~2
+JpegImage~W~Alan~~1
+joejoe~W~Violence~~1
+DendyPretendy~~ROFL~W~2
+Zeldafreak~W~Bimbo Mexico~~1
+Eddy Mexico~W~golden~~1
+Fiction~W~DanteFox~~1
+Vish~W~L~~1
+Khepri~~Bob$~W~2
+#Winners Round 2
+stabbedbyahippie~W~Mooninite~~1
+SFAT~W~Lucky~~1
+Rickety~W~Toph~~1
+Shroomed~W~baka4moe~~1
+S2J~2~OkamiBW~1~1
+Scar~W~MikeHaze~~1
+Mango~2~Tai~0~1
+Darrell~1~Dr. Z~2~2
+JpegImage~1~Fly Amanita~2~2
+joejoe~~Zhu~W~2
+ROFL~W~sidefx~~1
+Zeldafreak~~PewPewU~W~2
+Eddy Mexico~~Dr. PeePee~W~2
+Fiction~W~Tafokints~~1
+Vish~0~Westballz~2~2
+Bob$~0~Axe~2~2
+#Winners Round 3
+stabbedbyahippie~0~SFAT~2~2
+Rickety~~Shroomed~W~2
+S2J~W~Scar~~1
+Mango~2~Dr. Z~0~1
+Fly Amanita~W~Zhu~~1
+ROFL~~PewPewU~W~2
+Dr. PeePee~W~Fiction~~1
+Westballz~2~Axe~0~1
+#Winners Round 4
+SFAT~~Shroomed~W~2
+S2J~~Mango~W~2
+Fly Amanita~0~PewPewU~2~2
+Dr. PeePee~2~Westballz~0~1
+#Winners Round 5
+Shroomed~1~Mango~3~2
+PewPewU~0~Dr. PeePee~3~2
+#Losers Round 1
+OkamiBW~W~Peligro~~1
+MikeHaze~W~HugQ~~1
+Tai~2~Ken~0~1
+Darrell~W~A Rookie~~1
+Mooninite~W~GimR~~1
+Lucky~W~Connor~~1
+Toph~W~Zoap~~1
+baka4moe~W~Mogwai~~1
+Eddy Mexico~W~Alan~~1
+Tafokints~W~Violence~~1
+Vish~W~DendyPretendy~~1
+Bob$~~Bimbo Mexico~W~2
+JpegImage~W~golden~~1
+joejoe~W~DanteFox~~1
+sidefx~~L~W~2
+Zeldafreak~W~Khepri~~1
+#Losers Round 2
+OkamiBW~W~HugQ~~1
+Tai~1~Darrell~2~2
+Mooninite~~Lucky~W~2
+Toph~~baka4moe~W~2
+Eddy Mexico~W~Tafokints~~1
+Vish~~Bimbo Mexico~W~2
+JpegImage~W~joejoe~~1
+L~0~Zeldafreak~2~2
+#Losers Round 3
+ROFL~~OkamiBW~W~2
+Zhu~~Darrell~W~2
+Axe~W~Lucky~~1
+Fiction~W~baka4moe~~1
+Rickety~~Eddy Mexico~W~2
+stabbedbyahippie~W~Bimbo Mexico~~1
+Dr. Z~~JpegImage~W~2
+Scar~W~Zeldafreak~~1
+#Losers Round 4
+OkamiBW~~Darrell~W~2
+Axe~W~Fiction~~1
+Eddy Mexico~W~stabbedbyahippie~~1
+JpegImage~~Scar~W~2
+#Losers Round 5
+S2J~W~Darrell~~1
+SFAT~1~Axe~2~2
+Westballz~W~Eddy Mexico~~1
+Fly Amanita~W~Scar~~1
+#Losers Round 6
+S2J~0~Axe~2~2
+Westballz~1~Fly Amanita~2~2
+#Losers Round 7
+PewPewU~0~Axe~3~2
+Shroomed~3~Fly Amanita~1~1
+#Losers Finals
+Dr. PeePee~3~Axe~2~1
+#Grand Finals
+Mango~2/1~Dr. PeePee~3/3~2

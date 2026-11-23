@@ -4852,6 +4852,10 @@ export type Database = {
         Returns: undefined
       }
       start_direct: { Args: { other: string }; Returns: string }
+      take_daily_allowance: {
+        Args: { p_max: number; p_what: string }
+        Returns: boolean
+      }
       take_startgg_slot: { Args: { per_minute: number }; Returns: number }
       take_startgg_slots: {
         Args: { per_minute: number; want: number }
