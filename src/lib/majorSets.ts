@@ -25,6 +25,7 @@ import { isParryggMajor } from "./majors";
 import { linkKey, linkedId, nameKey } from "./playerLinks";
 import { isTooComplex, startggLoad, startggQuery } from "./startgg";
 import { createAdminClient } from "./supabase/admin";
+import { createGuestClient } from "./supabase/guest";
 import { createClient } from "./supabase/server";
 
 const PAUSE_MS = 1500;
@@ -430,7 +431,10 @@ export function bracketCharacters(rows: Pick<SavedSet, "p1_id" | "p1_name" | "p1
 export async function getMajorCharacters(slugs: string[]): Promise<MajorCharacters> {
   const out: MajorCharacters = new Map();
   if (!slugs.length) return out;
-  const { data, error } = await (await createClient())
+  // The guest connection: these summaries are public, and kept answers ("use cache": a name's history page)
+  // call this, where the sign-in-aware one isn't allowed. There it failed quietly on every load, so a name's
+  // start.gg placings showed no characters and the answer was kept for seconds, not minutes (round 770).
+  const { data, error } = await createGuestClient()
     .from("major_set_progress")
     .select("major_slug, event_id, characters")
     .in("major_slug", slugs)

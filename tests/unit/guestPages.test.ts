@@ -1,7 +1,7 @@
 // The limit on how fast a signed-out visitor may open pages that read start.gg (it stops crawlers
 // from using up the site's start.gg allowance).
 import { beforeEach, describe, expect, it } from "vitest";
-import { GUEST_PAGES, GUEST_PAGES_WINDOW_MS, countsAsGuestPage, crawlerOffLimits, isCrawler, readsOutside, resetGuestPages, takeGuestPage, notABrowser } from "@/lib/guestPages";
+import { CRAWLER_PAGES, GUEST_PAGES, GUEST_PAGES_WINDOW_MS, countsAsGuestPage, crawlerName, takeCrawlerPage, crawlerOffLimits, isCrawler, readsOutside, resetGuestPages, takeGuestPage, notABrowser } from "@/lib/guestPages";
 
 const T0 = 1_800_000_000_000;
 const noHeaders = () => null;
@@ -108,5 +108,32 @@ describe("notABrowser (round 475)", () => {
   it("lets link previews through by name", () => {
     expect(notABrowser("Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)", h({}))).toBe(false);
     expect(notABrowser("facebookexternalhit/1.1", h({}))).toBe(false);
+  });
+});
+
+describe("a named crawler's pace on start.gg-backed pages (round 771)", () => {
+  const exa = "Mozilla/5.0 (compatible; ExaSearchBot/1.0; +https://crawler.exa.ai/)";
+  const google = "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.8103.78 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
+
+  it("names crawlers by what they call themselves, and nobody else", () => {
+    expect(crawlerName(exa)).toBe("exasearchbot");
+    expect(crawlerName(google)).toBe("googlebot");
+    expect(crawlerName("Mozilla/5.0 (compatible; SemrushBot/7~bl; +http://www.semrush.com/bot.html)")).toBe("semrushbot");
+    expect(crawlerName("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.0 Safari/537.36")).toBe("headlesschrome");
+    expect(crawlerName("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36")).toBeNull();
+    expect(crawlerName("Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)")).toBeNull(); // a person sharing a link
+    expect(crawlerName(null)).toBeNull();
+  });
+
+  it("lets a crawler open a few pages, then asks it to wait, each crawler on its own count", () => {
+    for (let i = 0; i < CRAWLER_PAGES; i++) expect(takeCrawlerPage("exasearchbot", 1000 + i).ok).toBe(true);
+    expect(takeCrawlerPage("exasearchbot", 2000).ok).toBe(false);
+    expect(takeCrawlerPage("googlebot", 2000).ok).toBe(true);
+    expect(takeCrawlerPage("exasearchbot", 1000 + GUEST_PAGES_WINDOW_MS + CRAWLER_PAGES).ok).toBe(true);
+  });
+
+  it("doesn't share a count with an address of the same spelling", () => {
+    for (let i = 0; i < CRAWLER_PAGES; i++) takeCrawlerPage("googlebot", i);
+    expect(takeGuestPage("googlebot", CRAWLER_PAGES).ok).toBe(true);
   });
 });

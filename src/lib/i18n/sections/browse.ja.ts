@@ -80,11 +80,12 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
   "browse.online.tomorrow": "明日 · {day}",
   "browse.online.onSmashy": "Smashyで開催",
   "browse.online.onSmashyHint": "Smashyで運営される大会：ここでエントリー、チェックイン、セットの対戦ができます",
-  "browse.online.count": "1件の大会。時刻はあなたのタイムゾーンです。start.ggとSmashyのオンライン大会。|{n}件の大会。時刻はあなたのタイムゾーンです。start.ggとSmashyのオンライン大会。",
+  "browse.online.count": "1件の大会。時刻はあなたのタイムゾーンです。start.gg、Smashy、および独自サイトで毎週開催されるシリーズのオンライン大会。|{n}件の大会。時刻はあなたのタイムゾーンです。start.gg、Smashy、および独自サイトで毎週開催されるシリーズのオンライン大会。",
   "browse.online.emptySmashy": "現在Smashyで開催中のオンライン大会はありません。主催してみましょう：エントリー、チェックイン、ライブのセット進行が使えます。",
   "browse.online.emptyOpen": "この条件でエントリー受付中の大会は現在ありません。「エントリー受付中」をオフにしてみてください。",
   "browse.online.empty": "このゲームの今後のオンライン大会は現在ありません。また後で確認するか、主催してみましょう。",
   "browse.online.finished": "終了 · 結果",
+  "browse.online.elsewhere": "{site}で定期開催：エントリーはそちらで",
 
   // Streams
   "browse.stream.watchLive": "ライブで見る",

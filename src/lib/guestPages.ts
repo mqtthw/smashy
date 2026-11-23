@@ -105,6 +105,36 @@ export function takeGuestPage(address: string, now: number): { ok: boolean; left
 }
 
 /**
+ * A slower pace for crawlers that say who they are, on the pages that read start.gg (round 771). Tournament
+ * pages stay open to search engines, but one crawler mustn't use up the site's start.gg allowance: on
+ * 2026-11-23 ExaSearchBot opened about 90 different tournament pages in seven minutes (each asks start.gg two
+ * or three things the first time), and members got "start.gg is busy" on the Events list. A crawler comes
+ * from many addresses, so the per-address limit above never sees it; this one counts by the crawler's name.
+ * Past the pace it gets "429" with a time to come back, which search crawlers take as "slow down".
+ * Counted per server like the limit above (two or three servers: about 4 to 6 pages a minute per crawler).
+ */
+export const CRAWLER_PAGES = 10;
+
+/** The name a crawler gives itself ("exasearchbot", "googlebot"), to count its pages under; null for anyone else. */
+export function crawlerName(userAgent: string | null): string | null {
+  if (!isCrawler(userAgent)) return null;
+  const ua = userAgent ?? "";
+  return (ua.match(/[\w.-]*(?:bot|crawler|spider|indexer|slurp|agent)[\w-]*/i)?.[0] ?? ua.match(/headlesschrome|scrapy|python-requests|go-http-client/i)?.[0] ?? "crawler").toLowerCase();
+}
+
+/** Count one start.gg-backed page for this crawler. `ok` false = it's over the pace for now. */
+export function takeCrawlerPage(name: string, now: number): { ok: boolean } {
+  const key = `crawler:${name}`;
+  const times = (seen.get(key) ?? []).filter((t) => now - t < GUEST_PAGES_WINDOW_MS);
+  if (times.length >= CRAWLER_PAGES) {
+    seen.set(key, times);
+    return { ok: false };
+  }
+  seen.set(key, [...times, now]);
+  return { ok: true };
+}
+
+/**
  * Whether this request counts toward the limit, from its path and headers:
  * - only pages that read start.gg
  * - not signed-in members (a login Supabase verified; round 631: a made-up login cookie used to be enough)

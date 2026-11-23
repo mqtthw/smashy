@@ -14,6 +14,7 @@ import { dropFinished, getRegionEvents, refreshEventsIfStale, refreshRegionIfSta
 import { getOnlineTournaments, type SmashyTournament } from "@/lib/startgg";
 import RecentWinners from "@/components/events/RecentWinners";
 import { bracketPath } from "@/lib/brackets/types";
+import { upcomingRecurring } from "@/lib/recurringOnline";
 import OnlineEventsList, { type OnlineRow } from "@/components/events/OnlineEventsList";
 import TabBar from "@/components/ui/TabBar";
 import { bracketStart, currentBracket, formatEventDate, isRunning, unixNow } from "@/lib/format";
@@ -164,6 +165,18 @@ async function OnlineEvents() {
       signupsOpen: t.isRegistrationOpen && bracketStart(t, nowSec) > nowSec,
       onSmashy: false,
       brackets: t.events.map((e) => ({ name: e.name, startAt: e.startAt })),
+    })),
+    // Series on their own sites, listed by hand (round 772): the fixed weekly times, linking out.
+    ...upcomingRecurring(nowSec).map(({ series, startAt }) => ({
+      key: `${series.id}-${startAt}`,
+      href: series.href,
+      name: series.name,
+      startAt,
+      games: [{ game: series.game, entrants: null }],
+      signupsOpen: false, // not known: the site says
+      onSmashy: false,
+      elsewhere: series.site,
+      brackets: [],
     })),
   ].sort((a, b) => a.startAt - b.startAt);
   return (

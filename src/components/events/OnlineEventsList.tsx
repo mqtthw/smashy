@@ -9,6 +9,7 @@ import { GAMES, GAME_KEYS, type GameKey } from "@/lib/games";
 import { useStoredState } from "@/lib/useStoredState";
 import { useViewerLocale, useViewerTimeZone } from "@/lib/viewerTimeZone";
 import Icon from "@/components/ui/Icon";
+import NewTab from "@/components/ui/NewTab";
 import { useT } from "@/lib/i18n/client";
 
 export type OnlineRow = {
@@ -19,6 +20,8 @@ export type OnlineRow = {
   games: { game: GameKey; entrants: number | null }[];
   signupsOpen: boolean;
   onSmashy: boolean; // hosted on Smashy (sign up right here)
+  /** Runs on its own site, listed by hand (round 772): the row opens that site, and says so. */
+  elsewhere?: string; // "junglemelee.com"
   live?: boolean; // running now (a Smashy bracket can start before the listed time; a start.gg one has passed its start)
   finished?: boolean; // over (still listed for a while so people can find the results)
   friends?: string | null; // "Fox + 1 you follow"
@@ -26,6 +29,16 @@ export type OnlineRow = {
 };
 
 const ALL = "all";
+
+/** A row's link: a page on Smashy, or (a series listed by hand) its own site in a new tab. */
+function RowLink({ row, children }: { row: OnlineRow; children: React.ReactNode }) {
+  const className = "flex gap-3 px-4 py-3 hover:bg-surface";
+  return row.elsewhere ? (
+    <a href={row.href} target="_blank" rel="noopener noreferrer" className={className}>{children}</a>
+  ) : (
+    <Link href={row.href} className={className}>{children}</Link>
+  );
+}
 
 /**
  * Online brackets anyone can enter, soonest first, grouped by day in the viewer's own time zone
@@ -97,7 +110,7 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
             <ul>
               {d.rows.map((r) => (
                 <li key={r.key} className="border-b border-line">
-                  <Link href={r.href} className="flex gap-3 px-4 py-3 hover:bg-surface">
+                  <RowLink row={r}>
                     <span className="w-[4.75rem] shrink-0 whitespace-nowrap text-sm font-bold tabular-nums">
                       <LocalTime iso={new Date(r.startAt * 1000).toISOString()} style="time" />
                       {r.live ? (
@@ -118,6 +131,7 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
                       <span className="flex items-center gap-2">
                         <span className="truncate font-bold">{r.name}</span>
                         {r.onSmashy && <span className="shrink-0 rounded-full border border-brand px-2 text-xs text-brand">{t("browse.online.onSmashy")}</span>}
+                        {r.elsewhere && <span className="shrink-0 rounded-full border border-line px-2 text-xs text-muted">{r.elsewhere} <NewTab /></span>}
                       </span>
                       <span className="mt-1 flex flex-wrap items-center gap-1.5 text-meta">
                         {r.games.map((g) => <GameBadge key={g.game} game={g.game} entrants={g.entrants} />)}
@@ -127,8 +141,9 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
                       {r.brackets.length > 1 && (
                         <span className="mt-1 block truncate text-meta text-muted">{r.brackets.map((b) => b.name).join(" · ")}</span>
                       )}
+                      {r.elsewhere && <span className="mt-1 block text-meta text-muted">{t("browse.online.elsewhere", { site: r.elsewhere })}</span>}
                     </span>
-                  </Link>
+                  </RowLink>
                 </li>
               ))}
             </ul>
