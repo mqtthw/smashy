@@ -109,8 +109,9 @@ export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
                  md:sticky md:flex md:flex-col md:top-0 md:bottom-auto md:inset-x-auto md:h-screen md:w-20 md:shrink-0 md:rounded-none md:border-0 md:border-r md:border-line md:bg-transparent md:shadow-none md:backdrop-blur-none lg:w-56"
     >
       <Link href="/" aria-label={t("nav.home")} className="hidden py-6 text-center md:block lg:px-5 lg:text-left">
-        <span className="lg:hidden"><Logo markOnly className="text-4xl" /></span>
-        <span className="hidden lg:inline"><Logo className="text-4xl" /></span>
+        {/* By day a sun rises behind the logo (round 774; .logo-sun in globals.css). */}
+        <span className="logo-sun inline-block text-4xl lg:hidden"><Logo markOnly className="" /></span>
+        <span className="logo-sun hidden text-4xl lg:inline-block"><Logo className="" /></span>
       </Link>
       <Suspense fallback={<TabList pathname={null} />}>
         <ActiveTabList />

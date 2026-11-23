@@ -56,6 +56,7 @@ export const uiEs: Record<keyof typeof uiEn, string> = {
 
   // Guest welcome (home page, signed out)
   "ui.guest.headline": "Todo Smash, en un solo lugar.",
+  "ui.guest.headlineDay": "Un nuevo día brillante para Smash.",
   "ui.guest.pitch": "Locales cerca de ti, brackets en vivo, cada major desde 2003 y las guías de la propia comunidad. Gratis, sin anuncios y sin cuenta para explorar.",
   "ui.guest.t.history": "Historia de Smash",
   "ui.guest.t.historyText": "Más de 500 majors desde 2003, top 8 y récords.",

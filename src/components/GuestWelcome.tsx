@@ -1,3 +1,4 @@
+import Logo from "@/components/Logo";
 import Link from "next/link";
 import GetTheApp from "@/components/GetTheApp";
 import { Suspense } from "react";
@@ -85,7 +86,12 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
     <section aria-labelledby="guest-welcome" className="flex flex-col gap-6 border-b border-line px-4 py-6">
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <h2 id="guest-welcome" className="text-2xl leading-tight font-bold">{t("ui.guest.headline")}</h2>
+          {/* Phones have no sidebar, so by day the logo and its sun open the page there (round 774). */}
+          <span className="day-only logo-sun mx-auto mt-6 mb-8 inline-block text-5xl md:hidden"><Logo className="" /></span>
+          <h2 id="guest-welcome" className="text-2xl leading-tight font-bold">
+            <span className="day-only">{t("ui.guest.headlineDay")}</span>
+            <span className="night-only">{t("ui.guest.headline")}</span>
+          </h2>
           <p className="text-muted">{t("ui.guest.pitch")}</p>
         </div>
         <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">

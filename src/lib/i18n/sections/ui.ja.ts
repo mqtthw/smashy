@@ -56,6 +56,7 @@ export const uiJa: Record<keyof typeof uiEn, string> = {
 
   // Guest welcome (home page, signed out)
   "ui.guest.headline": "スマブラのすべてを、ひとつの場所に。",
+  "ui.guest.headlineDay": "スマブラに、まぶしい新しい一日を。",
   "ui.guest.pitch": "近くの大会、ライブのトーナメント表、2003年以降のすべての大型大会、コミュニティの攻略情報。無料・広告なしで、見るだけならアカウント不要です。",
   "ui.guest.t.history": "スマブラの歴史",
   "ui.guest.t.historyText": "2003年以降の500以上の大型大会、トップ8、記録。",

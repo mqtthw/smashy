@@ -16,7 +16,7 @@
 */
 :root {
   /* Day: a soft blush, from the app icon's reds, fading to white */
-  --background: #fbe7e3; /* the sky at the top of the screen: sticky bars and menus */
+  --background: #ffe9d2; /* the sky at the top of the screen: sticky bars and menus */
   --foreground: #2a0b0a;
   --surface: rgb(255 255 255 / 0.55); /* hover fills, avatar discs, quiet panels */
   --surface-2: rgb(255 255 255 / 0.85); /* pressed / selected fills */
@@ -34,10 +34,21 @@
   --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.95) 0%, rgb(255 255 255 / 0.65) 50%, rgb(250 220 214 / 0.75) 51%, rgb(255 255 255 / 0.88) 100%);
   --primary-glow: 0 2px 6px rgb(196 23 12 / 0.35);
   /* The sky behind every page (body::after) */
+  /* Day (round 774, "a bright new day for smash"): a morning sky. Sunlight comes in from the top
+     left, where the logo's sun sits; a few glass bubbles drift in it (the Frutiger Aero touch); it
+     fades through blush to white lower down, where the reading happens. Still the app icon's warm
+     colors only: gold, ember, blush. */
   --sky:
-    radial-gradient(70% 30% at 20% 18%, rgb(255 255 255 / 0.7), transparent 70%),
-    radial-gradient(60% 25% at 85% 75%, rgb(255 140 90 / 0.12), transparent 70%),
-    linear-gradient(180deg, #fbe7e3 0%, #fdf1ee 35%, #fff9f8 70%, #ffffff 100%);
+    radial-gradient(circle at 82% 14%, transparent 0 44px, rgb(255 255 255 / 0.75) 45px 46px, rgb(255 255 255 / 0.16) 47px 60px, transparent 61px),
+    radial-gradient(circle at 93% 31%, transparent 0 19px, rgb(255 255 255 / 0.8) 20px 21px, rgb(255 255 255 / 0.18) 22px 28px, transparent 29px),
+    radial-gradient(circle at 70% 6%, transparent 0 11px, rgb(255 255 255 / 0.8) 12px 13px, transparent 14px),
+    radial-gradient(circle at 6% 62%, transparent 0 27px, rgb(255 255 255 / 0.7) 28px 29px, rgb(255 255 255 / 0.14) 30px 38px, transparent 39px),
+    radial-gradient(55% 42% at 10% 0%, rgb(255 196 84 / 0.55), rgb(255 170 90 / 0.18) 55%, transparent 75%),
+    radial-gradient(70% 30% at 55% 16%, rgb(255 255 255 / 0.75), transparent 70%),
+    radial-gradient(60% 25% at 85% 78%, rgb(255 140 90 / 0.14), transparent 70%),
+    linear-gradient(180deg, #ffe9d2 0%, #ffeee4 26%, #fff7f3 58%, #ffffff 100%);
+  /* The sun behind the logo: shown by day, gone at night (see .logo-sun). */
+  --sun: 1;
 
   /* Brand: flame red, taken from the logo */
   --brand: #c4170c;
@@ -115,6 +126,7 @@
       radial-gradient(60% 22% at 30% 20%, rgb(255 90 40 / 0.16), transparent 70%),
       radial-gradient(55% 30% at 85% 78%, rgb(222 36 22 / 0.22), transparent 70%),
       linear-gradient(180deg, #140405 0%, #2a0909 50%, #4a1210 100%);
+  --sun: 0;
     --brand: #ff8a7c;
     --brand-hover: #ffb0a6;
     --on-brand: #ffffff;
@@ -167,6 +179,7 @@
     radial-gradient(60% 22% at 30% 20%, rgb(255 90 40 / 0.16), transparent 70%),
     radial-gradient(55% 30% at 85% 78%, rgb(222 36 22 / 0.22), transparent 70%),
     linear-gradient(180deg, #140405 0%, #2a0909 50%, #4a1210 100%);
+  --sun: 0;
   --brand: #ff8a7c;
   --brand-hover: #ffb0a6;
   --on-brand: #ffffff;
@@ -729,4 +742,61 @@ body::before {
   textarea {
     font-size: 1rem;
   }
+}
+
+/* The sun behind the Smashy logo (round 774): by day a glowing disc with soft rays rises behind the
+   wordmark; at night it isn't there (--sun: 0). Put the class on the element that wraps the logo. */
+.logo-sun {
+  position: relative;
+  isolation: isolate;
+}
+.logo-sun::before,
+.logo-sun::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  border-radius: 9999px;
+  transform: translate(-50%, -58%);
+  opacity: var(--sun);
+  pointer-events: none;
+}
+/* The rays and the wide glow. */
+.logo-sun::before {
+  width: 7.2em;
+  height: 7.2em;
+  background:
+    repeating-conic-gradient(from 4deg, rgb(255 214 110 / 0.5) 0deg 7deg, transparent 7deg 22.5deg),
+    radial-gradient(closest-side, rgb(255 205 96 / 0.55), rgb(255 190 90 / 0.2) 55%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+}
+/* The disc: white-hot in the middle, gold at the rim, with the glossy highlight every Aero orb has. */
+.logo-sun::after {
+  width: 2.9em;
+  height: 2.9em;
+  background:
+    radial-gradient(60% 38% at 50% 22%, rgb(255 255 255 / 0.85), transparent 100%),
+    radial-gradient(closest-side, #fffbe6 0%, #ffe27a 45%, #ffbe3d 80%, #ff9d2e 100%);
+  box-shadow: 0 0 1.1em 0.3em rgb(255 200 80 / 0.6);
+}
+
+/* Words that differ by day and night (the guest headline). */
+.night-only {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .day-only {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .night-only {
+    display: revert;
+  }
+}
+:root[data-theme="dark"] .day-only {
+  display: none;
+}
+:root[data-theme="dark"] .night-only {
+  display: revert;
 }

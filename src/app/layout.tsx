@@ -52,7 +52,7 @@ export const viewport: Viewport = {
   viewportFit: "cover", // installed app: draw under the phone's notch/home bar (the nav pads for it)
   // Browser/phone bar color follows the theme.
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fbe7e3" },
+    { media: "(prefers-color-scheme: light)", color: "#ffe9d2" },
     { media: "(prefers-color-scheme: dark)", color: "#140405" },
   ],
 };

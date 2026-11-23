@@ -54,6 +54,7 @@ export const uiEn = {
 
   // Guest welcome (home page, signed out)
   "ui.guest.headline": "Everything smash, in one place.",
+  "ui.guest.headlineDay": "A bright new day for smash.",
   "ui.guest.pitch": "Locals near you, live brackets, every major since 2003, and the community's own guides. Free, no ads, no account needed to look around.",
   "ui.guest.t.history": "Smash history",
   "ui.guest.t.historyText": "500+ majors since 2003, top 8s and records.",
