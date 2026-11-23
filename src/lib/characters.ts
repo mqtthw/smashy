@@ -79,7 +79,8 @@ export function characterName(game: GameKey, key: string | null | undefined): st
 }
 
 
-export type Main = { game: GameKey; character: string };
+/** `costume` (round 728): which costume's stock icon to show, 2 and up; left out for the default one. */
+export type Main = { game: GameKey; character: string; costume?: number };
 export const MAX_MAINS = 3;
 
 /** Reads a saved or submitted list of mains, keeping only real characters (up to 3, no repeats). */
@@ -100,7 +101,9 @@ export function parseMains(raw: unknown): Main[] {
     if (typeof game !== "string" || !(game in CHARACTERS) || typeof character !== "string") continue;
     if (!CHARACTERS[game as GameKey].some((c) => c.key === character)) continue;
     if (out.some((o) => o.game === game && o.character === character)) continue;
-    out.push({ game: game as GameKey, character });
+    // A costume number is kept as it is (2 to 16); the icon falls back to the default if there's no such costume.
+    const costume = (m as Main)?.costume;
+    out.push({ game: game as GameKey, character, ...(Number.isInteger(costume) && costume! >= 2 && costume! <= 16 ? { costume } : {}) });
     if (out.length >= MAX_MAINS) break;
   }
   return out;

@@ -1229,6 +1229,7 @@ export const en = {
   "people.edit.upTo": "(up to {n})",
   "people.edit.mainGame": "Main {n}: game",
   "people.edit.mainCharacter": "Main {n}: character",
+  "people.edit.mainCostume": "Costume for main {n}",
   "people.edit.removeMain": "Remove main {n}",
   "people.edit.addMain": "+ Add a main",
   "people.edit.lfg": "Looking for a doubles partner",

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { CHARACTERS } from "@/lib/characters";
-import { badgeMain, mainCode, stockIconUrl } from "@/lib/mainBadge";
+import { existsSync } from "node:fs";
+import { CHARACTERS, parseMains } from "@/lib/characters";
+import { badgeMain, costumeIcons, mainCode, stockIconUrl } from "@/lib/mainBadge";
+import { STOCK_COSTUMES } from "@/lib/stockCostumes";
 
 describe("main badge", () => {
   it("shows the first main that has an icon, otherwise the first main", () => {
@@ -22,6 +24,26 @@ describe("main badge", () => {
     const missing = CHARACTERS.pplus.filter((c) => !stockIconUrl({ game: "pplus", character: c.key })).map((c) => c.key);
     expect(missing.sort()).toEqual(["ivysaur", "knuckles", "squirtle"]);
     expect(stockIconUrl({ game: "melee", character: "not-a-character" })).toBeNull();
+  });
+  it("shows the costume a player picked, and the default one when there's no such costume (round 728)", () => {
+    expect(costumeIcons({ game: "melee", character: "fox" })).toEqual(["/stock/melee/fox.webp", "/stock/melee/costumes/fox-2.webp", "/stock/melee/costumes/fox-3.webp", "/stock/melee/costumes/fox-4.webp"]);
+    expect(stockIconUrl({ game: "melee", character: "fox", costume: 3 })).toBe("/stock/melee/costumes/fox-3.webp");
+    expect(stockIconUrl({ game: "melee", character: "fox", costume: 9 })).toBe("/stock/melee/fox.webp");
+    expect(stockIconUrl({ game: "pplus", character: "fox", costume: 2 })).toBe("/stock/brawl/costumes/fox-2.webp"); // Project+ borrows Brawl's
+    expect(costumeIcons({ game: "smash64", character: "fox" })).toEqual(["/stock/smash64/fox.webp"]);
+    expect(costumeIcons({ game: "pplus", character: "knuckles" })).toEqual([]);
+  });
+  it("has a file for every costume it lists", () => {
+    for (const [game, chars] of Object.entries(STOCK_COSTUMES)) {
+      for (const [key, count] of Object.entries(chars)) {
+        for (let n = 2; n <= count; n++) expect(existsSync(`public/stock/${game}/costumes/${key}-${n}.webp`), `${game}/${key}-${n}`).toBe(true);
+      }
+    }
+  });
+  it("keeps a main's costume when reading saved mains, and drops junk", () => {
+    expect(parseMains([{ game: "melee", character: "falco", costume: 3 }, { game: "melee", character: "pikachu", costume: "x" }, { game: "melee", character: "fox", costume: 1 }])).toEqual([
+      { game: "melee", character: "falco", costume: 3 }, { game: "melee", character: "pikachu" }, { game: "melee", character: "fox" },
+    ]);
   });
   it("makes short codes", () => {
     expect(mainCode({ game: "melee", character: "fox" })).toBe("FOX");

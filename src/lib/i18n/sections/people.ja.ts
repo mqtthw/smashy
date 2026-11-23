@@ -168,6 +168,7 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
   "people.edit.upTo": "（{n}まで）",
   "people.edit.mainGame": "メイン{n}: ゲーム",
   "people.edit.mainCharacter": "メイン{n}: キャラ",
+  "people.edit.mainCostume": "メイン{n}のカラー",
   "people.edit.removeMain": "メイン{n}を削除",
   "people.edit.addMain": "+ メインキャラを追加",
   "people.edit.lfg": "ダブルスの相方募集中",

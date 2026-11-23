@@ -8,6 +8,7 @@
 // if Nintendo asks), set STOCK_ICONS to false: every badge falls back to the code badge.
 import { characterName, parseMains, type Main } from "./characters";
 import { STOCK_ICON_KEYS } from "./stockIconKeys";
+import { STOCK_COSTUMES } from "./stockCostumes";
 
 export const STOCK_ICONS = true;
 
@@ -25,11 +26,22 @@ export function badgeMain(mains: unknown): Main | null {
 const BORROWED_ICONS: Partial<Record<Main["game"], Main["game"][]>> = { pplus: ["brawl", "melee", "smash4"] };
 
 export function stockIconUrl(main: Main): string | null {
-  if (!STOCK_ICONS) return null;
+  return costumeIcons(main)[(main.costume ?? 1) - 1] ?? costumeIcons(main)[0] ?? null;
+}
+
+/**
+ * Every costume's icon for a character, the default first (round 728). One entry when only the default
+ * was imported, none when the character has no icon at all. A main's `costume` is a position in this
+ * list, counted from 1.
+ */
+export function costumeIcons(main: Pick<Main, "game" | "character">): string[] {
+  if (!STOCK_ICONS) return [];
   for (const game of [main.game, ...(BORROWED_ICONS[main.game] ?? [])]) {
-    if (STOCK_ICON_KEYS[game]?.has(main.character)) return `/stock/${game}/${main.character}.webp`;
+    if (!STOCK_ICON_KEYS[game]?.has(main.character)) continue;
+    const count = STOCK_COSTUMES[game]?.[main.character] ?? 1;
+    return [`/stock/${game}/${main.character}.webp`, ...Array.from({ length: count - 1 }, (_, i) => `/stock/${game}/costumes/${main.character}-${i + 2}.webp`)];
   }
-  return null;
+  return [];
 }
 
 /** "Fox" -> FOX, "Captain Falcon" -> CF, "Mr. Game & Watch" -> MGW, "R.O.B." -> ROB. */

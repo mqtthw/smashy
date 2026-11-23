@@ -6,6 +6,7 @@ import { keepValuesOnSubmit } from "@/lib/forms";
 import { GAMES, GAME_KEYS, type GameKey } from "@/lib/games";
 import { updateProfile, type EditState } from "./actions";
 import MainBadge from "@/components/MainBadge";
+import { costumeIcons } from "@/lib/mainBadge";
 import RegionSelect from "@/components/RegionSelect";
 import Icon from "@/components/ui/Icon";
 import { useT } from "@/lib/i18n/client";
@@ -128,7 +129,7 @@ export default function EditProfileForm(props: {
         <input type="hidden" name="mains" value={JSON.stringify(mains.filter((m) => games.includes(m.game)))} />
         {mains.map((m, i) => (
           <div key={i} className="flex items-center gap-2">
-            <span className="flex w-6 shrink-0 justify-center" aria-hidden="true"><MainBadge main={m} size="md" /></span>
+            <CostumePicker main={m} label={t("people.edit.mainCostume", { n: i + 1 })} onPick={(costume) => setMains((cur) => cur.map((x, j) => (j === i ? { game: x.game, character: x.character, ...(costume > 1 ? { costume } : {}) } : x)))} />
             <select
               aria-label={t("people.edit.mainGame", { n: i + 1 })}
               value={m.game}
@@ -140,7 +141,7 @@ export default function EditProfileForm(props: {
             <select
               aria-label={t("people.edit.mainCharacter", { n: i + 1 })}
               value={m.character}
-              onChange={(e) => setMains((cur) => cur.map((x, j) => (j === i ? { ...x, character: e.target.value } : x)))}
+              onChange={(e) => setMains((cur) => cur.map((x, j) => (j === i ? { game: x.game, character: e.target.value } : x)))}
               className={`${field} min-w-0 flex-1`}
             >
               {CHARACTERS[m.game].map((c) => <option key={c.key} value={c.key}>{c.name}</option>)}
@@ -181,5 +182,45 @@ export default function EditProfileForm(props: {
         {pending ? t("common.saving") : t("common.save")}
       </button>
     </form>
+  );
+}
+
+/**
+ * The main's stock icon as a button (round 728, Paper King's idea): press it to see every costume's
+ * icon and pick the one you play. A character with one icon, or none, just shows the badge.
+ */
+function CostumePicker({ main, label, onPick }: { main: Main; label: string; onPick: (costume: number) => void }) {
+  const [open, setOpen] = useState(false);
+  const icons = costumeIcons(main);
+  if (icons.length < 2) return <span className="flex w-8 shrink-0 justify-center" aria-hidden="true"><MainBadge main={main} size="md" /></span>;
+  const chosen = Math.min(main.costume ?? 1, icons.length);
+  return (
+    <span className="relative shrink-0">
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-label={label} title={label} className="flex h-8 w-8 items-center justify-center rounded-lg border border-line bg-field hover:bg-surface">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={icons[chosen - 1]} alt="" width={24} height={24} />
+      </button>
+      {open && (
+        <span role="listbox" aria-label={label} className="absolute left-0 top-10 z-20 grid w-max grid-cols-4 gap-1 rounded-xl border border-line bg-background p-2 shadow-xl">
+          {icons.map((src, i) => (
+            <button
+              key={src}
+              type="button"
+              role="option"
+              aria-selected={chosen === i + 1}
+              aria-label={`${label}: ${i + 1}`}
+              onClick={() => {
+                onPick(i + 1);
+                setOpen(false);
+              }}
+              className={`flex h-10 w-10 items-center justify-center rounded-lg hover:bg-surface ${chosen === i + 1 ? "ring-2 ring-brand" : ""}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt="" width={28} height={28} loading="lazy" />
+            </button>
+          ))}
+        </span>
+      )}
+    </span>
   );
 }

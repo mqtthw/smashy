@@ -168,6 +168,7 @@ export const peopleFr: Record<keyof typeof peopleEn, string> = {
   "people.edit.upTo": "(jusqu'à {n})",
   "people.edit.mainGame": "Main {n} : jeu",
   "people.edit.mainCharacter": "Main {n} : perso",
+  "people.edit.mainCostume": "Costume du main {n}",
   "people.edit.removeMain": "Retirer le main {n}",
   "people.edit.addMain": "+ Ajouter un main",
   "people.edit.lfg": "Je cherche un partenaire de doubles",

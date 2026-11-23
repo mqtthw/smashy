@@ -1,4 +1,5 @@
-Smashy stock icons (default costumes), one folder per game, resized to 64x64 webp.
+Smashy stock icons, one folder per game, resized to 64x64 webp. The default costume is <game>/<key>.webp;
+the other costumes (round 728) are <game>/costumes/<key>-<n>.webp, from the same sources (not Smash 64).
 
 ultimate/  Recreated by Max_Hamm (reddit.com/user/Max_Hamm, r/smashbros): "People can use them however they
            want, no credit required." Ridley uses costume 5 (the default wasn't in the set).
@@ -9,4 +10,5 @@ smash4/    The Spriters Resource, ripped by Random Talking Bush.
 
 Characters and icon designs (c) Nintendo / HAL Laboratory. Smashy isn't affiliated with Nintendo.
 To stop using them: set STOCK_ICONS = false in src/lib/mainBadge.ts (badges fall back to text codes).
-Re-import: scripts/import-stock-icons.mjs (Ultimate) and scripts/import-sheet-stock-icons.mjs (the rest).
+Re-import: scripts/import-stock-icons.mjs (Ultimate) and scripts/import-sheet-stock-icons.mjs (the rest),
+then scripts/import-stock-costumes.mjs for the other costumes.
