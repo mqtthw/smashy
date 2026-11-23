@@ -3,13 +3,11 @@
 import "server-only";
 import { headers } from "next/headers";
 import { HOME_REGION, isRegion, regionFromGeo } from "./regions";
-import { createClient } from "./supabase/server";
+import { getMyRegion } from "./viewer";
 
 export async function getProfileRegion(userId: string | null): Promise<string | null> {
-  if (!userId) return null;
-  const supabase = await createClient();
-  const { data } = await supabase.from("profiles").select("region").eq("id", userId).maybeSingle();
-  return isRegion(data?.region) ? data!.region : null;
+  const region = await getMyRegion(userId); // shares the page's one read of the profile row
+  return isRegion(region) ? region : null;
 }
 
 export async function detectedRegion(): Promise<string | null> {

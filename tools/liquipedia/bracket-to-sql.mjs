@@ -10,11 +10,11 @@
 // A set is "top~score~bottom~score~winner": a score of "W" (or none) is a win with no score; "1/1" against
 // "3/3" is a grand final and its reset, saved as two sets. Sets whose winner can't be told, and forfeits
 // ("FF", "DQ", "-"), are left out.
-// Fullwidth ＆ ？ ＝ (the browser read swaps them in) become & ? = again.
+// Fullwidth ＆ ？ ＝ (the browser read swaps them in) become & ? = again, and ～ is a tag's own "~".
 
 import { readFileSync } from "node:fs";
 
-const plain = (s) => s.replace(/＆/g, "&").replace(/？/g, "?").replace(/＝/g, "=").trim();
+const plain = (s) => s.replace(/～/g, "~").replace(/＆/g, "&").replace(/？/g, "?").replace(/＝/g, "=").trim();
 const num = (s) => (/^\d{1,3}$/.test(s ?? "") ? Number(s) : null);
 
 /** The text → brackets: { slug, eventId, game, source, sets: [{ round, p1, p2, s1, s2, winner }] }. */

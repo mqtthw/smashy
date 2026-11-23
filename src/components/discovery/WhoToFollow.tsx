@@ -18,7 +18,7 @@ export default function WhoToFollow({ people }: { people: Suggestion[] }) {
               <Avatar name={p.tag} src={p.avatarUrl} size="sm" />
               <span className="min-w-0">
                 <span className="flex items-center gap-1 truncate text-sm font-semibold">{p.tag} <MainBadge main={p.main} /></span>
-                <span className="block truncate text-meta text-muted">@{p.handle} · <T k={p.whyKey} values={{ place: p.whyPlace ?? "" }} /></span>
+                <span className="block truncate text-meta text-muted">@{p.handle} · {/* Spelled out, so the browser's trimmed phrases include both (round 749). */}{p.whyKey === "discover.alsoIn" ? <T k="discover.alsoIn" values={{ place: p.whyPlace ?? "" }} /> : <T k="discover.playsYourGames" />}</span>
               </span>
             </Link>
             <FollowButton profileId={p.id} state="none" isProtected={p.protected} signedIn />

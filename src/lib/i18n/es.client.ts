@@ -34,6 +34,8 @@ export const es = {
   "common.copy": "Copiar",
   "common.copied": "Copiado",
   "common.period": ".",
+  "discover.alsoIn": "También en {place}",
+  "discover.playsYourGames": "Juega tus juegos",
   "format.double_elim": "Doble eliminación",
   "format.single_elim": "Eliminación simple",
   "format.round_robin": "Round robin",

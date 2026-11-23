@@ -22,7 +22,7 @@ import { LiveMajorsBanner } from "@/components/majors/MajorParts";
 import MySetsTeaser from "@/components/mysets/MySetsTeaser";
 import { getMajors, majorsFor, refreshMajorsIfStale } from "@/lib/majors";
 import { GAMES, gamesFor } from "@/lib/games";
-import { getMyGames, needsProfile } from "@/lib/viewer";
+import { getMyGames, getMyHomeCity, needsProfile } from "@/lib/viewer";
 import { FeedSkeleton } from "@/components/ui/Skeleton";
 import GuestWelcome from "@/components/GuestWelcome";
 import FeedStarter from "@/components/feed/FeedStarter";
@@ -59,13 +59,6 @@ type FeedData = { entries: TimelineEntry[]; hasMore: boolean; cursor?: string | 
 
 /** Round icon buttons in the feed header (Resources, Search, Messages, Notifications). */
 const headerBtn = "flex h-9 min-w-9 items-center justify-center gap-1.5 rounded-full border border-line px-2 text-sm font-semibold text-foreground hover:bg-surface";
-
-/** The viewer's home city (for "this week near you"). */
-async function homeCity(userId: string): Promise<string | null> {
-  const supabase = await createClient();
-  const { data } = await supabase.from("profiles").select("home_city").eq("id", userId).maybeSingle();
-  return (data?.home_city as string | null) ?? null;
-}
 
 /** New players: a few people to follow until they follow 10. */
 async function FeedSuggestions({ userId }: { userId: string }) {
@@ -244,7 +237,7 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
       {/* A quiet feed (early days): top clips, this week's events and a nudge to post, instead of emptiness. */}
       {view === "for_you" && pageNum === 0 && !before && entries.length < 5 && (
         <Suspense fallback={null}>
-          <FeedStarter myGames={myGames} city={userId ? await homeCity(userId) : null} region={await getViewerRegion(userId)} signedIn={!!userId} showEvents={!!userId} showClips={!guestWelcome} />
+          <FeedStarter myGames={myGames} city={await getMyHomeCity(userId)} region={await getViewerRegion(userId)} signedIn={!!userId} showEvents={!!userId} showClips={!guestWelcome} />
         </Suspense>
       )}
 

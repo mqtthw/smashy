@@ -2,11 +2,16 @@
 import { cache } from "react";
 import { createClient } from "./supabase/server";
 
-/** The viewer's profile row (games only), read once per request however many parts ask. Null: none yet. */
-const myProfile = cache(async (userId: string): Promise<{ games: string[] } | null> => {
+/**
+ * The viewer's profile row (games, region, home city), read once per request however many parts ask
+ * (round 749: the Feed and Events used to read it three times, once for each). Null: no profile yet.
+ * A failed read throws, so each asker below picks its own safe answer.
+ */
+const myProfile = cache(async (userId: string): Promise<{ games: string[]; region: string | null; homeCity: string | null } | null> => {
   const supabase = await createClient();
-  const { data } = await supabase.from("profiles").select("games").eq("id", userId).maybeSingle();
-  return data ? { games: (data.games as string[] | null) ?? [] } : null;
+  const { data, error } = await supabase.from("profiles").select("games, region, home_city").eq("id", userId).maybeSingle();
+  if (error) throw new Error(error.message);
+  return data ? { games: (data.games as string[] | null) ?? [], region: data.region ?? null, homeCity: data.home_city ?? null } : null;
 });
 
 /**
@@ -41,7 +46,31 @@ export async function memberId(userId: string | null): Promise<string | null> {
 /** The games the signed-in player picked on their profile ([] for guests). */
 export async function getMyGames(userId: string | null): Promise<string[]> {
   if (!userId) return [];
-  return (await myProfile(userId))?.games ?? [];
+  try {
+    return (await myProfile(userId))?.games ?? [];
+  } catch {
+    return [];
+  }
+}
+
+/** The region saved on the signed-in player's profile, as stored (null for guests, none, or a failed read). */
+export async function getMyRegion(userId: string | null): Promise<string | null> {
+  if (!userId) return null;
+  try {
+    return (await myProfile(userId))?.region ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** The signed-in player's home city, for "this week near you" (null for guests, none, or a failed read). */
+export async function getMyHomeCity(userId: string | null): Promise<string | null> {
+  if (!userId) return null;
+  try {
+    return (await myProfile(userId))?.homeCity ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**

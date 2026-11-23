@@ -34,6 +34,8 @@ export const ja = {
   "common.copy": "コピー",
   "common.copied": "コピーしました",
   "common.period": "。",
+  "discover.alsoIn": "{place}にもいます",
+  "discover.playsYourGames": "同じゲームをプレイ",
   "format.double_elim": "ダブルエリミネーション",
   "format.single_elim": "シングルエリミネーション",
   "format.round_robin": "総当たり",
