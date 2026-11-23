@@ -3,10 +3,11 @@
 // ever contain what a guest can see, so teen posts and profiles can never leak into a preview,
 // even when a signed-in player is the one whose request generates it.
 import { createClient } from "@supabase/supabase-js";
+import type { Database } from "./database.types";
 import { timedFetch } from "./timedFetch";
 
 export function createGuestClient() {
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
+  return createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     // Pages don't wait forever on a stalled database (see timedFetch.ts).
     global: { fetch: timedFetch() },

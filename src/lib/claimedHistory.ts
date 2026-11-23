@@ -8,6 +8,7 @@ import { getLinkedPlayer } from "./playerStats";
 import type { PlayerResult } from "./playerResults";
 import { startggQuery } from "./startgg";
 import { createAdminClient } from "./supabase/admin";
+import { big } from "@/lib/supabase/loose";
 
 export const PAGE_SIZE = 25; // events per start.gg request (complexity ~176)
 export const PAGES_PER_BATCH = 8; // 200 events per "bring in" tap
@@ -18,7 +19,7 @@ export type Claim = { userId: string; handle: string | null; startggUserId: stri
 export async function getClaim(playerId: string): Promise<Claim | null> {
   if (!/^\d{1,12}$/.test(playerId)) return null;
   const db = createAdminClient();
-  const { data: link } = await db.from("startgg_links").select("user_id, startgg_user_id").eq("startgg_player_id", playerId).maybeSingle();
+  const { data: link } = await db.from("startgg_links").select("user_id, startgg_user_id").eq("startgg_player_id", big(playerId)).maybeSingle();
   if (!link) return null;
   const [linked, { data: prof }] = await Promise.all([getLinkedPlayer(link.user_id), db.from("profiles").select("handle").eq("id", link.user_id).maybeSingle()]);
   return { userId: link.user_id, handle: prof?.handle ?? null, startggUserId: String(link.startgg_user_id), showStats: linked?.showStats ?? false };

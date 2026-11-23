@@ -27,6 +27,7 @@ import { sameLocalTimeLater } from "@/lib/weeklies";
 import { IMPORT_MAX, isEventSlug, planImport, readStartggLink } from "@/lib/startggImport";
 import { getStartggEntrantList, getStartggEventChoices } from "@/lib/brackets/startgg";
 import { bracketEntrants, bracketPlayers, createBracket, deleteBracket, loadEngineSets, nextSwissRound, playersWithAccounts, redoSwissRound, saveChanges, startFinalBracket, withBracketLock } from "@/lib/hostedBracket";
+import { orNull } from "@/lib/supabase/loose";
 
 export type HostFormState = { error?: string };
 
@@ -186,7 +187,9 @@ async function syncBrackets(
 async function rpc(fn: string, args: Record<string, unknown>): Promise<ActionResult> {
   await requireUser();
   const supabase = await createClient();
-  const { error } = await supabase.rpc(fn, args);
+  // The callers below pass the function's name and arguments as plain text, so they aren't checked
+  // against the database types here; each database function checks its own arguments.
+  const { error } = await supabase.rpc(fn as never, args as never);
   if (error) return actionError(error);
   refresh();
   return {};
@@ -251,7 +254,7 @@ export async function joinHostedTeam(ev: string, partner: string): Promise<Actio
     if (!person) return { error: (await getT())("entering.err.noHandle", { handle: who.handle }) };
     partnerId = person.id as string;
   }
-  const { error } = await supabase.rpc("join_hosted_team", { ev, partner: partnerId, partner_name: who.kind === "name" ? who.name : null });
+  const { error } = await supabase.rpc("join_hosted_team", { ev, partner: orNull(partnerId), partner_name: orNull(who.kind === "name" ? who.name : null) });
   if (error) return actionError(error);
   if (partnerId) await tellTeammate(ev, userId, [partnerId], "joined").catch(() => {}); // a nice-to-have: never fails the sign-up
   refresh();

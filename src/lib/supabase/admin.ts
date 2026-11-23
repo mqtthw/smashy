@@ -2,6 +2,7 @@
 // so only use it on the server for specific jobs (like deleting an under-13 account).
 // The "server-only" import makes the build fail if a "use client" file ever imports this.
 import "server-only";
+import type { Database } from "./database.types";
 import { createClient } from "@supabase/supabase-js";
 import { timedFetch } from "./timedFetch";
 
@@ -13,7 +14,7 @@ import { timedFetch } from "./timedFetch";
 export function createAdminClient(opts: { forPage?: boolean } = {}) {
   const secret = process.env.SUPABASE_SECRET_KEY;
   if (!secret) throw new Error("SUPABASE_SECRET_KEY is missing. Add it to .env.local.");
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, secret, {
+  return createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, secret, {
     auth: { autoRefreshToken: false, persistSession: false },
     ...(opts.forPage ? { global: { fetch: timedFetch(10_000) } } : {}),
   });

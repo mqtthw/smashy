@@ -9,6 +9,7 @@ import { hiddenPlayers, rememberPlayers } from "./playerIndex";
 import type { SeenPlayer } from "./playerSearch";
 import { isTooComplex, startggQuery } from "./startgg";
 import { createAdminClient } from "./supabase/admin";
+import { big, bigs } from "@/lib/supabase/loose";
 
 // start.gg returns at most 1000 objects per request, and each set with its games and characters can be
 // ~50 objects, so 25 sets per page went over for players with long sets. 15 x 7 = the last ~105 sets.
@@ -210,7 +211,7 @@ export async function getLinkedPlayer(userId: string): Promise<LinkedPlayer | nu
 export async function playerOnSmashy(playerId: string): Promise<{ allowed: boolean; handle: string | null }> {
   if (!/^\d+$/.test(playerId)) return { allowed: false, handle: null };
   const db = createAdminClient();
-  const [{ data: link, error }, optedOut] = await Promise.all([db.from("startgg_links").select("user_id").eq("startgg_player_id", playerId).maybeSingle(), hiddenPlayers([playerId])]);
+  const [{ data: link, error }, optedOut] = await Promise.all([db.from("startgg_links").select("user_id").eq("startgg_player_id", big(playerId)).maybeSingle(), hiddenPlayers([playerId])]);
   if (error) throw error; // not knowing must never show a hidden player
   if (optedOut.has(playerId)) return { allowed: false, handle: null };
   if (!link) return { allowed: true, handle: null };
@@ -227,7 +228,7 @@ export async function playersHidingStats(playerIds: string[]): Promise<Set<strin
   const ids = [...new Set(playerIds.filter((id) => /^\d+$/.test(id)))];
   if (!ids.length) return new Set();
   const db = createAdminClient();
-  const [{ data: links, error }, hidden] = await Promise.all([db.from("startgg_links").select("user_id, startgg_player_id").in("startgg_player_id", ids), hiddenPlayers(ids)]);
+  const [{ data: links, error }, hidden] = await Promise.all([db.from("startgg_links").select("user_id, startgg_player_id").in("startgg_player_id", bigs(ids)), hiddenPlayers(ids)]);
   if (error) throw error; // not knowing must never show a hidden player
   if (!links.length) return hidden;
   const users = links.map((l) => l.user_id);

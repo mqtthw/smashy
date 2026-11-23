@@ -92,7 +92,7 @@ async function connect(i: Interaction, t: Tr, code: string | undefined) {
   const { data: row } = clean ? await db.from("discord_link_codes").select("host_id, expires_at").eq("code", clean).maybeSingle() : { data: null };
   if (!row || Date.parse(row.expires_at as string) < Date.now()) return reply(t("alert.bot.badCode", { url: link("/host/discord") }), true);
   await db.from("discord_link_codes").delete().eq("code", clean!);
-  const { error } = await db.from("discord_servers").upsert({ guild_id: i.guild_id, host_id: row.host_id, linked_by: userIdOf(i), linked_at: new Date().toISOString() }, { onConflict: "guild_id" });
+  const { error } = await db.from("discord_servers").upsert({ guild_id: i.guild_id!, host_id: row.host_id, linked_by: userIdOf(i), linked_at: new Date().toISOString() }, { onConflict: "guild_id" });
   if (error) return reply(t("alert.bot.error"), true);
   const { data: p } = await db.from("profiles").select("tag").eq("id", row.host_id).maybeSingle();
   return reply(t("alert.bot.connected", { name: plain((p?.tag as string | undefined) ?? "") }));

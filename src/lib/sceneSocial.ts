@@ -22,7 +22,7 @@ export async function getSceneEmojis(sceneId: string): Promise<SceneEmojiItem[]>
   const supabase = await createClient();
   const { data, error } = await supabase.from("scene_emojis").select("id, name, image_path, status").eq("scene_id", sceneId).neq("status", "rejected").order("name");
   if (error) throw error;
-  return (data ?? []).map((e) => ({ id: e.id, name: e.name, url: sceneEmojiUrl(e.image_path), status: e.status }));
+  return (data ?? []).map((e) => ({ id: e.id, name: e.name, url: sceneEmojiUrl(e.image_path), status: e.status as SceneEmojiItem["status"] }));
 }
 
 /** Site admin queue: emojis waiting for approval, across scenes. */

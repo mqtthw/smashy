@@ -68,7 +68,7 @@ export async function createSeason(formData: FormData) {
   if ((await countOwnedSeasons(userId)) >= SEASON_LIMITS.seasonsPerMember) fail("tooMany");
   const { data, error } = await createAdminClient()
     .from("seasons")
-    .insert({ owner_id: userId, name, game, region: isRegion(region) ? region : null, starts_on: startsOn, ends_on: endsOn, points: DEFAULT_POINTS })
+    .insert({ owner_id: userId, name: name as string, game, region: isRegion(region) ? region : null, starts_on: startsOn, ends_on: endsOn, points: DEFAULT_POINTS })
     .select("id")
     .single();
   if (error || !data) {

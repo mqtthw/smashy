@@ -7,6 +7,7 @@ import { isGameKey } from "./games";
 import type { MajorEvent, Top8Row } from "./majorEvents";
 import { createAdminClient } from "./supabase/admin";
 import { createGuestClient } from "./supabase/guest";
+import { bigs } from "@/lib/supabase/loose";
 
 /** A name as links compare it: lowercased, letters and digits only ("C9 | Mang0" → "c9mang0", "Dr. PeePee" → "drpeepee"). */
 export function nameKey(name: string): string {
@@ -176,7 +177,7 @@ export async function listNameLinks(): Promise<{ key: string; name: string; play
   const { data, error } = await db.from("player_name_links").select("name_key, name, player_id, game").order("created_at", { ascending: false }).limit(500);
   if (error) throw error;
   const ids = [...new Set((data ?? []).map((r) => r.player_id as string))];
-  const { data: players } = ids.length ? await db.from("startgg_players").select("player_id, tag").in("player_id", ids) : { data: [] };
+  const { data: players } = ids.length ? await db.from("startgg_players").select("player_id, tag").in("player_id", bigs(ids)) : { data: [] };
   const tags = new Map((players ?? []).map((p) => [String(p.player_id), p.tag as string]));
   return (data ?? []).map((r) => ({
     key: linkKey(r.name_key as string, (r.game as string) || null),

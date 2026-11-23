@@ -171,7 +171,7 @@ export async function getConversation(id: string, viewerId: string): Promise<Con
   const others = all.filter((m) => m.user_id !== viewerId && (m.status !== "left" || conv.kind === "direct") && m.profile);
   return {
     id: conv.id,
-    kind: conv.kind,
+    kind: conv.kind as Conversation["kind"],
     title: conv.title,
     myStatus: me.status,
     myRole: me.role,

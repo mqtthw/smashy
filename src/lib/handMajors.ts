@@ -138,7 +138,7 @@ export async function addHandMajor(input: HandMajorInput, adminId: string, sugge
   const db = createAdminClient();
   const { data: existing } = await db.from("majors").select("slug").eq("slug", checked.slug).maybeSingle();
   if (existing) return { error: { key: "history.err.exists" } };
-  const { error } = await db.from("majors").insert({ ...checked.row, added_by: adminId, suggested_by: suggestedBy, live_notified_at: new Date().toISOString() });
+  const { error } = await db.from("majors").insert({ ...checked.row, added_by: adminId, suggested_by: suggestedBy, live_notified_at: new Date().toISOString() } as never); // checkHandMajor's row: its fields are checked there
   if (error) return { error: { key: "history.err.saveFailed" } };
   const { error: eventsError } = await db.from("major_events").insert(
     checked.events.map((e) => ({ major_slug: checked.slug, event_id: e.eventId, game: e.game, name: e.name, entrants: e.entrants, teams: e.teams, online: e.online, top8: e.top8 })),
@@ -196,7 +196,7 @@ export async function updateHandMajor(slug: string, input: HandMajorInput): Prom
   const db = createAdminClient();
   const r = checked.row;
   const row = { name: r.name, start_at: r.start_at, end_at: r.end_at, games: r.games, entrants: r.entrants, city: r.city, country: r.country, source_url: r.source_url };
-  const { data: updated, error } = await db.from("majors").update(row).eq("slug", slug).eq("source", "manual").select("slug");
+  const { data: updated, error } = await db.from("majors").update(row as never).eq("slug", slug).eq("source", "manual").select("slug");
   if (error || !updated?.length) return { error: { key: "history.err.saveFailed" } };
   // The edit form has no characters: keep the ones saved for a place and name that stay the same.
   const { data: before } = await db.from("major_events").select("game, top8").eq("major_slug", slug).like("event_id", "manual-%");

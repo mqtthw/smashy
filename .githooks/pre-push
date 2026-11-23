@@ -1,0 +1,39 @@
+#!/bin/sh
+# Runs before every `git push` (round 727): a push to main goes live on smashy.gg, and twice a push
+# reached Vercel with a build that failed (rounds 660 and 681). This stops the push on this computer
+# instead, at no cost in GitHub minutes.
+#
+# Turned on once per copy of the repo with:   git config core.hooksPath .githooks
+#
+# What it runs: type check, unit tests, and a production build. Pushes that only touch docs (*.md,
+# docs/) skip it. The build needs .env.local; a computer without one (the Mac) runs the first two only.
+
+range=""
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$local_sha" in 0000000000000000000000000000000000000000) continue ;; esac # deleting a branch
+  case "$remote_sha" in
+    0000000000000000000000000000000000000000) range="$local_sha" ;; # a new branch: check it
+    *) range="$remote_sha..$local_sha" ;;
+  esac
+done
+
+if [ -z "$range" ]; then exit 0; fi
+
+changed=$(git diff --name-only "$range" 2>/dev/null || echo "unknown")
+code=$(printf '%s\n' "$changed" | grep -v -E '(\.md$|^docs/)' || true)
+if [ -z "$code" ]; then
+  echo "pre-push: only docs changed, checks skipped."
+  exit 0
+fi
+
+echo "pre-push: type check..."
+npm run typecheck --silent || { echo "pre-push: the type check failed. Nothing was pushed."; exit 1; }
+echo "pre-push: unit tests..."
+npm test --silent || { echo "pre-push: unit tests failed. Nothing was pushed."; exit 1; }
+if [ -f .env.local ]; then
+  echo "pre-push: production build..."
+  npm run build --silent > /dev/null || { echo "pre-push: the build failed (run 'npm run build' to see why). Nothing was pushed."; exit 1; }
+else
+  echo "pre-push: no .env.local here, so the build wasn't run."
+fi
+echo "pre-push: all checks passed."

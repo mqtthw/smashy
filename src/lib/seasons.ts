@@ -10,6 +10,7 @@ import { getHostedEvent } from "./hostedEvents";
 import { startggQuery } from "./startgg";
 import { langsFor, trFor } from "./i18n/recipients";
 import { computeStandings, memberKey, movementSinceLatest, SEASON_LIMITS, startggKey, walkInKey, type Movement, type PlayerOverride, type PointsRow, type SeasonEventData, type SeasonResult, type StandingRow } from "./seasonsMath";
+import { bigs } from "@/lib/supabase/loose";
 
 export type Season = {
   id: string;
@@ -149,7 +150,7 @@ export async function getStandings(season: Season, events: SeasonEvent[], viewer
   // The admins' fixes, linked start.gg accounts and the creator's PR names don't depend on each other.
   const [overrides, { data: links }, { data: pr }] = await Promise.all([
     getSeasonOverrides(season.id),
-    sggIds.length ? db.from("startgg_links").select("user_id, startgg_player_id").in("startgg_player_id", sggIds.slice(0, 1000)) : Promise.resolve({ data: [] }),
+    sggIds.length ? db.from("startgg_links").select("user_id, startgg_player_id").in("startgg_player_id", bigs(sggIds.slice(0, 1000))) : Promise.resolve({ data: [] }),
     db.from("pr_names").select("user_id, guest_tag, pr_name").eq("host_id", season.ownerId).limit(2000),
   ]);
   const autoMerge = new Map(((links ?? []) as { user_id: string; startgg_player_id: number }[]).map((l) => [startggKey(l.startgg_player_id), memberKey(l.user_id)]));

@@ -4,6 +4,7 @@
 import "server-only";
 import { playerRows, type SeenPlayer } from "./playerSearch";
 import { createAdminClient } from "./supabase/admin";
+import { big, bigs } from "@/lib/supabase/loose";
 
 const TABLE = "startgg_players";
 const QUICK = () => AbortSignal.timeout(4_000); // a slow database must not hold up the page that saw the players
@@ -63,7 +64,7 @@ export async function searchSavedPlayers(q: string, limit = 30): Promise<SeenPla
 export async function hiddenPlayers(playerIds: string[]): Promise<Set<string>> {
   const ids = [...new Set(playerIds.filter((id) => /^\d{1,12}$/.test(id)))];
   if (!ids.length) return new Set();
-  const { data, error } = await createAdminClient().from(TABLE).select("player_id").eq("hidden", true).in("player_id", ids);
+  const { data, error } = await createAdminClient().from(TABLE).select("player_id").eq("hidden", true).in("player_id", bigs(ids));
   if (error) throw error;
   return new Set((data as { player_id: number | string }[]).map((r) => String(r.player_id)));
 }
@@ -87,7 +88,7 @@ export async function setPlayerHidden(playerId: string, hidden: boolean, player?
     if (error) throw error;
     return true;
   }
-  const { data, error } = await db.from(TABLE).update({ hidden, last_seen_at: now }).eq("player_id", playerId).select("player_id");
+  const { data, error } = await db.from(TABLE).update({ hidden, last_seen_at: now }).eq("player_id", big(playerId)).select("player_id");
   if (error) throw error;
   return (data?.length ?? 0) > 0;
 }

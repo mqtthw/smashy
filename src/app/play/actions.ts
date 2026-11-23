@@ -90,7 +90,7 @@ export async function sendChat(room: string, body: string): Promise<{ error?: st
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("chat_messages")
-    .insert({ room, author_id: userId, body: text })
+    .insert({ room, author_id: userId, body: text } as never) // author_tag is filled in by the database
     .select("id, room, author_id, author_tag, body, created_at")
     .single();
   if (error) {
@@ -234,7 +234,7 @@ export async function playerCard(id: string): Promise<{ tag: string; handle: str
  */
 async function saveOwnRow(table: "play_settings" | "play_codes", match: Record<string, string>, values: Record<string, unknown>) {
   const supabase = await createClient();
-  let q = supabase.from(table).update(values);
+  let q = supabase.from(table).update(values as never); // two tables share this helper, so the columns aren't checked here
   for (const [k, v] of Object.entries(match)) q = q.eq(k, v);
   const { data, error } = await q.select(Object.keys(match)[0]);
   if (error) return { error };
@@ -242,10 +242,10 @@ async function saveOwnRow(table: "play_settings" | "play_codes", match: Record<s
   // A new row gets its "last changed" time from the database (players can't set it).
   const { updated_at: _skip, ...fresh } = values;
   void _skip;
-  const added = await supabase.from(table).insert({ ...match, ...fresh });
+  const added = await supabase.from(table).insert({ ...match, ...fresh } as never);
   // Two taps at once: the other one added it first, so update it.
   if (added.error?.code === "23505") {
-    let again = supabase.from(table).update(values);
+    let again = supabase.from(table).update(values as never);
     for (const [k, v] of Object.entries(match)) again = again.eq(k, v);
     return { error: (await again).error };
   }

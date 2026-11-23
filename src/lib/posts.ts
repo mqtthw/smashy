@@ -15,6 +15,7 @@ import { createClient } from "./supabase/server";
 import { createGuestClient } from "./supabase/guest";
 import { cacheLife } from "next/cache";
 import { cache } from "react";
+import { orNull } from "@/lib/supabase/loose";
 
 /**
  * The database connection for a viewer: theirs when signed in, the plain guest one otherwise. The
@@ -509,7 +510,8 @@ async function getTimeline(opts: { game?: FeedGame; actorId?: string; following?
   const { data: items, error } = await q;
   if (error) throw error;
 
-  const page = (items ?? []).slice(0, FEED_PAGE_SIZE);
+  // A view's columns all look optional to the generated types; these four are always set.
+  const page = ((items ?? []) as { post_id: string; actor_id: string; kind: string; at: string }[]).slice(0, FEED_PAGE_SIZE);
   const postIds = [...new Set(page.map((i) => i.post_id))];
   const reposterIds = [...new Set(page.filter((i) => i.kind === "repost").map((i) => i.actor_id))];
   // Likes, reactions and polls only need the ids: they load alongside the posts (round 671).
@@ -580,13 +582,13 @@ function whyLabel(r: RankedRow, post: Post): string | null {
 export async function getForYouFeed(opts: { game?: FeedGame; page: number; asOf?: string; userId: string | null; region?: string | null }) {
   const supabase = await dbFor(opts.userId);
   const { data, error } = await supabase.rpc("for_you_feed", {
-    p_game: opts.game ?? null,
+    p_game: orNull(opts.game),
     p_limit: FEED_PAGE_SIZE + 1,
     p_offset: opts.page * FEED_PAGE_SIZE,
     // Pages of one browsing session are ranked as of the same moment, so they don't repeat or skip.
-    p_as_of: opts.asOf ?? null,
+    p_as_of: orNull(opts.asOf),
     // The viewer's region (visitors: their rough location); signed-in people's comes from their profile.
-    p_region: opts.region ?? null,
+    p_region: orNull(opts.region),
   });
   if (error) throw error;
   const ranked = ((data ?? []) as RankedRow[]).slice(0, FEED_PAGE_SIZE);

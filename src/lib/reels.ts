@@ -201,7 +201,7 @@ async function saveCollected(rows: ({ clip_id: string; game: GameKey } & Record<
   const keepGame = new Set((shared ?? []).map((r) => r.clip_id));
   const fresh = rows.filter((r) => !keepGame.has(r.clip_id));
   if (fresh.length) {
-    const { error } = await db.from("reels").upsert(fresh, { onConflict: "clip_id" });
+    const { error } = await db.from("reels").upsert(fresh as never, { onConflict: "clip_id" }); // rows built by twitchRow / shortRow above
     if (error) throw error;
   }
   for (const r of rows.filter((x) => keepGame.has(x.clip_id))) {
@@ -209,7 +209,7 @@ async function saveCollected(rows: ({ clip_id: string; game: GameKey } & Record<
     delete details.clip_id;
     delete details.game;
     delete details.low_quality; // a clip someone shared was checked by an admin: never junk
-    const { error } = await db.from("reels").update(details).eq("clip_id", r.clip_id);
+    const { error } = await db.from("reels").update(details as never).eq("clip_id", r.clip_id);
     if (error) throw error;
   }
 }
@@ -274,14 +274,14 @@ async function syncYouTubeShorts() {
       const v = found.get(r.clip_id);
       let update: Record<string, unknown>;
       if (v) {
-        const row: Record<string, unknown> = shortRow(v, r.channel_login, r.game);
+        const row: Record<string, unknown> = shortRow(v, r.channel_login, r.game as GameKey);
         delete row.clip_id;
         delete row.game; // keep the game it was filed under
         update = { ...row, unavailable: false };
       } else {
         update = { title: "", thumbnail_url: null, view_count: 0, unavailable: true, fetched_at: new Date().toISOString() };
       }
-      const { error } = await db.from("reels").update(update).eq("clip_id", r.clip_id);
+      const { error } = await db.from("reels").update(update as never).eq("clip_id", r.clip_id);
       if (error) throw error;
     }
   }
@@ -552,9 +552,9 @@ export async function getReelChannels(): Promise<ReelChannel[]> {
   if (error) throw error;
   return (data ?? []).map((c) => ({
     login: c.login,
-    platform: c.platform,
+    platform: c.platform as ReelPlatform,
     displayName: c.display_name,
-    source: c.source,
+    source: c.source as ReelChannel["source"],
     approved: c.approved,
     blocked: c.blocked,
     twitchId: c.twitch_id,

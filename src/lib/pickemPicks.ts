@@ -6,6 +6,7 @@ import { avatarUrl } from "./avatarLinks";
 import { rankScores, scorePicks, type PickScore, type Ranked } from "./pickem";
 import { createAdminClient } from "./supabase/admin";
 import { createClient } from "./supabase/server";
+import { big } from "@/lib/supabase/loose";
 
 export type Pick = { userId: string; champion: string; top8: string[]; tags: Record<string, string>; pickedAt: string };
 
@@ -15,14 +16,14 @@ const toPick = (r: Row): Pick => ({ userId: r.user_id, champion: r.champion, top
 /** This person's picks for an event (null = none yet). */
 export async function getMyPick(eventId: string, userId: string | null): Promise<Pick | null> {
   if (!userId || !/^\d{1,12}$/.test(eventId)) return null;
-  const { data } = await createAdminClient().from("pickem_picks").select("user_id, champion, top8, tags, updated_at").eq("event_id", eventId).eq("user_id", userId).maybeSingle();
+  const { data } = await createAdminClient().from("pickem_picks").select("user_id, champion, top8, tags, updated_at").eq("event_id", big(eventId)).eq("user_id", userId).maybeSingle();
   return data ? toPick(data as Row) : null;
 }
 
 /** How many have made picks for an event (shown before the lock, without anyone's picks). */
 export async function countPicks(eventId: string): Promise<number> {
   if (!/^\d{1,12}$/.test(eventId)) return 0;
-  const { count } = await createAdminClient().from("pickem_picks").select("event_id", { count: "exact", head: true }).eq("event_id", eventId);
+  const { count } = await createAdminClient().from("pickem_picks").select("event_id", { count: "exact", head: true }).eq("event_id", big(eventId));
   return count ?? 0;
 }
 
@@ -34,7 +35,7 @@ export type BoardRow = Pick & PickScore & { tag: string; handle: string; avatarU
  */
 export async function getBoard(eventId: string, viewerId: string | null, placements: Map<string, number> | null): Promise<{ rows: Ranked<BoardRow>[]; all: Pick[] }> {
   if (!/^\d{1,12}$/.test(eventId)) return { rows: [], all: [] };
-  const { data } = await createAdminClient().from("pickem_picks").select("user_id, champion, top8, tags, updated_at").eq("event_id", eventId).order("updated_at").limit(2000);
+  const { data } = await createAdminClient().from("pickem_picks").select("user_id, champion, top8, tags, updated_at").eq("event_id", big(eventId)).order("updated_at").limit(2000);
   const all = ((data ?? []) as Row[]).map(toPick);
   if (!all.length) return { rows: [], all };
   const supabase = await createClient();

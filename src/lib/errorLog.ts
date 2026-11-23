@@ -2,6 +2,7 @@
 // Server-only. Never throws (logging must not cause a second error).
 import "server-only";
 import { createAdminClient } from "./supabase/admin";
+import { orNull } from "@/lib/supabase/loose";
 
 export type ErrorSource = "server" | "browser";
 
@@ -28,8 +29,8 @@ export async function logError(source: ErrorSource, message: string, path: strin
       p_fingerprint: errorFingerprint(source, msg, path),
       p_source: source,
       p_message: msg,
-      p_path: path ? path.slice(0, 300) : null,
-      p_digest: digest ? digest.slice(0, 100) : null,
+      p_path: orNull(path ? path.slice(0, 300) : null),
+      p_digest: orNull(digest ? digest.slice(0, 100) : null),
     });
   } catch {
     // ignore
@@ -45,7 +46,7 @@ export async function listErrors(limit = 50): Promise<ErrorReport[]> {
     .order("last_seen", { ascending: false })
     .limit(limit);
   return (data ?? []).map((e) => ({
-    id: e.id, source: e.source, message: e.message, path: e.path, digest: e.digest, count: e.count,
+    id: e.id, source: e.source as ErrorReport["source"], message: e.message, path: e.path, digest: e.digest, count: e.count,
     firstSeen: e.first_seen, lastSeen: e.last_seen, resolved: !!e.resolved_at,
   }));
 }
