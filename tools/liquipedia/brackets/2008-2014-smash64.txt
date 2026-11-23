@@ -1,0 +1,506 @@
+@manual/2012-apex-2012 manual-smash64-2 smash64 https://liquipedia.net/smash/Apex/2012/64/Singles_Bracket
+#Winners Round 1
+Isai~W~george~~1
+Marko~~Duck~W~2
+Chain-Ace~~Xaltis~W~2
+Clubbadubba~W~Black Cats31~~1
+Kefit~W~Xiivi~~1
+Ripple~W~Codi~~1
+Krazy Kirby~W~pikathunder~~1
+Firo~W~Dark Master~~1
+JaimeHR~W~P90curl~~1
+Vudujin~W~Homeland~~1
+Vex Kasrani~~～Tac～~W~2
+m3gav01t~W~What's the Point~~1
+King Funk~W~Tony~~1
+xivk ＆ Jokaru~~KnitePhox~W~2
+Valoem~W~Zaatar Manakish~~1
+Jimmy Joe~W~jwillii~~1
+Sensei~W~Glen Cocoa~~1
+Ray Rocket~W~KeroKeroppi~~1
+VaNz~W~pidgezero_one~~1
+hamburglar~W~pwii~~1
+Smoke2Jointz~~JohnsterMonzter~W~2
+Rocky~W~Seagull~~1
+Jel~W~Tedium~~1
+Luigi Sama~~Espy~W~2
+Nintendude~W~gio~~1
+Tearbear~~Hard B0dy~W~2
+Vatgas~~infamous diablo~W~2
+Bladewise~W~TheSaberGuy~~1
+SuPeRbOoMfAn~W~Deltacod~~1
+THuGz~W~Lefty~~1
+Ownasaurus~W~AIR~~1
+KoRoBeNiKi~W~Garm~~1
+#Winners Round 2
+Isai~W~Duck~~1
+Xaltis~~Clubbadubba~W~2
+Kefit~W~Ripple~~1
+Krazy Kirby~~Firo~W~2
+JaimeHR~W~Vudujin~~1
+～Tac～~~m3gav01t~W~2
+King Funk~W~KnitePhox~~1
+Valoem~W~Jimmy Joe~~1
+Sensei~W~Ray Rocket~~1
+VaNz~~hamburglar~W~2
+JohnsterMonzter~~Rocky~W~2
+Jel~W~Espy~~1
+Nintendude~W~Hard B0dy~~1
+infamous diablo~~Bladewise~W~2
+SuPeRbOoMfAn~W~THuGz~~1
+Ownasaurus~W~KoRoBeNiKi~~1
+#Winners Round 3
+Isai~2~Clubbadubba~0~1
+Kefit~2~Firo~0~1
+JaimeHR~W~m3gav01t~~1
+King Funk~2~Valoem~0~1
+Sensei~W~hamburglar~~1
+Rocky~~Jel~W~2
+Nintendude~W~Bladewise~~1
+SuPeRbOoMfAn~2~Ownasaurus~0~1
+#Winners Round 4
+Isai~2~Kefit~0~1
+JaimeHR~2~King Funk~1~1
+Sensei~2~Jel~0~1
+Nintendude~0~SuPeRbOoMfAn~2~2
+#Winners Round 5
+Isai~3~JaimeHR~0~1
+Sensei~0~SuPeRbOoMfAn~3~2
+#Losers Round 1
+george~W~Marko~~1
+Chain-Ace~W~Black Cats31~~1
+Xiivi~W~Codi~~1
+pikathunder~W~Dark Master~~1
+P90curl~W~Homeland~~1
+Vex Kasrani~W~What's the Point~~1
+Tony~W~xivk ＆ Jokaru~~1
+Zaatar Manakish~~jwillii~W~2
+Glen Cocoa~~KeroKeroppi~W~2
+pidgezero_one~~pwii~W~2
+Smoke2Jointz~~Seagull~W~2
+Tedium~~Luigi Sama~W~2
+gio~W~Tearbear~~1
+Vatgas~W~TheSaberGuy~~1
+Deltacod~W~Lefty~~1
+AIR~W~Garm~~1
+#Losers Round 2
+Vudujin~~george~W~2
+～Tac～~~Chain-Ace~W~2
+KnitePhox~W~Xiivi~~1
+Jimmy Joe~W~pikathunder~~1
+Duck~~P90curl~W~2
+Xaltis~~Vex Kasrani~W~2
+Ripple~~Tony~W~2
+Krazy Kirby~W~jwillii~~1
+Hard B0dy~W~KeroKeroppi~~1
+infamous diablo~W~pwii~~1
+THuGz~W~Seagull~~1
+KoRoBeNiKi~W~Luigi Sama~~1
+Ray Rocket~~gio~W~2
+VaNz~~Vatgas~W~2
+JohnsterMonzter~W~Deltacod~~1
+Espy~W~AIR~~1
+#Losers Round 3
+george~~Chain-Ace~W~2
+KnitePhox~W~Jimmy Joe~~1
+P90curl~~Vex Kasrani~W~2
+Tony~~Krazy Kirby~W~2
+Hard B0dy~W~infamous diablo~~1
+THuGz~~KoRoBeNiKi~W~2
+gio~W~Vatgas~~1
+JohnsterMonzter~~Espy~W~2
+#Losers Round 4
+Rocky~W~Chain-Ace~~1
+hamburglar~~KnitePhox~W~2
+Ownasaurus~W~Vex Kasrani~~1
+Bladewise~~Krazy Kirby~W~2
+Firo~W~Hard B0dy~~1
+Clubbadubba~W~KoRoBeNiKi~~1
+Valoem~W~gio~~1
+m3gav01t~W~Espy~~1
+#Losers Round 5
+Rocky~~KnitePhox~W~2
+Ownasaurus~W~Krazy Kirby~~1
+Firo~2~Clubbadubba~0~1
+Valoem~~m3gav01t~W~2
+#Losers Round 6
+King Funk~2~KnitePhox~0~1
+Kefit~W~Ownasaurus~~1
+Nintendude~2~Firo~1~1
+Jel~~m3gav01t~W~2
+#Losers Round 7
+King Funk~1~Kefit~2~2
+Nintendude~2~m3gav01t~0~1
+#Losers Round 8
+Sensei~2~Kefit~3~2
+JaimeHR~3~Nintendude~2~1
+#Losers Finals
+Isai~3~JaimeHR~2~1
+#Grand Finals
+SuPeRbOoMfAn~3/4~Isai~4/2~1
+
+@manual/2013-apex-2013 manual-smash64-2 smash64 https://liquipedia.net/smash/Apex/2013/64/Singles_Bracket
+#Quarterfinals
+SuPeRbOoMfAn~2~Sensei~1~1
+Kefit~0~Kikoushi~2~2
+Isai~2~Nangoku~0~1
+JaimeHR~1~Ruoka Dancho~2~2
+#Semifinals
+SuPeRbOoMfAn~1~Kikoushi~3~2
+Isai~3~Ruoka Dancho~0~1
+#Losers Round 1
+runtmc~W~Shaolinblunts~~1
+Cobrevolution~W~SmashAssassin~~1
+Skyfire~W~Sonofabeast~~1
+vVv Rapture~W~ezeffort~~1
+TO Joe~W~pidgezero_one~~1
+Black Cats31~W~Bobbo~~1
+Rami Jackson~~Kuraudo~W~2
+KMaD64~W~Tearbear~~1
+BOSSMAN~~HammerTime~W~2
+KoRoBeNiKi~W~Ya Dad~~1
+Sandman~~Weedwack~W~2
+hectorhertz~W~Maliki~~1
+Apple~W~kpkoopa~~1
+Chain-Ace~W~DeAnMoNeY540~~1
+Gunblade~W~jeffboy~~1
+I LOVE SMASH~W~shyguy88~~1
+DJ Fliphop~W~Sweet~~1
+Eikelmann~W~Orange~~1
+SA-in-NE~W~ook~~1
+Jel~W~GTZ~~1
+cmu6eh~W~Rayzor~~1
+low-tier-or-no-tier~W~Bred~~1
+Danconia~W~USCTrojanTB~~1
+Wizzrobe~W~Rich Brown~~1
+Eggcelsior!~W~GINGTASTIC~~1
+Bladewise~W~Kenny~~1
+Triptych~~Zwarm~W~2
+Tony~W~Dice~~1
+Myztek~~HazarD2kv~W~2
+Komonotono~W~Deano~~1
+faceCHEEKwall~W~Smokey Bluntz~~1
+Jered~W~Cookie Monster~~1
+#Losers Round 2
+runtmc~~Cobrevolution~W~2
+Skyfire~W~vVv Rapture~~1
+TO Joe~~Black Cats31~W~2
+Kuraudo~~KMaD64~W~2
+HammerTime~~KoRoBeNiKi~W~2
+Weedwack~W~hectorhertz~~1
+Apple~~Chain-Ace~W~2
+Gunblade~~I LOVE SMASH~W~2
+DJ Fliphop~W~Eikelmann~~1
+SA-in-NE~W~Jel~~1
+cmu6eh~W~low-tier-or-no-tier~~1
+Danconia~~Wizzrobe~W~2
+Eggcelsior!~~Bladewise~W~2
+Zwarm~~Tony~W~2
+HazarD2kv~~Komonotono~W~2
+faceCHEEKwall~W~Jered~~1
+#Losers Round 3
+Dark Link -X-~W~Cobrevolution~~1
+KnitePhox~W~Skyfire~~1
+Jimmy Joe~W~Black Cats31~~1
+Han Solo~W~KMaD64~~1
+Vex Kasrani~W~KoRoBeNiKi~~1
+Oxolane~W~Weedwack~~1
+Combo Blaze~~Chain-Ace~W~2
+Stranded~~I LOVE SMASH~W~2
+Rumbly~W~DJ Fliphop~~1
+Valoem~W~SA-in-NE~~1
+Madrush21~W~cmu6eh~~1
+ballin4life~W~Wizzrobe~~1
+TANK~W~Bladewise~~1
+B-Rex~W~Tony~~1
+ShadeMoneh~W~Komonotono~~1
+Czar~W~faceCHEEKwall~~1
+#Losers Round 4
+Dark Link -X-~W~KnitePhox~~1
+Jimmy Joe~1~Han Solo~2~2
+Vex Kasrani~~Oxolane~W~2
+Chain-Ace~~I LOVE SMASH~W~2
+Rumbly~W~Valoem~~1
+Madrush21~~ballin4life~W~2
+TANK~1~B-Rex~2~2
+ShadeMoneh~~Czar~W~2
+#Losers Round 5
+YBOMBB~2~Dark Link -X-~0~1
+m3gav01t~W~Han Solo~~1
+Banze~2~Oxolane~0~1
+SheerMadness~W~I LOVE SMASH~~1
+Firo~W~Rumbly~~1
+battlecow~0~ballin4life~2~2
+KeroKeroppi~~B-Rex~W~2
+Nintendude~W~Czar~~1
+#Losers Round 6
+YBOMBB~W~m3gav01t~~1
+Banze~1~SheerMadness~2~2
+Firo~2~ballin4life~0~1
+B-Rex~1~Nintendude~2~2
+#Losers Round 7
+Nangoku~W~YBOMBB~~1
+JaimeHR~2~SheerMadness~0~1
+Sensei~2~Firo~1~1
+Kefit~2~Nintendude~1~1
+#Losers Round 8
+Nangoku~0~JaimeHR~2~2
+Sensei~W~Kefit~~1
+#Losers Round 9
+SuPeRbOoMfAn~3~JaimeHR~0~1
+Ruoka Dancho~3~Sensei~2~1
+#Seventh Place Match
+Nangoku~1~Kefit~2~2
+#Fifth Place Match
+JaimeHR~W~Sensei~~1
+#Losers Finals
+Isai~3~SuPeRbOoMfAn~1~1
+#Grand Finals
+Kikoushi~0/3~Isai~3/1~1
+
+@manual/2014-apex-2014 manual-smash64-3 smash64 https://liquipedia.net/smash/Apex/2014/64/Singles_Bracket
+#Grand Finals
+Isai~3~Moyashi~1~1
+#Winners Semifinals
+Isai~3~Mariguas~0~1
+Moyashi~3~SuPeRbOoMfAn~2~1
+#Winners Finals
+Isai~3~Moyashi~0~1
+#Losers Round 1
+tacos~3~Ruoka Dancho~1~1
+JaimeHR~2~Wizzrobe~3~2
+#Losers Round 2
+SuPeRbOoMfAn~3~tacos~0~1
+Mariguas~3~Wizzrobe~1~1
+#Losers Round 3
+SuPeRbOoMfAn~3~Mariguas~0~1
+#Losers Finals
+Moyashi~3~SuPeRbOoMfAn~1~1
+
+@manual/2014-zenith-2014 manual-smash64-2 smash64 https://liquipedia.net/smash/Zenith/2014/64/Singles_Bracket
+#Winners Round 1
+Czar~~KoRoBeNiKi~W~2
+Nintendude~W~Komotonoto~~1
+Killer~W~Cobrevolution~~1
+Varazers~W~Dominicano~~1
+Battlecow~W~Combo Blaze~~1
+Fireblaster~W~Maliki~~1
+Herbert Von Karajan~W~Shears~~1
+Clubbadubba~W~Skyfire~~1
+#Winners Round 2
+SuPeRbOoMfAn~W~KoRoBeNiKi~~1
+Revan~~Nintendude~W~2
+KeroKeroppi~2~Killer~1~1
+Stranded~W~Varazers~~1
+Wizzrobe~W~Battlecow~~1
+Firo~1~Fireblaster~2~2
+LD~W~Herbert Von Karajan~~1
+The Z~2~Clubbadubba~0~1
+#Winners Round 3
+SuPeRbOoMfAn~2~Nintendude~0~1
+KeroKeroppi~2~Stranded~1~1
+Wizzrobe~2~Fireblaster~1~1
+LD~0~The Z~2~2
+#Winners Round 4
+SuPeRbOoMfAn~3~KeroKeroppi~0~1
+Wizzrobe~3~The Z~2~1
+#Losers Round 2
+Clubbadubba~W~Czar~~1
+Herbert Von Karajan~W~Komotonoto~~1
+Firo~W~Cobrevolution~~1
+Battlecow~W~Dominicano~~1
+Varazers~W~Combo Blaze~~1
+Killer~W~Maliki~~1
+Revan~W~Shears~~1
+KoRoBeNiKi~~Skyfire~W~2
+#Losers Round 3
+Clubbadubba~W~Herbert Von Karajan~~1
+Firo~W~Battlecow~~1
+Varazers~~Killer~W~2
+Revan~W~Skyfire~~1
+#Losers Round 4
+Stranded~W~Clubbadubba~~1
+Nintendude~W~Firo~~1
+LD~~Killer~W~2
+Fireblaster~W~Revan~~1
+#Losers Round 5
+Stranded~1~Nintendude~2~2
+Killer~2~Fireblaster~1~1
+#Losers Round 6
+The Z~2~Nintendude~0~1
+KeroKeroppi~2~Killer~1~1
+#Losers Finals
+Wizzrobe~1~KeroKeroppi~3~2
+#Grand Finals
+SuPeRbOoMfAn~3~KeroKeroppi~0~1
+
+@manual/2009-4th-kanto manual-smash64-1 smash64 https://liquipedia.net/smash/Kanto/4
+#Quarterfinals
+Tatsuman~0~Jouske~1~2
+Jiima~0~Buchimake Matsuri~1~2
+Moyashi~1~MEGU~0~1
+Ruoka Dancho~1~FAUST~0~1
+#Semifinals
+Jouske~1~Buchimake Matsuri~0~1
+Moyashi~0~Ruoka Dancho~1~2
+#Grand Finals
+Jouske~2~Ruoka Dancho~1~1
+#3rd Place Match
+Buchimake Matsuri~0~Moyashi~1~2
+
+@manual/2010-3rd-kansai manual-smash64-1 smash64 https://liquipedia.net/smash/Kansai/3
+#Quarterfinals
+Moyashi~1~S~0~1
+Kikoushi~1~Ruoka Dancho~0~1
+Jouske~1~MEGU~0~1
+Kei~1~Tatsuman~0~1
+#Semifinals
+Moyashi~1~Kikoushi~0~1
+Jouske~1~Kei~0~1
+#Grand Finals
+Moyashi~0~Jouske~2~2
+#3rd Place Match
+Kikoushi~0~Kei~1~2
+
+@manual/2010-5th-kanto manual-smash64-1 smash64 https://liquipedia.net/smash/Kanto/5
+#Quarterfinals
+S~0~Moyashi~1~2
+Kikoushi~1~Kidbell~0~1
+Tsukuru BOY~1~Baata~0~1
+king~0~Okajyu~1~2
+#Semifinals
+Moyashi~1~Kikoushi~0~1
+Tsukuru BOY~0~Okajyu~1~2
+#Grand Finals
+Moyashi~2~Okajyu~1~1
+#3rd Place Match
+Kikoushi~1~Tsukuru BOY~0~1
+
+@manual/2010-osaka-university-2010 manual-smash64-1 smash64 https://liquipedia.net/smash/Osaka_University/2010
+#Round of 16
+Fukuoka-ken~1~Okajyu~0~1
+S~1~Hitoshio~0~1
+Din~1~Tokachi~0~1
+wario~0~Kikoushi~1~2
+#Quarterfinals
+Ruoka Dancho~1~Fukuoka-ken~0~1
+S~1~Aran~0~1
+Ryo~1~Din~0~1
+Moyashi~0~Kikoushi~1~2
+#Semifinals
+Ruoka Dancho~1~S~0~1
+Ryo~0~Kikoushi~1~2
+#Grand Finals
+Ruoka Dancho~1~Kikoushi~0~1
+
+@manual/2011-4th-kansai manual-smash64-1 smash64 https://liquipedia.net/smash/Kansai/4
+#Quarterfinals
+Ruoka Dancho~1~Ryo~0~1
+Takuro～.~0~Natsu~1~2
+Moyashi~1~Prince~0~1
+S~0~Kikoushi~1~2
+#Semifinals
+Ruoka Dancho~1~Natsu~0~1
+Moyashi~1~Kikoushi~0~1
+#Grand Finals
+Ruoka Dancho~0~Moyashi~2~2
+#3rd Place Match
+Natsu~1~Kikoushi~0~1
+
+@manual/2011-6th-kanto manual-smash64-1 smash64 https://liquipedia.net/smash/Kanto/6
+#Quarterfinals
+S~0~Din~1~2
+Yamaashi~0~Kikoushi~1~2
+Takuro～.~1~Matsukasa~0~1
+sekirei~0~Prince~1~2
+#Semifinals
+Din~0~Kikoushi~1~2
+Takuro～.~1~Prince~0~1
+#Grand Finals
+Kikoushi~2~Takuro～.~1~1
+#3rd Place Match
+Din~1~Prince~0~1
+
+@manual/2012-5th-kansai manual-smash64-1 smash64 https://liquipedia.net/smash/Kansai/5
+#Quarterfinals
+wario~1~Takuro～.~0~1
+Sukekiyo~1~Okajyu~0~1
+Ryo~1~Moyashi~0~1
+Fukurou~1~Prince~0~1
+#Semifinals
+wario~1~Sukekiyo~0~1
+Ryo~1~Fukurou~0~1
+#Grand Finals
+wario~2~Ryo~1~1
+#3rd Place Match
+Sukekiyo~0~Fukurou~1~2
+
+@manual/2012-7th-kanto manual-smash64-1 smash64 https://liquipedia.net/smash/Kanto/7
+#Quarterfinals
+Kikoushi~1~Ruoka Dancho~0~1
+S~1~Fukuoka-ken~0~1
+Jouske~1~Orion~0~1
+Hitoshio~1~TKG~0~1
+#Semifinals
+Kikoushi~1~S~0~1
+Jouske~1~Hitoshio~0~1
+#Grand Finals
+Kikoushi~0~Jouske~2~2
+
+@manual/2013-6th-kansai manual-smash64-1 smash64 https://liquipedia.net/smash/Kansai/6
+#Quarterfinals
+Jouske~1~S~0~1
+kensinn21~1~Kikoushi~0~1
+Moyashi~1~Akagi~0~1
+bonobono~1~Onett~0~1
+#Semifinals
+Jouske~1~kensinn21~0~1
+Moyashi~1~bonobono~0~1
+#Grand Finals
+Jouske~2~Moyashi~1~1
+#3rd Place Match
+kensinn21~0~bonobono~1~2
+
+@manual/2013-8th-kanto manual-smash64-1 smash64 https://liquipedia.net/smash/Kanto/8
+#Quarterfinals
+Hitoshio~0~Hebiichigo~1~2
+Sin~1~kysk~0~1
+Jouske~1~Ruoka Dancho~0~1
+Moyashi~1~wario~0~1
+#Semifinals
+Hebiichigo~0~Sin~1~2
+Jouske~1~Moyashi~0~1
+#Grand Finals
+Sin~1~Jouske~2~2
+
+@manual/2014-7th-kansai manual-smash64-1 smash64 https://liquipedia.net/smash/Kansai/7
+#Quarterfinals
+Haha~0~wario~1~2
+Jouske~1~kensinn21~0~1
+Myuto~0~Ruoka Dancho~1~2
+Takeshi~1~Shuumai~0~1
+#Semifinals
+wario~1~Jouske~0~1
+Ruoka Dancho~1~Takeshi~0~1
+#Grand Finals
+wario~2~Ruoka Dancho~1~1
+#3rd Place Match
+Jouske~1~Takeshi~0~1
+
+@manual/2014-9th-kanto manual-smash64-1 smash64 https://liquipedia.net/smash/Kanto/9
+#Quarterfinals
+Tomo~1~k y s k~0~1
+Sin~0~kensinn21~1~2
+Jouske~1~Akipika~0~1
+MEGU~1~Takuro～.~0~1
+#Semifinals
+Tomo~0~kensinn21~1~2
+Jouske~1~MEGU~0~1
+#Grand Finals
+kensinn21~0~Jouske~2~2
+
+@manual/2014-tacna-2014 manual-smash64-1 smash64 https://liquipedia.net/smash/Tacna/2014
+#Losers Finals
+Marka~2~SuPeRbOoMfAn~0~1
+#Grand Finals
+Alvin~4~Marka~1~1

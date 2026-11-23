@@ -9,11 +9,11 @@ import { useT } from "@/lib/i18n/client";
 import { bestCombos, likelyMe, totalsFor, type ReplayGame } from "@/lib/slippiStats";
 import { SLIPPIPEDIA_MAX_BYTES } from "@/lib/slippipediaRead";
 import { toSavedSummary } from "@/lib/replayProfile";
+import { REPLAY_BATCH, newestReplays, replaysInFolder, takeBatch, type DirHandle } from "@/lib/replayPick";
 import { SummaryView, TallyList } from "./ReplayParts";
 import BestCombos from "./BestCombos";
 import SaveReplayPanel, { type SavedState } from "./SaveReplayPanel";
 
-const MAX_FILES = 500;
 const MAX_BYTES = 30 * 1024 * 1024;
 
 export default function ReplayStats({ signedIn = false, saved = null, handle = null }: { signedIn?: boolean; saved?: SavedState; handle?: string | null }) {
@@ -24,7 +24,11 @@ export default function ReplayStats({ signedIn = false, saved = null, handle = n
   const [chosen, setChosen] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
   const cancel = useRef(false);
+  const folderInput = useRef<HTMLInputElement | null>(null);
   const [importing, setImporting] = useState(false);
+  // Replays picked but not read yet (newest first), and how many were picked in all (round 762).
+  const [queue, setQueue] = useState<File[]>([]);
+  const [picked, setPicked] = useState(0);
 
   const people = useMemo(() => likelyMe(games), [games]);
   const me = chosen && people.some((p) => p.key === chosen) ? chosen : (people[0]?.key ?? null);
@@ -33,19 +37,50 @@ export default function ReplayStats({ signedIn = false, saved = null, handle = n
   // Combos come from replay files only (a Slippipedia database has none).
   const combos = useMemo(() => (me && games.some((g) => g.combos) ? bestCombos(games, me) : null), [games, me]);
 
-  async function read(list: FileList | null) {
-    const all = [...(list ?? [])].filter((f) => f.name.toLowerCase().endsWith(".slp"));
+  /** A fresh pick: the newest replays first, one batch now and the rest on "read more". */
+  async function read(list: FileList | File[] | null) {
+    const all = newestReplays([...(list ?? [])]);
     if (!all.length) {
       setNote(t("play.replays.noFiles"));
       return;
     }
-    const files = all.slice(0, MAX_FILES);
-    setNote(all.length > MAX_FILES ? t("play.replays.firstOf", { max: MAX_FILES, n: all.length }) : null);
+    setPicked(all.length);
+    setNote(null);
+    await readBatch(all, [], []);
+  }
+
+  /** The folder button: the browser's folder picker where it has one (its prompt says "view files", not "upload"). */
+  async function pickFolder(fallback: HTMLInputElement | null) {
+    const picker = (window as unknown as { showDirectoryPicker?: (o?: { mode?: "read" }) => Promise<DirHandle> }).showDirectoryPicker;
+    if (!picker) {
+      fallback?.click();
+      return;
+    }
+    let dir: DirHandle;
+    try {
+      dir = await picker({ mode: "read" });
+    } catch {
+      return; // closed without picking
+    }
+    setImporting(true);
+    try {
+      await read(await replaysInFolder(dir));
+    } catch {
+      setNote(t("play.replays.noFiles"));
+    } finally {
+      setImporting(false);
+    }
+  }
+
+  /** Reads the next batch of `from` and adds it to what's been read so far. */
+  async function readBatch(from: File[], soFar: ReplayGame[], skippedSoFar: { file: string; reason: SkipReason }[]) {
+    const { batch: files, rest } = takeBatch(from);
     cancel.current = false;
-    const found: ReplayGame[] = [];
-    const left: { file: string; reason: SkipReason }[] = [];
+    const found: ReplayGame[] = [...soFar];
+    const left: { file: string; reason: SkipReason }[] = [...skippedSoFar];
     const { readReplay } = await import("@/lib/slippiRead");
-    for (let i = 0; i < files.length && !cancel.current; i++) {
+    let i = 0;
+    for (; i < files.length && !cancel.current; i++) {
       setProgress({ done: i, of: files.length });
       const f = files[i];
       let res: ReadResult;
@@ -63,7 +98,8 @@ export default function ReplayStats({ signedIn = false, saved = null, handle = n
     }
     setGames(found);
     setSkipped(left);
-    setChosen(null);
+    if (!soFar.length) setChosen(null);
+    setQueue([...files.slice(i), ...rest]); // after "Stop", the unread ones wait for "read more"
     setProgress(null);
   }
 
@@ -89,6 +125,8 @@ export default function ReplayStats({ signedIn = false, saved = null, handle = n
       }
       setGames(res.games);
       setSkipped(res.skipped);
+      setQueue([]);
+      setPicked(0);
       setChosen(null);
       setNote(t("play.replays.slippipediaFrom", { n: res.games.length }));
     } catch {
@@ -110,21 +148,25 @@ export default function ReplayStats({ signedIn = false, saved = null, handle = n
             {t("play.replays.choose")}
             <input type="file" accept=".slp" multiple className="sr-only" disabled={busy} onChange={(e) => read(e.target.files)} />
           </label>
-          <label className={`btn btn-md btn-outline ${busy ? "pointer-events-none opacity-50" : "cursor-pointer"}`}>
+          <button type="button" className="btn btn-md btn-outline" disabled={busy} onClick={() => void pickFolder(folderInput.current)}>
             {t("play.replays.chooseFolder")}
-            <input
-              type="file"
-              multiple
-              className="sr-only"
-              disabled={busy}
-              ref={(el) => {
-                el?.setAttribute("webkitdirectory", "");
-              }}
-              onChange={(e) => read(e.target.files)}
-            />
-          </label>
+          </button>
+          {/* For browsers without the folder picker (Firefox, Safari): the older way, opened by the button above. */}
+          <input
+            type="file"
+            multiple
+            tabIndex={-1}
+            aria-hidden="true"
+            className="sr-only"
+            disabled={busy}
+            ref={(el) => {
+              el?.setAttribute("webkitdirectory", "");
+              folderInput.current = el;
+            }}
+            onChange={(e) => read(e.target.files)}
+          />
         </div>
-        <p className="text-meta text-muted">{t("play.replays.private")}</p>
+        <p className="text-meta text-muted">{t("play.replays.private")} {t("play.replays.browserAsks")}</p>
         <div className="flex flex-col gap-1 border-t border-line pt-3">
           <label className={`btn btn-md btn-outline self-start ${busy ? "pointer-events-none opacity-50" : "cursor-pointer"}`}>
             {t("play.replays.slippipedia")}
@@ -157,6 +199,16 @@ export default function ReplayStats({ signedIn = false, saved = null, handle = n
           </div>
         )}
         {note && <p className="text-meta text-muted">{note}</p>}
+        {!busy && (picked > REPLAY_BATCH || queue.length > 0) && (
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-meta text-muted">{t("play.replays.newestFirst", { n: picked, done: picked - queue.length })}</p>
+            {queue.length > 0 && (
+              <button type="button" className="btn btn-sm btn-outline" onClick={() => void readBatch(queue, games, skipped)}>
+                {t("play.replays.readMore", { n: Math.min(REPLAY_BATCH, queue.length), left: queue.length })}
+              </button>
+            )}
+          </div>
+        )}
       </section>
 
       {!busy && totals && (

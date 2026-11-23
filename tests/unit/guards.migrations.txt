@@ -173,3 +173,4 @@
 20270125540000_history_old_sets_2012_2014_brawl.sql
 20270125550000_history_old_sets_2013_2014_pplus.sql
 20270125560000_history_old_sets_smash64.sql
+20270125570000_history_old_sets_brawl_rest.sql
