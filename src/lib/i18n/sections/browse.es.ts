@@ -46,6 +46,12 @@ export const browseEs: Record<keyof typeof browseEn, string> = {
   "browse.list.city": "Ciudad",
   "browse.list.allOf": "Todo {region}",
   "browse.list.noMatch": "No hay eventos próximos con estos filtros. Prueba otro juego u otra ciudad.",
+  "browse.cal.toggle": "Calendario",
+  "browse.cal.label": "Calendario de torneos",
+  "browse.cal.prev": "Mes anterior",
+  "browse.cal.next": "Mes siguiente",
+  "browse.cal.showAll": "Ver todas las fechas",
+  "browse.cal.count": "1 torneo|{n} torneos",
 
   // Bracket start times
   "browse.times.label": "Horas de inicio de los brackets",

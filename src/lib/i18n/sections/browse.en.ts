@@ -44,6 +44,12 @@ export const browseEn = {
   "browse.list.city": "City",
   "browse.list.allOf": "All of {region}",
   "browse.list.noMatch": "No upcoming events match these filters. Try another game or city.",
+  "browse.cal.toggle": "Calendar",
+  "browse.cal.label": "Calendar of tournaments",
+  "browse.cal.prev": "Previous month",
+  "browse.cal.next": "Next month",
+  "browse.cal.showAll": "Show all dates",
+  "browse.cal.count": "1 tournament|{n} tournaments",
 
   // Bracket start times
   "browse.times.label": "Bracket start times",

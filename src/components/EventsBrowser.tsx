@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import GameBadge from "@/components/GameBadge";
 import EventTimes, { zoneLabel } from "@/components/events/EventTimes";
 import type { EventRow } from "@/lib/eventRows";
+import { dayDate, dayKey, monthGrid, monthOf, shiftMonth, weekStartFor } from "@/lib/eventCalendar";
 import { dateBadgeParts, formatEventDate } from "@/lib/format";
 import { GAMES, GAME_KEYS, type GameKey } from "@/lib/games";
 import { useStoredState } from "@/lib/useStoredState";
@@ -39,9 +40,20 @@ export default function EventsBrowser({
   // shown) counts as "All", for both the menu and the list.
   const shownCity = cities.includes(city) ? city : ALL;
   const shownGame = gameKeys.includes(game) ? game : ALL;
-  const visible = rows.filter(
+  const matching = rows.filter(
     (r) => (shownGame === ALL || r.games.some((g) => g.game === shownGame)) && (shownCity === ALL || r.city === shownCity),
   );
+  // The calendar (round 729): open or closed is remembered; the picked day isn't (it's for one look-up,
+  // like "I'm in Texas that weekend, what's on?"). Days are each venue's own date.
+  const [calendar, setCalendar] = useStoredState("smashy.events.calendar", "off");
+  const [picked, setPicked] = useState<string | null>(null);
+  const days = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const r of matching) counts.set(dayKey(r.startAt, r.timezone), (counts.get(dayKey(r.startAt, r.timezone)) ?? 0) + 1);
+    return counts;
+  }, [matching]);
+  const day = calendar === "on" && picked && days.has(picked) ? picked : null;
+  const visible = day ? matching.filter((r) => dayKey(r.startAt, r.timezone) === day) : matching;
   // Times are each venue's own. Say which zone when they all share one ("CST"), so visitors from
   // elsewhere don't read them as their own time.
   const zones = new Set(visible.map((r) => zoneLabel(r.startAt, r.timezone)));
@@ -63,7 +75,8 @@ export default function EventsBrowser({
             </button>
           ))}
         </div>
-        <label className="flex items-center gap-2 text-sm text-muted">
+        <div className="flex items-center gap-2">
+        <label className="flex min-w-0 items-center gap-2 text-sm text-muted">
           {t("browse.list.city")}
           <select
             value={shownCity}
@@ -78,7 +91,19 @@ export default function EventsBrowser({
             ))}
           </select>
         </label>
+          <button type="button" onClick={() => setCalendar(calendar === "on" ? "off" : "on")} aria-pressed={calendar === "on"} className="chip ml-auto shrink-0">
+            {t("browse.cal.toggle")}
+          </button>
+        </div>
       </div>
+
+      {calendar === "on" && days.size > 0 && <EventCalendar days={days} picked={day} onPick={setPicked} />}
+      {day && (
+        <p className="flex items-center gap-2 px-4 pt-3 text-sm">
+          <span className="font-semibold">{dayDate(day).toLocaleDateString(lang, { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" })}</span>
+          <button type="button" onClick={() => setPicked(null)} className="text-brand underline">{t("browse.cal.showAll")}</button>
+        </p>
+      )}
 
       {visible.length === 0 ? (
         <p className="p-6 text-muted">{t("browse.list.noMatch")}</p>
@@ -134,5 +159,75 @@ export default function EventsBrowser({
         </>
       )}
     </div>
+  );
+}
+
+/**
+ * One month at a time, a dot under each day that has a tournament matching the filters. Pressing such
+ * a day shows just that day's tournaments in the list below; pressing it again shows them all.
+ */
+function EventCalendar({ days, picked, onPick }: { days: Map<string, number>; picked: string | null; onPick: (day: string | null) => void }) {
+  const t = useT();
+  const lang = useLang();
+  const sorted = [...days.keys()].sort();
+  const first = monthOf(sorted[0]);
+  const last = monthOf(sorted[sorted.length - 1]);
+  const [month, setMonth] = useState(first);
+  // Filters changed and the month on screen has nothing left in range: go back to the first month.
+  const shown = month < first || month > last ? first : month;
+  // Today is the visitor's own date, known only in the browser (so it's marked after the page loads).
+  const [today, setToday] = useState<string | null>(null);
+  useEffect(() => {
+    const now = new Date();
+    setToday(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`); // eslint-disable-line react-hooks/set-state-in-effect -- the browser's date
+  }, []);
+  const start = weekStartFor(lang);
+  const weeks = monthGrid(shown, start);
+  // Weekday initials for the header: any week will do, 2023-01-01 was a Sunday.
+  const weekdays = Array.from({ length: 7 }, (_, i) => new Date(Date.UTC(2023, 0, 1 + start + i)).toLocaleDateString(lang, { weekday: "narrow", timeZone: "UTC" }));
+  const title = dayDate(`${shown}-01`).toLocaleDateString(lang, { month: "long", year: "numeric", timeZone: "UTC" });
+  const arrow = "rounded-full p-2 text-muted hover:bg-surface disabled:opacity-30";
+  return (
+    <section aria-label={t("browse.cal.label")} className="card mx-3 mt-3 p-3">
+      <div className="mb-2 flex items-center justify-between">
+        <button type="button" onClick={() => setMonth(shiftMonth(shown, -1))} disabled={shown <= first} aria-label={t("browse.cal.prev")} className={arrow}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current" strokeWidth={2.5}><path d="M15 6l-6 6 6 6" /></svg>
+        </button>
+        <h2 className="font-bold" aria-live="polite">{title}</h2>
+        <button type="button" onClick={() => setMonth(shiftMonth(shown, 1))} disabled={shown >= last} aria-label={t("browse.cal.next")} className={arrow}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current" strokeWidth={2.5}><path d="M9 6l6 6-6 6" /></svg>
+        </button>
+      </div>
+      <div className="grid grid-cols-7 text-center text-meta text-muted" aria-hidden="true">
+        {weekdays.map((w, i) => <span key={i}>{w}</span>)}
+      </div>
+      <div className="mt-1 grid grid-cols-7 gap-y-1 text-center">
+        {weeks.flat().map((d, i) => {
+          if (!d) return <span key={i} />;
+          const n = days.get(d) ?? 0;
+          const num = Number(d.slice(8));
+          const isPicked = picked === d;
+          const label = `${dayDate(d).toLocaleDateString(lang, { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" })}: ${t("browse.cal.count", { n })}`;
+          if (!n) return <span key={d} className={`flex h-11 flex-col items-center justify-start pt-1.5 text-sm text-muted/60 ${today === d ? "font-bold text-foreground" : ""}`}>{num}</span>;
+          return (
+            <button
+              key={d}
+              type="button"
+              onClick={() => onPick(isPicked ? null : d)}
+              aria-pressed={isPicked}
+              aria-label={label}
+              title={label}
+              className={`mx-auto flex h-11 w-11 flex-col items-center justify-start rounded-xl pt-1.5 text-sm font-semibold ${isPicked ? "bg-brand text-white" : "hover:bg-surface"} ${today === d && !isPicked ? "ring-1 ring-line" : ""}`}
+            >
+              {num}
+              {/* One dot, or up to three for a busy day. */}
+              <span aria-hidden="true" className="mt-0.5 flex gap-0.5">
+                {Array.from({ length: Math.min(n, 3) }, (_, k) => <span key={k} className={`h-1.5 w-1.5 rounded-full ${isPicked ? "bg-white" : "bg-brand"}`} />)}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </section>
   );
 }

@@ -46,6 +46,12 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
   "browse.list.city": "都市",
   "browse.list.allOf": "{region}全域",
   "browse.list.noMatch": "条件に合う今後の大会はありません。別のゲームや都市でお試しください。",
+  "browse.cal.toggle": "カレンダー",
+  "browse.cal.label": "大会カレンダー",
+  "browse.cal.prev": "前の月",
+  "browse.cal.next": "次の月",
+  "browse.cal.showAll": "すべての日付を表示",
+  "browse.cal.count": "大会1件|大会{n}件",
 
   // Bracket start times
   "browse.times.label": "トーナメントの開始時刻",
