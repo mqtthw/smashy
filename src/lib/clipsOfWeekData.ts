@@ -2,7 +2,7 @@
 // live on Smashy, in one list. A clip is a post with a video (uploaded or linked), or a clip in Reels.
 // The picking is in posts.ts (clipsOfWeekIds) and clipsOfWeek.ts; this reads each pick as the viewer.
 import "server-only";
-import { clipLinkThumbnail } from "./clipsOfWeek";
+import { CLIPS_OF_WEEK, clipLinkThumbnail } from "./clipsOfWeek";
 import { withoutLinks } from "./embeds";
 import { getClipsOfWeek, tweetVideoStill, type Post } from "./posts";
 import type { FeedGame } from "./postConstants";
@@ -58,5 +58,6 @@ export async function getClipsOfWeekItems(game: FeedGame | undefined, userId: st
       };
     }),
   );
-  return items.filter((i): i is ClipItem => i !== null);
+  // getClipsOfWeek hands over spares; the ones this viewer can see, up to the number asked for.
+  return items.filter((i): i is ClipItem => i !== null).slice(0, opts.limit ?? CLIPS_OF_WEEK);
 }

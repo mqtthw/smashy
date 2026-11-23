@@ -11,7 +11,7 @@ import { T } from "@/lib/i18n/client";
 import { getT } from "@/lib/i18n/server";
 import { majorHref } from "@/lib/handMajors";
 import { archiveYears } from "@/lib/majors";
-import { FIRST_GRID_YEAR, getYearGrid, handSetYears, hasGrid } from "@/lib/yearHeadToHead";
+import { FIRST_GRID_YEAR, getYearGrid, handSetYears, hasGrid, isNameGridId } from "@/lib/yearHeadToHead";
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getT())("history.grid.metaTitle"), robots: { index: false } };
@@ -32,7 +32,8 @@ async function YearGrid({ searchParams }: { searchParams: PageProps<"/history/he
   const asked = Number(sp.year);
   const year = years.includes(asked) ? asked : years[0];
   const game: GameKey = isGameKey(sp.game) ? sp.game : "melee";
-  const player = typeof sp.player === "string" && /^\d{1,12}$/.test(sp.player) ? sp.player : null;
+  // A start.gg id, or a name id ("n-…") for players counted by name in years read by hand (round 764).
+  const player = typeof sp.player === "string" && /^(\d{1,12}|n-[\p{L}\p{N}]{1,60})$/u.test(sp.player) ? sp.player : null;
   const [t, grid] = await Promise.all([getT(), getYearGrid(year, game, player).catch(() => null)]);
   const record = grid?.record ?? null;
   const g = GAMES[game].short;
@@ -91,14 +92,21 @@ async function YearGrid({ searchParams }: { searchParams: PageProps<"/history/he
                       const tone = c.wins > c.losses ? "text-success" : c.wins < c.losses ? "text-danger" : "";
                       return (
                         <td key={b.playerId} className="px-1.5 py-1.5 text-center">
-                          <Link
-                            href={`/players/compare?a=${a.playerId}&b=${b.playerId}`}
-                            title={t("history.grid.cell", { a: a.name, b: b.name, wins: c.wins, losses: c.losses })}
-                            aria-label={t("history.grid.cell", { a: a.name, b: b.name, wins: c.wins, losses: c.losses })}
-                            className={`tabular-nums font-semibold hover:underline ${tone}`}
-                          >
-                            {c.wins}–{c.losses}
-                          </Link>
+                          {isNameGridId(a.playerId) || isNameGridId(b.playerId) ? (
+                            <span title={t("history.grid.cell", { a: a.name, b: b.name, wins: c.wins, losses: c.losses })} className={`tabular-nums font-semibold ${tone}`}>
+                              <span aria-hidden>{c.wins}–{c.losses}</span>
+                              <span className="sr-only">{t("history.grid.cell", { a: a.name, b: b.name, wins: c.wins, losses: c.losses })}</span>
+                            </span>
+                          ) : (
+                            <Link
+                              href={`/players/compare?a=${a.playerId}&b=${b.playerId}`}
+                              title={t("history.grid.cell", { a: a.name, b: b.name, wins: c.wins, losses: c.losses })}
+                              aria-label={t("history.grid.cell", { a: a.name, b: b.name, wins: c.wins, losses: c.losses })}
+                              className={`tabular-nums font-semibold hover:underline ${tone}`}
+                            >
+                              {c.wins}–{c.losses}
+                            </Link>
+                          )}
                         </td>
                       );
                     })}
@@ -113,8 +121,12 @@ async function YearGrid({ searchParams }: { searchParams: PageProps<"/history/he
               <h2 id="record-title" className="font-bold">{t("history.grid.record.title", { name: record.name, year, wins: record.wins, losses: record.losses })}</h2>
               <p className="text-meta text-muted">
                 {t("history.grid.record.note", { year, game: g })}{" "}
-                <Link href={`/players/${record.playerId}`} className="link">{t("history.grid.record.profile")}</Link>
-                {" · "}
+                {!isNameGridId(record.playerId) && (
+                  <>
+                    <Link href={`/players/${record.playerId}`} className="link">{t("history.grid.record.profile")}</Link>
+                    {" · "}
+                  </>
+                )}
                 <Link href={href(year, game)} className="link">{t("history.grid.record.close")}</Link>
               </p>
               {record.sets.length === 0 ? (
@@ -130,7 +142,7 @@ async function YearGrid({ searchParams }: { searchParams: PageProps<"/history/he
                         <span className={`w-12 shrink-0 font-semibold ${s.won ? "text-success" : "text-danger"}`}>{s.won ? t("history.grid.record.won") : t("history.grid.record.lost")}</span>
                         <span className="tabular-nums">{s.myScore ?? "?"}–{s.oppScore ?? "?"}</span>
                         <span className="min-w-0 flex-1 truncate">
-                          {s.opp.playerId ? <Link href={`/players/compare?a=${record.playerId}&b=${s.opp.playerId}`} className="hover:underline">{s.opp.name}</Link> : s.opp.name}
+                          {s.opp.playerId && !isNameGridId(s.opp.playerId) && !isNameGridId(record.playerId) ? <Link href={`/players/compare?a=${record.playerId}&b=${s.opp.playerId}`} className="hover:underline">{s.opp.name}</Link> : s.opp.name}
                         </span>
                         {s.round && <span className="shrink-0 text-meta text-muted">{s.round}</span>}
                       </span>

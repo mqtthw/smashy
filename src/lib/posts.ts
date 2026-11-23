@@ -734,7 +734,9 @@ async function reelPostVideoIds(games: string[]): Promise<string[]> {
  */
 export async function getClipsOfWeek(game: FeedGame | undefined, userId: string | null, opts: { limit?: number; perAuthor?: number } = {}): Promise<ClipPick[]> {
   warmMutes(userId);
-  const ids = await clipsOfWeekIds(game ?? null, opts.limit ?? CLIPS_OF_WEEK, opts.perAuthor ?? 1);
+  // Three times as many as will be shown: a pick this viewer can't see (a block, a mute, a protected
+  // account they don't follow) drops out below, and the next one takes its place (round 765).
+  const ids = await clipsOfWeekIds(game ?? null, (opts.limit ?? CLIPS_OF_WEEK) * 3, opts.perAuthor ?? 1, userId ? "member" : "guest");
   const posts = await getPostsByIds(ids.filter((id) => !id.startsWith(REEL_PICK)), userId);
   const shown = new Map((await withoutMuted(posts.filter((p) => !p.spoiler && !p.removedReason), userId)).map((p) => [p.id, p]));
   // In the picked order: posts and Reels clips together (round 759).
@@ -750,15 +752,21 @@ export type ClipPick = { kind: "post"; post: Post } | { kind: "reel"; clipId: st
 const REEL_PICK = "reel:";
 
 /**
- * The week's picks, as ids. Counted from posts anyone can see (a guest's view), so the answer is the
- * same for everybody: kept for 10 minutes and shared. A teen's posts are hidden from guests, so they
- * are never picked; that also keeps teens out of a spotlight.
+ * The week's picks, as ids, kept for 10 minutes and shared. Two lists (round 765):
+ * - "guest": counted from posts anyone can see, so a teen's or a protected account's post is never
+ *   shown to someone signed out.
+ * - "member": counted from every post, read with the admin connection like reelPostVideoIds above.
+ *   The first version used the guest list for everybody, which left out the week's most liked clips
+ *   when their author counted as a teen (a teen, or no birthday on file), though members see those
+ *   posts in the Feed. Nothing but ids leaves here: getPostsByIds reads each post as the viewer, so
+ *   the table's rules still decide who sees what.
  */
-async function clipsOfWeekIds(game: FeedGame | null, limit: number, perAuthor: number): Promise<string[]> {
+async function clipsOfWeekIds(game: FeedGame | null, limit: number, perAuthor: number, audience: "guest" | "member"): Promise<string[]> {
   "use cache: remote";
   cacheLife({ stale: 300, revalidate: 600, expire: 3600 });
   const since = new Date(Date.now() - CLIPS_OF_WEEK_DAYS * 86400e3).toISOString();
-  let q = createGuestClient()
+  const db = audience === "member" ? (await import("./supabase/admin")).createAdminClient({ forPage: true }) : createGuestClient();
+  let q = db
     .from("posts")
     .select("id, author_id, body, like_count, reaction_count, created_at, videos:post_videos ( status )")
     .is("parent_id", null)

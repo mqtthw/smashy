@@ -5,7 +5,7 @@ import "server-only";
 import type { GameKey } from "./games";
 import type { MajorEvent } from "./majorEvents";
 import { sideId, tagOnly } from "./majorSets";
-import { applyNameLinks, getNameLinks, linksForGame } from "./playerLinks";
+import { applyNameLinks, getNameLinks, linksForGame, nameKey } from "./playerLinks";
 import { playersHidingStats } from "./playerStats";
 import { cacheLife, cacheTag } from "next/cache";
 import { createAdminClient } from "./supabase/admin";
@@ -29,6 +29,16 @@ export type GridSet = {
   winner: 1 | 2;
 };
 export type GridPlayer = { playerId: string; name: string };
+
+/**
+ * Years before 2014 (sets read by hand from Liquipedia) have few players with a start.gg id, so their grid
+ * also counts players by name (round 764): "n-<name key>", the same key a placing and a bracket side share.
+ */
+export const nameGridId = (name: string) => `n-${nameKey(tagOnly(name))}`;
+export const isNameGridId = (id: string) => id.startsWith("n-");
+/** A set side's grid id: its player (start.gg id or linked tag), else, when names count, its name. */
+const gridSide = (id: string | null, name: string, links: Map<string, string>, byName: boolean) =>
+  sideId(id, name, links) ?? (byName ? nameGridId(name) : null);
 /** `cells[a][b]`: a's wins and losses against b (empty when they never played). */
 export type Grid = {
   players: GridPlayer[];
@@ -38,7 +48,7 @@ export type Grid = {
 };
 
 /** Counts the sets between the given players (by start.gg id, or a tag an admin linked to one). */
-export function yearGrid(players: GridPlayer[], sets: GridSet[], links: Map<string, string>): Grid {
+export function yearGrid(players: GridPlayer[], sets: GridSet[], links: Map<string, string>, byName = false): Grid {
   const ids = new Set(players.map((p) => p.playerId));
   const cells: Grid["cells"] = {};
   const totals: Grid["totals"] = {};
@@ -48,8 +58,8 @@ export function yearGrid(players: GridPlayer[], sets: GridSet[], links: Map<stri
   }
   let counted = 0;
   for (const s of sets) {
-    const a = sideId(s.p1_id, s.p1_name, links);
-    const b = sideId(s.p2_id, s.p2_name, links);
+    const a = gridSide(s.p1_id, s.p1_name, links, byName);
+    const b = gridSide(s.p2_id, s.p2_name, links, byName);
     if (!a || !b || a === b || !ids.has(a) || !ids.has(b)) continue;
     const [w, l] = s.winner === 1 ? [a, b] : [b, a];
     (cells[w][l] ??= { wins: 0, losses: 0 }).wins++;
@@ -70,12 +80,12 @@ export type YearRecord = { wins: number; losses: number; sets: RecordSet[] };
  * ranking voters keep): majors in the order given (newest first), then bracket order. `skip`: opponents
  * left out (players who asked not to be listed).
  */
-export function yearRecord(playerId: string, sets: GridSet[], links: Map<string, string>, majorOrder: string[], skip: Set<string> = new Set()): YearRecord {
+export function yearRecord(playerId: string, sets: GridSet[], links: Map<string, string>, majorOrder: string[], skip: Set<string> = new Set(), byName = false): YearRecord {
   const rank = new Map(majorOrder.map((slug, i) => [slug, i]));
   const out: { r: RecordSet; order: number; sort: number }[] = [];
   for (const s of sets) {
-    const a = sideId(s.p1_id, s.p1_name, links);
-    const b = sideId(s.p2_id, s.p2_name, links);
+    const a = gridSide(s.p1_id, s.p1_name, links, byName);
+    const b = gridSide(s.p2_id, s.p2_name, links, byName);
     const mine = a === playerId ? 1 : b === playerId ? 2 : 0;
     if (!mine || a === b) continue;
     const oppId = mine === 1 ? b : a;
@@ -99,12 +109,17 @@ export function yearRecord(playerId: string, sets: GridSet[], links: Map<string,
   return { wins, losses: out.length - wins, sets: out.map((x) => x.r) };
 }
 
-/** The players the grid is about: the year's most successful at majors (the tally's order), with a start.gg id. */
-export function gridPlayers(byMajor: MajorEvent[][], game: GameKey, hidden: Set<string>, n = GRID_PLAYERS): GridPlayer[] {
+/**
+ * The players the grid is about: the year's most successful at majors (the tally's order), with a start.gg
+ * id, or (byName) by name for players without one.
+ */
+export function gridPlayers(byMajor: MajorEvent[][], game: GameKey, hidden: Set<string>, n = GRID_PLAYERS, byName = false): GridPlayer[] {
+  const seen = new Set<string>();
   return yearTally(byMajor, game, MAJOR_THRESHOLDS[game])
-    .rows.filter((r) => r.playerId && !hidden.has(r.playerId))
-    .slice(0, n)
-    .map((r) => ({ playerId: r.playerId!, name: tagOnly(r.name) }));
+    .rows.filter((r) => (r.playerId ? !hidden.has(r.playerId) : byName))
+    .map((r) => ({ playerId: r.playerId ?? nameGridId(r.name), name: tagOnly(r.name) }))
+    .filter((p) => !seen.has(p.playerId) && !!seen.add(p.playerId))
+    .slice(0, n);
 }
 
 /**
@@ -173,18 +188,19 @@ export async function getYearGrid(
   const tallied = yearTally(byMajor, game, MAJOR_THRESHOLDS[game]).rows.flatMap((r) => (r.playerId ? [r.playerId] : []));
   const hidden = tallied.length ? await playersHidingStats(tallied).catch(() => null) : new Set<string>();
   if (!hidden) return null;
-  const players = gridPlayers(byMajor, game, hidden);
+  const byName = year < FIRST_GRID_YEAR; // sets read by hand: few players have a start.gg id
+  const players = gridPlayers(byMajor, game, hidden, GRID_PLAYERS, byName);
   const sets: GridSet[] = slugs.length && (players.length > 1 || playerId) ? await setsLoad : [];
   // A player's whole year (only the grid's players: they're the ones checked as fine to list).
   const who = playerId ? players.find((p) => p.playerId === playerId) : undefined;
   let record: (YearRecord & GridPlayer) | null = null;
   if (who) {
-    const opps = yearRecord(who.playerId, sets, links, slugs).sets.flatMap((r) => (r.opp.playerId ? [r.opp.playerId] : []));
+    const opps = yearRecord(who.playerId, sets, links, slugs, new Set(), byName).sets.flatMap((r) => (r.opp.playerId && !isNameGridId(r.opp.playerId) ? [r.opp.playerId] : []));
     const skip = opps.length ? await playersHidingStats([...new Set(opps)]).catch(() => null) : new Set<string>();
-    if (skip) record = { ...who, ...yearRecord(who.playerId, sets, links, slugs, skip) };
+    if (skip) record = { ...who, ...yearRecord(who.playerId, sets, links, slugs, skip, byName) };
   }
   return {
-    ...yearGrid(players, sets, links),
+    ...yearGrid(players, sets, links, byName),
     majors: majors.length,
     withSets: new Set(sets.map((s) => s.major_slug)).size,
     majorNames: new Map(majors.map((m) => [m.slug, m.name])),

@@ -5,7 +5,7 @@ vi.mock("@/lib/supabase/admin", () => ({ createAdminClient: () => ({}) }));
 vi.mock("@/lib/supabase/server", () => ({ createClient: async () => ({}) }));
 
 import type { MajorEvent } from "@/lib/majorEvents";
-import { gridPlayers, hasGrid, yearGrid, yearRecord, type GridSet } from "@/lib/yearHeadToHead";
+import { gridPlayers, hasGrid, nameGridId, yearGrid, yearRecord, type GridSet } from "@/lib/yearHeadToHead";
 
 let n = 0;
 const set = (p1: string | null, n1: string, p2: string | null, n2: string, winner: 1 | 2, major = "m", sort = 0): GridSet => ({
@@ -36,6 +36,23 @@ describe("gridPlayers", () => {
   it("takes the year's most successful players with a start.gg id, without hidden ones", () => {
     const year = [[ev([{ place: 1, name: "Mang0", playerId: "1" }, { place: 2, name: "Old Tag", playerId: null }, { place: 3, name: "Armada", playerId: "2" }])], [ev([{ place: 1, name: "Armada", playerId: "2" }, { place: 2, name: "Hidden", playerId: "4" }])]];
     expect(gridPlayers(year, "melee", new Set(["4"])).map((p) => p.playerId)).toEqual(["2", "1"]);
+  });
+  it("by name, also takes players without a start.gg id (years read by hand)", () => {
+    const year = [[ev([{ place: 1, name: "Ken", playerId: null }, { place: 2, name: "Azen", playerId: null }, { place: 3, name: "Mew2King", playerId: "1003" }])]];
+    expect(gridPlayers(year, "melee", new Set(), 12, true).map((p) => p.playerId)).toEqual(["n-ken", "n-azen", "1003"]);
+  });
+});
+
+describe("counting by name", () => {
+  it("a side without an id counts as its name; with names off it doesn't count", () => {
+    const players = [{ playerId: nameGridId("Ken"), name: "Ken" }, { playerId: nameGridId("Azen"), name: "Azen" }, { playerId: "1003", name: "Mew2King" }];
+    const sets = [set(null, "Ken", null, "Azen", 1), set(null, "Azen", "1003", "Mew2King", 2), set(null, "Sponsor | Ken", "1003", "Mew2King", 1)];
+    const g = yearGrid(players, sets, new Map(), true);
+    expect(g.cells["n-ken"]["n-azen"]).toEqual({ wins: 1, losses: 0 });
+    expect(g.cells["n-ken"]["1003"]).toEqual({ wins: 1, losses: 0 });
+    expect(g.totals["1003"]).toEqual({ wins: 1, losses: 1 });
+    expect(yearGrid(players, sets, new Map()).sets).toBe(0);
+    expect(yearRecord("n-ken", sets, new Map(), ["m"], new Set(), true).wins).toBe(2);
   });
 });
 
