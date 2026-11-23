@@ -7,30 +7,33 @@ import { createClient } from "./supabase/server";
 import { pageAll } from "./pageAll";
 
 export type EventKind = "tournament" | "weekly";
-export type Going = { total: number; mine: boolean; friends: { tag: string; handle: string; avatarUrl: string | null }[] };
+/** "going", or "interested" (round 730): thinking about it, counted separately. */
+export type RsvpStatus = "going" | "interested";
+export type Going = { total: number; interested: number; mine: RsvpStatus | null; friends: { tag: string; handle: string; avatarUrl: string | null }[] };
 
 /** A weekly's RSVP is for one date: "<series id>@<start time>". */
 export const weeklyRef = (id: string, startAt: number) => `${id}@${startAt}`;
 export const eventHref = (kind: EventKind, ref: string) => (kind === "tournament" ? `/events/${ref}` : `/events/weekly/${ref.split("@")[0]}`);
 
-/** How many are going, whether you are, and which of your mutuals are (same age group). */
+/** How many are going and how many are interested, which one you said, and which of your mutuals are going (same age group). */
 export async function getGoing(kind: EventKind, ref: string, userId: string | null): Promise<Going> {
   const supabase = await createClient();
   const [{ data }, mine] = await Promise.all([
     supabase.rpc("event_going", { kind, ref }),
     userId
-      ? supabase.from("event_rsvps").select("user_id").eq("user_id", userId).eq("event_kind", kind).eq("event_ref", ref).maybeSingle()
+      ? supabase.from("event_rsvps").select("status").eq("user_id", userId).eq("event_kind", kind).eq("event_ref", ref).maybeSingle()
       : Promise.resolve({ data: null }),
   ]);
-  const row = (data as { total: number; friends: { tag: string; handle: string; avatar_path: string | null }[] }[] | null)?.[0];
+  const row = (data as { total: number; interested: number; friends: { tag: string; handle: string; avatar_path: string | null }[] }[] | null)?.[0];
   return {
     total: Number(row?.total ?? 0),
-    mine: !!mine.data,
+    interested: Number(row?.interested ?? 0),
+    mine: mine.data ? (mine.data.status === "interested" ? "interested" : "going") : null,
     friends: (row?.friends ?? []).map((f) => ({ tag: f.tag, handle: f.handle, avatarUrl: avatarUrl(f.avatar_path) })),
   };
 }
 
-/** Events you said you're going to that haven't finished, soonest first (for Profile). */
+/** Events you said you're going to or interested in that haven't finished, soonest first (for Profile). */
 export async function getMyUpcomingRsvps(userId: string) {
   const supabase = await createClient();
   const { data } = await supabase

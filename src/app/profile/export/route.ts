@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     all((a, b) => supabase.from("conversation_members").select("conversation_id, role, status, joined_at").eq("user_id", userId).order("joined_at").range(a, b)),
     all((a, b) => supabase.from("reel_submissions").select("platform, clip_id, game, status, created_at").eq("user_id", userId).order("created_at").range(a, b)),
     all((a, b) => supabase.from("poll_votes").select("post_id, choice, created_at").eq("user_id", userId).order("created_at").range(a, b)),
-    all((a, b) => supabase.from("event_rsvps").select("event_kind, event_ref, event_name, starts_at, created_at").eq("user_id", userId).order("created_at").range(a, b)),
+    all((a, b) => supabase.from("event_rsvps").select("event_kind, event_ref, event_name, starts_at, status, created_at").eq("user_id", userId).order("created_at").range(a, b)),
     one(supabase.from("muted_words").select("words, updated_at").eq("user_id", userId).maybeSingle()),
     all((a, b) => supabase.from("saved_clips").select("clip_id, created_at").eq("user_id", userId).order("created_at").range(a, b)),
   ]);

@@ -57,6 +57,21 @@ describe.skipIf(!hasDb)("round 4 rules", () => {
     expect(anon.data[0].friends).toEqual([]);
   });
 
+  // Round 730. Runs after the test above: b, c and the teen are going.
+  it("an RSVP can be 'interested': counted apart from going, switchable by its owner only", async () => {
+    const mine = () => c.c.from("event_rsvps").update({ status: "interested" }).eq("user_id", c.id).eq("event_kind", "tournament").eq("event_ref", ref).select("status");
+    expect((await mine()).data).toEqual([{ status: "interested" }]);
+    const { data } = await a.c.rpc("event_going", { kind: "tournament", ref });
+    expect([Number(data[0].total), Number(data[0].interested)]).toEqual([2, 1]);
+    // Not someone else's, not a made-up status, and no other column.
+    expect((await a.c.from("event_rsvps").update({ status: "interested" }).eq("user_id", b.id).eq("event_ref", ref).select("status")).data).toEqual([]);
+    expect((await c.c.from("event_rsvps").update({ status: "maybe" }).eq("user_id", c.id).eq("event_ref", ref)).error).not.toBeNull();
+    expect((await c.c.from("event_rsvps").update({ event_name: "Renamed" }).eq("user_id", c.id).eq("event_ref", ref)).error).not.toBeNull();
+    // A friend who is only interested isn't listed under "friends going".
+    await b.c.from("event_rsvps").update({ status: "interested" }).eq("user_id", b.id).eq("event_kind", "tournament").eq("event_ref", ref);
+    expect(((await a.c.rpc("event_going", { kind: "tournament", ref })).data[0].friends as unknown[]).length).toBe(0);
+  });
+
   it("muted words and saved clips are private", async () => {
     expect((await a.c.from("muted_words").upsert({ user_id: a.id, words: ["spoilers"] })).error).toBeNull();
     expect((await b.c.from("muted_words").select("words").eq("user_id", a.id)).data).toEqual([]);

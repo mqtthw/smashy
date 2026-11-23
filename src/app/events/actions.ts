@@ -4,20 +4,37 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { actionError, type ActionResult } from "@/lib/actionErrors";
 import { getExpectedWeekly } from "@/lib/events";
-import { weeklyRef, type EventKind } from "@/lib/rsvps";
+import { weeklyRef, type EventKind, type RsvpStatus } from "@/lib/rsvps";
 import { getTournament } from "@/lib/startgg";
 import { createClient, getVerifiedUserId } from "@/lib/supabase/server";
 import { getT } from "@/lib/i18n/server";
 
-/** Say you're going to a tournament or a weekly (or take it back). Checked against the real event. */
-export async function setGoing(kind: EventKind, ref: string, going: boolean): Promise<ActionResult> {
+/**
+ * Say you're going to a tournament or a weekly, or interested in it (round 730), or take it back
+ * (`status` null). Checked against the real event.
+ */
+export async function setRsvp(kind: EventKind, ref: string, status: RsvpStatus | null): Promise<ActionResult> {
   const userId = await getVerifiedUserId();
   if (!userId) redirect("/signin");
   const supabase = await createClient();
   const t = await getT();
-  if (!going) {
+  if (status !== null && status !== "going" && status !== "interested") return { error: t("browse.err.notFound") };
+  if (!status) {
     const { error } = await supabase.from("event_rsvps").delete().eq("user_id", userId).eq("event_kind", kind).eq("event_ref", ref);
     if (error) return actionError(error);
+    refresh();
+    return {};
+  }
+  // Already answered for this event: only the answer changes (no need to look the event up again).
+  const { data: changed, error: changeError } = await supabase
+    .from("event_rsvps")
+    .update({ status })
+    .eq("user_id", userId)
+    .eq("event_kind", kind)
+    .eq("event_ref", ref)
+    .select("status");
+  if (changeError) return actionError(changeError);
+  if (changed?.length) {
     refresh();
     return {};
   }
@@ -42,6 +59,7 @@ export async function setGoing(kind: EventKind, ref: string, going: boolean): Pr
     event_ref: ref,
     event_name: name.slice(0, 200),
     starts_at: new Date(startAt * 1000).toISOString(),
+    status,
   });
   if (error) return actionError(error);
   refresh();

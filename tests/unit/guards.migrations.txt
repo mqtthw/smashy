@@ -159,3 +159,4 @@
 20270125400000_review_safety_fixes.sql
 20270125410000_teens_message_anyone_no_photos.sql
 20270125420000_chat_rules_follow_members.sql
+20270125430000_event_interested.sql

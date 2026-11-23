@@ -512,6 +512,7 @@ export type Database = {
           event_ref: string
           reminded_at: string | null
           starts_at: string
+          status: string
           user_id: string
         }
         Insert: {
@@ -521,6 +522,7 @@ export type Database = {
           event_ref: string
           reminded_at?: string | null
           starts_at: string
+          status?: string
           user_id?: string
         }
         Update: {
@@ -530,6 +532,7 @@ export type Database = {
           event_ref?: string
           reminded_at?: string | null
           starts_at?: string
+          status?: string
           user_id?: string
         }
         Relationships: [
@@ -4650,6 +4653,7 @@ export type Database = {
         Args: { kind: string; ref: string }
         Returns: {
           friends: Json
+          interested: number
           total: number
         }[]
       }
