@@ -1136,6 +1136,7 @@ export const es = {
   "people.region.countries": "Países",
   "people.olderGames": "Juegos anteriores",
   "people.mains": "Main: {character} ({game})",
+  "people.profile.theme": "Tema y pantalla",
   "people.welcomeDm.adult": "¡Hola {tag}, bienvenido a Smashy y gracias por unirte! Lo estamos construyendo para toda la comunidad de Smash, así que nos encantaría saber qué opinas. Ideas, errores, lo que sea: cuéntanos en el Discord de Smashy: {link}",
   "people.welcomeDm.teen": "¡Hola {tag}, bienvenido a Smashy y gracias por unirte! Lo estamos construyendo para toda la comunidad de Smash, así que nos encantaría saber qué opinas. Ideas, errores, lo que sea: el enlace al Discord de Smashy está al final de tu página de Perfil.",
   "people.mainIcons.title": "Íconos de main junto a los nombres",

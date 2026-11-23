@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
 import LanguageSwitch from "./LanguageSwitch";
+import { ThemeButton } from "./ui/ThemeToggle";
 import { useT } from "@/lib/i18n/client";
 import NotificationBadge from "./social/NotificationBadge";
 import MessageBadge from "./messages/MessageBadge";
@@ -117,10 +118,14 @@ export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
       <div className="hidden md:mt-auto md:flex md:flex-col">
         {accounts}
         {/* In the narrow icon sidebar (tablets) only the globe shows; the language list sits invisibly over it. */}
-        <LanguageSwitch
-          className="hidden md:relative md:mx-auto md:mb-4 md:flex md:justify-center md:p-3 lg:mx-0 lg:mb-0 lg:justify-start lg:px-5 lg:pb-4 lg:pt-4"
-          selectClassName="md:max-lg:absolute md:max-lg:inset-0 md:max-lg:max-w-none md:max-lg:opacity-0"
-        />
+        {/* Language and light/dark together (round 773), for everyone: no account needed for either. */}
+        <div className="md:mb-4 md:flex md:flex-col md:items-center lg:mb-0 lg:flex-row lg:justify-between lg:px-5 lg:pb-4 lg:pt-4">
+          <LanguageSwitch
+            className="md:relative md:justify-center md:p-3 lg:justify-start lg:p-0"
+            selectClassName="md:max-lg:absolute md:max-lg:inset-0 md:max-lg:max-w-none md:max-lg:opacity-0"
+          />
+          <ThemeButton className="md:p-3 lg:p-0" labelClassName="md:max-lg:sr-only" />
+        </div>
       </div>
     </nav>
   );

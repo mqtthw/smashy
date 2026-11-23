@@ -18,7 +18,7 @@ export const HIGHLIGHT_TYPE_KEYS: Record<HighlightType, MessageKey> = {
 export default function TypeTabs({ basePath, active, filterLabel }: { basePath: string; active: HighlightType | null; filterLabel?: string }) {
   const tabs: [HighlightType | null, MessageKey][] = [[null, "media.type.all"], ...(Object.keys(HIGHLIGHT_TYPES) as HighlightType[]).map((k): [HighlightType, MessageKey] => [k, HIGHLIGHT_TYPE_KEYS[k]])];
   return (
-    <nav aria-label={filterLabel ?? "Filter by type"} className="flex gap-2 overflow-x-auto">
+    <nav aria-label={filterLabel ?? "Filter by type"} className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
       {tabs.map(([key, label]) => (
         <Link
           key={label}

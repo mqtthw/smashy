@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GameBadge from "@/components/GameBadge";
 import LocalTime from "@/components/ui/LocalTime";
 import StartsIn from "@/components/host/StartsIn";
@@ -50,6 +50,17 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
   const [openOnly, setOpenOnly] = useStoredState("smashy.online.open", "no");
   const [smashyOnly, setSmashyOnly] = useStoredState("smashy.online.smashy", "no");
   const t = useT();
+  // The filter bar wraps onto a second line when it doesn't fit (round 773), so the day headings
+  // that stick under it follow its real height.
+  const bar = useRef<HTMLDivElement | null>(null);
+  const [barHeight, setBarHeight] = useState(52);
+  useEffect(() => {
+    const el = bar.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const watch = new ResizeObserver(() => setBarHeight(el.offsetHeight));
+    watch.observe(el);
+    return () => watch.disconnect();
+  }, []);
   const tz = useViewerTimeZone();
   const locale = useViewerLocale();
   const shownGames = GAME_KEYS.filter((g) => !GAMES[g].legacy || rows.some((r) => r.games.some((x) => x.game === g)));
@@ -84,7 +95,7 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
 
   return (
     <div>
-      <div className="sticky top-0 z-[5] flex gap-2 overflow-x-auto border-b border-line glass-sticky px-4 py-3" role="group" aria-label={t("browse.list.filterGame")}>
+      <div ref={bar} className="sticky top-0 z-[5] flex gap-2 overflow-x-auto border-b border-line glass-sticky px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible" role="group" aria-label={t("browse.list.filterGame")}>
         {[ALL, ...shownGames].map((g) => (
           <button key={g} type="button" onClick={() => setGame(g)} aria-pressed={gameNow === g} className="chip shrink-0">
             {g === ALL ? t("browse.list.allGames") : GAMES[g as GameKey].short}
@@ -106,7 +117,7 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
       ) : (
         days.map((d) => (
           <section key={d.key} aria-label={d.label}>
-            <h2 className="sticky top-[3.25rem] z-[4] border-b border-line glass-sticky px-4 py-1.5 text-meta font-semibold uppercase tracking-wide text-muted">{d.label}</h2>
+            <h2 style={{ top: barHeight }} className="sticky z-[4] border-b border-line glass-sticky px-4 py-1.5 text-meta font-semibold uppercase tracking-wide text-muted">{d.label}</h2>
             <ul>
               {d.rows.map((r) => (
                 <li key={r.key} className="border-b border-line">

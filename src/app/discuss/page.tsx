@@ -80,7 +80,7 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
               </Link>
             ))}
         </div>
-        <div className="flex gap-2 overflow-x-auto" role="group" aria-label={t("feed.discuss.filterFlair")}>
+        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible" role="group" aria-label={t("feed.discuss.filterFlair")}>
           <Link href={href(f, { flair: undefined })} aria-current={!f.flair ? "page" : undefined} className="chip shrink-0">{t("feed.discuss.everything")}</Link>
           {FLAIRS.map((fl) => (
             <Link key={fl.key} href={href(f, { flair: fl.key })} aria-current={f.flair === fl.key ? "page" : undefined} className="chip shrink-0">

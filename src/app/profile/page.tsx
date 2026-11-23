@@ -67,6 +67,11 @@ function GuestProfile() {
         <h2 className="text-meta font-semibold uppercase tracking-wide text-muted"><T k="lang.label" /></h2>
         <LanguageSwitch />
       </section>
+      {/* Light or dark without an account (round 773): on a phone this is where a visitor finds it. */}
+      <section className="card flex flex-col gap-2 p-4">
+        <h2 className="text-meta font-semibold uppercase tracking-wide text-muted"><T k="people.profile.theme" /></h2>
+        <ThemeToggle />
+      </section>
     </div>
   );
 }

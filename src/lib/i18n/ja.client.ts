@@ -1136,6 +1136,7 @@ export const ja = {
   "people.region.countries": "国",
   "people.olderGames": "過去作",
   "people.mains": "メインキャラ: {character}（{game}）",
+  "people.profile.theme": "テーマと表示",
   "people.welcomeDm.adult": "{tag}さん、Smashyへようこそ！参加してくれてありがとうございます。スマブラコミュニティ全体のために作っているので、ぜひご意見を聞かせてください。アイデアやバグなど、なんでもSmashyのDiscordへどうぞ：{link}",
   "people.welcomeDm.teen": "{tag}さん、Smashyへようこそ！参加してくれてありがとうございます。スマブラコミュニティ全体のために作っているので、ぜひご意見を聞かせてください。アイデアやバグなど、なんでもどうぞ。SmashyのDiscordへのリンクはプロフィールページの一番下にあります。",
   "people.mainIcons.title": "名前の横にメインキャラのアイコン",
