@@ -6,9 +6,13 @@ import { playerLinks } from "./embeds";
 export const CLIPS_OF_WEEK = 3;
 export const CLIPS_OF_WEEK_DAYS = 7;
 
+/** `hasVideo`: a video uploaded to the post, or a linked tweet that has a video (round 752). */
 export type ClipCandidate = { id: string; authorId: string; body: string; likes: number; createdAt: string; hasVideo: boolean };
 
-/** A clip post: a video uploaded to the post, or a YouTube, Twitch or Streamable link that plays in it. */
+/** How many liked posts with an X link are looked up on X to see whether the tweet has a video. */
+export const TWEET_LOOKUPS = 20;
+
+/** A clip post: one with a video (see `hasVideo`), or a YouTube, Twitch or Streamable link that plays in it. */
 export function isClipPost(c: Pick<ClipCandidate, "body" | "hasVideo">): boolean {
   return c.hasVideo || playerLinks(c.body, 1).length > 0;
 }

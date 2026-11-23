@@ -11,7 +11,8 @@ import type { PostMediaItem } from "./postMedia";
 import { avatarUrl } from "./avatarLinks";
 import { regionName } from "./regions";
 import { hotScore, type ThreadSort, type TopWindow } from "./threadRank";
-import { CLIPS_OF_WEEK_DAYS, pickClipsOfWeek } from "./clipsOfWeek";
+import { CLIPS_OF_WEEK_DAYS, TWEET_LOOKUPS, isClipPost, pickClipsOfWeek } from "./clipsOfWeek";
+import { tweetLinks } from "./embeds";
 import { createClient } from "./supabase/server";
 import { createGuestClient } from "./supabase/guest";
 import { cacheLife } from "next/cache";
@@ -763,16 +764,40 @@ async function clipsOfWeekIds(game: FeedGame | null): Promise<string[]> {
     cacheLife("seconds"); // a failed read isn't kept as "no clips" for minutes
     return [];
   }
-  return pickClipsOfWeek(
-    (data ?? []).map((r) => ({
-      id: r.id,
-      authorId: r.author_id,
-      body: r.body,
-      likes: r.like_count + r.reaction_count,
-      createdAt: r.created_at,
-      hasVideo: (r.videos ?? []).some((v) => v.status === "ready"),
-    })),
+  const rows = (data ?? []).map((r) => ({
+    id: r.id,
+    authorId: r.author_id,
+    body: r.body,
+    likes: r.like_count + r.reaction_count,
+    createdAt: r.created_at,
+    hasVideo: (r.videos ?? []).some((v) => v.status === "ready"),
+  }));
+  // Clips shared as X links count too (round 752): a link alone doesn't say whether the tweet has a
+  // video, so the most liked such posts are looked up (the same kept read their cards use). A tweet
+  // that's gone, or X not answering, just means that post isn't counted this time.
+  const linked = rows
+    .filter((r) => !isClipPost(r) && tweetLinks(r.body, 1).length > 0)
+    .sort((a, b) => b.likes - a.likes)
+    .slice(0, TWEET_LOOKUPS);
+  // Loaded here, not at the top: tweets.ts is server-only, and unit tests load this file.
+  const { getTweetCard } = linked.length ? await import("./tweets") : { getTweetCard: null };
+  await Promise.all(
+    linked.map(async (r) => {
+      if (!getTweetCard) return;
+      const card = await getTweetCard(tweetLinks(r.body, 1)[0].id).catch(() => null);
+      if (card?.picture?.video) r.hasVideo = true;
+    }),
   );
+  return pickClipsOfWeek(rows);
+}
+
+/** The still picture of the video in the first tweet a post links, or null (for the Clips of the week card). */
+export async function tweetVideoStill(body: string): Promise<string | null> {
+  const first = tweetLinks(body, 1)[0];
+  if (!first) return null;
+  const { getTweetCard } = await import("./tweets");
+  const card = await getTweetCard(first.id).catch(() => null);
+  return card?.picture?.video ? card.picture.url : null;
 }
 
 /** Recent posts tagged with a character (resource hub). */

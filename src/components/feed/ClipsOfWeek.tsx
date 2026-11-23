@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { clipLinkThumbnail } from "@/lib/clipsOfWeek";
 import { withoutLinks } from "@/lib/embeds";
-import { getClipsOfWeek } from "@/lib/posts";
+import { getClipsOfWeek, tweetVideoStill } from "@/lib/posts";
 import type { FeedGame } from "@/lib/postConstants";
 import Icon from "@/components/ui/Icon";
 import { T } from "@/lib/i18n/client";
@@ -14,6 +14,8 @@ import { T } from "@/lib/i18n/client";
 export default async function ClipsOfWeek({ game, userId }: { game: FeedGame | undefined; userId: string | null }) {
   const posts = await getClipsOfWeek(game, userId).catch(() => []);
   if (!posts.length) return null;
+  // Uploaded video's still, else YouTube's, else the linked tweet's video still (a kept read).
+  const pictures = await Promise.all(posts.map(async (p) => p.video?.posterUrl ?? clipLinkThumbnail(p.body) ?? (await tweetVideoStill(p.body))));
   return (
     <section aria-labelledby="clips-of-week" className="flex flex-col gap-2 border-b border-line px-4 py-3">
       <div>
@@ -22,7 +24,7 @@ export default async function ClipsOfWeek({ game, userId }: { game: FeedGame | u
       </div>
       <ol className="flex flex-col gap-2">
         {posts.map((p, i) => {
-          const picture = p.video?.posterUrl ?? clipLinkThumbnail(p.body);
+          const picture = pictures[i];
           const words = withoutLinks(p.body);
           const likes = p.likeCount + p.reactions.reduce((n, r) => n + r.count, 0);
           return (
