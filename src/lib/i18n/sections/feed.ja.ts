@@ -37,7 +37,7 @@ export const feedJa: Record<keyof typeof feedEn, string> = {
   "feed.clips.watch": "リールを見る →",
   "feed.clips.clip": "クリップ",
   "feed.clipsWeek.title": "今週のクリップ",
-  "feed.clipsWeek.sub": "過去7日間にプレイヤーが投稿した、いいねの多いクリップ",
+  "feed.clipsWeek.sub": "過去7日間にSmashyでいいねの多かったクリップ",
 
   // A post
   "feed.card.of": "{n}人中",

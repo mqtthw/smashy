@@ -732,11 +732,22 @@ async function reelPostVideoIds(games: string[]): Promise<string[]> {
  * "Clips of the week" (round 751): the most liked clip posts of the last 7 days, one per player, best
  * first. The posts are read as the viewer, so blocks, mutes and the table's rules apply.
  */
-export async function getClipsOfWeek(game: FeedGame | undefined, userId: string | null, opts: { limit?: number; perAuthor?: number } = {}): Promise<Post[]> {
+export async function getClipsOfWeek(game: FeedGame | undefined, userId: string | null, opts: { limit?: number; perAuthor?: number } = {}): Promise<ClipPick[]> {
   warmMutes(userId);
-  const posts = await getPostsByIds(await clipsOfWeekIds(game ?? null, opts.limit ?? CLIPS_OF_WEEK, opts.perAuthor ?? 1), userId);
-  return withoutMuted(posts.filter((p) => !p.spoiler && !p.removedReason), userId);
+  const ids = await clipsOfWeekIds(game ?? null, opts.limit ?? CLIPS_OF_WEEK, opts.perAuthor ?? 1);
+  const posts = await getPostsByIds(ids.filter((id) => !id.startsWith(REEL_PICK)), userId);
+  const shown = new Map((await withoutMuted(posts.filter((p) => !p.spoiler && !p.removedReason), userId)).map((p) => [p.id, p]));
+  // In the picked order: posts and Reels clips together (round 759).
+  return ids.flatMap((id): ClipPick[] => {
+    if (id.startsWith(REEL_PICK)) return [{ kind: "reel", clipId: id.slice(REEL_PICK.length) }];
+    const post = shown.get(id);
+    return post ? [{ kind: "post", post }] : [];
+  });
 }
+
+/** One pick: a clip post, or a clip in Reels (by its clip id; clipsOfWeekData.ts reads it). */
+export type ClipPick = { kind: "post"; post: Post } | { kind: "reel"; clipId: string };
+const REEL_PICK = "reel:";
 
 /**
  * The week's picks, as ids. Counted from posts anyone can see (a guest's view), so the answer is the
@@ -788,6 +799,23 @@ async function clipsOfWeekIds(game: FeedGame | null, limit: number, perAuthor: n
       if (card?.picture?.video) r.hasVideo = true;
     }),
   );
+  // Clips in Reels count too (round 759, Matthew): the liked ones from the same 7 days, by when they
+  // were made or shared. Each channel counts as one "player" for the one-spot rule. A failed read
+  // only leaves Reels out this time.
+  let reels = createGuestClient()
+    .from("reels")
+    .select("clip_id, channel_login, like_count, created_at, submitted_at")
+    .eq("hidden", false)
+    .eq("unavailable", false)
+    .eq("low_quality", false)
+    .gt("like_count", 0)
+    .or(`created_at.gt.${since},submitted_at.gt.${since}`);
+  if (game && game !== "general") reels = reels.eq("game", game);
+  const liked = game === "general" ? { data: [], error: null } : await reels.order("like_count", { ascending: false }).limit(100);
+  if (liked.error) cacheLife("seconds");
+  for (const r of liked.data ?? []) {
+    rows.push({ id: `${REEL_PICK}${r.clip_id}`, authorId: `channel:${r.channel_login}`, body: "", likes: r.like_count, createdAt: r.submitted_at ?? r.created_at, hasVideo: true });
+  }
   return pickClipsOfWeek(rows, limit, perAuthor);
 }
 

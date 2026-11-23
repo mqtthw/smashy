@@ -885,7 +885,7 @@ export const fr = {
   "feed.clips.watch": "Voir les Reels →",
   "feed.clips.clip": "Clip",
   "feed.clipsWeek.title": "Clips de la semaine",
-  "feed.clipsWeek.sub": "Les clips les plus aimés publiés par les joueurs ces 7 derniers jours",
+  "feed.clipsWeek.sub": "Les clips les plus aimés sur Smashy ces 7 derniers jours",
   "feed.card.of": "sur {n}",
   "feed.card.signedUp": "Inscrit",
   "feed.card.verified": "✓ vérifié sur start.gg",

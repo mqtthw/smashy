@@ -35,7 +35,7 @@ export const feedEn = {
   "feed.clips.watch": "Watch Reels →",
   "feed.clips.clip": "Clip",
   "feed.clipsWeek.title": "Clips of the week",
-  "feed.clipsWeek.sub": "The most liked clips players posted in the last 7 days",
+  "feed.clipsWeek.sub": "The most liked clips on Smashy in the last 7 days",
 
   // A post
   "feed.card.of": "of {n}",

@@ -1,0 +1,477 @@
+@manual/2014-the-big-house-4 manual-pplus-2 pplus https://liquipedia.net/smash/The_Big_House/4/Project_M/Singles_Bracket
+#Winners Round 1
+Mew2King~W~Plup~~1
+Ripple~W~Frootloop~~1
+Hungrybox~W~Axe~~1
+Pink Fresh~W~DJ Nintendo~~1
+Coney~W~Tagless Kyle~~1
+Armada~W~Fumbles~~1
+Junebug~W~Jolteon~~1
+DLA~W~SFAT~~1
+Professor Pro~W~ORLY~~1
+Westballz~W~DMX~~1
+Oracle~W~Plasma~~1
+Oro？!~W~Kappy~~1
+ZeRo~W~Porkchops~~1
+VaNz~W~NickRiddle~~1
+Wizzrobe~W~Carls492~~1
+Seibrik~W~Solharath~~1
+#Winners Round 2
+Mew2King~2~Ripple~0~1
+Hungrybox~0~Pink Fresh~2~2
+Coney~0~Armada~2~2
+Junebug~2~DLA~0~1
+Professor Pro~2~Westballz~0~1
+Oracle~0~Oro？!~2~2
+ZeRo~2~VaNz~0~1
+Wizzrobe~2~Seibrik~1~1
+#Winners Round 3
+Mew2King~3~Pink Fresh~1~1
+Armada~1~Junebug~3~2
+Professor Pro~3~Oro？!~0~1
+ZeRo~3~Wizzrobe~0~1
+#Winners Round 4
+Mew2King~3~Junebug~1~1
+Professor Pro~3~ZeRo~2~1
+#Losers Round 1
+Plup~2~Frootloop~0~1
+Axe~2~DJ Nintendo~0~1
+Tagless Kyle~0~Fumbles~2~2
+Jolteon~0~SFAT~2~2
+ORLY~2~DMX~1~1
+Plasma~2~Kappy~1~1
+Porkchops~1~NickRiddle~2~2
+Carls492~2~Solharath~1~1
+#Losers Round 2
+Seibrik~2~Plup~1~1
+VaNz~1~Axe~2~2
+Oracle~2~Fumbles~0~1
+Westballz~0~SFAT~2~2
+DLA~2~ORLY~1~1
+Coney~2~Plasma~0~1
+Hungrybox~2~NickRiddle~1~1
+Ripple~2~Carls492~1~1
+#Losers Round 3
+Seibrik~2~Axe~0~1
+Oracle~2~SFAT~0~1
+DLA~1~Coney~2~2
+Hungrybox~1~Ripple~2~2
+#Losers Round 4
+Armada~3~Seibrik~0~1
+Pink Fresh~3~Oracle~0~1
+Wizzrobe~3~Coney~2~1
+Oro？!~1~Ripple~3~2
+#Losers Round 5
+Armada~1~Pink Fresh~3~2
+Wizzrobe~3~Ripple~0~1
+#Losers Round 6
+ZeRo~3~Pink Fresh~1~1
+Junebug~3~Wizzrobe~1~1
+#Losers Finals
+Mew2King~1~ZeRo~3~2
+#Grand Finals
+Professor Pro~2/0~ZeRo~3/3~2
+
+@manual/2014-zenith-2014 manual-pplus-1 pplus https://liquipedia.net/smash/Zenith/2014/Project_M/Singles_Bracket
+#Winners Round 1
+Mew2King~2~Sol~0~1
+StereoKiDD~0~Shiny Zubat~2~2
+Pink Fresh~2~Darktooth~0~1
+Rolex~2~Kaeon~0~1
+GuruKid~2~Cruz Control~0~1
+Seagull Joe~2~Jreed~0~1
+Emukiller~2~Jtails~0~1
+Frozen~2~Reslived~0~1
+ZeRo~2~GimR~0~1
+NinjaLink~2~Smokey~0~1
+Gallo~2~Crescent Monkey~0~1
+DJ Nintendo~2~Raptor~1~1
+Eli~0~Xzax~2~2
+Wizzrobe~2~John Numbers~0~1
+Junebug~2~Wes~0~1
+Wolf~2~POOB~0~1
+#Winners Round 2
+Mew2King~2~Shiny Zubat~0~1
+Pink Fresh~0~Rolex~2~2
+GuruKid~0~Seagull Joe~2~2
+Emukiller~2~Frozen~0~1
+ZeRo~0~NinjaLink~2~2
+Gallo~2~DJ Nintendo~0~1
+Xzax~0~Wizzrobe~2~2
+Junebug~2~Wolf~0~1
+#Winners Round 3
+Mew2King~2~Rolex~0~1
+Seagull Joe~0~Emukiller~2~2
+NinjaLink~2~Gallo~0~1
+Wizzrobe~1~Junebug~2~2
+#Winners Round 4
+Mew2King~0~Emukiller~3~2
+NinjaLink~0~Junebug~3~2
+#Losers Round 1
+Sol~0~StereoKiDD~2~2
+Darktooth~2~Kaeon~0~1
+Cruz Control~0~Jreed~2~2
+Jtails~2~Reslived~0~1
+GimR~0~Smokey~2~2
+Crescent Monkey~0~Raptor~2~2
+Eli~1~John Numbers~2~2
+Wes~2~POOB~0~1
+#Losers Round 2
+Wolf~2~StereoKiDD~0~1
+Xzax~2~Darktooth~0~1
+DJ Nintendo~2~Jreed~0~1
+ZeRo~2~Jtails~0~1
+Frozen~2~Smokey~0~1
+GuruKid~2~Raptor~0~1
+Pink Fresh~2~John Numbers~0~1
+Shiny Zubat~2~Wes~0~1
+#Losers Round 3
+Wolf~2~Xzax~0~1
+DJ Nintendo~0~ZeRo~2~2
+Frozen~2~GuruKid~0~1
+Pink Fresh~2~Shiny Zubat~0~1
+#Losers Round 4
+Seagull Joe~2~Wolf~0~1
+Rolex~1~ZeRo~2~2
+Wizzrobe~1~Frozen~2~2
+Gallo~2~Pink Fresh~0~1
+#Losers Round 5
+Seagull Joe~0~ZeRo~2~2
+Frozen~0~Gallo~2~2
+#Losers Round 6
+NinjaLink~1~ZeRo~2~2
+Mew2King~2~Gallo~0~1
+#Losers Finals
+Emukiller~0~ZeRo~3~2
+#Grand Finals
+Junebug~0/0~ZeRo~3/3~2
+
+@manual/2014-ceo-2014 manual-pplus-2 pplus https://liquipedia.net/smash/CEO/2014/Project_M/Singles_Bracket
+#Winners Round 1
+Mew2King~W~Pink Fresh~~1
+DEHF~W~Hungrybox~~1
+ESAM~W~DJ Nintendo~~1
+Wizzrobe~W~TheReflexWonder~~1
+Armada~W~Colbol~~1
+Plup~~ChuDat~W~2
+ZeRo~W~Nick Riddle~~1
+Mango~~aMSa~W~2
+#Winners Round 2
+Mew2King~2~DEHF~0~1
+ESAM~0~Wizzrobe~2~2
+Armada~0~ChuDat~2~2
+ZeRo~2~aMSa~0~1
+#Winners Round 3
+Mew2King~0~Wizzrobe~2~2
+ChuDat~0~ZeRo~2~2
+#Losers Round 1
+Corporate Crunch~~KoreanDJ~W~2
+Solharath~W~PikaChad~~1
+uuaa~~Chillindude~W~2
+Articanus~W~MVD~~1
+Seibrik~~Porkchops~W~2
+Sartron~W~RockCrock~~1
+Phish-it~~Ryo Gulkido~W~2
+Ken~~Master Raven~W~2
+#Losers Round 2
+Mango~~KoreanDJ~W~2
+Nick Riddle~W~Solharath~~1
+Plup~W~Chillindude~~1
+Colbol~~Articanus~W~2
+TheReflexWonder~W~Porkchops~~1
+DJ Nintendo~W~Sartron~~1
+Hungrybox~W~Ryo Gulkido~~1
+Pink Fresh~W~Master Raven~~1
+#Losers Round 3
+KoreanDJ~~Nick Riddle~W~2
+Plup~W~Articanus~~1
+TheReflexWonder~W~DJ Nintendo~~1
+Hungrybox~W~Pink Fresh~~1
+#Losers Round 4
+ESAM~0~Nick Riddle~2~2
+DEHF~W~Plup~~1
+aMSa~~TheReflexWonder~W~2
+Armada~W~Hungrybox~~1
+#Losers Round 5
+Nick Riddle~2~DEHF~0~1
+TheReflexWonder~0~Armada~2~2
+#Losers Round 6
+ChuDat~2~Nick Riddle~0~1
+Mew2King~2~Armada~0~1
+#Losers Finals
+Wizzrobe~3~Mew2King~2~1
+#Grand Finals
+ZeRo~0/3~Wizzrobe~3/1~1
+
+@manual/2014-sktar-3 manual-pplus-2 pplus https://liquipedia.net/smash/SKTAR/3/Project_M/Singles_Bracket
+#Winners Round 5
+Armada~0~EmuKiller~2~2
+Rolex~W~Eli~~1
+Larry Lurr~~Zhime~W~2
+ZeRo~1~ESAM~2~2
+Mew2King~W~ChuDat~~1
+Sethlon~2~Seibrik~0~1
+Professor Pro~W~Junebug~~1
+Strong Bad~2~Oracle~0~1
+#Winners Round 6
+EmuKiller~2~Rolex~0~1
+Zhime~0~ESAM~2~2
+Mew2King~2~Sethlon~0~1
+Professor Pro~2~Strong Bad~0~1
+#Winners Round 7
+EmuKiller~3~ESAM~1~1
+Mew2King~2~Professor Pro~3~2
+#Losers Round 7
+Seagull Joe~~Denti~W~2
+Frozen~~Pink Fresh~W~2
+Porkchops~~Salem~W~2
+Ally~W~JCaesar~~1
+Wolf~W~Cruzycakes~~1
+Infinity~2~Raptor~1~1
+Milkman~W~Chillin~~1
+Vex~W~Eazy~~1
+#Losers Round 8
+Armada~2~Denti~0~1
+Eli~~Pink Fresh~W~2
+Larry Lurr~~Salem~W~2
+ZeRo~2~Ally~0~1
+ChuDat~W~Wolf~~1
+Seibrik~2~Infinity~1~1
+Junebug~W~Milkman~~1
+Oracle~~Vex~W~2
+#Losers Round 9
+Armada~W~Pink Fresh~~1
+Salem~~ZeRo~W~2
+ChuDat~2~Seibrik~1~1
+Junebug~2~Vex~1~1
+#Losers Round 10
+Strong Bad~1~Armada~2~2
+Sethlon~2~ZeRo~0~1
+Zhime~1~ChuDat~2~2
+Rolex~2~Junebug~1~1
+#Losers Round 11
+Armada~2~Sethlon~0~1
+ChuDat~1~Rolex~2~2
+#Losers Round 12
+ESAM~2~Armada~0~1
+Mew2King~2~Rolex~0~1
+#Losers Finals
+Professor Pro~0~Mew2King~3~2
+#Grand Finals
+EmuKiller~3~Mew2King~0~1
+
+@manual/2014-apex-2014 manual-pplus-2 pplus https://liquipedia.net/smash/Apex/2014/Project_M/Singles_Bracket
+#Winners Round 1
+Armada~W~Tyrant~~1
+Zhime~W~Atomsk92~~1
+Silent Wolf~~Oracle~W~2
+KoreanDJ~1~Ally~2~2
+Mew2King~W~Dakpo~~1
+Eli~W~Fuzzyness~~1
+Internet Explorer~0~Plup~2~2
+Rolex~2~Leffen~0~1
+Nakat~~JCaesar~W~2
+DisgoBunny~~Sethlon~W~2
+GuruKid~~Vist~W~2
+ESAM~~Fly Amanita~W~2
+Larry Lurr~2~Denti~0~1
+Rat~2~Meta~0~1
+Taj~2~Chu Dat~1~1
+Hungrybox~0~Jreed~2~2
+#Winners Round 2
+Armada~W~Zhime~~1
+Oracle~W~Ally~~1
+Mew2King~2~Eli~0~1
+Plup~~Rolex~W~2
+JCaesar~0~Sethlon~2~2
+Vist~0~Fly Amanita~2~2
+Larry Lurr~W~Rat~~1
+Taj~2~Jreed~1~1
+#Winners Round 3
+Armada~W~Oracle~~1
+Mew2King~W~Rolex~~1
+Sethlon~~Fly Amanita~W~2
+Larry Lurr~W~Taj~~1
+#Winners Round 4
+Armada~3~Mew2King~2~1
+Fly Amanita~1~Larry Lurr~3~2
+#Losers Round 1
+Gallo~W~Dazwa~~1
+MattDotZeb~~K9~W~2
+Riot~1~boss8~2~2
+Strong Bad~W~Reno~~1
+Redd~W~Vudujin~~1
+Salem~W~V3ctorman~~1
+Scythe~W~CAM~~1
+JaimeHR~W~Nintendude~~1
+Leelue~W~Smith~~1
+Pitzer~~Squeak~W~2
+Axe~W~DJ Nintendo~~1
+Frootloop~W~PROFESSORLABCOAT~~1
+Neon~W~Kage~~1
+Wolf~~CruzyCakes~W~2
+Bwett~~OkamiBW~W~2
+Darktooth~~Toronto Joe~W~2
+#Losers Round 2
+Dakpo~~Gallo~W~2
+Fuzzyness~W~K9~~1
+Internet Explorer~W~boss8~~1
+Leffen~2~Strong Bad~0~1
+Tyrant~~Redd~W~2
+Atomsk92~W~Salem~~1
+Silent Wolf~W~Scythe~~1
+KoreanDJ~1~JaimeHR~2~2
+Denti~W~Leelue~~1
+Meta~2~Squeak~0~1
+Chu Dat~1~Axe~2~2
+Hungrybox~W~Frootloop~~1
+Nakat~~Neon~W~2
+DisgoBunny~~CruzyCakes~W~2
+GuruKid~~OkamiBW~W~2
+ESAM~W~Toronto Joe~~1
+#Losers Round 3
+Gallo~W~Fuzzyness~~1
+Internet Explorer~~Leffen~W~2
+Redd~W~Atomsk92~~1
+Silent Wolf~W~JaimeHR~~1
+Denti~2~Meta~0~1
+Axe~W~Hungrybox~~1
+Neon~~CruzyCakes~W~2
+OkamiBW~~ESAM~W~2
+#Losers Round 4
+Vist~1~Gallo~2~2
+JCaesar~~Leffen~W~2
+Jreed~2~Redd~0~1
+Rat~~Silent Wolf~W~2
+Ally~W~Denti~~1
+Zhime~~Axe~W~2
+Plup~W~CruzyCakes~~1
+Eli~~ESAM~W~2
+#Losers Round 5
+Gallo~~Leffen~W~2
+Jreed~~Silent Wolf~W~2
+Ally~W~Axe~~1
+Plup~~ESAM~W~2
+#Losers Round 6
+Rolex~2~Leffen~1~1
+Oracle~W~Silent Wolf~~1
+Taj~1~Ally~2~2
+Sethlon~2~ESAM~0~1
+#Losers Round 7
+Rolex~2~Oracle~1~1
+Ally~0~Sethlon~2~2
+#Losers Round 8
+Fly Amanita~0~Rolex~2~2
+Mew2King~2~Sethlon~0~1
+#Losers Finals
+Larry Lurr~0~Mew2King~3~2
+#Grand Finals
+Armada~3~Mew2King~2~1
+
+@manual/2013-the-big-house-3 manual-pplus-2 pplus https://liquipedia.net/smash/The_Big_House/3/Project_M/Singles_Bracket
+#Winners Round 1
+Sweet~~j00t~W~2
+Oro？!~W~Flan～~~1
+KishPrime~W~Rizner~~1
+Kappy~~mudkyp~~0
+Frootloop~~OnionChild~W~2
+Gravy~W~Anther~~1
+heyseuss~W~Storm~~1
+Shaeden~W~Gooeybanana~~1
+Susan~W~JTsm~~1
+moogle~~Dope~W~2
+Calabrel~~Rusty Shacklefurd~W~2
+Lordy~~Ripple~W~2
+Yakal~~Hyuga~W~2
+Green Ranger~~PikaChad~W~2
+Zwarm~0~Asylum~2~2
+SFAT~W~Chase~~1
+#Winners Round 2
+Trail~W~j00t~~1
+Rat~W~Oro？!~~1
+Mew2King~W~KishPrime~~1
+Arty~W~Kappy~~1
+VaNz~2~OnionChild~0~1
+MattDotZeb~~Gravy~W~2
+ORLY~~heyseuss~W~2
+PewPewU~~Shaeden~W~2
+Susan~~Scythe~W~2
+Dope~0~Hungrybox~2~2
+Rusty Shacklefurd~~Kirk~W~2
+Ripple~~JCaesar~W~2
+Hyuga~~HammerTime~W~2
+PikaChad~W~Strong Bad~~1
+Asylum~0~Oracle~2~2
+SFAT~0~metroid~2~2
+#Winners Round 3
+Trail~~Rat~W~2
+Mew2King~2~Arty~1~1
+VaNz~W~Gravy~~1
+heyseuss~0~Shaeden~2~2
+Scythe~~Hungrybox~W~2
+Kirk~W~JCaesar~~1
+HammerTime~~PikaChad~W~2
+Oracle~2~metroid~0~1
+#Winners Round 4
+Rat~W~Mew2King~~1
+VaNz~2~Shaeden~0~1
+Hungrybox~0~Kirk~2~2
+PikaChad~~Oracle~W~2
+#Winners Round 5
+Rat~2~VaNz~3~2
+Kirk~W~Oracle~~1
+#Losers Round 1
+Sweet~0~OnionChild~2~2
+Flan～~~MattDotZeb~W~2
+Rizner~W~ORLY~~1
+mudkyp~W~PewPewU~~1
+Frootloop~~j00t~W~2
+Anther~~Oro？!~W~2
+Storm~~KishPrime~W~2
+Gooeybanana~~Kappy~W~2
+JTsm~~Hyuga~W~2
+moogle~~Strong Bad~W~2
+Calabrel~~Asylum~W~2
+Lordy~0~SFAT~2~2
+Yakal~W~Susan~~1
+Green Ranger~~Dope~W~2
+Zwarm~~Rusty Shacklefurd~W~2
+Chase~~Ripple~W~2
+#Losers Round 2
+OnionChild~1~MattDotZeb~2~2
+Rizner~W~mudkyp~~1
+j00t~~Oro？!~W~2
+KishPrime~~Kappy~W~2
+Hyuga~~Strong Bad~W~2
+Asylum~~SFAT~W~2
+Yakal~W~Dope~~1
+Rusty Shacklefurd~~Ripple~W~2
+#Losers Round 3
+JCaesar~~MattDotZeb~W~2
+Scythe~W~Rizner~~1
+metroid~1~Oro？!~2~2
+HammerTime~2~Kappy~1~1
+Arty~~Strong Bad~W~2
+Trail~~SFAT~W~2
+heyseuss~~Yakal~W~2
+Gravy~~Ripple~W~2
+#Losers Round 4
+MattDotZeb~~Scythe~W~2
+Oro？!~2~HammerTime~1~1
+Strong Bad~0~SFAT~2~2
+Yakal~W~Ripple~~1
+#Losers Round 5
+Shaeden~~Scythe~W~2
+Mew2King~2~Oro？!~0~1
+PikaChad~W~SFAT~~1
+Hungrybox~W~Yakal~~1
+#Losers Round 6
+Scythe~0~Mew2King~2~2
+PikaChad~W~Hungrybox~~1
+#Losers Round 7
+Oracle~~Mew2King~W~2
+Rat~0~PikaChad~2~2
+#Losers Finals
+VaNz~0~PikaChad~3~2
+#Grand Finals
+Kirk~3~PikaChad~2~1

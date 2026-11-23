@@ -885,7 +885,7 @@ export const ja = {
   "feed.clips.watch": "リールを見る →",
   "feed.clips.clip": "クリップ",
   "feed.clipsWeek.title": "今週のクリップ",
-  "feed.clipsWeek.sub": "過去7日間にプレイヤーが投稿した、いいねの多いクリップ",
+  "feed.clipsWeek.sub": "過去7日間にSmashyでいいねの多かったクリップ",
   "feed.card.of": "{n}人中",
   "feed.card.signedUp": "エントリー済み",
   "feed.card.verified": "✓ start.ggで確認済み",
