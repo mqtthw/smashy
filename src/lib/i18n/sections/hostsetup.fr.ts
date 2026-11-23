@@ -39,6 +39,7 @@ export const hostsetupFr: Record<keyof typeof hostsetupEn, string> = {
   "hostsetup.form.ruleset": "Ruleset",
   "hostsetup.form.noRuleset": "Aucun (décris-le plus bas)",
   "hostsetup.form.swissHint": "Système suisse : tout le monde joue chaque round, à chaque fois contre quelqu'un qui a le même bilan, et personne n'est éliminé. Tu lances chaque round une fois le précédent terminé.",
+  "hostsetup.form.socialHint": "Une rencontre avec inscriptions et sans bracket : soirée jeux, Jackbox, visionnage en groupe. Tout jeu convient ; choisissez ci-dessus la communauté concernée.",
   "hostsetup.form.finalBracket": "Puis un bracket final",
   "hostsetup.form.noFinalSwiss": "Non : le classement du suisse décide",
   "hostsetup.form.noFinalPools": "Non : le classement des pools décide",

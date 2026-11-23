@@ -37,6 +37,7 @@ export const hostsetupEn = {
   "hostsetup.form.ruleset": "Ruleset",
   "hostsetup.form.noRuleset": "None (describe below)",
   "hostsetup.form.swissHint": "Swiss: everyone plays every round, each time against someone with the same record, and nobody is knocked out. You start each round once the one before is finished.",
+  "hostsetup.form.socialHint": "A get-together with sign-ups and no bracket: a game night, Jackbox, a watch party. It can be for any game; pick the community it is for above.",
   "hostsetup.form.finalBracket": "Then a final bracket",
   "hostsetup.form.noFinalSwiss": "No: the Swiss standings decide it",
   "hostsetup.form.noFinalPools": "No: the pool standings decide it",

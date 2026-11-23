@@ -77,6 +77,7 @@ export default function HostEventForm({
   const [format, setFormat] = useState(base?.format ?? "double_elim");
   const [finalFormat, setFinalFormat] = useState(base?.finalFormat ?? "");
   const firstPart = format === "round_robin" || format === "swiss"; // these can be followed by a final bracket
+  const social = format === "social"; // no bracket (round 757): the bracket settings below are hidden
   const [local, setLocal] = useState("");
   const [tz, setTz] = useState("America/Chicago");
   const mainStart = main?.startsAt;
@@ -186,9 +187,10 @@ export default function HostEventForm({
             <option value="single_elim">{t("format.single_elim")}</option>
             <option value="round_robin">{t("format.round_robin")}</option>
             <option value="swiss">{t("format.swiss")}</option>
+            <option value="social">{t("format.social")}</option>
           </select>
         </label>
-        <label className="flex flex-col gap-1">
+        <label className={social ? "hidden" : "flex flex-col gap-1"}>
           <span className="font-semibold">{t("hostsetup.form.ruleset")}</span>
           <select name="ruleset_id" value={forGame.some((r) => r.id === rulesetValue) ? rulesetValue : ""} onChange={(e) => setPicked(e.target.value)} className="field">
             <option value="">{t("hostsetup.form.noRuleset")}</option>
@@ -200,6 +202,11 @@ export default function HostEventForm({
       {format === "swiss" && (
         <p className="text-meta text-muted">
           {t("hostsetup.form.swissHint")}
+        </p>
+      )}
+      {social && (
+        <p className="text-meta text-muted">
+          {t("hostsetup.form.socialHint")}
         </p>
       )}
 
@@ -224,7 +231,7 @@ export default function HostEventForm({
       )}
 
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        <label className="flex flex-col gap-1">
+        <label className={social ? "hidden" : "flex flex-col gap-1"}>
           <span className="text-sm font-semibold">{t("hostsetup.form.bestOf")}</span>
           <input type="number" name="best_of" min={1} max={9} defaultValue={base?.bestOf ?? 3} className="field" />
         </label>
@@ -235,7 +242,7 @@ export default function HostEventForm({
           </label>
         )}
         {/* "Top 8" only exists in an elimination bracket: the event's own, or the final bracket after pools or Swiss. */}
-        {(!firstPart || finalFormat) && (
+        {!social && (!firstPart || finalFormat) && (
           <label className="flex flex-col gap-1">
             <span className="text-sm font-semibold">{t("hostsetup.form.bestOfTop")}</span>
             <input type="number" name="best_of_top" min={1} max={9} defaultValue={base?.bestOfTop ?? ""} placeholder={t("hostsetup.form.samePlaceholder")} className="field" />
@@ -245,13 +252,13 @@ export default function HostEventForm({
           <span className="text-sm font-semibold">{t(teamSize === 2 ? "hostsetup.form.maxTeams" : "hostsetup.form.maxPlayers")}</span>
           <input type="number" name="entrant_cap" min={2} max={512} defaultValue={base?.entrantCap ?? 64} className="field" />
         </label>
-        <label className="flex flex-col gap-1">
+        <label className={social ? "hidden" : "flex flex-col gap-1"}>
           <span className="text-sm font-semibold">{t("hostsetup.form.checkIn")}</span>
           <input type="number" name="checkin_minutes" min={0} max={240} defaultValue={base?.checkinMinutes ?? 30} className="field" />
         </label>
       </div>
 
-      <fieldset className="flex flex-col gap-2">
+      <fieldset className={social ? "hidden" : "flex flex-col gap-2"}>
         <legend className="mb-1 font-semibold">{t("hostsetup.form.runningNight")} <span className="font-normal text-muted">{t("hostsetup.form.optional")}</span></legend>
         <div className="grid grid-cols-2 gap-2">
           <label className="flex flex-col gap-1">

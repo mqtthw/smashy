@@ -129,6 +129,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
   const severalBrackets = brackets.length > 1;
   const mainId = event.parentId ?? event.id;
   const bracketStarted = sets.length > 0;
+  const social = event.format === "social"; // a get-together (round 757): sign-ups, no bracket
   const finished = event.status === "completed";
   const results = finished ? bracketResults(event, sets) : null;
   // Pools or Swiss with a final bracket that hasn't been started: is the first part finished? (For "Start the final bracket".)
@@ -265,7 +266,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
   // Online events: my connect code, so I can add it before my first set is called (only I can read mine).
   // Knocked out of a running bracket (not pools): a note instead of set prompts, and no code box.
   const iAmOut = !!myId && event.status === "in_progress" && !mySet && sets.some((x) => knockedOut(sets, x) === myId);
-  const showCode = !!me && !doubles && event.online && !finished && !event.removed && event.status !== "canceled" && !iAmOut;
+  const showCode = !!me && !social && !doubles && event.online && !finished && !event.removed && event.status !== "canceled" && !iAmOut;
   const showOpponentCode = !!(!doubles && event.online && opponentId && !myReported && !entrants.find((x) => x.userId === opponentId)?.guest);
   // Both looked up at once, alongside everything else below; a failed lookup just hides the line (or leaves the box empty).
   const codeOf = async (db: Awaited<ReturnType<typeof createClient>>, who: string) =>
@@ -313,7 +314,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
   const friends = entrants.filter((x) => friendIds.includes(x.userId));
   // Before the start: the first round (or pools) with the current seeding (checked-in players only when check-in is on).
   const previewSeeds = entrants.filter((x) => event.checkinMinutes === 0 || x.checkedIn).map((x) => x.userId);
-  const preview = beforeBracket && !event.removed ? bracketPreview(previewSeeds, event.format) : null;
+  const preview = beforeBracket && !event.removed && event.format !== "social" ? bracketPreview(previewSeeds, event.format) : null;
   const resultPlayers = finished ? players : null;
   let nextUp: { key: string; identifier: string | null; waitingOn: string; feeder: FeederStatus | null } | null = null;
   if (pending && players) {
@@ -664,7 +665,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
         </p>
       )}
 
-      {isHost && !event.removed && event.status !== "canceled" && (
+      {isHost && !social && !event.removed && event.status !== "canceled" && (
         <section className="card flex flex-col gap-2 p-4" aria-labelledby="bracket-tools">
           <h2 id="bracket-tools" className="font-bold">Bracket</h2>
           {!bracketStarted && notCheckedIn.length > 0 && (
@@ -729,8 +730,8 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
       <section className="card grid grid-cols-2 gap-x-4 gap-y-2 p-4 text-sm" aria-label={t("event.details")}>
         <span className="text-muted">{t("event.details.format")}</span>
         <span>{formatSummary(event, t)}</span>
-        <span className="text-muted">{t("event.details.sets")}</span>
-        <span>{t("event.details.bestOf", { n: event.bestOf })}{event.bestOfTop && event.bestOfTop !== event.bestOf ? t("event.details.bestOfTop", { n: event.bestOfTop }) : ""}</span>
+        {!social && <span className="text-muted">{t("event.details.sets")}</span>}
+        {!social && <span>{t("event.details.bestOf", { n: event.bestOf })}{event.bestOfTop && event.bestOfTop !== event.bestOf ? t("event.details.bestOfTop", { n: event.bestOfTop }) : ""}</span>}
         <span className="text-muted">{doubles ? t("event.details.teams") : t("event.details.players")}</span>
         <span>{entrants.length} / {event.entrantCap}{event.checkinMinutes > 0 ? t("event.details.checkedIn", { n: checkedInCount }) : ""}{waitlist.length > 0 ? t("event.details.waiting", { n: waitlist.length }) : ""}</span>
         <span className="text-muted">{t("event.details.checkIn")}</span>
@@ -813,7 +814,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
           teams={doubles}
         />
       )}
-      {discord && <DiscordCard key={`${discord.connected}`} eventId={event.id} connected={discord.connected} calls={discord.calls} canAnnounce={beforeBracket} />}
+      {discord && !social && <DiscordCard key={`${discord.connected}`} eventId={event.id} connected={discord.connected} calls={discord.calls} canAnnounce={beforeBracket} />}
       {isHost && !bracketStarted && (
         <HostPanel
           records={records}
@@ -825,13 +826,14 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
           editable={["open", "closed"].includes(event.status) && !event.removed}
           mainHost={isMainHost}
           bracket={!!event.parentId}
+          social={social}
           doubles={doubles}
           // Extra brackets that haven't started are canceled with their main event.
           extraBrackets={event.parentId ? 0 : brackets.filter((b) => !b.main && (b.status === "open" || b.status === "closed")).length}
           entrants={entrants.map((x) => ({ userId: x.userId, tag: x.tag, checkedIn: x.checkedIn }))}
         />
       )}
-      {isHost && !bracketStarted && ["open", "closed"].includes(event.status) && !event.removed && severalBrackets && !doubles && (
+      {isHost && !social && !bracketStarted && ["open", "closed"].includes(event.status) && !event.removed && severalBrackets && !doubles && (
         <BringPlayers
           eventId={event.id}
           // Brackets with players in them, the ones that have started first (that's where "who's out" comes from).
@@ -841,7 +843,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
             .sort((a, b) => Number(b.started) - Number(a.started))}
         />
       )}
-      {isHost && !bracketStarted && ["open", "closed"].includes(event.status) && !event.removed && !doubles && <StartggImport eventId={event.id} />}
+      {isHost && !bracketStarted && ["open", "closed"].includes(event.status) && !event.removed && !doubles && !social && <StartggImport eventId={event.id} />}
 
       {eventPosts.length > 0 && (
         <section className="flex flex-col gap-2" aria-labelledby="event-posts">

@@ -97,6 +97,7 @@ const main: Record<Exclude<MessageKey, SectionKey>, string> = {
   "format.single_elim": "シングルエリミネーション",
   "format.round_robin": "総当たり",
   "format.swiss": "スイス式",
+  "format.social": "ブラケットなし（交流イベント）",
   "format.then": "{first}、その後上位{n}人で{second}",
 
   // Sharing an event

@@ -97,6 +97,7 @@ const main: Record<Exclude<MessageKey, SectionKey>, string> = {
   "format.single_elim": "Simple élimination",
   "format.round_robin": "Round robin",
   "format.swiss": "Suisse",
+  "format.social": "Sans bracket (événement social)",
   "format.then": "{first}, puis top {n} en {second}",
 
   // Sharing an event

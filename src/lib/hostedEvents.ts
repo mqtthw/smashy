@@ -12,7 +12,10 @@ import { MAX_EXTRA_BRACKETS } from "./eventBrackets";
 import { getTeamMembers, type TeamMember } from "./hostedTeams";
 import { headToHead, hostedRecord, medalTable, type HostedRecord, type MedalRow, type RecordSet } from "./hostedRecord";
 
-export type HostedFormat = "double_elim" | "single_elim" | "round_robin" | "swiss";
+/** "social" (round 757): a get-together with sign-ups and no bracket (a game night, Jackbox). */
+export type HostedFormat = "double_elim" | "single_elim" | "round_robin" | "swiss" | "social";
+/** The formats that have a bracket. */
+export type BracketFormat = Exclude<HostedFormat, "social">;
 export type HostedStatus = "open" | "closed" | "in_progress" | "completed" | "canceled";
 
 export type HostedEvent = {
@@ -78,6 +81,7 @@ export const FORMAT_LABEL: Record<HostedFormat, string> = {
   single_elim: "Single elimination",
   round_robin: "Round robin",
   swiss: "Swiss",
+  social: "No bracket (social event)",
 };
 
 /**

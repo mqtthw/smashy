@@ -30,7 +30,7 @@ export async function getResultsFile(eventId: string): Promise<{ file: ObfTourna
   ]);
   if (entrants.error) throw entrants.error;
   if (walkIns.error) throw walkIns.error;
-  if (sets.length === 0) return null;
+  if (sets.length === 0 || event.format === "social") return null; // a social event has no bracket
 
   const players = new Map<string, ObfPlayer>();
   for (const g of (walkIns.data ?? []) as GuestRow[]) players.set(g.id, { tag: g.tag, handle: null, walkIn: true, seed: g.seed, joinedAt: g.created_at });

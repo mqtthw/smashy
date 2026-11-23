@@ -1,0 +1,683 @@
+@manual/2012-sun-rise-tournament manual-brawl-1 brawl https://liquipedia.net/smash/Sun_Rise_Tournament/Singles_Bracket
+#Winners Round 1
+DIO~W~Kuro~~1
+Kamemushi~1~Havok~2~2
+Masha~W~Runpa~~1
+Kuroan~~Mao~W~2
+Kakera~W~Tige~~1
+Renasu~~Moyomoto~W~2
+Earth~W~Kein~~1
+Luminous~W~Torin~~1
+Nietono~2~Kuraudo~0~1
+Aki~W~Monaka~~1
+Kurobi~W~harvest~~1
+9B~W~SOL~~1
+Mew2King~2~Frea~0~1
+Umeki~~DAMU~W~2
+Otori~W~Sigma~~1
+Smasher~~IsoTaku~W~2
+(C)~W~Syun~~1
+Shogun~W~YB~~1
+Daiki~W~Psycho~~1
+Maguro~W~Shdw~~1
+Shu~W~Fsann~~1
+Yui~W~KaPMk~~1
+Brood~W~Aile~~1
+Vinnie~W~FILIP~~1
+Nariyasu~W~TMNS~~1
+quiKsilver~2~Yuto~0~1
+Raoh~W~Kie~~1
+Suinoko~W~Coral~~1
+Saka~W~Sekura~~1
+RAIN~W~Wanapero~~1
+Abadango~W~Akira~~1
+Mikeneko~W~Nyagato~~1
+#Winners Round 2
+DIO~0~Havok~2~2
+Masha~W~Mao~~1
+Kakera~W~Moyomoto~~1
+Earth~W~Luminous~~1
+Nietono~W~Aki~~1
+Kurobi~~9B~W~2
+Mew2King~2~DAMU~0~1
+Otori~W~IsoTaku~~1
+(C)~~Shogun~W~2
+Daiki~W~Maguro~~1
+Shu~~Yui~W~2
+Brood~0~Vinnie~2~2
+Nariyasu~1~quiKsilver~2~2
+Raoh~~Suinoko~W~2
+Saka~~RAIN~W~2
+Abadango~~Mikeneko~W~2
+#Winners Round 3
+Havok~2~Masha~1~1
+Kakera~W~Earth~~1
+Nietono~~9B~W~2
+Mew2King~0~Otori~2~2
+Shogun~~Daiki~W~2
+Yui~0~Vinnie~2~2
+quiKsilver~W~Suinoko~~1
+RAIN~W~Mikeneko~~1
+#Winners Round 4
+Havok~1~Kakera~2~2
+9B~1~Otori~2~2
+Daiki~0~Vinnie~2~2
+quiKsilver~0~RAIN~2~2
+#Winners Round 5
+Kakera~1~Otori~2~2
+Vinnie~0~RAIN~2~2
+#Losers Round 1
+Canpy~~Monaka~W~2
+JILL~W~SOL~~1
+Hazureimu~W~Shima~~1
+Lagnel~~Sandaga~W~2
+Kuro~~Kamemushi~W~2
+Misaki~W~Kuroan~~1
+Tige~W~Renasu~~1
+Kein~~Ice~W~2
+Kashihara~W~Yuto~~1
+Kie~W~...yes~~1
+SIN~W~KENT~~1
+KEN~W~Some~~1
+Syun~W~YB~~1
+Psycho~~Shdw~W~2
+Fsann~W~KaPMk~~1
+MIKINAKE~~Papepia~W~2
+#Losers Round 2
+Shu~W~Monaka~~1
+Brood~W~JILL~~1
+(C)~~Hazureimu~W~2
+Maguro~W~Sandaga~~1
+Saka~W~Kamemushi~~1
+Abadango~W~Misaki~~1
+Nariyasu~~Tige~W~2
+Raoh~W~Ice~~1
+Moyomoto~W~Kashihara~~1
+Luminous~W~Kie~~1
+DIO~W~SIN~~1
+Mao~~KEN~W~2
+DAMU~~Syun~W~2
+IsoTaku~~Shdw~W~2
+Aki~W~Fsann~~1
+Kurobi~W~Papepia~~1
+#Losers Round 3
+Shu~~Brood~W~2
+Hazureimu~~Maguro~W~2
+Saka~W~Abadango~~1
+Tige~~Raoh~W~2
+Moyomoto~W~Luminous~~1
+DIO~W~KEN~~1
+Syun~W~Shdw~~1
+Aki~W~Kurobi~~1
+#Losers Round 4
+Nietono~W~Brood~~1
+Mew2King~W~Maguro~~1
+Masha~W~Saka~~1
+Earth~W~Raoh~~1
+Suinoko~W~Moyomoto~~1
+Mikeneko~W~DIO~~1
+Shogun~W~Syun~~1
+Yui~~Aki~W~2
+#Losers Round 5
+Nietono~0~Mew2King~2~2
+Masha~2~Earth~0~1
+Suinoko~1~Mikeneko~2~2
+Shogun~2~Aki~1~1
+#Losers Round 6
+Daiki~0~Mew2King~2~2
+quiKsilver~0~Masha~2~2
+Havok~0~Mikeneko~2~2
+9B~2~Shogun~0~1
+#Losers Round 7
+Mew2King~0~Masha~2~2
+Mikeneko~0~9B~2~2
+#Losers Round 8
+Kakera~1~Masha~2~2
+Vinnie~2~9B~0~1
+#Losers Finals
+Otori~1~Vinnie~2~2
+#Grand Finals
+RAIN~1/2~Vinnie~2/1~1
+
+@manual/2012-sktar manual-brawl-1 brawl https://liquipedia.net/smash/SKTAR/1/Singles_Bracket
+#Winners Round 1
+Mew2King~W~Mr. Eric~~1
+Bizkit~W~Denti~~1
+Jbandrew~W~Poyo~~1
+Trela~W~False~~1
+Glutonny~2~Inui~0~1
+Bloodcross~W~James~~1
+Tyrant~W~Player 1~~1
+Pelca~~Mekos~W~2
+Nairo~W~Budget Player~~1
+MJG~W~TC1~~1
+Leon~W~To Joe~~1
+DEHF~W~MikeRay~~1
+Vinnie~W~Asa Akira~~1
+Koolaid~W~MVD~~1
+Rich Brown~2~Pierce7d~0~1
+Vex Kasrani~W~KiraFlax~~1
+Ally~W~Ikon~~1
+Will~W~DRN~~1
+Dabuz~W~Kiwi~~1
+Orion~~Logic~W~2
+Mr. R~W~Minty Flesh~~1
+Kingtoon~W~Shadow~~1
+Mike Haze~W~RJ~~1
+Shaya~~Fatal~W~2
+Anti~W~Raptor~~1
+Kai~~Seibrik~W~2
+Atomsk~W~SuperMarioMC~~1
+Lie~W~Keitaro~~1
+ESAM~W~TAYF ghost~~1
+Salem~W~Malcolm~~1
+NAKAT~W~Pane~~1
+Shugo~W~TeeVee~~1
+#Winners Round 2
+Mew2King~W~Bizkit~~1
+Jbandrew~~Trela~W~2
+Glutonny~W~Bloodcross~~1
+Tyrant~~Mekos~W~2
+Nairo~W~MJG~~1
+Leon~2~DEHF~1~1
+Vinnie~W~Koolaid~~1
+Rich Brown~2~Vex Kasrani~1~1
+Ally~W~Will~~1
+Dabuz~W~Logic~~1
+Mr. R~2~Kingtoon~0~1
+Mike Haze~W~Fatal~~1
+Anti~W~Seibrik~~1
+Atomsk~W~Lie~~1
+ESAM~2~Salem~0~1
+NAKAT~W~Shugo~~1
+#Winners Round 3
+Mew2King~1~Trela~2~2
+Glutonny~1~Mekos~2~2
+Nairo~2~Leon~0~1
+Vinnie~W~Rich Brown~~1
+Ally~W~Dabuz~~1
+Mr. R~2~Mike Haze~1~1
+Anti~W~Atomsk~~1
+ESAM~W~NAKAT~~1
+#Winners Round 4
+Trela~2~Mekos~0~1
+Nairo~W~Vinnie~~1
+Ally~2~Mr. R~0~1
+Anti~1~ESAM~2~2
+#Winners Round 5
+Trela~1~Nairo~2~2
+Ally~1~ESAM~2~2
+#Losers Round 1
+Mr. Eric~~Denti~W~2
+Poyo~~False~W~2
+Inui~~James~W~2
+Player 1~~Pelca~W~2
+Budget Player~~TC1~W~2
+To Joe~~MikeRay~W~2
+Asa Akira~~MVD~W~2
+Pierce7d~~KiraFlax~W~2
+Ikon~~DRN~W~2
+Kiwi~~Orion~W~2
+Minty Flash~W~Shadow~~1
+RJ~W~Shaya~~1
+Raptor~~Kai~W~2
+SuperMarioMC~~Keitaro~W~2
+TAYF ghost~W~Malcolm~~1
+Pane~~TeeVee~W~2
+#Losers Round 2
+MJG~~Denti~W~2
+DEHF~W~False~~1
+Koolaid~W~James~~1
+Vex Kasrani~~Pelca~W~2
+Bizkit~~TC1~W~2
+Jbandrew~W~MikeRay~~1
+Bloodcross~W~MVD~~1
+Tyrant~W~KiraFlax~~1
+Seibrik~W~DRN~~1
+Lie~~Orion~W~2
+Salem~W~Minty Flash~~1
+Shugo~~RJ~W~2
+Will~W~Kai~~1
+Logic~W~Keitaro~~1
+Kingtoon~W~TAYF ghost~~1
+Fatal~W~TeeVee~~1
+#Losers Round 3
+Denti~~DEHF~W~2
+Koolaid~~Pelca~W~2
+TC1~~Jbandrew~W~2
+Bloodcross~~Tyrant~W~2
+Seibrik~W~Orion~~1
+Salem~W~RJ~~1
+Will~W~Logic~~1
+Kingtoon~W~Fatal~~1
+#Losers Round 4
+Mike Haze~~DEHF~W~2
+Dabuz~W~Pelca~~1
+NAKAT~~Jbandrew~W~2
+Atomsk~0~Tyrant~2~2
+Glutonny~~Seibrik~W~2
+Mew2King~W~Salem~~1
+Rich Brown~W~Will~~1
+Leon~W~Kingtoon~~1
+#Losers Round 5
+DEHF~W~Dabuz~~1
+Jbandrew~~Tyrant~W~2
+Seibrik~~Mew2King~W~2
+Rich Brown~W~Leon~~1
+#Losers Round 6
+Vinnie~2~DEHF~0~1
+Mekos~0~Tyrant~2~2
+Anti~W~Mew2King~~1
+Mr. R~1~Rich Brown~2~2
+#Losers Round 7
+Vinnie~2~Tyrant~0~1
+Anti~2~Rich Brown~0~1
+#Losers Round 8
+Ally~1~Vinnie~2~2
+Trela~0~Anti~2~2
+#Losers Finals
+ESAM~3~Vinnie~0~1
+#Grand Finals
+ESAM~0~Nairo~3~2
+
+@manual/2013-sktar-2 manual-brawl-1 brawl https://liquipedia.net/smash/SKTAR/2/Singles_Bracket
+#Winners Round 1
+ZeRo~W~Erza Scarlet~~1
+KingToon~~Player-1~W~2
+Orion~~Hinkage~W~2
+LOE1~W~Penta~~1
+ADHD~W~Snakeee~~1
+Shaky~~Toronto Joe~W~2
+Zinoto~W~True Blue~~1
+Atomsk~2~ScaryLB59~1~1
+Vinnie~W~YoshQ~~1
+Zeton~W~Christof Fisch~~1
+MVD~W~Eazy~~1
+Vex Kasrani~1~V115~2~2
+Ally~W~Deltacod~~1
+Seibrik~W~Inui~~1
+MikeHaze~W~Kai~~1
+Bloodcross~W~Shaya~~1
+Nairo~W~Oblivion~~1
+MJG~~Seagull Joe~W~2
+Jbandrew~W~Master Raven~~1
+Denti~W~Bpow~~1
+Salem~W~dekillsage~~1
+DKwill~W~Silver Alloy~~1
+Pwii~W~PinkFresh~~1
+Mr.R~W~Bizkit~~1
+ESAM~W~Raptor~~1
+Delux~W~Keitaro~~1
+Tyrant~W~Mr. Eric~~1
+False~W~Shadow~~1
+NAKAT~W~JaZz~~1
+Roller~W~DRN~~1
+Nick Riddle~W~iRJi~~1
+Xzax~W~MikeRay~~1
+#Winners Round 2
+ZeRo~W~Player-1~~1
+Hinkage~~LOE1~W~2
+ADHD~W~Toronto Joe~~1
+Zinoto~W~Atomsk~~1
+Vinnie~W~Zeton~~1
+MVD~W~V115~~1
+Ally~2~Seibrik~0~1
+MikeHaze~1~Bloodcross~2~2
+Nairo~W~Seagull Joe~~1
+Jbandrew~~Denti~W~2
+Salem~~DKwill~W~2
+Pwii~~Mr.R~W~2
+ESAM~W~Delux~~1
+Tyrant~W~False~~1
+NAKAT~W~Roller~~1
+Nick Riddle~~Xzax~W~2
+#Winners Round 3
+ZeRo~W~LOE1~~1
+ADHD~2~Zinoto~1~1
+Vinnie~~MVD~W~2
+Ally~W~Bloodcross~~1
+Nairo~~Denti~W~2
+DKwill~2~Mr.R~1~1
+ESAM~1~Tyrant~2~2
+NAKAT~W~Xzax~~1
+#Winners Round 4
+ZeRo~1~ADHD~2~2
+MVD~2~Ally~1~1
+Denti~2~DKwill~1~1
+Tyrant~1~NAKAT~2~2
+#Winners Round 5
+ADHD~1~MVD~2~2
+Denti~2~NAKAT~1~1
+#Losers Round 1
+Zeton~W~Keitaro~~1
+V115~~Shadow~W~2
+Seibrik~~DRN~W~2
+MikeHaze~W~MikeRay~~1
+Player-1~~MJG~W~2
+Hinkage~~Master Raven~W~2
+Toronto Joe~~dekillsage~W~2
+Atomsk~W~Bizkit~~1
+Delux~W~Christof Fisch~~1
+False~W~Vex Kasrani~~1
+Roller~~Deltacod~W~2
+Nick Riddle~W~Shaya~~1
+Seagull Joe~W~Erza Scarlet~~1
+Jbandrew~~Orion~W~2
+Salem~~Shaky~W~2
+Pwii~W~ScaryLB59~~1
+#Losers Round 2
+Zeton~~Shadow~W~2
+DRN~~MikeHaze~W~2
+MJG~W~Master Raven~~1
+dekillsage~~Atomsk~W~2
+Delux~~False~W~2
+Deltacod~~Nick Riddle~W~2
+Seagull Joe~W~Orion~~1
+Shaky~~Pwii~W~2
+#Losers Round 3
+Mr.R~W~Shadow~~1
+Nairo~W~MikeHaze~~1
+Xzax~W~MJG~~1
+ESAM~W~Atomsk~~1
+Zinoto~W~False~~1
+LOE1~~Nick Riddle~W~2
+Bloodcross~W~Seagull Joe~~1
+Vinnie~~Pwii~W~2
+#Losers Round 4
+Mr.R~~Nairo~W~2
+Xzax~~ESAM~W~2
+Zinoto~W~Nick Riddle~~1
+Bloodcross~~Pwii~W~2
+#Losers Round 5
+ZeRo~W~Nairo~~1
+Ally~1~ESAM~2~2
+DKwill~~Zinoto~W~2
+Tyrant~W~Pwii~~1
+#Losers Round 6
+ZeRo~2~ESAM~0~1
+Zinoto~W~Tyrant~~1
+#Losers Round 7
+NAKAT~2~ZeRo~1~1
+ADHD~2~Zinoto~0~1
+#Losers Finals
+Denti~0~ADHD~3~2
+#Grand Finals
+ADHD~3/3~MVD~2/0~1
+
+@manual/2014-apex-2014 manual-brawl-4 brawl https://liquipedia.net/smash/Apex/2014/Brawl/Singles_Bracket
+#Winners Round 1
+Mew2King~W~StaticManny~~1
+Leon~W~Rich Brown~~1
+ADHD~W~LOE1~~1
+Mr. R~W~FOW~~1
+Vinnie~W~Koolaid~~1
+Denti~~Seagull Joe~W~2
+Nairo~W~Ryo~~1
+Zinoto~W~Will~~1
+ZeRo~W~Shadow~~1
+Shogun~~Nick Riddle~W~2
+Ally~W~Orion~~1
+Xzax~W~RedHalberd~~1
+NAKAT~~Z~W~2
+Tyrant~W~Shaky~~1
+ESAM~W~Bloodcross~~1
+Salem~W~V115~~1
+#Winners Round 2
+Mew2King~W~Leon~~1
+ADHD~2~Mr. R~0~1
+Vinnie~W~Seagull Joe~~1
+Nairo~2~Zinoto~0~1
+ZeRo~W~Nick Riddle~~1
+Ally~W~Xzax~~1
+Z~~Tyrant~W~2
+ESAM~W~Salem~~1
+#Winners Round 3
+Mew2King~2~ADHD~1~1
+Vinnie~~Nairo~W~2
+ZeRo~W~Ally~~1
+Tyrant~~ESAM~W~2
+#Winners Round 4
+Mew2King~1~Nairo~2~2
+ZeRo~0~ESAM~2~2
+#Losers Round 1
+iKon~~DEHF~W~2
+Tinman~W~ZHMT~~1
+DarkFlame~~DeLux~W~2
+ChuDat~W~K9sbruce~~1
+Vex~~Fatal~W~2
+Zex~~Seibrik~W~2
+DaKillSage~~Atomsk~W~2
+TO Joe~W~MikeHaze~~1
+Lies~~Pwii~W~2
+Shugo~~Mekos~W~2
+Penta~W~Lee Martin~~1
+Jbandrew~~Kismet~W~2
+Viva~~MVD~W~2
+False~W~Bjay~~1
+Meekspeedy~~MJG~W~2
+Dakpo~~Player 1~W~2
+#Losers Round 2
+V115~~DEHF~W~2
+Bloodcross~W~Tinman~~1
+Shaky~W~DeLux~~1
+NAKAT~W~ChuDat~~1
+RedHalberd~~Fatal~W~2
+Orion~W~Seibrik~~1
+Shogun~W~Atomsk~~1
+Shadow~1~TO Joe~2~2
+Will~~Pwii~W~2
+Ryo~W~Mekos~~1
+Denti~W~Penta~~1
+Koolaid~W~Kismet~~1
+FOW~W~MVD~~1
+LOE1~~False~W~2
+Rich Brown~W~MJG~~1
+StaticManny~~Player 1~W~2
+#Losers Round 3
+DEHF~W~Bloodcross~~1
+Shaky~W~NAKAT~~1
+Fatal~~Orion~W~2
+Shogun~2~TO Joe~0~1
+Pwii~W~Ryo~~1
+Denti~~Koolaid~W~2
+FOW~W~False~~1
+Rich Brown~W~Player 1~~1
+#Losers Round 4
+Zinoto~W~DEHF~~1
+Seagull Joe~W~Shaky~~1
+Mr. R~W~Orion~~1
+Leon~W~Shogun~~1
+Salem~W~Pwii~~1
+Z~~Koolaid~W~2
+Xzax~~FOW~W~2
+Nick Riddle~W~Rich Brown~~1
+#Losers Round 5
+Zinoto~~Seagull Joe~W~2
+Mr. R~2~Leon~1~1
+Salem~W~Koolaid~~1
+FOW~W~Nick Riddle~~1
+#Losers Round 6
+Ally~2~Seagull Joe~0~1
+Tyrant~2~Mr. R~0~1
+ADHD~2~Salem~1~1
+Vinnie~2~FOW~0~1
+#Losers Round 7
+Ally~2~Tyrant~0~1
+ADHD~2~Vinnie~1~1
+#Losers Round 8
+Mew2King~2~Ally~1~1
+ZeRo~2~ADHD~1~1
+#Losers Finals
+ESAM~0~ZeRo~3~2
+#Grand Finals
+Nairo~3~ZeRo~1~1
+
+@manual/2013-apex-2013 manual-brawl-3 brawl https://liquipedia.net/smash/Apex/2013/Brawl/Singles_Bracket
+#Winners Round 5
+Salem~2~Dojo~1~1
+ZeRo~1~Mikeneko~2~2
+DEHF~0~Mew2King~2~2
+ANTi~2~9B~0~1
+#Winners Round 6
+Salem~3~Mikeneko~2~1
+Mew2King~3~ANTi~2~1
+#Losers Round 5
+Denti~~Dabuz~W~2
+Pwii~W~Atomsk~~1
+NickRiddle~~Tyrant~W~2
+Leon~~NAKAT~W~2
+Suinoko~W~Bloodcross~~1
+Seibrik~~Mr.R~W~2
+Havok~W~Shaky~~1
+Earth~~Zinoto~W~2
+#Losers Round 6
+Kakera~~Dabuz~W~2
+Ally~W~Pwii~~1
+Otori~2~Tyrant~0~1
+Vinnie~W~NAKAT~~1
+Suinoko~~ESAM~W~2
+ADHD~~Mr.R~W~2
+Nairo~W~Havok~~1
+Rain~W~Zinoto~~1
+#Losers Round 7
+Dabuz~2~Ally~0~1
+Otori~2~Vinnie~0~1
+ESAM~~Mr.R~W~2
+Nairo~2~Rain~0~1
+#Losers Round 8
+DEHF~1~Dabuz~2~2
+9B~0~Otori~2~2
+Dojo~~Mr.R~W~2
+ZeRo~0~Nairo~2~2
+#Losers Round 9
+Dabuz~1~Otori~2~2
+Mr.R~1~Nairo~2~2
+#Losers Round 10
+Mikeneko~0~Otori~2~2
+ANTi~0~Nairo~2~2
+#Losers Finals
+Mew2King~3~Otori~2~1
+#Grand Finals
+Salem~3~Mew2King~2~1
+
+@manual/2014-sktar-3 manual-brawl-3 brawl https://liquipedia.net/smash/SKTAR/3/Brawl/Singles_Bracket
+#Winners Round 5
+ZeRo~1~ADHD~2~2
+Vinnie~1~9B~2~2
+Nairo~0~Ally~2~2
+ESAM~2~V115~0~1
+#Winners Round 6
+ADHD~0~9B~2~2
+Ally~1~ESAM~2~2
+#Losers Round 5
+Seibrik~W~True Blue~~1
+SuperGirlKels~~Toronto Joe~W~2
+DRN~~Manny~W~2
+Snakeee~~Player-1~W~2
+Denti~W~8BitMan~~1
+Orion~W~DJFalcon~~1
+Larry Lurr~W~Will~~1
+MVD~W~Oblivion~~1
+#Losers Round 6
+Xzax~W~Seibrik~~1
+Vex Kasrani~W~Toronto Joe~~1
+Leon~W~Manny~~1
+Mekos~~Player-1~W~2
+Pwii~~Denti~W~2
+Salem~~Orion~W~2
+Shaky~~Larry Lurr~W~2
+Sparta Kick~~MVD~W~2
+#Losers Round 7
+Xzax~1~Vex Kasrani~2~2
+Leon~W~Player-1~~1
+Denti~W~Orion~~1
+Larry Lurr~2~MVD~0~1
+#Losers Round 8
+ZeRo~2~Vex Kasrani~0~1
+Vinnie~W~Leon~~1
+Nairo~W~Denti~~1
+V115~W~Larry Lurr~~1
+#Losers Round 9
+ZeRo~2~Vinnie~1~1
+Nairo~2~V115~0~1
+#Losers Round 10
+Ally~0~ZeRo~2~2
+ADHD~0~Nairo~2~2
+#Losers Finals
+ESAM~1~Nairo~3~2
+#Grand Finals
+9B~3~Nairo~2~1
+
+@manual/2014-shuffle-v manual-brawl-1 brawl https://liquipedia.net/smash/Shuffle/V/Brawl/Singles_Bracket
+#Winners Round 1
+Nairo~2~Karaoke Man~0~1
+Bloodcross~2~Tech Chase~0~1
+Leon~2~Ralph Cecil~0~1
+Denti~2~DLA~0~1
+NAKAT~2~Carls493~0~1
+DRN~2~Nicole~0~1
+Vinnie~2~SK~0~1
+MJG~2~Gunblade~0~1
+ZeRo~2~Mister Eric~0~1
+LOE1~2~Legend of Roy~0~1
+Player 1~0~ADHD~2~2
+Xzax~2~Stewyian~0~1
+Mew2King~2~Dyno~0~1
+Shugo~2~Kero~0~1
+Zinoto~2~Ish~0~1
+False~2~Ori Bro~0~1
+#Winners Round 2
+Nairo~2~Bloodcross~0~1
+Leon~1~Denti~2~2
+NAKAT~2~DRN~0~1
+Vinnie~2~MJG~0~1
+ZeRo~2~LOE1~0~1
+ADHD~2~Xzax~0~1
+Mew2King~2~Shugo~0~1
+Zinoto~2~False~1~1
+#Winners Round 3
+Nairo~2~Denti~0~1
+NAKAT~0~Vinnie~2~2
+ZeRo~2~ADHD~0~1
+Mew2King~2~Zinoto~1~1
+#Winners Round 4
+Nairo~0~Vinnie~2~2
+ZeRo~2~Mew2King~1~1
+#Losers Round 1
+Karaoke Man~2~Tech Chase~0~1
+Ralph Cecil~2~DLA~0~1
+Carls493~2~Nicole~0~1
+SK~2~Gunblade~1~1
+Mister Eric~2~Legend of Roy~0~1
+Player 1~2~Stewyian~0~1
+Dyno~0~Kero~2~2
+Ish~2~Ori Bro~0~1
+#Losers Round 2
+False~2~Karaoke Man~0~1
+Shugo~2~Ralph Cecil~0~1
+Xzax~2~Carls493~0~1
+LOE1~2~SK~0~1
+MJG~2~Mister Eric~0~1
+DRN~2~Player 1~0~1
+Leon~2~Kero~0~1
+Bloodcross~2~Ish~1~1
+#Losers Round 3
+False~2~Shugo~0~1
+Xzax~0~LOE1~2~2
+MJG~2~DRN~1~1
+Leon~2~Bloodcross~1~1
+#Losers Round 4
+NAKAT~1~False~2~2
+Denti~2~LOE1~1~1
+Zinoto~2~MJG~0~1
+ADHD~2~Leon~0~1
+#Losers Round 5
+False~0~Denti~2~2
+Zinoto~1~ADHD~2~2
+#Losers Round 6
+Mew2King~2~Denti~1~1
+Nairo~2~ADHD~0~1
+#Losers Finals
+Vinnie~3~Mew2King~2~1
+#Grand Finals
+ZeRo~3~Vinnie~1~1

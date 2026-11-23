@@ -25,6 +25,7 @@ export default function HostPanel({
   bracket = false,
   extraBrackets = 0,
   doubles = false,
+  social = false,
 }: {
   eventId: string;
   status: string;
@@ -37,6 +38,7 @@ export default function HostPanel({
   mainHost?: boolean; // co-TOs run the event but don't edit, close sign-ups or cancel it
   bracket?: boolean; // an extra bracket of another event: canceling it leaves the rest of the event alone
   extraBrackets?: number; // a main event's extra brackets that would be canceled with it
+  social?: boolean; // no bracket (round 757): the list is just who signed up, with no seeding
   doubles?: boolean; // the entries are teams of two: the host adds a team by typing two names
 }) {
   const t = useT();
@@ -152,8 +154,8 @@ export default function HostPanel({
       {editable && order.length > 0 && (
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="text-sm font-semibold">{t("hostrun.panel.seeding")} <span className="font-normal text-muted">{t("hostrun.panel.seedingHint")}</span></h3>
-            <div className="flex flex-wrap justify-end gap-2">
+            <h3 className="text-sm font-semibold">{social ? t("hostrun.panel.signedUp") : <>{t("hostrun.panel.seeding")} <span className="font-normal text-muted">{t("hostrun.panel.seedingHint")}</span></>}</h3>
+            <div className={social ? "hidden" : "flex flex-wrap justify-end gap-2"}>
               {lastEdition && (
                 <button type="button" onClick={byLastEdition} className="btn btn-sm btn-ghost" title={t("hostrun.panel.lastResultsTitle", { name: lastEdition.name })}>
                   {t("hostrun.panel.lastResults")}
@@ -184,8 +186,8 @@ export default function HostPanel({
                     {t("hostrun.panel.checkIn")}
                   </button>
                 )}
-                <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="btn btn-sm btn-ghost px-2" aria-label={t("hostrun.panel.moveUp", { tag: e.tag })}>↑</button>
-                <button type="button" onClick={() => move(i, 1)} disabled={i === order.length - 1} className="btn btn-sm btn-ghost px-2" aria-label={t("hostrun.panel.moveDown", { tag: e.tag })}>↓</button>
+                {!social && <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="btn btn-sm btn-ghost px-2" aria-label={t("hostrun.panel.moveUp", { tag: e.tag })}>↑</button>}
+                {!social && <button type="button" onClick={() => move(i, 1)} disabled={i === order.length - 1} className="btn btn-sm btn-ghost px-2" aria-label={t("hostrun.panel.moveDown", { tag: e.tag })}>↓</button>}
                 <button
                   type="button"
                   onClick={() => window.confirm(t("hostrun.panel.removeConfirm", { tag: e.tag })) && run(async () => {

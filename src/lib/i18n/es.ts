@@ -75,6 +75,7 @@ export const es: Record<MessageKey, string> = {
   "format.single_elim": "Eliminación simple",
   "format.round_robin": "Round robin",
   "format.swiss": "Suizo",
+  "format.social": "Sin bracket (evento social)",
   "format.then": "{first}, luego top {n} en {second}",
 
   // Sharing an event

@@ -31,7 +31,7 @@ import { orNull } from "@/lib/supabase/loose";
 
 export type HostFormState = { error?: string };
 
-const FORMATS = ["double_elim", "single_elim", "round_robin", "swiss"] as const;
+const FORMATS = ["double_elim", "single_elim", "round_robin", "swiss", "social"] as const;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 async function requireUser() {
@@ -79,7 +79,8 @@ export async function saveHostedEvent(_prev: HostFormState, formData: FormData):
   const tzSent = String(formData.get("timezone") ?? "").slice(0, 60);
   const timezone = main ? main.timezone : isTimeZone(tzSent) ? tzSent : "America/Chicago"; // round 635: a made-up zone broke times later
   const format = String(formData.get("format") ?? "double_elim");
-  const rulesetRaw = String(formData.get("ruleset_id") ?? "");
+  const social = format === "social"; // no bracket: its bracket settings are left at their defaults
+  const rulesetRaw = social ? "" : String(formData.get("ruleset_id") ?? "");
   // A final bracket for the top players: only after round robin pools or Swiss.
   const finalRaw = String(formData.get("final_format") ?? "");
   const finalFormat = (format === "round_robin" || format === "swiss") && (finalRaw === "single_elim" || finalRaw === "double_elim") ? finalRaw : null;
@@ -117,10 +118,10 @@ export async function saveHostedEvent(_prev: HostFormState, formData: FormData):
     final_format: finalFormat,
     final_size: finalFormat ? intIn(formData.get("final_size"), 2, 64, 8) : null,
     entrant_cap: intIn(formData.get("entrant_cap"), 2, 512, 64),
-    checkin_minutes: intIn(formData.get("checkin_minutes"), 0, 240, main ? 0 : 30),
+    checkin_minutes: social ? 0 : intIn(formData.get("checkin_minutes"), 0, 240, main ? 0 : 30),
     // A night that runs itself: how many setups to hand out, and the no-show clock. Empty = off.
-    setups: formData.get("setups") ? intIn(formData.get("setups"), 1, 64, 4) : null,
-    no_show_minutes: formData.get("no_show_minutes") ? intIn(formData.get("no_show_minutes"), 3, 60, 10) : null,
+    setups: !social && formData.get("setups") ? intIn(formData.get("setups"), 1, 64, 4) : null,
+    no_show_minutes: !social && formData.get("no_show_minutes") ? intIn(formData.get("no_show_minutes"), 3, 60, 10) : null,
     description,
     ...(main ? { bracket_name: bracketName } : {}),
   };
@@ -770,6 +771,7 @@ export async function undoBringPlayers(eventId: string, accounts: string[], gues
 export async function startBracket(eventId: string): Promise<ActionResult & { players?: number }> {
   const event = await hostedEventForHost(eventId);
   if (!event) return { error: (await getT())("hostrun.err.onlyHostStart") };
+  if (event.format === "social") return { error: (await getT())("hostrun.err.socialNoBracket") };
   if (!["open", "closed"].includes(event.status)) return { error: (await getT())("hostrun.err.alreadyStarted") };
   if ((await loadEngineSets(event.id)).length) return { error: (await getT())("hostrun.err.alreadyStarted") };
   try {
@@ -917,6 +919,7 @@ export async function copyBracketToChallonge(eventId: string): Promise<ActionRes
   if (event.status !== "completed") return { error: (await getT())("hostrun.err.copyWhenDone") };
   if (event.challongeUrl) return { url: event.challongeUrl };
   const format = event.format;
+  if (format === "social") return { error: (await getT())("hostrun.err.copyWhenDone") }; // no bracket to copy
   if (format === "swiss") return { error: (await getT())("hostrun.err.challongeSwiss") };
   if (event.finalFormat) return { error: (await getT())("hostrun.err.challongeFinal") };
   if (!challongeConfigured()) return { error: (await getT())("hostrun.err.challongeOff") };

@@ -169,3 +169,5 @@
 20270125500000_history_old_sets_2004_2008_melee.sql
 20270125510000_history_old_sets_2008_2010_brawl.sql
 20270125520000_history_old_sets_2010_2012_brawl.sql
+20270125530000_social_events.sql
+20270125540000_history_old_sets_2012_2014_brawl.sql

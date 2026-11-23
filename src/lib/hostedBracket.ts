@@ -183,6 +183,7 @@ export async function bracketEntrants(event: Pick<HostedEvent, "id" | "checkinMi
 
 /** Build and save the bracket (host already checked). Returns how many players are in it. */
 export async function createBracket(event: HostedEvent): Promise<number> {
+  if (event.format === "social") throw new Error("A social event has no bracket."); // round 757
   const seeds = await bracketEntrants(event);
   if (seeds.length < 2) throw new Error(event.checkinMinutes > 0 ? "At least 2 checked-in players are needed to start." : "At least 2 players are needed to start.");
   const built =

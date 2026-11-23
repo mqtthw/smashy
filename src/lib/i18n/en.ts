@@ -73,6 +73,7 @@ export const en = {
   "format.single_elim": "Single elimination",
   "format.round_robin": "Round robin",
   "format.swiss": "Swiss",
+  "format.social": "No bracket (social event)",
   "format.then": "{first}, then top {n} {second}",
 
   // Sharing an event

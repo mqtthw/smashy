@@ -39,6 +39,7 @@ export const hostsetupJa: Record<keyof typeof hostsetupEn, string> = {
   "hostsetup.form.ruleset": "ルールセット",
   "hostsetup.form.noRuleset": "なし（下に記入）",
   "hostsetup.form.swissHint": "スイスドロー：全員が全ラウンドを戦い、毎回同じ成績の相手と当たります。脱落はありません。前のラウンドが終わったら、あなたが次のラウンドを始めます。",
+  "hostsetup.form.socialHint": "参加登録のみでブラケットのない集まりです（ゲーム会、Jackbox、観戦会など）。どのゲームでも構いません。上で対象のコミュニティを選んでください。",
   "hostsetup.form.finalBracket": "その後に決勝トーナメント",
   "hostsetup.form.noFinalSwiss": "なし：スイスドローの順位で決定",
   "hostsetup.form.noFinalPools": "なし：プールの順位で決定",
