@@ -209,7 +209,7 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
       {/* Blurred backdrop from the clip's own thumbnail, so wide clips don't float in empty space. */}
       {reel.thumbnailUrl && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={reel.thumbnailUrl} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full scale-125 object-cover opacity-35 blur-2xl" />
+        <img src={reel.thumbnailUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" className="pointer-events-none absolute inset-0 h-full w-full scale-125 object-cover opacity-35 blur-2xl" />
       )}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" aria-hidden="true" />
 
@@ -433,6 +433,7 @@ export default function ReelFeed({
   const [activated, setActivated] = useState(false);
   const [soundPress, setSoundPress] = useState(0);
   useEffect(() => {
+    if (activated) return; // known: nothing left to watch for (the timer used to run for the whole visit)
     const check = () => {
       if ((navigator as Navigator & { userActivation?: { hasBeenActive: boolean } }).userActivation?.hasBeenActive) setActivated(true);
     };
@@ -448,7 +449,7 @@ export default function ReelFeed({
       window.removeEventListener("keydown", on);
       window.removeEventListener("touchend", on);
     };
-  }, []);
+  }, [activated]);
   const sound = soundPref && activated;
   const soundRef = useRef(sound);
   useEffect(() => {

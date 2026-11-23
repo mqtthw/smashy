@@ -40,6 +40,13 @@ export async function getFollowedIds(userId: string): Promise<string[]> {
   return (data ?? []).map((r) => r.followee_id);
 }
 
+/** Does the user follow at least `n` people? Reads at most `n` rows, not the whole list (round 742). */
+export async function followsAtLeast(userId: string, n: number): Promise<boolean> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("follows").select("followee_id").eq("follower_id", userId).eq("status", "active").limit(n).throwOnError();
+  return (data ?? []).length >= n;
+}
+
 /** People waiting for the user to accept their follow request. */
 export async function getFollowRequests(userId: string): Promise<PersonRow[]> {
   const supabase = await createClient();

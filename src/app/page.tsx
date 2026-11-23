@@ -11,7 +11,7 @@ import WhoToFollow from "@/components/discovery/WhoToFollow";
 import NewPostsBanner from "@/components/feed/NewPostsBanner";
 import { getWhoToFollow } from "@/lib/discovery";
 import { unixNow } from "@/lib/format";
-import { getFollowedIds } from "@/lib/follows";
+import { followsAtLeast } from "@/lib/follows";
 import { FEED_GAMES, getFeed, getFollowingFeed, getForYouFeed, getGuestForYouFeed, type FeedGame, type TimelineEntry } from "@/lib/posts";
 import { logError } from "@/lib/errorLog";
 import { getPlayerHistory, getPlayerRecent } from "@/lib/startgg";
@@ -69,8 +69,7 @@ async function homeCity(userId: string): Promise<string | null> {
 
 /** New players: a few people to follow until they follow 10. */
 async function FeedSuggestions({ userId }: { userId: string }) {
-  const followed = await getFollowedIds(userId);
-  if (followed.length >= 10) return null;
+  if (await followsAtLeast(userId, 10)) return null;
   return <WhoToFollow people={await getWhoToFollow(userId, 3)} />;
 }
 

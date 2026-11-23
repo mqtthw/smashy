@@ -36,8 +36,18 @@ export default function MatchActions({ matchId, status, reportedByMe, oppTag, my
   const waitingOnThem = status === "playing" || (status === "reported" && reportedByMe);
   useEffect(() => {
     if (!waitingOnThem) return;
-    const timer = setInterval(() => router.refresh(), 15_000);
-    return () => clearInterval(timer);
+    // Only while the tab is on screen (round 742); coming back to it checks at once.
+    const timer = setInterval(() => {
+      if (document.visibilityState === "visible") router.refresh();
+    }, 15_000);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") router.refresh();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, [waitingOnThem, router]);
 
   const answering = status === "reported" && !reportedByMe;
