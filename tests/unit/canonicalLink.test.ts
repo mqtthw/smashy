@@ -1,6 +1,6 @@
 // Pages opened on Vercel's own addresses point search engines at smashy.gg (round 786).
 import { describe, expect, it } from "vitest";
-import { canonicalLinkHeader, oldAddressRedirect } from "@/lib/siteMeta";
+import { canonicalLinkHeader, oldAddressRedirect, resultsTitle } from "@/lib/siteMeta";
 
 describe("canonicalLinkHeader", () => {
   it("points a vercel.app page at the same page on smashy.gg", () => {
@@ -25,5 +25,12 @@ describe("oldAddressRedirect", () => {
   });
   it("does nothing on smashy.gg, a preview address or a dev server", () => {
     for (const h of ["smashy.gg", "smashy-git-main-smashy2.vercel.app", "localhost:3000", null]) expect(oldAddressRedirect(h, "GET", "/", "")).toBeNull();
+  });
+});
+
+describe("resultsTitle", () => {
+  it("says results and top 8, with the year unless the name has it", () => {
+    expect(resultsTitle("Genesis 8", 2022)).toBe("Genesis 8 (2022) results and top 8");
+    expect(resultsTitle("Supernova 2026", 2026)).toBe("Supernova 2026 results and top 8");
   });
 });

@@ -70,6 +70,11 @@ export function ownPictureMeta(title: string, description: string, extra: Metada
   };
 }
 
+/** A finished tournament's page title: "Genesis 8 (2022) results and top 8". The year is added unless the name already has it. */
+export function resultsTitle(name: string, year: number): string {
+  return `${name}${name.includes(String(year)) ? "" : ` (${year})`} results and top 8`;
+}
+
 /** Shortens text to `max` characters on a word boundary, with "…". */
 export function clip(text: string, max: number): string {
   const s = text.replace(/\s+/g, " ").trim();

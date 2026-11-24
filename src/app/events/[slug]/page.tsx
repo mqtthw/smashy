@@ -24,7 +24,7 @@ import { getGoing } from "@/lib/rsvps";
 import { getAttachedRulesets } from "@/lib/scenes";
 import { getUserId } from "@/lib/supabase/server";
 import { eventJsonLd } from "@/lib/eventSchema";
-import { siteUrl } from "@/lib/siteMeta";
+import { siteUrl, resultsTitle } from "@/lib/siteMeta";
 import Icon from "@/components/ui/Icon";
 import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
@@ -42,13 +42,17 @@ export async function generateMetadata({ params }: PageProps<"/events/[slug]">):
   const t = await getTournament(slug).catch(() => null);
   if (!t) return { title: "Event not found" };
 
-  const games = t.events.map((e) => GAMES[e.game].short).join(", ");
+  const games = [...new Set(t.events.map((e) => GAMES[e.game].short))].join(", "); // each game once (a major has many brackets per game)
   // Finished: say who won the biggest event instead ("🏆 Cody Schwab won Melee Singles · 2nd aMSa").
   await connection(); // "finished" depends on the current time
   // A tournament from another year says which year (old majors open from Smash history).
   const date = formatEventDate(t.startAt, t.timezone, undefined, { year: otherYear(t.startAt) });
   let description = `${date} · ${t.city ?? "Location TBA"} · ${games}`;
+  // A finished tournament's title says what the page has (round 802): people search "<name> results"
+  // and "<name> top 8", and the name alone was the whole title. The link preview keeps the plain name.
+  let title = t.name;
   if (isOver(t.startAt, t.endAt)) {
+    title = resultsTitle(t.name, new Date(t.startAt * 1000).getUTCFullYear());
     const winners = await getTournamentWinners(t.slug).catch(() => ({}) as Record<string, EventWinners>);
     const top = [...t.events].sort((a, b) => (b.numEntrants ?? 0) - (a.numEntrants ?? 0)).find((e) => winners[e.id]);
     if (top) {
@@ -57,7 +61,7 @@ export async function generateMetadata({ params }: PageProps<"/events/[slug]">):
     }
   }
   return {
-    title: t.name,
+    title,
     description,
     openGraph: { title: t.name, description, images: t.bannerUrl ?? t.imageUrl ?? undefined },
   };

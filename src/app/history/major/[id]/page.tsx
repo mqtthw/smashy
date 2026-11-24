@@ -24,7 +24,7 @@ import { idForName, nameHref, winBrackets } from "@/lib/historyFirsts";
 import { getNameLinks, nameKey } from "@/lib/playerLinks";
 import { playersHidingStats } from "@/lib/playerStats";
 import { majorDates, majorPlace } from "@/lib/majorText";
-import { pageMeta } from "@/lib/siteMeta";
+import { pageMeta, resultsTitle } from "@/lib/siteMeta";
 
 // One read per page view (round 732): the page's title and the page itself ask for the same data, and
 // Smashy's time-limited database calls aren't de-duplicated by Next, so each used to run twice.
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps<"/history/major/[id
   const m = await majorOnce((await params).id).catch(() => null);
   if (!m) return { title: "Smash history" };
   const year = new Date(m.startAt).getUTCFullYear();
-  return pageMeta(`${m.name} (${year})`, `${m.name}, ${year}: top 8 results in Smash history on Smashy, with a link to their source.`);
+  return pageMeta(resultsTitle(m.name, year), `${m.name}, ${year}: top 8 results in Smash history on Smashy, with a link to their source.`);
 }
 
 async function MajorView({ params }: { params: PageProps<"/history/major/[id]">["params"] }) {
