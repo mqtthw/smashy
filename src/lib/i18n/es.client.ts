@@ -1895,6 +1895,8 @@ export const es = {
   "media.reels.share": "Compartir",
   "media.reels.shareClip": "Compartir clip",
   "media.reels.more": "Más",
+  "media.reels.fillScreen": "Llenar pantalla",
+  "media.reels.wholeClip": "Clip completo",
   "media.reels.watchFullSet": "Ver el set completo ↗",
   "media.reels.openYouTube": "Abrir en YouTube ↗",
   "media.reels.openTwitch": "Abrir en Twitch ↗",

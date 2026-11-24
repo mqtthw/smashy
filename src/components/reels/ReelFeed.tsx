@@ -31,6 +31,41 @@ const MAX_SEEN = 300;
 const WATCHED_AFTER_MS = 2000; // on screen this long counts as watched (not just scrolled past)
 const HINT_KEY = "smashy-reels-hint"; // the "swipe up" hint shows until someone moves to a second clip
 const SOUND_KEY = "smashy-reels-sound"; // "0" = this person turned sound off
+const FIT_KEY = "smashy-reels-fit"; // "whole" = this person wants wide clips shown whole on a phone (round 812)
+const FIT_EVENT = "smashy:reels-fit";
+
+/**
+ * On a phone, a wide Twitch clip fills the screen (zoomed in, its left and right edges cut off) instead of
+ * sitting as a thin strip in the middle (round 812). A button on the clip switches to the whole clip; the
+ * choice is remembered on this device. Wider screens always show the whole clip.
+ */
+function useWholeClip(): [boolean, (whole: boolean) => void] {
+  const whole = useSyncExternalStore(
+    (cb) => {
+      window.addEventListener(FIT_EVENT, cb);
+      window.addEventListener("storage", cb);
+      return () => {
+        window.removeEventListener(FIT_EVENT, cb);
+        window.removeEventListener("storage", cb);
+      };
+    },
+    () => {
+      try {
+        return window.localStorage.getItem(FIT_KEY) === "whole";
+      } catch {
+        return false;
+      }
+    },
+    () => false,
+  );
+  const set = (next: boolean) => {
+    try {
+      window.localStorage.setItem(FIT_KEY, next ? "whole" : "fill");
+    } catch {}
+    window.dispatchEvent(new Event(FIT_EVENT));
+  };
+  return [whole, set];
+}
 
 function readSeen(): string[] {
   try {
@@ -170,6 +205,11 @@ function PostVideoPlayer({ src, poster, sound, title, onEnded }: { src: string; 
   );
 }
 
+// A wide clip filling a phone screen: the box takes the full height and width, and the player inside is as
+// tall as the box and 16:9 wide, centred, so its sides run off the screen (round 812).
+const FILL_BOX = "max-md:aspect-auto max-md:h-full max-md:rounded-none max-md:ring-0";
+const FILL_FRAME = "max-md:absolute max-md:left-1/2 max-md:top-0 max-md:aspect-video max-md:w-auto max-md:max-w-none max-md:-translate-x-1/2";
+
 /**
  * One clip, full screen: the player on a blurred copy of its own thumbnail, then the title and the
  * action row. Only the clip on screen loads a player (muted, autoplay); the rest show a still.
@@ -179,6 +219,9 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
   const compact = compactFor(useLang());
   const post = reel.post;
   const tall = reel.platform === "youtube" || (!!post && post.height > post.width);
+  const [whole, setWhole] = useWholeClip();
+  const canFill = !tall && !post && reel.platform === "twitch"; // Smashy's own videos keep their player as is
+  const fill = canFill && !whole;
   // A post's video: the heart likes the post itself.
   const [postLiked, setPostLiked] = useState(post?.likedByMe ?? false);
   const liked = post ? postLiked : clipLiked;
@@ -224,8 +267,8 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
       )}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" aria-hidden="true" />
 
-      <div className="relative flex min-h-0 flex-1 items-center justify-center px-2 pt-14 md:px-16">
-        <div className={`relative overflow-hidden rounded-xl bg-black shadow-2xl ring-1 ring-white/10 ${tall ? "aspect-[9/16] h-full max-h-[62dvh] max-w-full" : "aspect-video w-full"}`}>
+      <div className={`relative flex min-h-0 flex-1 items-center justify-center px-2 pt-14 md:px-16 ${fill ? "max-md:px-0" : ""}`}>
+        <div className={`relative overflow-hidden rounded-xl bg-black shadow-2xl ring-1 ring-white/10 ${tall ? "aspect-[9/16] h-full max-h-[62dvh] max-w-full" : fill ? `aspect-video w-full ${FILL_BOX}` : "aspect-video w-full"}`}>
           {active && post ? (
             <PostVideoPlayer src={post.videoUrl} poster={reel.thumbnailUrl} sound={sound} title={reel.title || t("media.reels.clip")} onEnded={onEnded} />
           ) : active && hostname && reel.platform !== "smashy" ? (
@@ -239,19 +282,30 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
               allowFullScreen
               referrerPolicy="strict-origin-when-cross-origin"
               sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
-              className="h-full w-full"
+              className={`h-full w-full ${fill ? FILL_FRAME : ""}`}
             />
           ) : reel.thumbnailUrl ? (
             // Twitch's or YouTube's own thumbnail (a plain image request, not optimized through Next)
             // eslint-disable-next-line @next/next/no-img-element
             <img src={reel.thumbnailUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
           ) : null}
+          {canFill && (
+            <button
+              type="button"
+              onClick={() => setWhole(!whole)}
+              className="absolute right-2 top-2 z-10 rounded-full bg-black/60 px-2.5 py-1 text-xs font-semibold text-white ring-1 ring-white/25 backdrop-blur md:hidden"
+            >
+              {t(whole ? "media.reels.fillScreen" : "media.reels.wholeClip")}
+            </button>
+          )}
         </div>
       </div>
 
       <div className="relative flex flex-col gap-3 px-4 pb-4 pt-3 md:px-16">
         <div className="flex min-w-0 flex-col gap-1">
-          <h2 className="line-clamp-2 text-lg font-bold leading-snug drop-shadow">{reel.title || t("media.reels.untitled")}</h2>
+          {/* Twitch's player shows the clip's title and view count on the clip itself (round 812): here the
+              title gets one line and the view count is left out, so they aren't said twice. */}
+          <h2 className={`${reel.platform === "twitch" && !post ? "line-clamp-1" : "line-clamp-2"} text-lg font-bold leading-snug drop-shadow`}>{reel.title || t("media.reels.untitled")}</h2>
           {reel.title && !live && <TranslateButton text={reel.title} source={{ kind: "reel", id: reel.clipId }} tone="dark" />}
           <p className="flex flex-wrap items-center gap-x-1.5 text-sm text-white/75">
             <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold text-white">{GAMES[reel.game].short}</span>
@@ -263,7 +317,7 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
             ) : (
               <>
                 <span className="font-semibold text-white/90">{reel.channelName ?? reel.channelLogin}</span>
-                <span>· {t("media.reels.views", { n: reel.views, count: compact.format(reel.views) })}</span>
+                {reel.platform !== "twitch" && <span>· {t("media.reels.views", { n: reel.views, count: compact.format(reel.views) })}</span>}
               </>
             )}
             <ReelAge at={reel.createdAt} />

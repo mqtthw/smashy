@@ -43,6 +43,8 @@ export const mediaFr: Record<keyof typeof mediaEn, string> = {
   "media.reels.share": "Partager",
   "media.reels.shareClip": "Partager le clip",
   "media.reels.more": "Plus",
+  "media.reels.fillScreen": "Plein écran",
+  "media.reels.wholeClip": "Clip entier",
   "media.reels.watchFullSet": "Regarder le set complet ↗",
   "media.reels.openYouTube": "Ouvrir sur YouTube ↗",
   "media.reels.openTwitch": "Ouvrir sur Twitch ↗",

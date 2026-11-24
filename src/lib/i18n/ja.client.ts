@@ -1895,6 +1895,8 @@ export const ja = {
   "media.reels.share": "共有",
   "media.reels.shareClip": "クリップを共有",
   "media.reels.more": "その他",
+  "media.reels.fillScreen": "画面いっぱい",
+  "media.reels.wholeClip": "全体を表示",
   "media.reels.watchFullSet": "セット全体を見る ↗",
   "media.reels.openYouTube": "YouTubeで開く ↗",
   "media.reels.openTwitch": "Twitchで開く ↗",
