@@ -1136,6 +1136,8 @@ export const fr = {
   "feed.discuss.newToSmash": "Nouveau sur smash ?",
   "feed.discuss.startHere": "Commence ici",
   "feed.discuss.newThread": "Nouveau sujet",
+  "feed.discuss.fromFeed": "Les derniers posts du Fil",
+  "feed.discuss.seeFeed": "Voir le Fil →",
   "feed.discuss.hotEverywhere": "Populaires sur tous les jeux",
   "feed.flair.discussion": "Discussion",
   "feed.flair.question": "Question",

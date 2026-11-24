@@ -8,7 +8,8 @@ import { FeedSkeleton } from "@/components/ui/Skeleton";
 import { unixNow } from "@/lib/format";
 import { GAMES, gamesFor } from "@/lib/games";
 import { FEED_GAMES, FLAIRS, isFlair, type FeedGame } from "@/lib/postConstants";
-import { getThreads } from "@/lib/posts";
+import { getFeed, getThreads } from "@/lib/posts";
+import PostCard from "@/components/feed/PostCard";
 import { THREAD_SORTS, TOP_WINDOWS, type ThreadSort, type TopWindow } from "@/lib/threadRank";
 import { getUserId } from "@/lib/supabase/server";
 import { getMyGames } from "@/lib/viewer";
@@ -100,6 +101,8 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
             />
           </div>
           {(f.game || f.flair || f.noReplies) && <HotEverywhere userId={userId} now={now} />}
+          {/* No threads on the whole board (round 783): the newest posts from the Feed, so the page isn't a dead end. */}
+          {!f.game && !f.flair && !f.noReplies && f.page === 0 && <FromTheFeed userId={userId} now={now} />}
         </>
       ) : (
         <ul className="flex flex-col gap-3 px-3 py-3">
@@ -143,6 +146,27 @@ async function NewThreadButton({ searchParams }: { searchParams: PageProps<"/dis
     <Link href={`/discuss/new${game ? `?game=${game}` : ""}`} className="btn btn-md btn-primary shrink-0">
       <T k="feed.discuss.newThread" />
     </Link>
+  );
+}
+
+/** When Discussions has no threads at all: the Feed's newest posts (a thread is a post with a title; these have none). */
+async function FromTheFeed({ userId, now }: { userId: string | null; now: number }) {
+  const { entries } = await getFeed({ userId }).catch(() => ({ entries: [] }));
+  if (!entries.length) return null;
+  return (
+    <section aria-labelledby="from-the-feed" className="border-t border-line">
+      <div className="flex items-baseline justify-between gap-3 px-4 pt-4 pb-1">
+        <h2 id="from-the-feed" className="font-bold"><T k="feed.discuss.fromFeed" /></h2>
+        <Link href="/" className="link shrink-0 text-sm"><T k="feed.discuss.seeFeed" /></Link>
+      </div>
+      <div className="flex flex-col gap-3 px-3 py-3">
+        {entries.slice(0, 8).map((e) => (
+          <div key={e.key} className="card">
+            <PostCard post={e.post} repostedBy={e.repostedBy} now={now} viewerId={userId} />
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 

@@ -258,6 +258,8 @@ export const feedJa: Record<keyof typeof feedEn, string> = {
   "feed.discuss.newer": "← 新しいスレッド",
   "feed.discuss.more": "もっと見る →",
   "feed.discuss.newThread": "新しいスレッド",
+  "feed.discuss.fromFeed": "フィードの最新投稿",
+  "feed.discuss.seeFeed": "フィードを見る →",
   "feed.discuss.hotEverywhere": "全ゲームの話題",
   "feed.discuss.ask": "質問する",
   "feed.discuss.newPlayerNote": "初歩的すぎる質問なんてありません。「初心者」タグを付けると初心者ページに表示されます。経験者が答えられる質問を探しに来るページです。",

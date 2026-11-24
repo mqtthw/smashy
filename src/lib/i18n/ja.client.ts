@@ -1136,6 +1136,8 @@ export const ja = {
   "feed.discuss.newToSmash": "スマブラ初心者ですか？",
   "feed.discuss.startHere": "ここから始めよう",
   "feed.discuss.newThread": "新しいスレッド",
+  "feed.discuss.fromFeed": "フィードの最新投稿",
+  "feed.discuss.seeFeed": "フィードを見る →",
   "feed.discuss.hotEverywhere": "全ゲームの話題",
   "feed.flair.discussion": "雑談・議論",
   "feed.flair.question": "質問",

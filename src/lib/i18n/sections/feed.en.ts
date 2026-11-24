@@ -256,6 +256,8 @@ export const feedEn = {
   "feed.discuss.newer": "← Newer",
   "feed.discuss.more": "More threads →",
   "feed.discuss.newThread": "New thread",
+  "feed.discuss.fromFeed": "Latest from the Feed",
+  "feed.discuss.seeFeed": "See the Feed →",
   "feed.discuss.hotEverywhere": "Hot across all games",
   "feed.discuss.ask": "Ask a question",
   "feed.discuss.newPlayerNote": "No question is too basic. Tagged “New player”, it shows on the new players page, where experienced players look for questions to answer.",

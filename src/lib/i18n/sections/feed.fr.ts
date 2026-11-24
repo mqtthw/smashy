@@ -258,6 +258,8 @@ export const feedFr: Record<keyof typeof feedEn, string> = {
   "feed.discuss.newer": "← Plus récents",
   "feed.discuss.more": "Plus de sujets →",
   "feed.discuss.newThread": "Nouveau sujet",
+  "feed.discuss.fromFeed": "Les derniers posts du Fil",
+  "feed.discuss.seeFeed": "Voir le Fil →",
   "feed.discuss.hotEverywhere": "Populaires sur tous les jeux",
   "feed.discuss.ask": "Poser une question",
   "feed.discuss.newPlayerNote": "Aucune question n'est trop basique. Avec l'étiquette « Nouveau joueur », elle apparaît sur la page des nouveaux joueurs, où les joueurs expérimentés cherchent des questions auxquelles répondre.",
