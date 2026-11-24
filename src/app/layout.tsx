@@ -44,7 +44,9 @@ export const metadata: Metadata = {
   openGraph: { siteName: "Smashy", type: "website" },
   twitter: { card: "summary_large_image" },
   // Proves to Google Search Console that this site is ours (public by design, not a secret).
-  verification: { google: "auy3mk9y4XDgBXNbABT4qZDl-Zqae24VI6vWBD4z6zQ" },
+  // Two tags: the first was made for the old address (smashy-five.vercel.app); the second is the one
+  // Search Console gave for https://smashy.gg itself when that was added (2026-11-23).
+  verification: { google: ["auy3mk9y4XDgBXNbABT4qZDl-Zqae24VI6vWBD4z6zQ", "TXW5OkqJ1HFqq92Gg8U8Pbb6re2Ao9is36Ml2UHUuLo"] },
 };
 
 export const viewport: Viewport = {

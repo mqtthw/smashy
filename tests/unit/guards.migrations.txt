@@ -175,3 +175,4 @@
 20270125560000_history_old_sets_smash64.sql
 20270125570000_history_old_sets_brawl_rest.sql
 20270125580000_suspended_cant_write.sql
+20270125590000_player_snapshots.sql

@@ -61,6 +61,7 @@ src/lib/official.ts
 src/lib/pickemPicks.ts
 src/lib/playerIndex.ts
 src/lib/playerLinks.ts
+src/lib/playerSnapshots.ts
 src/lib/playerStats.ts
 src/lib/postImages.ts
 src/lib/postVideos.ts

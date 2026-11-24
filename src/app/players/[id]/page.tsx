@@ -28,6 +28,7 @@ import { guestLookup } from "@/lib/guestLookup";
 import { computeStats, getLinkedPlayer, getRecentSets, getVisibleRecentSets, headToHead, playerOnSmashy } from "@/lib/playerStats";
 import { getPlayerResults, getStartggPlayer } from "@/lib/startggPlayers";
 import { getSavedPlayer } from "@/lib/playerIndex";
+import { savePlayerSnapshot } from "@/lib/playerSnapshots";
 import { getUserId } from "@/lib/supabase/server";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
@@ -207,6 +208,10 @@ async function PlayerSets({ playerId, tag, viewerId }: { playerId: string; tag: 
   ]);
   // A claimed page keeps its career: the latest results are saved once the page has been sent.
   if (claimed && fresh.length) after(() => saveResults(claimed.userId, fresh));
+  // Keep this lookup's answer (docs/searchable-player-pages-plan.md, step S1): a later step shows guests the
+  // saved copy instead of asking start.gg. The raw sets are saved (the same shared answer as above, so no
+  // new start.gg request); who hides their stats is applied when a copy is shown.
+  if (sets) after(async () => savePlayerSnapshot({ playerId, sets: await getRecentSets(playerId).catch(() => []), results: fresh, viewerSignedIn: !!viewerId }));
   const results = claimed ? mergeResults(saved, fresh) : fresh;
   // start.gg didn't answer: say so, and still show the results Smashy has saved (a claimed page's career).
   if (!sets) {
