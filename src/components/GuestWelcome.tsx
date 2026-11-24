@@ -192,9 +192,12 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
       )}
 
       {/* Online brackets running now or starting within a day; live ones open their bracket. Nothing shows when there are none. */}
-      <Suspense fallback={null}>
-        <OnlineToday as="h3" fold />
-      </Suspense>
+      {/* Wide screens show it in the side column instead (round 813). */}
+      <div className="xl:hidden">
+        <Suspense fallback={null}>
+          <OnlineToday as="h3" fold />
+        </Suspense>
+      </div>
 
       <Suspense fallback={null}>
         <GuestClips />

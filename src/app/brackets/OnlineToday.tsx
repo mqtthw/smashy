@@ -2,23 +2,12 @@ import Link from "next/link";
 import { connection } from "next/server";
 import GameBadge from "@/components/GameBadge";
 import { bracketPath } from "@/lib/brackets/types";
-import { bracketStart, currentBracket, formatEventTime, isRunning } from "@/lib/format";
-import { getOnlineTournaments, type SmashyTournament } from "@/lib/startgg";
+import { currentBracket, formatEventTime } from "@/lib/format";
+import { onlineToday } from "@/lib/onlineToday";
+import { getOnlineTournaments } from "@/lib/startgg";
 import Icon from "@/components/ui/Icon";
 import { getT } from "@/lib/i18n/server";
 import Fold from "@/components/ui/Fold";
-
-/** Online start.gg brackets running now or starting within a day (at most 5). */
-function today(list: SmashyTournament[]): { t: SmashyTournament; live: boolean; start: number }[] {
-  const now = Date.now() / 1000;
-  return list
-    .map((t) => ({ t, live: isRunning(t, now), start: bracketStart(t, now) }))
-    // Running now, or a bracket starting within a day (season series count by their next bracket).
-    .filter((r) => r.live || (r.start > now && r.start <= now + 86400))
-    // Live first (biggest first), then the next ones to start.
-    .sort((a, b) => Number(b.live) - Number(a.live) || (a.live ? (b.t.numAttendees ?? 0) - (a.t.numAttendees ?? 0) : a.start - b.start))
-    .slice(0, 5);
-}
 
 /**
  * Today's online brackets on start.gg (the same shared list as the Online tab): live ones open their
@@ -27,7 +16,7 @@ function today(list: SmashyTournament[]): { t: SmashyTournament; live: boolean; 
  */
 export default async function OnlineToday({ as: Heading = "h2", fold = false }: { as?: "h2" | "h3"; fold?: boolean } = {}) {
   await connection(); // "today" depends on the current time
-  const rows = today(await getOnlineTournaments().catch(() => []));
+  const rows = onlineToday(await getOnlineTournaments().catch(() => []));
   const tr = await getT();
   if (!rows.length) return null;
   const heading = <Heading id="online-today" className="font-bold"><Icon name="globe" /> {tr("browse.brackets.onlineToday")}</Heading>;

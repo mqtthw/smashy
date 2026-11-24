@@ -6,7 +6,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import GameBadge from "@/components/GameBadge";
-import { dateBadgeParts } from "@/lib/format";
+import { dateBadgeParts, formatEventTime } from "@/lib/format";
 import { useLang, useT } from "@/lib/i18n/client";
 import type { SideData, SideEvent } from "@/lib/sideColumn";
 
@@ -63,6 +63,30 @@ export default function SideColumn() {
           <h2 className="px-1 font-bold">{t("ui.guest.comingUp", { region: data.regionName })}</h2>
           <ul className="card flex flex-col divide-y divide-line overflow-hidden">
             {events.map(({ e, live }) => <EventRow key={e.slug} e={e} live={live} lang={lang} />)}
+          </ul>
+        </section>
+      )}
+      {/* Online brackets today (round 813, Matthew: in the side column "so the feed isn't too cluttered"). */}
+      {data.online?.length > 0 && (
+        <section className="flex flex-col gap-2">
+          <div className="flex items-baseline justify-between px-1">
+            <h2 className="font-bold">{t("browse.brackets.onlineToday")}</h2>
+            <Link href="/events?view=online" className="text-meta font-semibold text-brand">{t("browse.brackets.allOnline")}</Link>
+          </div>
+          <ul className="card flex flex-col divide-y divide-line overflow-hidden">
+            {data.online.map((o) => (
+              <li key={o.slug}>
+                <Link href={o.href} className="flex items-center gap-3 px-3 py-2.5 hover:bg-surface">
+                  <span className="flex shrink-0 flex-col gap-1">{o.games.map((g) => <GameBadge key={g} game={g} />)}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-semibold">{o.name}</span>
+                    <span className="block truncate text-meta text-muted">
+                      {[o.live ? t("browse.live") : formatEventTime(o.start, o.timezone, lang), o.players ? t("browse.players", { n: o.players }) : null].filter(Boolean).join(" · ")}
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </section>
       )}

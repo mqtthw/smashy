@@ -252,7 +252,8 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
           {/* Members get "Online brackets today" too (round 812): only the guest home page had it, and a
               player who joined and set Texas said the online events had gone. Folds shut like the guest one. */}
           {view === "for_you" && pageNum === 0 && !before && !game && (
-            <div className="px-4 pt-3">
+            // Wide screens show it in the side column instead (round 813).
+            <div className="px-4 pt-3 xl:hidden">
               <Suspense fallback={null}>
                 <OnlineToday as="h3" fold />
               </Suspense>
