@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { getClipsOfWeekItems } from "@/lib/clipsOfWeekData";
-import type { FeedGame } from "@/lib/postConstants";
+import type { ClipItem } from "@/lib/clipsOfWeekData";
 import Icon from "@/components/ui/Icon";
 import { T } from "@/lib/i18n/client";
 
@@ -9,8 +8,10 @@ import { T } from "@/lib/i18n/client";
  * posts and from Reels (round 759), one per player or channel, each opening its post or Reels page. Nothing is shown in a week with no
  * liked clips.
  */
-export default async function ClipsOfWeek({ game, userId }: { game: FeedGame | undefined; userId: string | null }) {
-  const clips = await getClipsOfWeekItems(game, userId).catch(() => []);
+export default async function ClipsOfWeek({ clips: given }: { clips: ClipItem[] | Promise<ClipItem[]> }) {
+  // The Feed starts the lookup itself, alongside its posts, and hands over the answer (or the lookup still
+  // running, when it was slow), so this block arrives with the posts instead of pushing them down (round 811).
+  const clips = await given;
   if (!clips.length) return null;
   return (
     <section aria-labelledby="clips-of-week" className="flex flex-col gap-2 border-b border-line px-4 py-3">

@@ -15,7 +15,8 @@ import { followsAtLeast } from "@/lib/follows";
 import { FEED_GAMES, getFeed, getFollowingFeed, getForYouFeed, getGuestForYouFeed, type FeedGame, type TimelineEntry } from "@/lib/posts";
 import { logError } from "@/lib/errorLog";
 import { SLOW_AFTER_MS, orStandIn, within } from "@/lib/slowFallback";
-import { getPlayerHistory, getPlayerRecent } from "@/lib/startgg";
+import { getOnlineTournaments, getPlayerHistory, getPlayerRecent } from "@/lib/startgg";
+import OnlineToday from "@/app/brackets/OnlineToday";
 import { composerTemplates } from "@/lib/composerTemplates";
 import { createClient, getUserId } from "@/lib/supabase/server";
 import TabBar from "@/components/ui/TabBar";
@@ -25,6 +26,7 @@ import { getMajors, majorsFor, refreshMajorsIfStale } from "@/lib/majors";
 import { GAMES, gamesFor } from "@/lib/games";
 import { getMyGames, getMyHomeCity, needsProfile } from "@/lib/viewer";
 import ClipsOfWeek from "@/components/feed/ClipsOfWeek";
+import { getClipsOfWeekItems, type ClipItem } from "@/lib/clipsOfWeekData";
 import { FeedSkeleton } from "@/components/ui/Skeleton";
 import GuestWelcome from "@/components/GuestWelcome";
 import FeedStarter from "@/components/feed/FeedStarter";
@@ -117,12 +119,22 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
     : null;
   // The member's profile facts (their games, whether setup is finished, home city) are one database read. It
   // mustn't hold the Feed up either (round 778): past 1.5 s the Feed shows without them (the main games' tabs).
-  const [{ entries, hasMore, cursor: nextCursor, shared }, majors, myGames, t, lang] = await Promise.all([
+  // Clips of the week sits above the posts. It used to start loading only after the posts were ready and
+  // arrive about a second after them, pushing every post 277 px down the screen (layout shift 0.034 on a
+  // wide screen, more on a phone; round 811). It now starts with the posts and comes with them. If it's
+  // slower than 1.5 s the Feed doesn't wait: it arrives late, as before.
+  const showClips = view === "for_you" && pageNum === 0 && !before;
+  const clipsLoading: Promise<ClipItem[]> | null = showClips ? getClipsOfWeekItems(game, userId).catch(() => []) : null;
+  const [{ entries, hasMore, cursor: nextCursor, shared }, majors, myGames, t, lang, clipsReady] = await Promise.all([
     loadFeed(game),
     getMajors().catch(() => ({ live: [], upcoming: [] })),
     within(getMyGames(userId), SLOW_AFTER_MS, []),
     getT(),
     getLang(),
+    clipsLoading ? within<ClipItem[] | null>(clipsLoading, SLOW_AFTER_MS, null) : null,
+    // Warms the shared online list for members' "Online brackets today" below (round 812), so it's
+    // ready with the posts instead of appearing above them later and pushing them down.
+    userId && !game ? within(getOnlineTournaments().catch(() => []), SLOW_AFTER_MS, []) : null,
   ]);
   const unfinished = await within(needsProfile(userId), shared ? 0 : SLOW_AFTER_MS, false); // same read as getMyGames (cached per request)
   const TABS = feedTabs(myGames, game, t);
@@ -237,6 +249,15 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
               <FeedSuggestions userId={userId} />
             </Suspense>
           )}
+          {/* Members get "Online brackets today" too (round 812): only the guest home page had it, and a
+              player who joined and set Texas said the online events had gone. Folds shut like the guest one. */}
+          {view === "for_you" && pageNum === 0 && !before && !game && (
+            <div className="px-4 pt-3">
+              <Suspense fallback={null}>
+                <OnlineToday as="h3" fold />
+              </Suspense>
+            </div>
+          )}
         </>
       ) : guestWelcome ? (
         // Arrives with the posts (round 584), not after them: it popped in above them and pushed the
@@ -250,9 +271,9 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
       )}
 
       {/* Clips of the week (round 751): the most liked clips players posted in the last 7 days. */}
-      {view === "for_you" && pageNum === 0 && !before && (
+      {showClips && clipsLoading && (
         <Suspense fallback={null}>
-          <ClipsOfWeek game={game} userId={userId} />
+          <ClipsOfWeek clips={clipsReady ?? clipsLoading} />
         </Suspense>
       )}
 

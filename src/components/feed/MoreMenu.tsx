@@ -12,6 +12,7 @@ import type { MessageKey } from "@/lib/i18n/core";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import NotificationBadge from "@/components/social/NotificationBadge";
 import MessageBadge from "@/components/messages/MessageBadge";
+import { DISCORD_INVITE } from "@/lib/contact";
 
 // Notifications and Messages first, About last, set apart (Matthew). Not preloaded (round 552): the
 // panel is closed nearly every time the Feed opens, so preloading six pages each visit was waste.
@@ -160,6 +161,11 @@ export default function MoreMenu({ className, profile, admin }: { className: str
                 {admin}
               </ul>
               <div className="mt-auto border-t border-line pt-2">
+                {/* The Smashy Discord (round 812): a new member had to ask whether there was one. */}
+                <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 px-5 py-3 text-base font-semibold text-muted hover:bg-surface hover:text-foreground">
+                  <Icon name="chat" className="text-xl" />
+                  {t("people.profile.discord")} ↗
+                </a>
                 <Link href="/help" prefetch={false} className="flex items-center gap-4 px-5 py-3 text-base font-semibold text-muted hover:bg-surface hover:text-foreground">
                   <Icon name="heart" className="text-xl" />
                   {t("ui.more.help")}

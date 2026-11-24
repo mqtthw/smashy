@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
 import LanguageSwitch from "./LanguageSwitch";
+import { DISCORD_INVITE } from "@/lib/contact";
+import Icon from "@/components/ui/Icon";
 import { ThemeButton } from "./ui/ThemeToggle";
 import { useT } from "@/lib/i18n/client";
 import NotificationBadge from "./social/NotificationBadge";
@@ -117,6 +119,11 @@ export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
         <ActiveTabList />
       </Suspense>
       <div className="hidden md:mt-auto md:flex md:flex-col">
+        {/* The Smashy Discord (round 812), for everyone: a new member had to ask whether there was one. */}
+        <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" title={t("people.profile.discord")} className="flex items-center justify-center gap-2 p-3 text-sm font-semibold text-muted hover:text-foreground lg:justify-start lg:px-5 lg:py-2">
+          <Icon name="chat" className="text-lg" />
+          <span className="md:max-lg:sr-only">{t("people.profile.discord")} ↗</span>
+        </a>
         {accounts}
         {/* In the narrow icon sidebar (tablets) only the globe shows; the language list sits invisibly over it. */}
         {/* Language and light/dark together (round 773), for everyone: no account needed for either. */}
