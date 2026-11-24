@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { GUEST_PAGES_RETRY_S, countsAsGuestPage, crawlerName, crawlerOffLimits, isAiTrainingCrawler, isCrawler, notABrowser, takeCrawlerPage, takeGuestPage } from "@/lib/guestPages";
 import { updateSession } from "@/lib/supabase/proxy";
 import { apiBucket, takeApiCall } from "@/lib/apiLimit";
+import { canonicalLinkHeader } from "@/lib/siteMeta";
 
 export async function proxy(request: NextRequest) {
   // robots.txt asks crawlers to skip these pages; the ones that say who they are get told here too.
@@ -53,6 +54,8 @@ export async function proxy(request: NextRequest) {
     });
   }
   const { response, signedIn } = await updateSession(request);
+  const canonical = canonicalLinkHeader(request.headers.get("host"), request.nextUrl.pathname, request.nextUrl.search);
+  if (canonical) response.headers.set("Link", canonical);
   if (countsAsGuestPage(request.nextUrl.pathname, signedIn, (name) => request.headers.get(name))) {
     const address = (request.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || request.headers.get("x-real-ip") || "unknown";
     const { ok, left } = takeGuestPage(address, Date.now());

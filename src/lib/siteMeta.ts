@@ -11,6 +11,18 @@ export function siteUrl(): URL {
 }
 
 /**
+ * For a page opened on one of Vercel's own addresses (the old smashy-five.vercel.app still serves the
+ * whole site): the "Link" header that tells search engines the same page on smashy.gg is the real one
+ * (round 786). Without it Google sees two copies of every page and may list the old address. Null on
+ * smashy.gg itself and anywhere else (a dev server).
+ */
+export function canonicalLinkHeader(host: string | null, pathname: string, search: string, canonicalOrigin = "https://smashy.gg"): string | null {
+  const h = (host ?? "").toLowerCase().split(":")[0];
+  if (!h.endsWith(".vercel.app")) return null;
+  return `<${canonicalOrigin}${pathname}${search}>; rel="canonical"`;
+}
+
+/**
  * The site's own preview picture (app/opengraph-image.tsx). A page that sets `openGraph` replaces
  * the layout's, picture included, so it names this one again. Careful: a picture named here also
  * beats the route's own opengraph-image file, so routes with one use ownPictureMeta.
