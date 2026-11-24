@@ -24,6 +24,7 @@ export const feedEs: Record<keyof typeof feedEn, string> = {
   "feed.showMore": "Ver más",
   "feed.olderPosts": "Publicaciones anteriores",
   "feed.signedInOnly": "Algunas publicaciones solo se ven cuando inicias sesión.",
+  "feed.sharedCopy": "Smashy va lento ahora mismo, así que este es el feed general. Actualiza en un minuto para ver el tuyo.",
   "feed.newPosts": "↑ 1 publicación nueva|↑ {n} publicaciones nuevas",
 
   // A quiet feed

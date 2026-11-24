@@ -22,6 +22,7 @@ export const feedEn = {
   "feed.showMore": "Show more",
   "feed.olderPosts": "Older posts",
   "feed.signedInOnly": "Some posts are only visible when you're signed in.",
+  "feed.sharedCopy": "Smashy is slow right now, so this is the general feed. Refresh in a minute for yours.",
   "feed.newPosts": "↑ 1 new post|↑ {n} new posts",
 
   // A quiet feed

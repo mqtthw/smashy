@@ -85,7 +85,6 @@ export const browseFr: Record<keyof typeof browseEn, string> = {
   "browse.online.emptyOpen": "Aucun bracket avec inscriptions ouvertes pour ce filtre pour le moment. Essaie de désactiver \"Inscriptions ouvertes\".",
   "browse.online.empty": "Aucun bracket en ligne à venir pour ce jeu pour le moment. Repasse bientôt, ou organises-en un.",
   "browse.online.finished": "Terminé · Résultats",
-  "browse.online.elsewhere": "Une série régulière sur {site} : inscris-toi là-bas",
 
   // Streams
   "browse.stream.watchLive": "Regarder en direct",

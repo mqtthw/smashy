@@ -1712,7 +1712,6 @@ export const es = {
   "browse.online.emptyOpen": "No hay brackets con inscripciones abiertas para este filtro ahora mismo. Prueba a quitar \"Inscripciones abiertas\".",
   "browse.online.empty": "No hay brackets en línea próximos para este juego ahora mismo. Vuelve pronto u organiza uno.",
   "browse.online.finished": "Terminado · Resultados",
-  "browse.online.elsewhere": "Una serie habitual en {site}: inscríbete allí",
   "browse.stream.watchLive": "Ver en vivo",
   "browse.stream.streams": "Streams",
   "browse.stream.liveOnTwitch": "{name} en vivo en Twitch",

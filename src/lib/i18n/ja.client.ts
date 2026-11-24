@@ -1712,7 +1712,6 @@ export const ja = {
   "browse.online.emptyOpen": "この条件でエントリー受付中の大会は現在ありません。「エントリー受付中」をオフにしてみてください。",
   "browse.online.empty": "このゲームの今後のオンライン大会は現在ありません。また後で確認するか、主催してみましょう。",
   "browse.online.finished": "終了 · 結果",
-  "browse.online.elsewhere": "{site}で定期開催：エントリーはそちらで",
   "browse.stream.watchLive": "ライブで見る",
   "browse.stream.streams": "配信",
   "browse.stream.liveOnTwitch": "{name}がTwitchで配信中",

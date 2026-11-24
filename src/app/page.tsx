@@ -14,6 +14,7 @@ import { unixNow } from "@/lib/format";
 import { followsAtLeast } from "@/lib/follows";
 import { FEED_GAMES, getFeed, getFollowingFeed, getForYouFeed, getGuestForYouFeed, type FeedGame, type TimelineEntry } from "@/lib/posts";
 import { logError } from "@/lib/errorLog";
+import { SLOW_AFTER_MS, orStandIn, within } from "@/lib/slowFallback";
 import { getPlayerHistory, getPlayerRecent } from "@/lib/startgg";
 import { composerTemplates } from "@/lib/composerTemplates";
 import { createClient, getUserId } from "@/lib/supabase/server";
@@ -28,6 +29,7 @@ import { FeedSkeleton } from "@/components/ui/Skeleton";
 import GuestWelcome from "@/components/GuestWelcome";
 import FeedStarter from "@/components/feed/FeedStarter";
 import { detectedRegion, getViewerRegion } from "@/lib/viewerRegion";
+import { HOME_REGION } from "@/lib/regions";
 import { TLink } from "@/components/feed/Translated";
 import MoreMenu from "@/components/feed/MoreMenu";
 import { FeedGameTabs } from "@/components/feed/FeedPanes";
@@ -56,7 +58,8 @@ async function templateOptions(userId: string) {
   return composerTemplates(fresh, history?.entries ?? [], unixNow());
 }
 
-type FeedData = { entries: TimelineEntry[]; hasMore: boolean; cursor?: string | null };
+/** `shared`: the copy guests share, shown to a member whose own feed was too slow (round 778). */
+type FeedData = { entries: TimelineEntry[]; hasMore: boolean; cursor?: string | null; shared?: boolean };
 
 /** Round icon buttons in the feed header (Resources, Search, Messages, Notifications). */
 const headerBtn = "flex h-9 min-w-9 items-center justify-center gap-1.5 rounded-full border border-line px-2 text-sm font-semibold text-foreground hover:bg-surface";
@@ -86,7 +89,16 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
       ? // A guest's first page is the same for every guest in their region: kept and shared (round 567).
         (!userId && pageNum === 0
           ? getGuestForYouFeed(game, guestRegion)
-          : getForYouFeed({ game, page: pageNum, asOf: pageNum > 0 ? at : undefined, userId, region: guestRegion })
+          : userId && pageNum === 0
+            ? // Round 778: the database freezes for about a minute several times a day, and a member's Feed sat
+              // on its placeholders for 3 to 14 seconds. Past 1.5 s it shows the copy guests share instead (kept
+              // by the servers, no database): no likes marked and the member's mutes not applied, for that one
+              // load. Whichever answers first wins, so a merely slowish database still gives their own feed.
+              orStandIn<FeedData>(getForYouFeed({ game, page: 0, userId }), SLOW_AFTER_MS, async () => getGuestForYouFeed(game, await detectedRegion())).then(({ value, usedStandIn }) => {
+                if (usedStandIn) console.warn("Feed: a member got the shared copy (their own took over 1.5 s)");
+                return usedStandIn ? { ...value, shared: true } : value;
+              })
+            : getForYouFeed({ game, page: pageNum, asOf: pageNum > 0 ? at : undefined, userId, region: guestRegion })
         ).catch(async (e: unknown) => {
           // The ranking query failed (it has timed out when the database was busy). The home page
           // must still open: show the newest posts instead, and keep the failure in the error log.
@@ -103,14 +115,16 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
   const templates = userId
     ? Promise.race([templateOptions(userId), new Promise<{ results: never[]; signups: never[] }>((r) => setTimeout(() => r({ results: [], signups: [] }), 8000))]).catch(() => ({ results: [], signups: [] }))
     : null;
-  const [{ entries, hasMore, cursor: nextCursor }, majors, myGames, t, lang] = await Promise.all([
+  // The member's profile facts (their games, whether setup is finished, home city) are one database read. It
+  // mustn't hold the Feed up either (round 778): past 1.5 s the Feed shows without them (the main games' tabs).
+  const [{ entries, hasMore, cursor: nextCursor, shared }, majors, myGames, t, lang] = await Promise.all([
     loadFeed(game),
     getMajors().catch(() => ({ live: [], upcoming: [] })),
-    getMyGames(userId),
+    within(getMyGames(userId), SLOW_AFTER_MS, []),
     getT(),
     getLang(),
   ]);
-  const unfinished = await needsProfile(userId); // same read as getMyGames (cached per request)
+  const unfinished = await within(needsProfile(userId), shared ? 0 : SLOW_AFTER_MS, false); // same read as getMyGames (cached per request)
   const TABS = feedTabs(myGames, game, t);
   after(refreshMajorsIfStale); // keeps the majors list fresh in the background (at most every few hours)
   const liveMajors = game ? majors.live.filter((m) => (m.games as string[]).includes(game)) : majorsFor(majors.live, myGames);
@@ -245,13 +259,14 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
       {/* A quiet feed (early days): top clips, this week's events and a nudge to post, instead of emptiness. */}
       {view === "for_you" && pageNum === 0 && !before && entries.length < 5 && (
         <Suspense fallback={null}>
-          <FeedStarter myGames={myGames} city={await getMyHomeCity(userId)} region={await getViewerRegion(userId)} signedIn={!!userId} showEvents={!!userId} showClips={!guestWelcome} />
+          <FeedStarter myGames={myGames} city={await within(getMyHomeCity(userId), shared ? 0 : SLOW_AFTER_MS, null)} region={await within(getViewerRegion(userId), shared ? 0 : SLOW_AFTER_MS, HOME_REGION)} signedIn={!!userId} showEvents={!!userId} showClips={!guestWelcome} />
         </Suspense>
       )}
 
       {/* Guests (round 654): the posts come under their own heading, after the welcome, so a quiet
           feed reads as one part of Smashy rather than the whole of it. */}
       {guestWelcome && entries.length > 0 && <h2 className="px-4 pt-5 font-bold">{t("ui.guest.community")}</h2>}
+      {shared && <p role="status" className="px-4 pt-3 text-meta text-muted">{t("feed.sharedCopy")}</p>}
       {postList(active, { entries, hasMore, cursor: nextCursor })}
       {!userId && (
         <p className="px-4 pb-6 text-center text-xs text-muted">{t("feed.signedInOnly")}</p>

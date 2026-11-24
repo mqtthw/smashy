@@ -2,6 +2,8 @@
 // "Can we add junglemelee.com"). These sites have no feed Smashy may read, so only what's fixed is
 // shown: the name, the day and time it runs every week, and a link to sign up there. No entrant
 // counts, no results, no "live". If a series changes its schedule, change it here.
+// Listed like any other tournament (round 780, Matthew): a plain row with only a small tag naming the
+// site it opens. No extra line, no promotion, and it isn't named in Smashy's own posts or copy.
 // Plain logic, so it can be tested.
 import type { GameKey } from "./games";
 

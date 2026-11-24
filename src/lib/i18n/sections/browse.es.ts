@@ -85,7 +85,6 @@ export const browseEs: Record<keyof typeof browseEn, string> = {
   "browse.online.emptyOpen": "No hay brackets con inscripciones abiertas para este filtro ahora mismo. Prueba a quitar \"Inscripciones abiertas\".",
   "browse.online.empty": "No hay brackets en línea próximos para este juego ahora mismo. Vuelve pronto u organiza uno.",
   "browse.online.finished": "Terminado · Resultados",
-  "browse.online.elsewhere": "Una serie habitual en {site}: inscríbete allí",
 
   // Streams
   "browse.stream.watchLive": "Ver en vivo",

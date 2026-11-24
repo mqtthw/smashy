@@ -83,7 +83,6 @@ export const browseEn = {
   "browse.online.emptyOpen": "No brackets taking sign-ups for this filter right now. Try turning off \"Sign-ups open\".",
   "browse.online.empty": "No upcoming online brackets for this game right now. Check back soon, or host one.",
   "browse.online.finished": "Finished · Results",
-  "browse.online.elsewhere": "A regular series on {site}: sign up there",
 
   // Streams
   "browse.stream.watchLive": "Watch live",

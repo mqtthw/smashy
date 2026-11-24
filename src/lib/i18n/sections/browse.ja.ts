@@ -85,7 +85,6 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
   "browse.online.emptyOpen": "この条件でエントリー受付中の大会は現在ありません。「エントリー受付中」をオフにしてみてください。",
   "browse.online.empty": "このゲームの今後のオンライン大会は現在ありません。また後で確認するか、主催してみましょう。",
   "browse.online.finished": "終了 · 結果",
-  "browse.online.elsewhere": "{site}で定期開催：エントリーはそちらで",
 
   // Streams
   "browse.stream.watchLive": "ライブで見る",

@@ -152,7 +152,6 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
                       {r.brackets.length > 1 && (
                         <span className="mt-1 block truncate text-meta text-muted">{r.brackets.map((b) => b.name).join(" · ")}</span>
                       )}
-                      {r.elsewhere && <span className="mt-1 block text-meta text-muted">{t("browse.online.elsewhere", { site: r.elsewhere })}</span>}
                     </span>
                   </RowLink>
                 </li>

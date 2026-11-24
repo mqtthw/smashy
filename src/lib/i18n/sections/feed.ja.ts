@@ -24,6 +24,7 @@ export const feedJa: Record<keyof typeof feedEn, string> = {
   "feed.showMore": "もっと見る",
   "feed.olderPosts": "以前の投稿",
   "feed.signedInOnly": "一部の投稿はログイン中のみ表示されます。",
+  "feed.sharedCopy": "現在Smashyの動作が遅いため、全体のフィードを表示しています。1分ほどして再読み込みすると、あなたのフィードが表示されます。",
   "feed.newPosts": "↑ 新しい投稿 1件|↑ 新しい投稿 {n}件",
 
   // A quiet feed
