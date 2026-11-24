@@ -2119,6 +2119,7 @@ export const en = {
   "media.share.err.youtubeOff": "YouTube Shorts can't be shared yet. Try a Twitch clip.",
   "media.share.err.youtubeMissing": "Couldn't find that video on YouTube. It may be private or deleted.",
   "media.share.err.notShort": "Only YouTube Shorts can go in Reels, and this is a regular video.",
+  "media.share.err.notEmbeddable": "This video's owner doesn't let it play on other sites, so it can't go in Reels.",
   "media.emoji.err.type": "Use a PNG, GIF or WebP image.",
   "media.emoji.err.size": "Images can be up to 256 KB.",
   "media.emoji.err.upload": "Couldn't upload that image. Please try again.",

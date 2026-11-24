@@ -417,6 +417,7 @@ export const mediaEs: Record<keyof typeof mediaEn, string> = {
   "media.share.err.youtubeOff": "Todavía no se pueden compartir YouTube Shorts. Prueba con un clip de Twitch.",
   "media.share.err.youtubeMissing": "No se encontró ese video en YouTube. Puede ser privado o haberse borrado.",
   "media.share.err.notShort": "Solo los YouTube Shorts pueden ir en Reels, y este es un video normal.",
+  "media.share.err.notEmbeddable": "El dueño de este video no permite verlo en otros sitios, así que no puede ir en Reels.",
   "media.emoji.err.type": "Usa una imagen PNG, GIF o WebP.",
   "media.emoji.err.size": "Las imágenes pueden pesar hasta 256 KB.",
   "media.emoji.err.upload": "No se pudo subir esa imagen. Inténtalo de nuevo.",

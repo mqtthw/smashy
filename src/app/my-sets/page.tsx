@@ -65,7 +65,7 @@ function StatusBanner({ ev, t, lang }: { ev: MyEvent; t: Tr; lang: Lang }) {
       st.set.stream ? t("entering.mysets.onStream", { stream: st.set.stream }) : null,
     ].filter(Boolean).join(" · ");
     return (
-      <div className="flex flex-col gap-1 rounded-xl bg-brand p-4 text-on-brand" role="status">
+      <div className="banner-up flex flex-col gap-1 rounded-xl p-4" role="status">
         <p className="text-title font-bold">{st.set.called ? t("entering.mysets.calledNow") : t("entering.mysets.playingNow")}</p>
         <p>vs {opponent(st.set, t)} · {localRound(st.set.roundLabel, t)}</p>
         {where && <p className="font-semibold">{where}</p>}

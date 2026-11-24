@@ -52,6 +52,11 @@ export type YouTubeVideo = {
   duration: number | null; // seconds
   views: number;
   thumbnailUrl: string | null;
+  /**
+   * Whether the owner lets it play on other sites (round 817). Some turn that off, and Reels then showed
+   * YouTube's "Video unavailable: playback on other websites has been disabled by the video owner" box.
+   */
+  embeddable: boolean;
 };
 
 type VideoItem = {
@@ -59,6 +64,7 @@ type VideoItem = {
   snippet: { channelId: string; channelTitle: string; title: string; description?: string; tags?: string[]; publishedAt: string; thumbnails?: Record<string, { url: string }> };
   contentDetails?: { duration?: string };
   statistics?: { viewCount?: string };
+  status?: { embeddable?: boolean };
 };
 
 /** "PT1M5S" → 65 */
@@ -73,7 +79,7 @@ export async function getYouTubeVideos(ids: string[]): Promise<YouTubeVideo[]> {
   for (let i = 0; i < ids.length; i += 50) {
     const batch = ids.slice(i, i + 50);
     if (!batch.length) continue;
-    const { items } = await yt<{ items?: VideoItem[] }>("videos", { part: "snippet,contentDetails,statistics", id: batch.join(","), maxResults: "50" });
+    const { items } = await yt<{ items?: VideoItem[] }>("videos", { part: "snippet,contentDetails,statistics,status", id: batch.join(","), maxResults: "50" });
     for (const v of items ?? []) {
       const t = v.snippet.thumbnails ?? {};
       out.push({
@@ -87,6 +93,7 @@ export async function getYouTubeVideos(ids: string[]): Promise<YouTubeVideo[]> {
         duration: isoDuration(v.contentDetails?.duration),
         views: Math.min(Number(v.statistics?.viewCount ?? 0) || 0, 2_000_000_000),
         thumbnailUrl: (t.high ?? t.medium ?? t.default)?.url ?? null,
+        embeddable: v.status?.embeddable !== false, // missing: assume it plays, as before
       });
     }
   }
@@ -143,6 +150,7 @@ export async function searchShorts(words: string): Promise<(YouTubeVideo & { gam
   const out: (YouTubeVideo & { game: GameKey })[] = [];
   for (const v of await getYouTubeVideos(ids)) {
     if (v.duration === null || v.duration > 180) continue;
+    if (!v.embeddable) continue; // its owner doesn't let it play on other sites (round 817)
     const game = guessGame(v, null);
     if (game) out.push({ ...v, game });
   }

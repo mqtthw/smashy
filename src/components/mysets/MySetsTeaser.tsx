@@ -20,14 +20,14 @@ export default async function MySetsTeaser({ userId }: { userId: string | null }
     return (
       <Link
         href={up ? `/host/set/${hosted.id}` : `/host/${hosted.eventId}`}
-        className={`mx-4 mt-3 flex items-center gap-3 rounded-2xl p-3 ${up ? "bg-brand text-on-brand" : "border border-line hover:bg-surface"}`}
+        className={`mx-4 mt-3 flex items-center gap-3 rounded-2xl p-3 ${up ? "banner-up" : "border border-line hover:bg-surface"}`}
       >
-        <Icon name="gamepad" className="text-2xl text-brand" />
+        <Icon name="gamepad" className={`text-2xl ${up ? "" : "text-brand"}`} />
         <span className="min-w-0 flex-1">
           <span className="block font-bold">
             {hosted.state === "live" ? t("entering.mysets.playingNow") : up ? t("play.teaser.strike") : t("play.teaser.next", { name: hosted.opponent ?? t("entering.mysets.tbd") })}
           </span>
-          <span className={`block truncate text-meta ${up ? "" : "text-muted"}`}>
+          <span className={`block truncate text-meta ${up ? "text-[#ffe1dc]" : "text-muted"}`}>
             {up ? `${t("play.teaser.vs", { name: hosted.opponent ?? t("entering.mysets.tbd") })}${hosted.identifier ? ` · ${t("entering.mysets.setId", { id: hosted.identifier })}` : ""}` : hosted.eventName}
           </span>
         </span>
@@ -49,12 +49,12 @@ export default async function MySetsTeaser({ userId }: { userId: string | null }
   return (
     <Link
       href="/my-sets"
-      className={`mx-4 mt-3 flex items-center gap-3 rounded-2xl p-3 ${up ? "bg-brand text-on-brand" : "border border-line hover:bg-surface"}`}
+      className={`mx-4 mt-3 flex items-center gap-3 rounded-2xl p-3 ${up ? "banner-up" : "border border-line hover:bg-surface"}`}
     >
-      <Icon name="gamepad" className="text-2xl text-muted" />
+      <Icon name="gamepad" className={`text-2xl ${up ? "" : "text-muted"}`} />
       <span className="min-w-0 flex-1">
         <span className="block font-bold">{up ? (set.called ? t("entering.mysets.calledNow") : t("entering.mysets.playingNow")) : t("play.teaser.next", { name: vs })}</span>
-        <span className={`block truncate text-meta ${up ? "" : "text-muted"}`}>
+        <span className={`block truncate text-meta ${up ? "text-[#ffe1dc]" : "text-muted"}`}>
           {up ? `${t("play.teaser.vs", { name: vs })}${set.station ? ` · ${t("entering.mysets.station", { station: set.station })}` : ""}` : `${set.roundLabel} · ${ev.tournamentName}`}
         </span>
       </span>

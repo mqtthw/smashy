@@ -67,6 +67,7 @@ async function fetchDetails(platform: ReelPlatform, clipId: string): Promise<Det
   if (!hasYouTubeKey()) return { key: "media.share.err.youtubeOff" };
   const [video] = await getYouTubeVideos([clipId]);
   if (!video) return { key: "media.share.err.youtubeMissing" };
+  if (!video.embeddable) return { key: "media.share.err.notEmbeddable" };
   const short = await isYouTubeShort(clipId);
   if (short === null) return { key: "media.share.err.reach", values: { site: "YouTube" } };
   if (!short) return { key: "media.share.err.notShort" };

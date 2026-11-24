@@ -417,6 +417,7 @@ export const mediaJa: Record<keyof typeof mediaEn, string> = {
   "media.share.err.youtubeOff": "YouTubeショートはまだ共有できません。Twitchクリップをお試しください。",
   "media.share.err.youtubeMissing": "YouTubeでその動画が見つかりませんでした。非公開か削除された可能性があります。",
   "media.share.err.notShort": "ReelsにはYouTubeショートのみ追加できます。これは通常の動画です。",
+  "media.share.err.notEmbeddable": "この動画の投稿者が他のサイトでの再生を許可していないため、Reelsに追加できません。",
   "media.emoji.err.type": "PNG、GIF、WebPの画像を使ってください。",
   "media.emoji.err.size": "画像は256KBまでです。",
   "media.emoji.err.upload": "画像をアップロードできませんでした。もう一度お試しください。",

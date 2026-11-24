@@ -362,6 +362,23 @@ body::before {
   pointer-events: none;
 }
 
+/* Reels on a phone (round 818): dark to the edges. The strip under the clock and the band behind the
+   bottom menu used to show the site's red sky around the black clips ("the red bars are way too big"). */
+@media (width < 48rem) {
+  body.reels-open::before,
+  body.reels-open::after {
+    background: #0a0a0a;
+  }
+  /* The bottom menu takes its dark-theme glass on Reels in light mode too (round 820): its light pill
+     stood out on the black page. */
+  body.reels-open nav.glass-bar {
+    --glass-bar: rgb(40 8 8 / 0.62);
+    --glass-line: rgb(255 180 160 / 0.24);
+    --foreground: #fff1ee;
+    --muted: #d9aaa2;
+  }
+}
+
 /* Headings: page titles (h1) and section titles (h2 at title size) are bold, slightly tight, in the
    body face (round 487 replaced the serif). Add "font-sans" to a heading to leave it at its own weight. */
 @layer base {
@@ -438,6 +455,14 @@ body::before {
 }
 /* Main action on a screen: Post, Save, Join. A glossy red "jelly" button: bright top half, a hard
    line at the middle, a highlight along the top edge. It glows a little at night. */
+/* "You're up!" (round 820, Matthew chose "B, deep red"): the call to play, the same deep red in day and
+   night. bg-brand turned salmon pink at night, and the white text on it was hard to read. */
+@utility banner-up {
+  background: #d4231a;
+  color: #ffffff;
+  border: 1px solid #ff6a55;
+}
+
 @utility btn-primary {
   background: #e8301f var(--jelly-red);
   color: #ffffff;

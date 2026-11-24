@@ -31,13 +31,14 @@ const MAX_SEEN = 300;
 const WATCHED_AFTER_MS = 2000; // on screen this long counts as watched (not just scrolled past)
 const HINT_KEY = "smashy-reels-hint"; // the "swipe up" hint shows until someone moves to a second clip
 const SOUND_KEY = "smashy-reels-sound"; // "0" = this person turned sound off
-const FIT_KEY = "smashy-reels-fit"; // "whole" = this person wants wide clips shown whole on a phone (round 812)
+const FIT_KEY = "smashy-reels-fit"; // "whole" = this person wants wide clips shown whole on a phone (round 815)
 const FIT_EVENT = "smashy:reels-fit";
 
 /**
- * On a phone, a wide Twitch clip fills the screen (zoomed in, its left and right edges cut off) instead of
- * sitting as a thin strip in the middle (round 812). A button on the clip switches to the whole clip; the
- * choice is remembered on this device. Wider screens always show the whole clip.
+ * On a phone, a wide Twitch clip can fill the screen (zoomed in, its left and right edges cut off) instead of
+ * sitting as a thin strip in the middle (round 815). The whole clip is the default (Matthew, round 816: fill cut
+ * off the percent and stock counts and Twitch's own buttons); a button on the clip switches to "Fill screen",
+ * and the choice is remembered on this device. Wider screens always show the whole clip.
  */
 function useWholeClip(): [boolean, (whole: boolean) => void] {
   const whole = useSyncExternalStore(
@@ -51,12 +52,12 @@ function useWholeClip(): [boolean, (whole: boolean) => void] {
     },
     () => {
       try {
-        return window.localStorage.getItem(FIT_KEY) === "whole";
+        return window.localStorage.getItem(FIT_KEY) !== "fill";
       } catch {
-        return false;
+        return true;
       }
     },
-    () => false,
+    () => true,
   );
   const set = (next: boolean) => {
     try {
@@ -206,7 +207,7 @@ function PostVideoPlayer({ src, poster, sound, title, onEnded }: { src: string; 
 }
 
 // A wide clip filling a phone screen: the box takes the full height and width, and the player inside is as
-// tall as the box and 16:9 wide, centred, so its sides run off the screen (round 812).
+// tall as the box and 16:9 wide, centred, so its sides run off the screen (round 815).
 const FILL_BOX = "max-md:aspect-auto max-md:h-full max-md:rounded-none max-md:ring-0";
 const FILL_FRAME = "max-md:absolute max-md:left-1/2 max-md:top-0 max-md:aspect-video max-md:w-auto max-md:max-w-none max-md:-translate-x-1/2";
 
@@ -259,7 +260,7 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
   return (
     // overflow-clip, not -hidden: the blurred backdrop is drawn 25% larger, and a "hidden" box can still be
     // scrolled by the browser, so tapping a report reason slid the whole clip sideways.
-    <article className="relative flex h-full flex-col overflow-clip bg-neutral-950 text-white" aria-label={reel.title || t("media.reels.clip")}>
+    <article className={`relative flex h-full flex-col overflow-clip bg-neutral-950 text-white ${canFill && whole ? "max-md:justify-center" : ""}`} aria-label={reel.title || t("media.reels.clip")}>
       {/* Blurred backdrop from the clip's own thumbnail, so wide clips don't float in empty space. */}
       {reel.thumbnailUrl && (
         // eslint-disable-next-line @next/next/no-img-element
@@ -267,7 +268,9 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
       )}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" aria-hidden="true" />
 
-      <div className={`relative flex min-h-0 flex-1 items-center justify-center px-2 pt-14 md:px-16 ${fill ? "max-md:px-0" : ""}`}>
+      {/* A whole wide clip on a phone (round 818): its area is only as tall as the clip, so the clip and the
+          details below it sit together in the middle, instead of the clip floating with empty space around it. */}
+      <div className={`relative flex min-h-0 flex-1 items-center justify-center px-2 pt-14 md:px-16 ${fill ? "max-md:px-0" : ""} ${canFill && whole ? "max-md:flex-none" : ""}`}>
         <div className={`relative overflow-hidden rounded-xl bg-black shadow-2xl ring-1 ring-white/10 ${tall ? "aspect-[9/16] h-full max-h-[62dvh] max-w-full" : fill ? `aspect-video w-full ${FILL_BOX}` : "aspect-video w-full"}`}>
           {active && post ? (
             <PostVideoPlayer src={post.videoUrl} poster={reel.thumbnailUrl} sound={sound} title={reel.title || t("media.reels.clip")} onEnded={onEnded} />
@@ -289,23 +292,16 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
             // eslint-disable-next-line @next/next/no-img-element
             <img src={reel.thumbnailUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
           ) : null}
-          {canFill && (
-            <button
-              type="button"
-              onClick={() => setWhole(!whole)}
-              className="absolute right-2 top-2 z-10 rounded-full bg-black/60 px-2.5 py-1 text-xs font-semibold text-white ring-1 ring-white/25 backdrop-blur md:hidden"
-            >
-              {t(whole ? "media.reels.fillScreen" : "media.reels.wholeClip")}
-            </button>
-          )}
         </div>
       </div>
 
       <div className="relative flex flex-col gap-3 px-4 pb-4 pt-3 md:px-16">
         <div className="flex min-w-0 flex-col gap-1">
-          {/* Twitch's player shows the clip's title and view count on the clip itself (round 812): here the
+          {/* Twitch's player shows the clip's title and view count on the clip itself (round 815): here the
               title gets one line and the view count is left out, so they aren't said twice. */}
-          <h2 className={`${reel.platform === "twitch" && !post ? "line-clamp-1" : "line-clamp-2"} text-lg font-bold leading-snug drop-shadow`}>{reel.title || t("media.reels.untitled")}</h2>
+          {/* One line for Twitch clips (their player shows the title too) and for YouTube Shorts (round 816: a
+              tall Short needs the room more than a second line of title). */}
+          <h2 className={`${!post && (reel.platform === "twitch" || reel.platform === "youtube") ? "line-clamp-1" : "line-clamp-2"} text-lg font-bold leading-snug drop-shadow`}>{reel.title || t("media.reels.untitled")}</h2>
           {reel.title && !live && <TranslateButton text={reel.title} source={{ kind: "reel", id: reel.clipId }} tone="dark" />}
           <p className="flex flex-wrap items-center gap-x-1.5 text-sm text-white/75">
             <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold text-white">{GAMES[reel.game].short}</span>
@@ -316,11 +312,23 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
               </>
             ) : (
               <>
-                <span className="font-semibold text-white/90">{reel.channelName ?? reel.channelLogin}</span>
+                {/* A long channel name is cut short so the rest of the line ("NEW") stays on it (round 816). */}
+                <span className="min-w-0 max-w-[45%] truncate font-semibold text-white/90">{reel.channelName ?? reel.channelLogin}</span>
                 {reel.platform !== "twitch" && <span>· {t("media.reels.views", { n: reel.views, count: compact.format(reel.views) })}</span>}
               </>
             )}
             <ReelAge at={reel.createdAt} />
+            {/* Fill / whole switch, phones only (round 818): in the details, not on the clip, where it covered
+                Twitch's title (and Twitch asks that its player not be covered). */}
+            {canFill && (
+              <button
+                type="button"
+                onClick={() => setWhole(!whole)}
+                className="ml-auto rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-semibold text-white hover:bg-white/25 md:hidden"
+              >
+                {t(whole ? "media.reels.fillScreen" : "media.reels.wholeClip")}
+              </button>
+            )}
             {live && <span>· {t("media.reels.fromYouTube")}</span>}
             {reel.sharedBy && (
               <span>
@@ -449,7 +457,14 @@ export default function ReelFeed({
   const [shown, setShown] = useState(true);
   useLayoutEffect(() => {
     setShown(true); // eslint-disable-line react-hooks/set-state-in-effect -- shown again after being hidden
-    return () => setShown(false);
+    // The dark edges on a phone (globals.css, "reels-open"): only while Reels is on screen. Round 818 keyed
+    // them on the page being in the document, and Next keeps a page you leave alive but hidden, so the Feed
+    // stayed dark after a visit to Reels (round 819).
+    document.body.classList.add("reels-open");
+    return () => {
+      setShown(false);
+      document.body.classList.remove("reels-open");
+    };
   }, []);
   // The "swipe up" hint: for people who have never moved past the first clip.
   const hintSeen = useSyncExternalStore(noop, () => {

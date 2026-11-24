@@ -245,6 +245,7 @@ async function syncYouTubeShorts() {
     .eq("blocked", false);
   const since = new Date(Date.now() - SHOW_DAYS * 86400e3);
   const rows = [];
+  const blocked: string[] = []; // Shorts whose owner doesn't let them play on other sites (round 817)
   for (const c of channels ?? []) {
     let shorts: YouTubeVideo[] = [];
     try {
@@ -253,11 +254,20 @@ async function syncYouTubeShorts() {
       console.error("Shorts failed for", c.login, e instanceof Error ? e.message : e);
     }
     for (const v of shorts) {
+      if (!v.embeddable) {
+        blocked.push(v.id);
+        continue;
+      }
       const game = guessGame(v, isGameKey(c.default_game) ? c.default_game : null);
       if (game) rows.push(shortRow(v, c.login, game)); // can't tell which game: leave it out
     }
   }
   await saveCollected(rows);
+  // Already saved before the check existed (or the owner changed it since): marked unavailable, never shown.
+  if (blocked.length) {
+    const { error } = await db.from("reels").update({ unavailable: true }).in("clip_id", blocked);
+    if (error) throw error;
+  }
 
   // Older Shorts (still linked from comments and posts): refresh what YouTube says about them.
   // Ones YouTube no longer has (deleted or made private) lose their details and are marked
@@ -277,7 +287,7 @@ async function syncYouTubeShorts() {
         const row: Record<string, unknown> = shortRow(v, r.channel_login, r.game as GameKey);
         delete row.clip_id;
         delete row.game; // keep the game it was filed under
-        update = { ...row, unavailable: false };
+        update = { ...row, unavailable: !v.embeddable }; // its owner may have turned off playing elsewhere (round 817)
       } else {
         update = { title: "", thumbnail_url: null, view_count: 0, unavailable: true, fetched_at: new Date().toISOString() };
       }

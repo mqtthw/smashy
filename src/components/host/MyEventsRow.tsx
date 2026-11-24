@@ -60,7 +60,7 @@ export default function MyEventsRow({ events, startgg = [], now = 0 }: { events:
             e.state === "done"
               ? { ...(e.placement ? placed(e.placement) : { k: "hostsetup.mine.resultsIn" }), cls: "border border-line text-foreground" }
               : e.status.kind === "up"
-                ? { k: "hostsetup.mine.youreUp", cls: "bg-brand text-white" }
+                ? { k: "hostsetup.mine.youreUp", cls: "banner-up" }
                 : e.state === "live" && e.status.kind === "waiting" && now - e.startAt > BRACKET_HOURS
                   ? { k: "hostsetup.mine.pending", cls: "border border-line text-foreground" }
                   : e.state === "live"
