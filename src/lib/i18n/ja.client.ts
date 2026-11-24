@@ -1772,6 +1772,7 @@ export const ja = {
   "browse.entrants": "参加者 1人|参加者 {n}人",
   "browse.events.moreNav": "大会関連メニュー",
   "browse.events.openAnyBracket": "トーナメント表を開く",
+  "browse.past.navLink": "過去の大会",
   "browse.events.mySets": "自分のセット",
   "browse.events.scenesRulesets": "シーンとルールセット",
   "browse.events.strikeStages": "ステージ拒否",

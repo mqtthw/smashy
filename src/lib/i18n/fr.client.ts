@@ -1772,6 +1772,7 @@ export const fr = {
   "browse.entrants": "1 inscrit|{n} inscrits",
   "browse.events.moreNav": "Plus pour les tournois",
   "browse.events.openAnyBracket": "Ouvrir un bracket",
+  "browse.past.navLink": "Tournois passés",
   "browse.events.mySets": "Mes sets",
   "browse.events.scenesRulesets": "Scènes et rulesets",
   "browse.events.strikeStages": "Bannir des stages",

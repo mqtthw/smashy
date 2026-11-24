@@ -1772,6 +1772,7 @@ export const es = {
   "browse.entrants": "1 inscrito|{n} inscritos",
   "browse.events.moreNav": "Más sobre eventos",
   "browse.events.openAnyBracket": "Abrir cualquier bracket",
+  "browse.past.navLink": "Torneos pasados",
   "browse.events.mySets": "Mis sets",
   "browse.events.scenesRulesets": "Escenas y rulesets",
   "browse.events.strikeStages": "Strikear stages",

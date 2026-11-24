@@ -465,6 +465,58 @@ export async function getRecentRegionTournaments(region: string, weeks = 8): Pro
   return raws.flatMap((raw) => toSmashyTournament(raw) ?? []).reverse();
 }
 
+/** How many past tournaments one finder search reads at most (newest first): 6 requests of 50. */
+export const PAST_SEARCH_MAX = 300;
+
+/**
+ * The past-tournament finder (round 794, /events/past): finished tournaments in a region and/or with a name,
+ * in one game or all of Smashy's, optionally in one year, newest first. start.gg can't sort or filter by
+ * size, so this reads up to the newest PAST_SEARCH_MAX matches and the page filters by entrants. Kept in
+ * the shared cache: a day for past years (they don't change), an hour for this year. `total` is how many
+ * start.gg has and `read` how many were read, so the page can say when only the newest were.
+ */
+export async function searchPastTournaments(q: {
+  region: string | null;
+  name: string | null;
+  game: GameKey | null;
+  year: number | null;
+}): Promise<{ tournaments: SmashyTournament[]; total: number; read: number }> {
+  "use cache: remote";
+  const thisYear = new Date().getUTCFullYear();
+  if (q.year && q.year < thisYear) cacheLife("days");
+  else cacheLife("hours");
+  const query = `
+    query PastTournaments($page: Int!, $perPage: Int!, $videogameIds: [ID]!, $countryCode: String, $addrState: String, $name: String, $afterDate: Timestamp, $beforeDate: Timestamp) {
+      tournaments(query: {
+        page: $page
+        perPage: $perPage
+        sortBy: "startAt desc"
+        filter: { past: true, countryCode: $countryCode, addrState: $addrState, name: $name, afterDate: $afterDate, beforeDate: $beforeDate, videogameIds: $videogameIds }
+      }) {
+        pageInfo { total totalPages }
+        nodes { ${TOURNAMENT_FIELDS} }
+      }
+    }
+  `;
+  const vars = {
+    videogameIds: q.game ? GAMES[q.game].startggIds : SUPPORTED_GAME_IDS,
+    ...(q.region ? startggRegionFilter(q.region) : {}),
+    ...(q.name ? { name: q.name } : {}),
+    ...(q.year ? { afterDate: Date.UTC(q.year, 0, 1) / 1000, beforeDate: Date.UTC(q.year + 1, 0, 1) / 1000 } : {}),
+  };
+  let total = 0;
+  const raws = await adaptivePages(async (page, perPage) => {
+    const data = await startggQuery<{
+      tournaments: { pageInfo: { total: number; totalPages: number }; nodes: RawTournament[] | null };
+    }>(query, { page, perPage, ...vars });
+    total = Math.max(total, data.tournaments.pageInfo.total ?? 0);
+    return { totalPages: data.tournaments.pageInfo.totalPages, nodes: data.tournaments.nodes ?? [] };
+  }, 50, PAST_SEARCH_MAX);
+  // In person and online alike (a name search finds both); practice brackets named "test" left out.
+  const tournaments = raws.flatMap((raw) => (TEST_NAME.test(raw.name) ? [] : (toSmashyTournament(raw, "all") ?? [])));
+  return { tournaments, total, read: raws.length };
+}
+
 // ---------- A player's tournament history ----------
 
 export type HistoryEntry = {

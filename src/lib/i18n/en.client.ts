@@ -1773,6 +1773,7 @@ export const en = {
   "browse.entrants": "1 entrant|{n} entrants",
   "browse.events.moreNav": "More for events",
   "browse.events.openAnyBracket": "Open any bracket",
+  "browse.past.navLink": "Past tournaments",
   "browse.events.mySets": "My sets",
   "browse.events.scenesRulesets": "Scenes & rulesets",
   "browse.events.strikeStages": "Strike stages",
