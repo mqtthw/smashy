@@ -34,7 +34,10 @@ async function Composer({ searchParams }: { searchParams: PageProps<"/discuss/ne
           {game === "general" ? t("feed.discuss.newPlayerNote") : t("feed.discuss.newPlayerNoteGame", { game: GAMES[game].short })}
         </p>
       )}
-      <ThreadComposer defaultGame={game} defaultCharacter={character} defaultVs={vs && vs !== character ? vs : ""} defaultFlair={newPlayer ? "newplayer" : undefined} />
+      {/* The key starts the form afresh when the link's choices change (round 810). The app reuses this
+          page when only the address's "?..." part changes, so coming from "Ask a question about Melee"
+          after an earlier visit kept the old flair and game instead of New player and Melee. */}
+      <ThreadComposer key={`${game}|${character}|${vs}|${newPlayer}`} defaultGame={game} defaultCharacter={character} defaultVs={vs && vs !== character ? vs : ""} defaultFlair={newPlayer ? "newplayer" : undefined} />
     </LangProvider>
   );
 }
