@@ -25,6 +25,10 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
   // Events page
   "browse.events.moreNav": "大会関連メニュー",
   "browse.events.openAnyBracket": "トーナメント表を開く",
+  "browse.followed.title": "フォロー中のプレイヤー",
+  "browse.followed.nothing": "start.ggに予定はありません",
+  "browse.followed.cantCheck": "今はstart.ggを確認できません",
+  "browse.followed.more": "最近フォローした{n}人を表示しています。",
   "browse.past.navLink": "過去の大会",
   "browse.past.title": "過去の大会",
   "browse.past.intro": "start.ggの終了した大会を、地域・名前・ゲーム・年・規模で探せます。新しい順か大きい順に並びます。結果はstart.ggのものです。",

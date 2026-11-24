@@ -13,6 +13,7 @@ import { eventRows } from "@/lib/eventRows";
 import { dropFinished, getRegionEvents, refreshEventsIfStale, refreshRegionIfStale } from "@/lib/events";
 import { getOnlineTournaments, type SmashyTournament } from "@/lib/startgg";
 import RecentWinners from "@/components/events/RecentWinners";
+import FollowedPlayers from "@/components/events/FollowedPlayers";
 import { bracketPath } from "@/lib/brackets/types";
 import { upcomingRecurring } from "@/lib/recurringOnline";
 import OnlineEventsList, { type OnlineRow } from "@/components/events/OnlineEventsList";
@@ -224,6 +225,10 @@ async function EventsTabs({ searchParams }: { searchParams: PageProps<"/events">
       />
       <Suspense fallback={null}>
         <MyEvents />
+      </Suspense>
+      {/* Players the member follows and where they compete next (round 797). */}
+      <Suspense fallback={null}>
+        <FollowedPlayers />
       </Suspense>
       {online ? (
         <Suspense fallback={<CardListSkeleton count={5} label={t("browse.events.loadingOnline")} className="p-4" />}>

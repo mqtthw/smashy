@@ -22,6 +22,22 @@ export function canonicalLinkHeader(host: string | null, pathname: string, searc
   return `<${canonicalOrigin}${pathname}${search}>; rel="canonical"`;
 }
 
+/** Smashy's first address, from before smashy.gg. It still serves the site. */
+export const OLD_HOST = "smashy-five.vercel.app";
+
+/**
+ * Where a page visit on the old address should go (round 796, Matthew: "Yes, redirect it"): the same
+ * page on smashy.gg. Only page visits (GET and HEAD); sign-in returns (/auth), the site's own requests
+ * (/api, /_next) and form posts are left alone so nothing in flight on the old address breaks. Null
+ * everywhere else, including Vercel's preview addresses, which must stay viewable.
+ */
+export function oldAddressRedirect(host: string | null, method: string, pathname: string, search: string, canonicalOrigin = "https://smashy.gg"): string | null {
+  if ((host ?? "").toLowerCase().split(":")[0] !== OLD_HOST) return null;
+  if (method !== "GET" && method !== "HEAD") return null;
+  if (/^\/(api|auth|_next)(\/|$)/.test(pathname)) return null;
+  return `${canonicalOrigin}${pathname}${search}`;
+}
+
 /**
  * The site's own preview picture (app/opengraph-image.tsx). A page that sets `openGraph` replaces
  * the layout's, picture included, so it names this one again. Careful: a picture named here also

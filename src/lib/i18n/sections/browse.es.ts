@@ -25,6 +25,10 @@ export const browseEs: Record<keyof typeof browseEn, string> = {
   // Events page
   "browse.events.moreNav": "Más sobre eventos",
   "browse.events.openAnyBracket": "Abrir cualquier bracket",
+  "browse.followed.title": "Jugadores que sigues",
+  "browse.followed.nothing": "Nada próximo en start.gg",
+  "browse.followed.cantCheck": "No se pudo consultar start.gg ahora mismo",
+  "browse.followed.more": "Se muestran los {n} que seguiste más recientemente.",
   "browse.past.navLink": "Torneos pasados",
   "browse.past.title": "Torneos pasados",
   "browse.past.intro": "Busca torneos terminados en start.gg por región, nombre, juego, año y tamaño, los más recientes o los más grandes primero. Los resultados vienen de start.gg.",

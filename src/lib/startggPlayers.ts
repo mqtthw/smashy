@@ -8,9 +8,9 @@ import "server-only";
 import { cacheLife } from "next/cache";
 import { rememberPlayers } from "./playerIndex";
 import { rankPlayerHits, type PlayerHit, type PlayerMatch } from "./playerSearch";
-import { startggRegionFilter } from "./regions";
+import { regionFromGeo, startggRegionFilter } from "./regions";
 import { SUPPORTED_GAME_IDS, startggQuery } from "./startgg";
-import { gameOfEvent } from "./games";
+import { gameOfEvent, type GameKey } from "./games";
 import type { PlayerResult } from "./playerResults";
 
 const HOURS = { stale: 300, revalidate: 3600, expire: 86400 };
@@ -138,4 +138,51 @@ export async function getPlayerResults(playerId: string): Promise<PlayerResult[]
       },
     ];
   });
+}
+
+/** One upcoming tournament on a player's start.gg account, with the brackets in Smashy's games. */
+export type UpcomingTournament = {
+  slug: string;
+  name: string;
+  startAt: number;
+  timezone: string | null;
+  city: string | null;
+  region: string | null;
+  online: boolean;
+  events: { name: string; game: GameKey }[];
+};
+
+/**
+ * The tournaments a player's start.gg account is on, still to come, soonest first (round 797: following a
+ * player). start.gg lists the ones the account signed up for and also ones it helps run, and can't tell the
+ * two apart, so the page says so. Only tournaments with a bracket in Smashy's games. A player whose start.gg
+ * player has no account (added by an organizer) has none. One request, kept in the shared cache for hours.
+ */
+export async function getPlayerUpcoming(playerId: string): Promise<UpcomingTournament[]> {
+  "use cache: remote";
+  cacheLife("hours");
+  if (!/^\d{1,12}$/.test(playerId)) return [];
+  type Raw = {
+    slug: string; name: string; startAt: number; timezone: string | null; city: string | null; addrState: string | null; countryCode: string | null; isOnline: boolean | null;
+    events: { name: string; videogame: { id: number | string } | null }[] | null;
+  };
+  const { player } = await startggQuery<{ player: { user: { tournaments: { nodes: Raw[] | null } | null } | null } | null }>(
+    `query PlayerUpcoming($id: ID!, $games: [ID]) { player(id: $id) { user { tournaments(query: { page: 1, perPage: 10, filter: { upcoming: true } }) { nodes {
+      slug name startAt timezone city addrState countryCode isOnline events(filter: { videogameId: $games }) { name videogame { id } }
+    } } } } }`,
+    { id: playerId, games: SUPPORTED_GAME_IDS },
+  );
+  return (player?.user?.tournaments?.nodes ?? [])
+    .flatMap((r): UpcomingTournament[] => {
+      const events = (r.events ?? []).flatMap((e) => {
+        const game = gameOfEvent(e);
+        return game ? [{ name: e.name, game }] : [];
+      });
+      if (!events.length || !r.slug) return [];
+      return [{
+        slug: r.slug.replace(/^tournament\//, ""), name: r.name, startAt: r.startAt, timezone: r.timezone, city: r.city,
+        region: regionFromGeo(r.countryCode, r.addrState), online: !!r.isOnline, events,
+      }];
+    })
+    .sort((a, b) => a.startAt - b.startAt);
 }

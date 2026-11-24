@@ -19,6 +19,9 @@ import PlayerMajors from "@/components/history/PlayerMajors";
 import ImportHistory from "@/components/stats/ImportHistory";
 import PlayerResultsCard from "@/components/stats/PlayerResultsCard";
 import PlayerLiveCard from "@/components/stats/PlayerLiveCard";
+import PlayerUpcoming from "@/components/stats/PlayerUpcoming";
+import FollowPlayerButton from "@/components/stats/FollowPlayerButton";
+import { followsPlayer } from "@/lib/playerFollows";
 import SearchableSets from "@/components/stats/SearchableSets";
 import { HeadToHeadCard, PlayerStatsCard } from "@/components/stats/StatsCards";
 import { CardListSkeleton } from "@/components/ui/Skeleton";
@@ -181,11 +184,23 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
         <Suspense fallback={null}>
           <SeasonRanks keys={[startggKey(player.playerId)]} viewerId={userId} className="mt-1" />
         </Suspense>
+        {/* Follow any player (round 797): private; their upcoming tournaments show on Events. */}
+        <div className="mt-2">
+          <Suspense fallback={null}>
+            <FollowButton playerId={player.playerId} tag={player.tag} userId={userId} />
+          </Suspense>
+        </div>
       </header>
       {/* In a bracket right now (round 455): still in or out, who they lost to, who's next. */}
       {!guestBusy && !copy && (
         <Suspense fallback={null}>
           <PlayerLiveCard playerId={player.playerId} tag={player.tag} />
+        </Suspense>
+      )}
+      {/* Tournaments still to come on their start.gg account (round 797). */}
+      {!guestBusy && !copy && (
+        <Suspense fallback={null}>
+          <PlayerUpcoming playerId={player.playerId} tag={player.tag} />
         </Suspense>
       )}
       {/* Top 8s at the majors in Smash history (docs/archive-plan.md, step A5). */}
@@ -218,6 +233,11 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
  * The header's picture: their most played character's stock icon, big, with the next two smaller
  * beside it. A player with no character data (or none with an icon) gets the tag's first letter.
  */
+async function FollowButton({ playerId, tag, userId }: { playerId: string; tag: string; userId: string | null }) {
+  const following = await followsPlayer(userId, playerId).catch(() => false);
+  return <FollowPlayerButton playerId={playerId} tag={tag} following={following} signedIn={!!userId} />;
+}
+
 async function PlayerMainIcon({ playerId, tag, saved }: { playerId: string; tag: string; saved?: PlayerSet[] }) {
   const sets = saved ?? (await recentSets(playerId)); // only their own characters are read, so a saved copy needs no hiding
   const icons = (sets ? computeStats(sets).characters : [])

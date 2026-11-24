@@ -5,11 +5,14 @@ import { NextResponse, type NextRequest } from "next/server";
 import { GUEST_PAGES_RETRY_S, countsAsCrawlerPage, countsAsGuestPage, crawlerName, crawlerOffLimits, isPlayerPage, isAiTrainingCrawler, isCrawler, notABrowser, takeCrawlerPage, takeGuestPage } from "@/lib/guestPages";
 import { updateSession } from "@/lib/supabase/proxy";
 import { apiBucket, takeApiCall } from "@/lib/apiLimit";
-import { canonicalLinkHeader } from "@/lib/siteMeta";
+import { canonicalLinkHeader, oldAddressRedirect } from "@/lib/siteMeta";
 
 export async function proxy(request: NextRequest) {
   // robots.txt asks crawlers to skip these pages; the ones that say who they are get told here too.
   // Round 475: and so are scrapers that pose as a browser but don't load pages the way one does.
+  // The old address sends page visits to smashy.gg (round 796): one site for people and for Google.
+  const moved = oldAddressRedirect(request.headers.get("host"), request.method, request.nextUrl.pathname, request.nextUrl.search);
+  if (moved) return NextResponse.redirect(moved, 308);
   const ua = request.headers.get("user-agent");
   // AI training crawlers (round 655): robots.txt asks them to stay off; the ones that come anyway get a
   // cheap refusal here, before any page is built. robots.txt itself stays readable.
