@@ -5,7 +5,7 @@ import { CHARACTERS } from "@/lib/characters";
 import { T } from "@/lib/i18n/client";
 
 export const metadata: Metadata = {
-  title: "Resources",
+  title: "Smash Bros. character guides and resources",
   description: "Guides, combo videos, matchup notes, tech, and frame data for Melee, Ultimate, and Project+, organized by character.",
 };
 

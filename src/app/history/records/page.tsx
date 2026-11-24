@@ -20,7 +20,7 @@ import { getNameLinks, linksForGame, nameKey } from "@/lib/playerLinks";
 import { playersHidingStats } from "@/lib/playerStats";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: (await getT())("history.records.metaTitle") };
+  return { title: (await getT())("history.records.metaTitle"), description: "All-time records at Super Smash Bros. majors: most major wins, most top 8s, longest winning runs at one tournament and the characters that won the most, game by game." };
 }
 
 const year = (iso: string) => iso.slice(0, 4);

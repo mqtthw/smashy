@@ -5,13 +5,17 @@
 // its own when a run saved nothing (all filled, or start.gg busy: the fill gives way to visitors).
 // Plain logic, so it can be tested.
 
-/** Runs per day (about 4 minutes each: an hour of filling at most, in the quiet hours after 11:00 UTC). */
-export const MAX_RUNS = 12;
+/**
+ * Runs per day (about 4 minutes each, in the quiet hours after 11:00 UTC). 12 until round 801; 30 (two hours
+ * at most) while saved copies of the players listed for search are being filled. A run that saves nothing
+ * still ends the chain, so once everything is filled it stops after the first run.
+ */
+export const MAX_RUNS = 30;
 
-export type FillResult = { saved: number; standings: number; brackets: number };
+export type FillResult = { saved: number; standings: number; brackets: number; players?: number };
 
 /** Whether run number `run` (1 = the first) should start the next one, given what it saved. */
 export function shouldContinue(run: number, result: FillResult | null): boolean {
   if (!result || run >= MAX_RUNS) return false;
-  return result.saved + result.standings + result.brackets > 0;
+  return result.saved + result.standings + result.brackets + (result.players ?? 0) > 0;
 }

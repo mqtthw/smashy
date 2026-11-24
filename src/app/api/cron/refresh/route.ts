@@ -18,6 +18,7 @@ import { runRefresh } from "@/lib/refreshJobs";
 import { sendEventReminders } from "@/lib/rsvps";
 import { sendWeeklyDigests } from "@/lib/digest";
 import { sendHostedReminders } from "@/lib/hostedPromotion";
+import { sendFollowedSignups } from "@/lib/playerFollows";
 
 export const maxDuration = 300; // the majors scan can take a minute; give it room
 
@@ -52,6 +53,9 @@ export async function GET(request: Request) {
       return { regions, digest };
     })(),
   ]);
+  // "MkLeo signed up for …" for people who follow a player (round 799): up to a minute, before the history
+  // fill takes what's left of start.gg's room.
+  const follows = await sendFollowedSignups({ until: Date.now() + 60_000 }).catch((e) => (console.error("Followed player alerts failed", e), "failed"));
   // Smash history: winners and top 8s of past majors nobody has opened yet, a few dozen a day. Last, so
   // it only uses the start.gg room the jobs above leave (it stops when start.gg is busy).
   const archive = await fillArchive().catch((e) => (console.error("Smash history fill failed", e), "failed"));
@@ -59,5 +63,5 @@ export async function GET(request: Request) {
   const sets = await fillMajorSets({ until: started + 270_000 }).catch((e) => (console.error("Smash history sets failed", e), "failed"));
   // ...and keeps filling in the quiet hours after this, a few minutes per run (round 583), until it's all saved.
   after(() => startHistoryFill(1).catch((e) => console.error(e instanceof Error ? e.message : e)));
-  return Response.json({ majors, reels, events, images, chats, reminders, ...regionsAndDigest, archive, sets });
+  return Response.json({ majors, reels, events, images, chats, reminders, ...regionsAndDigest, follows, archive, sets });
 }

@@ -60,9 +60,11 @@ src/lib/messages.ts
 src/lib/moderation.ts
 src/lib/official.ts
 src/lib/pickemPicks.ts
+src/lib/playerFollows.ts
 src/lib/playerIndex.ts
 src/lib/playerLinks.ts
 src/lib/playerSearchable.ts
+src/lib/playerSnapshotFill.ts
 src/lib/playerSnapshots.ts
 src/lib/playerStats.ts
 src/lib/postImages.ts

@@ -5,6 +5,7 @@ import { timingSafeEqual } from "node:crypto";
 import { after } from "next/server";
 import { fillArchive } from "@/lib/majorEvents";
 import { fillMajorSets } from "@/lib/majorSets";
+import { fillPlayerSnapshots } from "@/lib/playerSnapshotFill";
 import { MAX_RUNS, shouldContinue, type FillResult } from "@/lib/historyFillChain";
 import { startHistoryFill } from "@/lib/historyFillStart";
 
@@ -25,9 +26,12 @@ export async function GET(request: Request) {
     let result: FillResult | null = null;
     try {
       const archive = await fillArchive();
-      const sets = await fillMajorSets({ until: started + 240_000, maxRequests: 400 });
-      result = { saved: archive.saved, standings: archive.standings, brackets: sets.brackets };
-      console.log(`Smash history fill run ${run}:`, { ...archive, ...sets });
+      // Sets get the first part of the run; saved copies of the players listed for search get the rest
+      // (round 801). When the history is all filled, the sets step returns at once and the players get it all.
+      const sets = await fillMajorSets({ until: started + 150_000, maxRequests: 400 });
+      const copies = await fillPlayerSnapshots({ until: started + 265_000 }).catch((e) => (console.error("Player copies fill failed:", e instanceof Error ? e.message : e), { players: 0, left: -1 }));
+      result = { saved: archive.saved, standings: archive.standings, brackets: sets.brackets, players: copies.players };
+      console.log(`Smash history fill run ${run}:`, { ...archive, ...sets, playerCopies: copies.players, playersLeft: copies.left });
     } catch (e) {
       console.error(`Smash history fill run ${run} failed:`, e instanceof Error ? e.message : e);
     }

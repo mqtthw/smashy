@@ -14,7 +14,11 @@ describe("Smash history fill chain", () => {
   });
 
   it("stops after the day's last run", () => {
-    expect(MAX_RUNS).toBeLessThanOrEqual(12);
+    expect(MAX_RUNS).toBeLessThanOrEqual(30); // two hours a day at most (12 until round 801, raised for the players' copies)
     expect(shouldContinue(MAX_RUNS, { saved: 5, standings: 5, brackets: 5 })).toBe(false);
+  });
+  it("keeps going while players' saved copies are being filled, and stops when a run saves nothing", () => {
+    expect(shouldContinue(1, { saved: 0, standings: 0, brackets: 0, players: 3 })).toBe(true);
+    expect(shouldContinue(1, { saved: 0, standings: 0, brackets: 0, players: 0 })).toBe(false);
   });
 });

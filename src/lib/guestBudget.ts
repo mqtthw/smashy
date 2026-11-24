@@ -67,6 +67,24 @@ export async function guestSiteRoom(take: (want: number, perMinute: number) => P
   }
 }
 
+/**
+ * Whether a visit says it came from a search engine's results page (its Referer). Used to put such visits
+ * last in line on player pages that search engines aren't told about (round 798): the bulk scraper of
+ * 2026-11-23 marks every request "from www.google.com", and a real searcher can only land on the players
+ * Smashy lists for search (a top 8 at a major). So a "from Google" visit to any other player's page gets
+ * the saved page with "Try again" instead of a live lookup; pressing Try again comes from Smashy itself
+ * and is looked up as usual. That keeps the scraper from using up the pace real visitors share.
+ */
+export function arrivedFromSearch(referer: string | null): boolean {
+  if (!referer) return false;
+  try {
+    const host = new URL(referer).hostname.toLowerCase();
+    return /(^|\.)(google|bing|duckduckgo|yahoo|yandex|baidu|ecosia|brave)\.[a-z.]{2,6}$/.test(host);
+  } catch {
+    return false;
+  }
+}
+
 /** For tests: forget every address. */
 export function resetGuestLookups() {
   seen.clear();

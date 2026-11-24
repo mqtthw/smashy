@@ -27,7 +27,7 @@ function withNode(text: string, node: React.ReactNode) {
   return <>{before}{node}{after}</>;
 }
 
-export const metadata: Metadata = pageMeta("New players", "New to smash? Ask anything, find people at your level, and get started with the community's own guides and videos.");
+export const metadata: Metadata = pageMeta("New to Smash? Getting started in competitive Smash Bros.", "New to smash? Ask anything, find people at your level, and get started with the community's own guides and videos.");
 
 const MAIN_GAMES = GAME_KEYS.filter((g) => !GAMES[g].legacy);
 const LOBBY_GAMES: readonly GameKey[] = ["melee", "ultimate", "pplus"];

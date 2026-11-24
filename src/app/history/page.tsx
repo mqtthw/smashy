@@ -32,7 +32,7 @@ import { getNameLinks } from "@/lib/playerLinks";
 import { ARCHIVE_FIRST_YEAR, archiveYears, getPastMajors } from "@/lib/majors";
 import { pageMeta } from "@/lib/siteMeta";
 
-export const metadata: Metadata = pageMeta("Smash history", "Past Super Smash Bros. majors, year by year, with their top 8s, brackets and VODs.");
+export const metadata: Metadata = pageMeta("Smash Bros. tournament history: every major since 2003", "Past Super Smash Bros. majors, year by year, with their top 8s, brackets and VODs: Melee, Ultimate, Brawl, Smash 4, 64 and Project+.");
 
 function href(year: number, game: GameKey | null) {
   const q = new URLSearchParams({ year: String(year) });

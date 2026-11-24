@@ -14,7 +14,7 @@ import { toEmbed } from "@/lib/embeds";
 import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 
-export const metadata: Metadata = pageMeta("VODs", "Videos of sets from locals and majors, added by the community: search by player, tournament or game.");
+export const metadata: Metadata = pageMeta("Smash Bros. set VODs", "Videos of Super Smash Bros. sets from locals and majors, added by the community: search by player, tournament or game.");
 
 async function List({ searchParams }: { searchParams: PageProps<"/vods">["searchParams"] }) {
   const sp = await searchParams;

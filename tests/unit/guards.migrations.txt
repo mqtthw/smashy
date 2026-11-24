@@ -177,3 +177,4 @@
 20270125580000_suspended_cant_write.sql
 20270125590000_player_snapshots.sql
 20270125620000_player_follows.sql
+20270125640000_followed_player_checks.sql

@@ -32,8 +32,8 @@ import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
-  title: "Events",
-  description: "Smash majors worldwide, plus tournaments and weeklies near you.",
+  title: "Smash tournaments near you and majors worldwide",
+  description: "Find Super Smash Bros. tournaments and weeklies near you, majors worldwide and online brackets, with live results for Melee, Ultimate and more.",
 };
 
 /** Tournaments in the viewer's region (their profile setting, their rough location, or a region they picked). */

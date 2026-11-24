@@ -1,7 +1,7 @@
 // Player lookup for visitors who aren't signed in (round 248): the two limits that keep bots from
 // using up start.gg's 80 requests a minute.
 import { beforeEach, describe, expect, it } from "vitest";
-import { GUEST_BUSY_AT, GUEST_LOOKUPS, GUEST_SITE_PER_MINUTE, GUEST_TICKET, GUEST_WINDOW_MS, guestSiteRoom, refundGuestLookup, resetGuestLookups, takeGuestLookup } from "@/lib/guestBudget";
+import { GUEST_BUSY_AT, GUEST_LOOKUPS, GUEST_SITE_PER_MINUTE, GUEST_TICKET, GUEST_WINDOW_MS, arrivedFromSearch, guestSiteRoom, refundGuestLookup, resetGuestLookups, takeGuestLookup } from "@/lib/guestBudget";
 
 const T0 = 1_800_000_000_000;
 
@@ -62,5 +62,14 @@ describe("the whole site's pace for guests (step S3)", () => {
     expect(takeGuestLookup("1.2.3.4", 5000, 0)).toBe("slow_down");
     refundGuestLookup("1.2.3.4");
     expect(takeGuestLookup("1.2.3.4", 5000, 0)).toBe("ok");
+  });
+});
+
+describe("visits that say they came from a search engine (round 798)", () => {
+  it("knows the search engines by their address, in any country", () => {
+    for (const r of ["https://www.google.com/", "https://www.google.co.uk/search?q=x", "https://google.de/", "https://www.bing.com/search", "https://duckduckgo.com/", "https://search.yahoo.com/x"]) expect(arrivedFromSearch(r)).toBe(true);
+  });
+  it("not Smashy itself, other sites, look-alikes, or nothing at all", () => {
+    for (const r of ["https://smashy.gg/events", "https://www.start.gg/", "https://notgoogle.com/", "https://google.evil.example/", "https://example.com/?from=google.com", "nonsense", "", null]) expect(arrivedFromSearch(r)).toBe(false);
   });
 });

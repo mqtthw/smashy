@@ -27,7 +27,7 @@ import { HeadToHeadCard, PlayerStatsCard } from "@/components/stats/StatsCards";
 import { CardListSkeleton } from "@/components/ui/Skeleton";
 import { getClaim, getImportState, getSavedResults, saveResults } from "@/lib/claimedHistory";
 import { mergeResults } from "@/lib/playerResults";
-import type { GuestLookup } from "@/lib/guestBudget";
+import { arrivedFromSearch, type GuestLookup } from "@/lib/guestBudget";
 import { guestLookup } from "@/lib/guestLookup";
 import { computeStats, getLinkedPlayer, getRecentSets, getVisibleRecentSets, headToHead, hideHiddenOpponents, playerOnSmashy } from "@/lib/playerStats";
 import { getPlayerResults, getStartggPlayer } from "@/lib/startggPlayers";
@@ -120,7 +120,10 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
     }
   }
   if (!userId && !copy) {
-    const gate = await guestLookup();
+    // A visit that says it came from a search engine, to a player search engines aren't told about (no top 8
+    // at a major): no live lookup, the saved page with "Try again" instead (round 798, see arrivedFromSearch).
+    const lowPriority = arrivedFromSearch((await headers()).get("referer")) && !(await playerSearchFacts(id).catch(() => null))?.top8;
+    const gate = lowPriority ? "busy" : await guestLookup();
     if (gate === "slow_down") return <GuestLimit gate={gate} next={`/players/${id}`} t={t} />;
     guestBusy = gate === "busy";
   }

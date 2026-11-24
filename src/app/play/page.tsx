@@ -24,7 +24,7 @@ import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import { signInPath } from "@/lib/returnTo";
 
-export const metadata: Metadata = { title: "Play", description: "Find netplay lobbies, ranked online ladders and chat with the smash community." };
+export const metadata: Metadata = { title: "Play Smash online: netplay lobbies and ladders", description: "Find Super Smash Bros. netplay lobbies, ranked online ladders and chat with the smash community." };
 
 /** Rooms to show as tabs: main games, older games this player plays (or is viewing), and General. */
 function roomTabs(myGames: string[], current: Room, general: string): { key: Room; label: string }[] {

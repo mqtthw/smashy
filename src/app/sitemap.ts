@@ -38,7 +38,6 @@ async function entries(): Promise<MetadataRoute.Sitemap> {
     { url: url("/history"), changeFrequency: "weekly", priority: 0.6 },
     { url: url("/history/timeline"), changeFrequency: "weekly", priority: 0.5 },
     { url: url("/history/records"), changeFrequency: "weekly", priority: 0.5 },
-    { url: url("/history/head-to-head"), changeFrequency: "monthly", priority: 0.4 },
     { url: url("/help"), changeFrequency: "monthly", priority: 0.4 },
     { url: url("/vods"), changeFrequency: "daily", priority: 0.6 },
     { url: url("/ladder"), changeFrequency: "daily", priority: 0.6 },

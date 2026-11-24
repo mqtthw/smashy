@@ -8,7 +8,7 @@ import OnlineToday from "./OnlineToday";
 import { T } from "@/lib/i18n/client";
 
 export const metadata: Metadata = {
-  title: "Brackets",
+  title: "Live Smash Bros. brackets",
   description: "Fast brackets for any start.gg or parry.gg event, majors live now, and brackets running live on Smashy. Comment on sets and share them.",
 };
 

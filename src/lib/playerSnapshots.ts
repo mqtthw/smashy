@@ -32,9 +32,9 @@ export const snapshotWorthSaving = (viewerSignedIn: boolean, hasMajorTop8: boole
 export const snapshotStale = (savedAt: string, now: number) => now - Date.parse(savedAt) > SNAPSHOT_FRESH_MS;
 
 /** The row to save: valid id, lists cut to size. Null when there's nothing worth a row. */
-export function snapshotRow(playerId: string, sets: PlayerSet[], results: PlayerResult[], savedAt: string) {
+export function snapshotRow(playerId: string, sets: PlayerSet[], results: PlayerResult[], savedAt: string, allowEmpty = false) {
   if (!/^\d{1,12}$/.test(playerId)) return null;
-  if (!sets.length && !results.length) return null; // an empty answer would replace a good copy
+  if (!sets.length && !results.length && !allowEmpty) return null; // an empty answer would replace a good copy (the background fill allows it: there is no copy yet)
   return { player_id: Number(playerId), sets: sets.slice(0, SNAPSHOT_SETS), results: results.slice(0, SNAPSHOT_RESULTS), saved_at: savedAt };
 }
 
@@ -65,18 +65,21 @@ export async function hasMajorTop8(playerId: string): Promise<boolean> {
 
 /**
  * Keep a lookup's answer. Meant for `after()`: it never throws, and a failure only costs the copy.
+ * Answers whether a copy was written.
  * `sets` are the raw sets (who hides their stats is applied when the copy is shown, not here).
  */
-export async function savePlayerSnapshot(opts: { playerId: string; sets: PlayerSet[]; results: PlayerResult[]; viewerSignedIn: boolean; hasCopy?: boolean }): Promise<void> {
+export async function savePlayerSnapshot(opts: { playerId: string; sets: PlayerSet[]; results: PlayerResult[]; viewerSignedIn: boolean; hasCopy?: boolean; allowEmpty?: boolean }): Promise<boolean> {
   try {
     const now = Date.now();
-    const row = snapshotRow(opts.playerId, opts.sets, opts.results, new Date(now).toISOString());
-    if (!row || !snapshotDue(opts.playerId, now)) return;
-    if (!snapshotWorthSaving(opts.viewerSignedIn, opts.viewerSignedIn || !!opts.hasCopy || (await hasMajorTop8(opts.playerId)), opts.hasCopy)) return;
+    const row = snapshotRow(opts.playerId, opts.sets, opts.results, new Date(now).toISOString(), opts.allowEmpty);
+    if (!row || !snapshotDue(opts.playerId, now)) return false;
+    if (!snapshotWorthSaving(opts.viewerSignedIn, opts.viewerSignedIn || !!opts.hasCopy || (await hasMajorTop8(opts.playerId)), opts.hasCopy)) return false;
     const { error } = await createAdminClient().from("player_snapshots").upsert({ ...row, sets: row.sets as unknown as Json, results: row.results as unknown as Json }, { onConflict: "player_id" });
     if (error) throw new Error(error.message);
+    return true;
   } catch (e) {
     console.error("Saving a player's snapshot failed", e instanceof Error ? e.message : e);
+    return false;
   }
 }
 

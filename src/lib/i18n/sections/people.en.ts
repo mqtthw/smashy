@@ -246,7 +246,7 @@ export const peopleEn = {
   "people.player.compare": "Compare with another player",
   "people.follow.button": "Follow",
   "people.follow.following": "Following",
-  "people.follow.private": "Only you can see who you follow. Their next tournaments show on Events.",
+  "people.follow.private": "Only you can see who you follow. Their next tournaments show on Events, and you'll get an alert when they sign up for a new one.",
   "people.follow.err": "Couldn't save that. Try again in a moment.",
   "people.follow.tooMany": "You can follow up to {n} players. Unfollow someone first.",
   "people.upcoming.title": "Upcoming tournaments",

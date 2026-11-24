@@ -248,7 +248,7 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
   "people.player.compare": "他のプレイヤーと比較",
   "people.follow.button": "フォロー",
   "people.follow.following": "フォロー中",
-  "people.follow.private": "フォローしているのはあなただけに見えます。次の大会はイベントに表示されます。",
+  "people.follow.private": "フォローしているのはあなただけに見えます。次の大会はイベントに表示され、新しい大会にエントリーすると通知が届きます。",
   "people.follow.err": "保存できませんでした。少ししてからもう一度お試しください。",
   "people.follow.tooMany": "フォローできるのは{n}人までです。先に誰かのフォローを外してください。",
   "people.upcoming.title": "今後の大会",

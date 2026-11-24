@@ -248,7 +248,7 @@ export const peopleEs: Record<keyof typeof peopleEn, string> = {
   "people.player.compare": "Comparar con otro jugador",
   "people.follow.button": "Seguir",
   "people.follow.following": "Siguiendo",
-  "people.follow.private": "Solo tú ves a quién sigues. Sus próximos torneos aparecen en Eventos.",
+  "people.follow.private": "Solo tú ves a quién sigues. Sus próximos torneos aparecen en Eventos, y recibirás un aviso cuando se inscriban en uno nuevo.",
   "people.follow.err": "No se pudo guardar. Inténtalo de nuevo en un momento.",
   "people.follow.tooMany": "Puedes seguir hasta {n} jugadores. Deja de seguir a alguien primero.",
   "people.upcoming.title": "Próximos torneos",

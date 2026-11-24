@@ -12,7 +12,7 @@ import { ClipSkeleton } from "@/components/ui/Skeleton";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 
-export const metadata: Metadata = { title: "Reels", description: "The best clips from smash tournament streams, one after another." };
+export const metadata: Metadata = { title: "Smash Bros. clips", description: "The best clips from Super Smash Bros. tournament streams, one after another." };
 
 async function Reels({ searchParams }: { searchParams: PageProps<"/reels">["searchParams"] }) {
   const { game: gameParam, q: qParam } = await searchParams;
