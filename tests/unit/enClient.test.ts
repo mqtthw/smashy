@@ -49,7 +49,11 @@ export function browserKeys(): Set<string> {
   };
   // Every file the browser bundle can include: "use client" files and what they import (not type-only).
   const seen = new Set<string>();
-  const stack = [...files].filter(([, s]) => /^\s*["']use client["']/.test(s)).map(([p]) => p);
+  // …and server files that hand <T> a key they work out (`<T k={cardKey(c)} />`, `<T k={w.text} />`):
+  // the key is written somewhere in that file or in what it imports, so those are read the same way.
+  // (The "What is Smashy?" page lacked 25 phrases this way: it failed to start cleanly in the browser
+  // and fetched all of English to recover.)
+  const stack = [...files].filter(([, s]) => /^\s*["']use client["']/.test(s) || /<T\s+k=\{(?!["'`])/.test(s)).map(([p]) => p);
   while (stack.length) {
     const p = stack.pop()!;
     if (seen.has(p)) continue;

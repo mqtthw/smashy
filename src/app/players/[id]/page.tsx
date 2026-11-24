@@ -68,12 +68,17 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
   if (!/^\d{1,12}$/.test(id)) notFound();
   const userId = await getUserId();
   const [lang, t] = await Promise.all([getLang(), getT()]);
+  // A guest while start.gg is in heavy use (round 781): start.gg isn't asked, and the page shows what
+  // Smashy has saved (the tag and their top 8s at majors) with a note, instead of a wall that says
+  // "busy, sign in". On a busy day that wall was all most visitors would have seen of player lookup.
+  let guestBusy = false;
   if (!userId) {
     const gate = await guestLookup();
-    if (gate !== "ok") return <GuestLimit gate={gate} next={`/players/${id}`} t={t} />;
+    if (gate === "slow_down") return <GuestLimit gate={gate} next={`/players/${id}`} t={t} />;
+    guestBusy = gate === "busy";
   }
 
-  const [asked, onSmashy] = await Promise.all([getStartggPlayer(id).catch(() => undefined), playerOnSmashy(id)]);
+  const [asked, onSmashy] = await Promise.all([guestBusy ? Promise.resolve(undefined) : getStartggPlayer(id).catch(() => undefined), playerOnSmashy(id)]);
   // start.gg didn't answer (busy, or down): carry on with the tag Smashy saved the last time it saw
   // this player (round 733). Their majors and saved results don't need start.gg, so the page still has
   // something to show instead of only "try again in a minute".
@@ -86,15 +91,21 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
     return <p className="p-6 text-muted">{t("people.player.hidden")}</p>;
   }
   if (player === null) notFound();
+  // Busy and nothing saved about this player: the short "busy" card is all there is to show.
+  if (!player && guestBusy) return <GuestLimit gate="busy" next={`/players/${id}`} t={t} />;
   if (!player) return <p className="p-6 text-muted">{t("people.startggDown")}</p>;
 
   return (
     <LangProvider lang={lang}>
       <header className="flex flex-col items-center gap-1 px-4 pt-4 text-center">
         {/* Their most played character in a big glossy bubble (rounds 486 and 494), from the same sets as the stats below. */}
-        <Suspense fallback={<span className="portrait-bubble h-32 w-32" aria-hidden />}>
-          <PlayerMainIcon playerId={player.playerId} tag={player.tag} />
-        </Suspense>
+        {guestBusy ? (
+          <span className="portrait-bubble relative h-32 w-32"><span className="text-5xl font-bold text-[#7a2a20]" aria-hidden>{[...player.tag][0]?.toUpperCase()}</span></span>
+        ) : (
+          <Suspense fallback={<span className="portrait-bubble h-32 w-32" aria-hidden />}>
+            <PlayerMainIcon playerId={player.playerId} tag={player.tag} />
+          </Suspense>
+        )}
         <p className="mt-2 text-meta text-muted">{t("people.player.via")}</p>
         {busy && <p role="status" className="rounded-lg bg-surface px-3 py-1 text-meta text-muted">{t("people.player.busySaved")}</p>}
         <h1 className="flex max-w-full flex-col items-center text-3xl leading-tight break-words">
@@ -120,16 +131,29 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
         </Suspense>
       </header>
       {/* In a bracket right now (round 455): still in or out, who they lost to, who's next. */}
-      <Suspense fallback={null}>
-        <PlayerLiveCard playerId={player.playerId} tag={player.tag} />
-      </Suspense>
+      {!guestBusy && (
+        <Suspense fallback={null}>
+          <PlayerLiveCard playerId={player.playerId} tag={player.tag} />
+        </Suspense>
+      )}
       {/* Top 8s at the majors in Smash history (docs/archive-plan.md, step A5). */}
       <Suspense fallback={null}>
         <PlayerMajors playerId={player.playerId} />
       </Suspense>
-      <Suspense fallback={<CardListSkeleton count={3} label={t("people.player.loadingSets")} className="p-4" />}>
-        <PlayerSets playerId={player.playerId} tag={player.tag} viewerId={userId} />
-      </Suspense>
+      {guestBusy ? (
+        <div className="m-4 card flex flex-col gap-2 p-4">
+          <p className="text-sm text-muted">{t("people.player.busy")}</p>
+          <div className="flex flex-wrap gap-2">
+            {/* A plain link, so pressing it loads the page again and asks start.gg afresh. */}
+            <a href={`/players/${id}`} className="btn btn-md btn-primary">{t("people.player.tryAgain")}</a>
+            <Link href={`/signin?next=${encodeURIComponent(`/players/${id}`)}`} className="btn btn-md btn-outline">{t("people.player.signInOrJoin")}</Link>
+          </div>
+        </div>
+      ) : (
+        <Suspense fallback={<CardListSkeleton count={3} label={t("people.player.loadingSets")} className="p-4" />}>
+          <PlayerSets playerId={player.playerId} tag={player.tag} viewerId={userId} />
+        </Suspense>
+      )}
     </LangProvider>
   );
 }

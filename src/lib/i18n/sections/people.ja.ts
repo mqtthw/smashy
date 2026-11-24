@@ -233,6 +233,7 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
   "people.player.manyTitle": "短時間に多くのプレイヤーを調べています",
   "people.player.busy": "Smashyはstart.ggからプレイヤー情報を読み込んでいますが、1分あたりのリクエスト数に上限があり、進行中のトーナメント表が優先されます。少し待ってからもう一度お試しいただくか、ログインしてください。メンバーは待たずに使えます。",
   "people.player.many": "ゲストが調べられるプレイヤーの数は数分ごとに制限されています。しばらくしてからもう一度お試しいただくか、ログインして続けてください。",
+  "people.player.tryAgain": "もう一度試す",
   "people.player.signInOrJoin": "ログインまたは登録",
   "people.player.hidden": "このプレイヤーの成績はSmashyでは表示されていません。",
   "people.player.via": "プレイヤー · start.gg経由",

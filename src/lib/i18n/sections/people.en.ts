@@ -231,6 +231,7 @@ export const peopleEn = {
   "people.player.manyTitle": "That's a lot of players in a short time",
   "people.player.busy": "Smashy reads players from start.gg, which only allows so many requests a minute, and live brackets come first. Try again in a minute, or sign in: members don't wait.",
   "people.player.many": "Visitors can look up a limited number of players every few minutes. Try again in a little while, or sign in to keep going.",
+  "people.player.tryAgain": "Try again",
   "people.player.signInOrJoin": "Sign in or join",
   "people.player.hidden": "This player's stats aren't shown on Smashy.",
   "people.player.via": "Player · via start.gg",

@@ -233,6 +233,7 @@ export const peopleEs: Record<keyof typeof peopleEn, string> = {
   "people.player.manyTitle": "Son muchos jugadores en poco tiempo",
   "people.player.busy": "Smashy obtiene los jugadores de start.gg, que solo permite cierto número de solicitudes por minuto, y los brackets en vivo van primero. Inténtalo de nuevo en un minuto, o inicia sesión: los miembros no esperan.",
   "people.player.many": "Los visitantes pueden buscar un número limitado de jugadores cada pocos minutos. Inténtalo de nuevo en un rato, o inicia sesión para seguir.",
+  "people.player.tryAgain": "Reintentar",
   "people.player.signInOrJoin": "Inicia sesión o únete",
   "people.player.hidden": "Las estadísticas de este jugador no se muestran en Smashy.",
   "people.player.via": "Jugador · vía start.gg",
