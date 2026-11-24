@@ -7,7 +7,7 @@ import type { ActionResult } from "@/lib/actionErrors";
 import { byPlayNow, reportResult } from "@/lib/bracketEngine";
 import { loadEngineSets, playersWithAccounts, saveChanges, withBracketLock } from "@/lib/hostedBracket";
 import { accountsBehind, slotInSet } from "@/lib/hostedTeams";
-import { assignSetups } from "@/lib/hostedSetups";
+import { assignSetups, stationNotes } from "@/lib/hostedSetups";
 import { getHostedEvent, runBy, runsEvent, type HostedEvent } from "@/lib/hostedEvents";
 import { contactInfoReason } from "@/lib/guardrails";
 import { applyLive, cleanStation, finalScoreProblem, finalsAgree, freshLive, livePhase, liveScore, recordGame, type LiveAction, type LiveState, type PlayerSlot } from "@/lib/liveSet";
@@ -367,14 +367,14 @@ export async function setStation(setId: string, raw: string): Promise<ActionResu
           .select("id", { count: "exact", head: true })
           .eq("type", "event_update")
           .eq("event_href", `/host/set/${row.id}`)
-          .or(sentInAnyLanguage("alert.ev.onStation"))
+          .or(`${sentInAnyLanguage("alert.ev.onStation")},${sentInAnyLanguage("alert.ev.onStationVs")}`)
           .gt("created_at", new Date(Date.now() - 10 * 60_000).toISOString())
       ).count ?? 0
     : 0;
   if (station && !recently) {
-    const players = await playersWithAccounts([row.p1_id, row.p2_id]);
-    const trOf = await translatorsFor(players);
-    if (players.length) await createAdminClient().from("notifications").insert(players.map((id) => ({ user_id: id, actor_id: null, type: "event_update", event_name: trOf(id)("alert.ev.onStation", { event: event.name, station }).slice(0, 200), event_href: `/host/set/${row.id}` })));
+    const db = createAdminClient();
+    const notes = await stationNotes(db, [{ setId: row.id, p1: row.p1_id, p2: row.p2_id, station }], event.name);
+    if (notes.length) await db.from("notifications").insert(notes);
   }
   // The numbered setup this set left (or the one it didn't take) can go to a set that's waiting.
   await assignSetups(event.id);

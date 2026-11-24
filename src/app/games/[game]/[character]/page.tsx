@@ -224,6 +224,8 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
 
       <section className="flex flex-col">
         <h2 className="mb-2 font-bold">{t("media.char.recentPosts", { name })}</h2>
+        {/* Their board in Discuss (round 807): threads tagged with them, like Smashboards' character boards. */}
+        <Link href={`/discuss?game=${game}&character=${character}`} className="mb-2 self-start link text-sm">{t("media.char.board", { name })} →</Link>
         {posts === null ? (
           <p className="text-sm text-muted">{t("media.char.postsFailed")}</p>
         ) : posts.length === 0 ? (

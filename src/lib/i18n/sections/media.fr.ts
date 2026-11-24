@@ -214,6 +214,7 @@ export const mediaFr: Record<keyof typeof mediaEn, string> = {
   "media.char.noneOfType": "Pas encore de ressources de ce type. Sois le premier !",
   "media.char.none": "Pas encore de ressources. Sois le premier !",
   "media.char.recentPosts": "Publications récentes sur {name}",
+  "media.char.board": "Sujets sur {name} dans Discussions",
   "media.char.postsFailed": "Impossible de charger les publications pour le moment. Réessaie dans une minute.",
   "media.char.noPosts": "Pas encore de publications taguées.",
   "media.lib.guide": "Guides",

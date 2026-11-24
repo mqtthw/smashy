@@ -6,7 +6,9 @@ import ThreadRow from "@/components/discuss/ThreadRow";
 import TabBar from "@/components/ui/TabBar";
 import { FeedSkeleton } from "@/components/ui/Skeleton";
 import { unixNow } from "@/lib/format";
-import { GAMES, gamesFor } from "@/lib/games";
+import { GAMES, gamesFor, type GameKey } from "@/lib/games";
+import { CHARACTERS, characterName } from "@/lib/characters";
+import CharacterPicker from "@/components/discuss/CharacterPicker";
 import { FEED_GAMES, FLAIRS, isFlair, type FeedGame } from "@/lib/postConstants";
 import { getFeed, getThreads } from "@/lib/posts";
 import PostCard from "@/components/feed/PostCard";
@@ -19,7 +21,7 @@ import { flairKey } from "@/components/feed/flairKey";
 import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 
-type Search = { game?: string; sort?: string; flair?: string; t?: string; page?: string; nr?: string };
+type Search = { game?: string; sort?: string; flair?: string; t?: string; page?: string; nr?: string; character?: string };
 
 function parse(sp: Search) {
   const game = (FEED_GAMES as readonly string[]).includes(String(sp.game)) ? (sp.game as FeedGame) : undefined;
@@ -28,22 +30,31 @@ function parse(sp: Search) {
   const window: TopWindow = TOP_WINDOWS.includes(sp.t as TopWindow) ? (sp.t as TopWindow) : "week";
   const page = Math.min(40, Math.max(0, Number.parseInt(String(sp.page ?? "0"), 10) || 0));
   const noReplies = sp.nr === "1";
-  return { game, sort, flair, window, page, noReplies };
+  // A character's board (round 807): only with a game picked, and only a character of that game.
+  const character = game && game !== "general" && CHARACTERS[game].some((c) => c.key === sp.character) ? sp.character : undefined;
+  return { game, sort, flair, window, page, noReplies, character };
 }
 
 export async function generateMetadata({ searchParams }: PageProps<"/discuss">): Promise<Metadata> {
-  const { game } = parse((await searchParams) as Search);
-  const name = game && game !== "general" ? GAMES[game].name : "Smash";
+  const { game, character } = parse((await searchParams) as Search);
+  const gameName = game && game !== "general" ? GAMES[game].name : "Smash";
+  const who = game && game !== "general" && character ? characterName(game, character) : null;
+  const name = who ? `${who} (${GAMES[game as GameKey].short})` : gameName;
   return {
     ...pageMeta(`${name} discussions`, `Questions, analysis, news and talk about ${name}, from the smash community.`),
-    alternates: { canonical: game ? `/discuss?game=${game}` : "/discuss" },
+    alternates: { canonical: game ? `/discuss?game=${game}${character ? `&character=${character}` : ""}` : "/discuss" },
   };
 }
+
+/** "New thread", already set to the game and character being looked at. */
+const newThreadHref = (game: FeedGame | undefined, character: string | undefined) =>
+  `/discuss/new${game ? `?game=${game}${character ? `&character=${character}` : ""}` : ""}`;
 
 function href(base: ReturnType<typeof parse>, change: Partial<ReturnType<typeof parse>>) {
   const v = { ...base, page: 0, ...change };
   const p = new URLSearchParams();
   if (v.game) p.set("game", v.game);
+  if (v.character) p.set("character", v.character);
   if (v.sort !== "hot") p.set("sort", v.sort);
   if (v.sort === "top" && v.window !== "week") p.set("t", v.window);
   if (v.flair) p.set("flair", v.flair);
@@ -62,7 +73,7 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
   const now = unixNow();
   return (
     <LangProvider lang={lang}>
-      <TabBar sticky scroll label={t("feed.discuss.board")} active={f.game ?? "all"} tabs={tabs.map((tab) => ({ ...tab, href: href(f, { game: tab.key === "all" ? undefined : (tab.key as FeedGame) }) }))} />
+      <TabBar sticky scroll label={t("feed.discuss.board")} active={f.game ?? "all"} tabs={tabs.map((tab) => ({ ...tab, href: href(f, { game: tab.key === "all" ? undefined : (tab.key as FeedGame), character: undefined }) }))} />
       <div className="flex flex-col gap-2 border-b border-line px-4 py-3">
         <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t("feed.discuss.sortThreads")}>
           {THREAD_SORTS.map((s) => (
@@ -81,6 +92,19 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
               </Link>
             ))}
         </div>
+        {/* A character's board (round 807), like Smashboards' character boards: once a game is picked. */}
+        {f.game && f.game !== "general" && (
+          <div className="flex flex-wrap items-center gap-2">
+            <CharacterPicker
+              characters={CHARACTERS[f.game]}
+              value={f.character}
+              hrefFor={Object.fromEntries([["", href(f, { character: undefined })], ...CHARACTERS[f.game].map((c) => [c.key, href(f, { character: c.key })])])}
+            />
+            {f.character && (
+              <Link href={`/games/${f.game}/${f.character}`} className="link text-sm">{t("feed.discuss.characterPage", { name: characterName(f.game, f.character) ?? "" })}</Link>
+            )}
+          </div>
+        )}
         <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible" role="group" aria-label={t("feed.discuss.filterFlair")}>
           <Link href={href(f, { flair: undefined })} aria-current={!f.flair ? "page" : undefined} className="chip shrink-0">{t("feed.discuss.everything")}</Link>
           {FLAIRS.map((fl) => (
@@ -97,10 +121,10 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
               game={f.game}
               title={f.noReplies ? t("feed.discuss.allAnswered") : t("feed.discuss.empty")}
               body={f.noReplies ? t("feed.discuss.allAnsweredBody") : t("feed.discuss.emptyBody")}
-              action={<Link href={`/discuss/new${f.game ? `?game=${f.game}` : ""}`} className="btn btn-md btn-primary">{t("feed.discuss.start")}</Link>}
+              action={<Link href={newThreadHref(f.game, f.character)} className="btn btn-md btn-primary">{t("feed.discuss.start")}</Link>}
             />
           </div>
-          {(f.game || f.flair || f.noReplies) && <HotEverywhere userId={userId} now={now} />}
+          {(f.game || f.flair || f.noReplies || f.character) && <HotEverywhere userId={userId} now={now} />}
           {/* No threads on the whole board (round 783): the newest posts from the Feed, so the page isn't a dead end. */}
           {!f.game && !f.flair && !f.noReplies && f.page === 0 && <FromTheFeed userId={userId} now={now} />}
         </>
@@ -141,9 +165,9 @@ export default function DiscussPage(props: PageProps<"/discuss">) {
 }
 
 async function NewThreadButton({ searchParams }: { searchParams: PageProps<"/discuss">["searchParams"] }) {
-  const { game } = parse((await searchParams) as Search);
+  const { game, character } = parse((await searchParams) as Search);
   return (
-    <Link href={`/discuss/new${game ? `?game=${game}` : ""}`} className="btn btn-md btn-primary shrink-0">
+    <Link href={newThreadHref(game, character)} className="btn btn-md btn-primary shrink-0">
       <T k="feed.discuss.newThread" />
     </Link>
   );

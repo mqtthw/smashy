@@ -72,13 +72,7 @@ export async function assignSetups(eventId: string): Promise<number> {
     }
     if (!given.length) return 0;
     // Tell the players where to go (a team's members with accounts; walk-ins have nobody to tell).
-    const accounts = await accountsBehind(given.flatMap((g) => [g.row.p1_id, g.row.p2_id]), db);
-    const trOf = await translatorsFor([...accounts.values()].flat()); // each in their own language
-    const notes = given.flatMap((g) =>
-      [g.row.p1_id, g.row.p2_id]
-        .flatMap((id) => (id ? (accounts.get(id) ?? []) : []))
-        .map((user_id) => ({ user_id, actor_id: null, type: "event_update", event_name: trOf(user_id)("alert.ev.onStation", { event: ev.name as string, station: g.station }).slice(0, 200), event_href: `/host/set/${g.row.id}` })),
-    );
+    const notes = await stationNotes(db, given.map((g) => ({ setId: g.row.id, p1: g.row.p1_id, p2: g.row.p2_id, station: g.station })), ev.name as string);
     if (notes.length) {
       const { error } = await db.from("notifications").insert(notes);
       if (error) console.error("setup notifications failed", error.message);
@@ -89,4 +83,41 @@ export async function assignSetups(eventId: string): Promise<number> {
     console.error("assigning setups failed", e instanceof Error ? e.message : e);
     return 0;
   }
+}
+
+/**
+ * "Your set vs Zain in Melee Weekly is on Setup 3", for each player with an account on either side (a team's
+ * members), in their own language (round 808: a TO asked start.gg to name the station and opponent in the
+ * call). The opponent is a member's or walk-in's tag; a team has neither, so a team event's note leaves the
+ * opponent out. Used when setups are handed out and when a TO moves a set to one by hand.
+ */
+export async function stationNotes(
+  db: ReturnType<typeof createAdminClient>,
+  sets: { setId: string; p1: string | null; p2: string | null; station: string }[],
+  eventName: string,
+) {
+  const sides = [...new Set(sets.flatMap((g) => [g.p1, g.p2]).filter((id): id is string => !!id))];
+  if (!sides.length) return [];
+  const [accounts, { data: profiles }, { data: guests }] = await Promise.all([
+    accountsBehind(sides, db),
+    db.from("profiles").select("id, tag").in("id", sides),
+    db.from("hosted_guests").select("id, tag").in("id", sides),
+  ]);
+  const tag = new Map([...(profiles ?? []), ...(guests ?? [])].map((p) => [p.id as string, p.tag as string]));
+  const trOf = await translatorsFor([...accounts.values()].flat());
+  return sets.flatMap((g) =>
+    ([[g.p1, g.p2], [g.p2, g.p1]] as const).flatMap(([me, them]) => {
+      const opponent = them ? tag.get(them) : undefined;
+      return (me ? (accounts.get(me) ?? []) : []).map((user_id) => ({
+        user_id,
+        actor_id: null,
+        type: "event_update",
+        event_name: (opponent
+          ? trOf(user_id)("alert.ev.onStationVs", { event: eventName, station: g.station, opponent })
+          : trOf(user_id)("alert.ev.onStation", { event: eventName, station: g.station })
+        ).slice(0, 200),
+        event_href: `/host/set/${g.setId}`,
+      }));
+    }),
+  );
 }

@@ -212,6 +212,7 @@ export const mediaEn = {
   "media.char.noneOfType": "No resources of this type yet. Be the first!",
   "media.char.none": "No resources yet. Be the first!",
   "media.char.recentPosts": "Recent {name} posts",
+  "media.char.board": "{name} threads in Discussions",
   "media.char.postsFailed": "Couldn't load posts right now. Try again in a minute.",
   "media.char.noPosts": "No tagged posts yet.",
   "media.lib.guide": "Guides",

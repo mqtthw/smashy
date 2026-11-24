@@ -53,6 +53,7 @@ export const alertEn = {
   "alert.ev.reported": "{reporter} reported your set: {winner} won {score}. Report the same if that's right ({event}).",
   "alert.ev.denied": "The TO didn't confirm the reported result of your set in {event}. Check with them, then report again.",
   "alert.ev.onStation": "Your set in {event} is on {station}.",
+  "alert.ev.onStationVs": "Your set vs {opponent} in {event} is on {station}.",
   "alert.followSignup": "{tag} signed up for {event}",
   "alert.ev.code": "{event}: {who} added their code: {code}",
   "alert.ev.yourOpponent": "Your opponent",

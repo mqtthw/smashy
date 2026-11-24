@@ -55,6 +55,7 @@ export const alertFr: Record<keyof typeof alertEn, string> = {
   "alert.ev.reported": "{reporter} a envoyé le résultat de ton set : {winner} a gagné {score}. Envoie le même si c'est correct ({event}).",
   "alert.ev.denied": "Le TO n'a pas confirmé le résultat envoyé pour ton set dans {event}. Vois avec lui, puis renvoie-le.",
   "alert.ev.onStation": "Ton set dans {event} est sur {station}.",
+  "alert.ev.onStationVs": "Ton set contre {opponent} dans {event} est sur {station}.",
   "alert.followSignup": "{tag} s'est inscrit·e à {event}",
   "alert.ev.code": "{event} : {who} a ajouté son code : {code}",
   "alert.ev.yourOpponent": "Ton adversaire",

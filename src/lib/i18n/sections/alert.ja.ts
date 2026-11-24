@@ -52,6 +52,7 @@ export const alertJa: Record<keyof typeof alertEn, string> = {
   "alert.ev.reported": "{reporter}さんがあなたのセットを報告しました：{winner}が{score}で勝利。正しければ同じ結果を報告してください（{event}）。",
   "alert.ev.denied": "{event}であなたのセットの報告結果が主催者に承認されませんでした。主催者に確認してから、もう一度報告してください。",
   "alert.ev.onStation": "{event}のあなたのセットは{station}です。",
+  "alert.ev.onStationVs": "{event}の{opponent}とのセットは{station}です。",
   "alert.followSignup": "{tag}が{event}にエントリーしました",
   "alert.ev.code": "{event}：{who}さんがコードを追加しました：{code}",
   "alert.ev.yourOpponent": "対戦相手",

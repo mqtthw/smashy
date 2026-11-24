@@ -214,6 +214,7 @@ export const mediaJa: Record<keyof typeof mediaEn, string> = {
   "media.char.noneOfType": "この種類の攻略情報はまだありません。最初の投稿者になりましょう！",
   "media.char.none": "攻略情報はまだありません。最初の投稿者になりましょう！",
   "media.char.recentPosts": "最近の{name}の投稿",
+  "media.char.board": "ディスカッションの{name}スレッド",
   "media.char.postsFailed": "現在投稿を読み込めません。少し待ってからもう一度お試しください。",
   "media.char.noPosts": "タグ付きの投稿はまだありません。",
   "media.lib.guide": "攻略",

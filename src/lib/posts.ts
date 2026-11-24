@@ -977,6 +977,7 @@ export const THREADS_PAGE_SIZE = 25;
 export async function getThreads(opts: {
   game?: FeedGame;
   flair?: Flair;
+  character?: string; // a character's board (round 807): threads tagged with them, in the game picked
   noReplies?: boolean; // only threads nobody has replied to yet
   sort: ThreadSort;
   window?: TopWindow;
@@ -989,6 +990,7 @@ export async function getThreads(opts: {
   let q = supabase.from("posts").select("id, created_at, like_count, reply_count").not("title", "is", null).is("parent_id", null).is("removed_at", null);
   if (opts.game) q = q.eq("game", opts.game);
   if (opts.flair) q = q.eq("flair", opts.flair);
+  if (opts.character) q = q.eq("character", opts.character);
   if (opts.noReplies) q = q.eq("reply_count", 0);
   const nowMs = Date.now();
   const since = (days: number) => new Date(nowMs - days * 86_400_000).toISOString();
@@ -1000,6 +1002,7 @@ export async function getThreads(opts: {
     let older = supabase.from("posts").select("id").not("title", "is", null).is("parent_id", null).is("removed_at", null).lte("created_at", since(30));
     if (opts.game) older = older.eq("game", opts.game);
     if (opts.flair) older = older.eq("flair", opts.flair);
+    if (opts.character) older = older.eq("character", opts.character);
     if (opts.noReplies) older = older.eq("reply_count", 0);
     const [{ data, error }, { data: old }] = await Promise.all([
       q.gt("created_at", since(30)).order("created_at", { ascending: false }).limit(400),

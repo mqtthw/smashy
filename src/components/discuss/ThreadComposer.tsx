@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { createPost, type ComposeState } from "@/app/feed-actions";
 import GameOptions from "@/components/GameOptions";
 import { AddPhotoButton, DraftImages, imagesField, MAX_IMAGES, useAddImages, type DraftImage } from "@/components/feed/ImagePicker";
@@ -46,11 +46,22 @@ export default function ThreadComposer({ defaultGame = "general", defaultCharact
     } catch {}
   }, [title, body]);
 
+  // Once per posted thread (round 809). The app keeps this page as it was when you leave it, so on
+  // coming back to "New thread" the posted thread's id was still here and this sent you to that thread
+  // again instead of showing the form (Matthew, 2026-11-24). The form is also emptied for the next one.
+  const opened = useRef<string | null>(null);
   useEffect(() => {
-    if (!state.postId) return;
+    if (!state.postId || opened.current === state.postId) return;
+    opened.current = state.postId;
     try {
       window.localStorage.removeItem(DRAFT_KEY);
     } catch {}
+    void Promise.resolve().then(() => {
+      setTitle("");
+      setBody("");
+      setImages([]);
+      setSpoiler(false);
+    });
     router.push(`/post/${state.postId}`);
   }, [state.postId, router]);
 
