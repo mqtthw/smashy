@@ -5,6 +5,7 @@ import type { MetadataRoute } from "next";
 import { cacheLife } from "next/cache";
 import { CHARACTERS } from "@/lib/characters";
 import { GAME_KEYS } from "@/lib/games";
+import { majorHref } from "@/lib/handMajors";
 import { siteUrl } from "@/lib/siteMeta";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createGuestClient, hasSupabase } from "@/lib/supabase/guest";
@@ -35,6 +36,9 @@ async function entries(): Promise<MetadataRoute.Sitemap> {
     { url: url("/seasons"), changeFrequency: "daily", priority: 0.7 },
     { url: url("/history"), changeFrequency: "weekly", priority: 0.6 },
     { url: url("/history/timeline"), changeFrequency: "weekly", priority: 0.5 },
+    { url: url("/history/records"), changeFrequency: "weekly", priority: 0.5 },
+    { url: url("/history/head-to-head"), changeFrequency: "monthly", priority: 0.4 },
+    { url: url("/help"), changeFrequency: "monthly", priority: 0.4 },
     { url: url("/vods"), changeFrequency: "daily", priority: 0.6 },
     { url: url("/ladder"), changeFrequency: "daily", priority: 0.6 },
     { url: url("/pickem"), changeFrequency: "daily", priority: 0.6 },
@@ -52,7 +56,10 @@ async function entries(): Promise<MetadataRoute.Sitemap> {
   }
 
   const db = createGuestClient();
-  const [threads, highlights, scenes, hosted, matchupGuides, matchupPosts] = await Promise.all([
+  const [majors, threads, highlights, scenes, hosted, matchupGuides, matchupPosts] = await Promise.all([
+    // Every major in Smash history (round 784): each has a page with its top 8, and "<major> results" is
+    // what people search for. Only upcoming tournaments were listed before, so Google wasn't told of these.
+    db.from("majors").select("slug, start_at").eq("hidden", false).order("start_at", { ascending: false }).limit(3000),
     db.from("posts").select("id, created_at, edited_at").not("title", "is", null).is("parent_id", null).is("removed_at", null).eq("spoiler", false).order("created_at", { ascending: false }).limit(2000),
     db.from("highlights").select("id, created_at").is("removed_at", null).order("vote_count", { ascending: false }).limit(2000),
     db.from("scenes").select("slug").limit(500),
@@ -60,6 +67,7 @@ async function entries(): Promise<MetadataRoute.Sitemap> {
     db.from("highlights").select("game, character, vs_character").is("removed_at", null).not("vs_character", "is", null).limit(2000),
     db.from("posts").select("game, character, vs_character").is("removed_at", null).not("vs_character", "is", null).limit(2000),
   ]);
+  for (const m of majors.data ?? []) out.push({ url: url(majorHref(m.slug)), lastModified: m.start_at, changeFrequency: "yearly", priority: 0.6 });
   for (const t of threads.data ?? []) out.push({ url: url(`/post/${t.id}`), lastModified: t.edited_at ?? t.created_at, changeFrequency: "daily", priority: 0.7 });
   for (const h of highlights.data ?? []) out.push({ url: url(`/h/${h.id}`), lastModified: h.created_at, changeFrequency: "monthly", priority: 0.6 });
   for (const s of scenes.data ?? []) out.push({ url: url(`/scenes/${s.slug}`), changeFrequency: "weekly", priority: 0.5 });
@@ -85,9 +93,10 @@ async function entries(): Promise<MetadataRoute.Sitemap> {
   // Upcoming start.gg tournaments from the saved region lists (Texas and every other region). These
   // lists are server-only, so they're read with the admin client; only public slugs and dates are used.
   const upcoming = await upcomingTournamentSlugs();
-  for (const slug of upcoming.slugs) out.push({ url: url(`/events/${slug}`), changeFrequency: "daily", priority: 0.6 });
+  const listed = new Set(out.map((e) => e.url)); // an upcoming major is already in the list
+  for (const slug of upcoming.slugs) if (!listed.has(url(`/events/${slug}`))) out.push({ url: url(`/events/${slug}`), changeFrequency: "daily", priority: 0.6 });
   // If a lookup failed, this list is missing pages: keep it for minutes (and try again soon), not hours.
-  const failed = [threads, highlights, scenes, hosted, matchupGuides, matchupPosts].some((r) => r.error) || !!seasonsError || upcoming.failed;
+  const failed = [majors, threads, highlights, scenes, hosted, matchupGuides, matchupPosts].some((r) => r.error) || !!seasonsError || upcoming.failed;
   if (failed) cacheLife("minutes");
   else cacheLife("hours");
   return out;

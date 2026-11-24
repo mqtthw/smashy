@@ -32,7 +32,8 @@ const geistMono = Geist_Mono({
 
 
 export const metadata: Metadata = {
-  title: { default: "Smashy", template: "%s · Smashy" },
+  // The home page's title says what the site is (round 784): "Smashy" alone matched no search but its own name.
+  title: { default: "Smashy: Smash Bros. tournaments, brackets, history and guides", template: "%s · Smashy" },
   applicationName: "Smashy",
   appleWebApp: { capable: true, title: "Smashy", statusBarStyle: "default" },
   description: "Everything Smash: locals and brackets, clips, results, and guides to get new players started.",
