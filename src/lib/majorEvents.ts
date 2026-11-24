@@ -12,6 +12,7 @@ import { getNameLinks, linkedId, nameKey } from "./playerLinks";
 import { SUPPORTED_GAME_IDS, startggLoad, startggQuery } from "./startgg";
 import { createAdminClient } from "./supabase/admin";
 import { createClient } from "./supabase/server";
+import { majorSummaries, type MajorSummary } from "./playerSearch";
 
 /** `characters`: for results added by hand, the characters the source lists (SmashWiki), most played first. */
 export type Top8Row = { place: number; name: string; playerId: string | null; characters?: string[] };
@@ -217,6 +218,27 @@ export async function getMajorEvents(slugs: string[]): Promise<Map<string, Major
 
 /** `side`: a teams bracket or one named as a side event; its 1st place isn't counted as a major win. */
 /** `eventId`: its bracket (for the characters start.gg's sets saved); `characters`: a hand-added result's own. */
+/**
+ * Major top 8s and wins for several players at once (player search, round 782): one read. Singles
+ * main events of majors that aren't hidden. Hand-added results linked by name aren't counted here.
+ */
+export async function getMajorSummaries(playerIds: string[]): Promise<Map<string, MajorSummary>> {
+  const ids = [...new Set(playerIds.filter((id) => /^\d{1,12}$/.test(id)))].slice(0, 20);
+  if (!ids.length) return new Map();
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("major_events")
+    .select("game, name, top8, major:majors!inner ( hidden )")
+    .or(ids.map((id) => `top8.cs.[{"playerId":"${id}"}]`).join(","))
+    .eq("teams", false)
+    .eq("major.hidden", false)
+    .limit(1000)
+    .abortSignal(AbortSignal.timeout(4_000));
+  if (error) throw error;
+  const rows = (data as unknown as { game: string; name: string; top8: Top8Row[] }[]).filter((r) => !isSideEvent(r.name));
+  return majorSummaries(rows, ids);
+}
+
 export type PlayerMajor = { slug: string; majorName: string; startAt: string; game: GameKey; eventName: string; entrants: number | null; place: number; side: boolean; eventId?: string; characters?: string[] };
 
 /**

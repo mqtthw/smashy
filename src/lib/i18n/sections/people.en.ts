@@ -324,6 +324,8 @@ export const peopleEn = {
   "people.search.how": "start.gg has no player search, so Smashy looks through the players it has already seen, plus the sign-ups of recent featured tournaments and recent tournaments in {region}. Can't find someone? Paste their start.gg profile link (start.gg/user/…) in the box.",
   "people.search.typeTag": "Type a player's tag to see their record, characters and recent sets. They don't have to be on Smashy.",
   "people.search.playersOnStartgg": "Players on start.gg",
+  "people.search.majors": "{n} major top 8s",
+  "people.search.majorsWins": "{n} major top 8s, {wins} won",
   "people.search.played": "Played {event}",
   "people.search.playedMore": "Played {event} and {n} more",
   "people.search.slugGuest": "Profile links are looked up on start.gg, which isn't available to visitors right now.",

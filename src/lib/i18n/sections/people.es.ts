@@ -326,6 +326,8 @@ export const peopleEs: Record<keyof typeof peopleEn, string> = {
   "people.search.how": "start.gg no tiene búsqueda de jugadores, así que Smashy busca entre los jugadores que ya ha visto, más las inscripciones de torneos destacados recientes y de torneos recientes en {region}. ¿No encuentras a alguien? Pega el enlace a su perfil de start.gg (start.gg/user/…) en la caja.",
   "people.search.typeTag": "Escribe el tag de un jugador para ver su récord, personajes y sets recientes. No tiene que estar en Smashy.",
   "people.search.playersOnStartgg": "Jugadores en start.gg",
+  "people.search.majors": "{n} top 8 en majors",
+  "people.search.majorsWins": "{n} top 8 en majors, {wins} ganados",
   "people.search.played": "Jugó {event}",
   "people.search.playedMore": "Jugó {event} y {n} más",
   "people.search.slugGuest": "Los enlaces de perfil se buscan en start.gg, que no está disponible para visitantes ahora.",

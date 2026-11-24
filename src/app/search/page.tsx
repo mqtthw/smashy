@@ -54,7 +54,8 @@ import { getUserId } from "@/lib/supabase/server";
 import type { GuestLookup } from "@/lib/guestBudget";
 import { guestLookup } from "@/lib/guestLookup";
 import { searchSavedPlayers } from "@/lib/playerIndex";
-import { cleanPlayerQuery, mergePlayerHits, startggProfileSlug, type PlayerHit } from "@/lib/playerSearch";
+import { byMajors, cleanPlayerQuery, roughCount, mergePlayerHits, startggProfileSlug, type MajorSummary, type PlayerHit } from "@/lib/playerSearch";
+import { getMajorSummaries } from "@/lib/majorEvents";
 import { playersHidingStats } from "@/lib/playerStats";
 import { regionName } from "@/lib/regions";
 import { getStartggPlayerBySlug, searchStartggPlayers } from "@/lib/startggPlayers";
@@ -172,6 +173,7 @@ async function StartggPlayers({ q }: { q: string }) {
 
   let hits: PlayerHit[];
   let partial = false;
+  let majors = new Map<string, MajorSummary>();
   try {
     if (slug && gate !== "ok") {
       hits = [];
@@ -194,6 +196,13 @@ async function StartggPlayers({ q }: { q: string }) {
     // Not listed: players who asked not to be, and members who keep their stats to themselves (the default for teens).
     const hidden = await playersHidingStats(hits.map((h) => h.playerId));
     hits = hits.filter((h) => !hidden.has(h.playerId));
+    // What Smash history knows of each (round 782): several players share a tag ("Zain" found seven),
+    // so each row says how many major top 8s that player has, and the one with the most comes first.
+    majors = await getMajorSummaries(hits.map((h) => h.playerId)).catch((e) => {
+      console.error("Player search: majors not read", e instanceof Error ? e.message : e);
+      return new Map<string, MajorSummary>();
+    });
+    if (tag) hits = byMajors(tag, hits, majors);
   } catch (e) {
     console.error("Player search failed", e);
     return <p className="p-4 text-muted">{t("people.startggDown")}</p>;
@@ -213,6 +222,13 @@ async function StartggPlayers({ q }: { q: string }) {
                     {h.prefix && <span className="font-normal text-muted">{h.prefix} | </span>}
                     {h.tag}
                   </span>
+                  {majors.has(h.playerId) && (
+                    <span className="block truncate text-xs font-semibold text-brand">
+                      {majors.get(h.playerId)!.games.map((g) => GAMES[g as GameKey]?.short ?? g).join(", ")}
+                      {" · "}
+                      {t(majors.get(h.playerId)!.wins > 0 ? "people.search.majorsWins" : "people.search.majors", { n: roughCount(majors.get(h.playerId)!.top8s), wins: roughCount(majors.get(h.playerId)!.wins) })}
+                    </span>
+                  )}
                   {h.seenAt && (
                     <span className="block truncate text-xs text-muted">
                       {h.count > 1 ? t("people.search.playedMore", { event: h.seenAt, n: h.count - 1 }) : t("people.search.played", { event: h.seenAt })}

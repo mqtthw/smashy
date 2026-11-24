@@ -41,6 +41,50 @@ export function mergePlayerHits(q: string, live: PlayerHit[], saved: SeenPlayer[
   return [...byPlayer.values()].sort((a, b) => rank(a) - rank(b) || b.count - a.count || a.tag.length - b.tag.length || a.tag.localeCompare(b.tag)).slice(0, limit);
 }
 
+/** What Smash history knows of a player, for telling same-named players apart in search (round 782). */
+export type MajorSummary = { top8s: number; wins: number; games: string[] };
+
+/**
+ * Each player's top 8s and wins across saved major brackets (singles, main events only).
+ * `rows` are brackets whose top 8 holds at least one of the players. `games` is most-played first.
+ */
+export function majorSummaries(rows: { game: string; top8: { playerId?: string | null; place: number }[] }[], playerIds: string[]): Map<string, MajorSummary> {
+  const want = new Set(playerIds);
+  const out = new Map<string, MajorSummary & { perGame: Map<string, number> }>();
+  for (const r of rows) {
+    const seen = new Set<string>();
+    for (const x of r.top8) {
+      if (!x.playerId || !want.has(x.playerId) || seen.has(x.playerId)) continue;
+      seen.add(x.playerId);
+      const s = out.get(x.playerId) ?? { top8s: 0, wins: 0, games: [], perGame: new Map<string, number>() };
+      s.top8s++;
+      if (x.place === 1) s.wins++;
+      s.perGame.set(r.game, (s.perGame.get(r.game) ?? 0) + 1);
+      out.set(x.playerId, s);
+    }
+  }
+  return new Map([...out].map(([id, s]) => [id, { top8s: s.top8s, wins: s.wins, games: [...s.perGame].sort((a, b) => b[1] - a[1]).map(([g]) => g) }]));
+}
+
+/**
+ * A count for a search row: exact below 10, then rounded down to a five with a plus ("75+"). The
+ * player's page also counts older results added by hand under their name, so its totals can be a
+ * little higher; a rounded figure here never contradicts it.
+ */
+export function roughCount(n: number): string {
+  return n < 10 ? String(n) : `${Math.floor(n / 5) * 5}+`;
+}
+
+/** Players with more major top 8s first among those the search ranked the same (same tag): the well-known "Zain" above the others. */
+export function byMajors<T extends { playerId: string; tag: string }>(q: string, hits: T[], majors: Map<string, MajorSummary>): T[] {
+  const want = q.trim().toLowerCase();
+  const rank = (h: T) => (h.tag.toLowerCase() === want ? 0 : h.tag.toLowerCase().startsWith(want) ? 1 : 2);
+  return hits
+    .map((h, i) => ({ h, i }))
+    .sort((a, b) => rank(a.h) - rank(b.h) || (majors.get(b.h.playerId)?.top8s ?? 0) - (majors.get(a.h.playerId)?.top8s ?? 0) || a.i - b.i)
+    .map((x) => x.h);
+}
+
 /** The tag to search for: trimmed, at most 30 characters. Null when it's too short to search. */
 export function cleanPlayerQuery(q: string): string | null {
   const s = q.trim().replace(/\s+/g, " ").slice(0, 30);

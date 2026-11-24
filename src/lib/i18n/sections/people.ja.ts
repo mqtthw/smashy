@@ -326,6 +326,8 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
   "people.search.how": "start.ggにはプレイヤー検索がないため、Smashyはすでに把握しているプレイヤーに加えて、最近の注目大会と{region}の最近の大会のエントリー者から探します。見つからない場合は、start.ggのプロフィールリンク（start.gg/user/…）を入力欄に貼り付けてください。",
   "people.search.typeTag": "プレイヤーのタグを入力すると、戦績、使用キャラ、最近のセットが見られます。Smashyに登録していなくても大丈夫です。",
   "people.search.playersOnStartgg": "start.ggのプレイヤー",
+  "people.search.majors": "メジャー大会ベスト8：{n}回",
+  "people.search.majorsWins": "メジャー大会ベスト8：{n}回、優勝{wins}回",
   "people.search.played": "{event}に参加",
   "people.search.playedMore": "{event}ほか{n}大会に参加",
   "people.search.slugGuest": "プロフィールリンクはstart.ggで調べますが、現在ゲストは利用できません。",
