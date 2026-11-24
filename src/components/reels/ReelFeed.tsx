@@ -18,6 +18,7 @@ import { useLang, useT } from "@/lib/i18n/client";
 import type { Lang, MessageKey, Values } from "@/lib/i18n/base";
 import SignInLink from "@/components/ui/SignInLink";
 import NewTab from "@/components/ui/NewTab";
+import { seenCookieString } from "@/lib/reelSeenCookie";
 
 type TFn = (key: MessageKey, values?: Values) => string;
 
@@ -40,10 +41,20 @@ function readSeen(): string[] {
   }
 }
 
+/** Copies the watched list into the cookie the Reels page request carries (lib/reelSeenCookie.ts). */
+function writeSeenCookie(seen: readonly string[]) {
+  try {
+    document.cookie = seenCookieString(seen);
+  } catch {
+    // cookies blocked: the page falls back to asking again after it loads
+  }
+}
+
 function markSeen(clipId: string) {
   try {
     const next = [...readSeen().filter((id) => id !== clipId), clipId].slice(-MAX_SEEN);
     window.localStorage.setItem(SEEN_KEY, JSON.stringify(next));
+    writeSeenCookie(next);
   } catch {
     // storage blocked (private mode): just don't remember
   }
@@ -337,6 +348,8 @@ function GameTabs({ games, current, query, t }: { games: GameKey[]; current: Gam
   );
 }
 
+const NONE_SEEN: readonly string[] = [];
+
 export default function ReelFeed({
   initial,
   hasMore: initialHasMore,
@@ -345,6 +358,7 @@ export default function ReelFeed({
   games = [],
   game = null,
   query = null,
+  seenApplied = NONE_SEEN,
 }: {
   initial: Reel[];
   hasMore: boolean;
@@ -353,6 +367,7 @@ export default function ReelFeed({
   games?: GameKey[];
   game?: GameKey | null;
   query?: string | null; // search results (round 713) instead of the usual feed
+  seenApplied?: readonly string[]; // watched clips the server already put last (from the cookie, round 805)
 }) {
   const t = useT();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -488,7 +503,12 @@ export default function ReelFeed({
     const seen = readSeen();
     seenAtStart.current = seen;
     const seenSet = new Set(seen);
-    const needsReorder = !query && initial.some((r) => seenSet.has(r.clipId)); // search results keep their order
+    writeSeenCookie(seen); // so the next visit's first answer is already in order (also for lists from before round 805)
+    // The server already put the clips it was told about (the cookie) last. Ask again only when the first
+    // batch has a watched clip it didn't know of; when everything has been watched, they simply come back
+    // around and there is nothing to swap.
+    const told = new Set(seenApplied);
+    const needsReorder = !query && initial.some((r) => seenSet.has(r.clipId) && !told.has(r.clipId)); // search results keep their order
     let cancelled = false;
     loading.current = true;
     (needsReorder ? loadMore(0, seen, game, null) : Promise.resolve(null))
@@ -505,7 +525,7 @@ export default function ReelFeed({
     return () => {
       cancelled = true;
     };
-  }, [initial, loadMore, game, query]);
+  }, [initial, loadMore, game, query, seenApplied]);
 
   // A clip that stays on screen for a couple of seconds counts as watched; moving on hides the hint.
   const activeId = ready ? reels[active]?.clipId : undefined;
@@ -718,8 +738,14 @@ export default function ReelFeed({
         className="h-above-dock snap-y snap-mandatory overflow-y-scroll overscroll-contain outline-none [scrollbar-width:none]"
       >
         {reels.map((r, i) => (
-          <div key={r.clipId} data-index={i} className="h-full snap-start snap-always">
+          // The slot is keyed by its place and the clip inside by its id (round 803). The first clips are
+          // swapped for a reordered batch about a second after load when this device has watched some of
+          // them; keyed by clip id, the slots themselves moved (a clip went from third to first), which
+          // browsers count as the whole screen jumping (layout shift 0.34 on every such load). Now the
+          // slots stay put and only their contents change.
+          <div key={i} data-index={i} className="h-full snap-start snap-always">
             <ReelItem
+              key={r.clipId}
               reel={r}
               likedAtLoad={likedAtLoad.has(r.clipId)}
               active={ready && shown && i === active}

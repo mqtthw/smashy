@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Privacy policy", description: "What 
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy policy" updated="November 22, 2026">
+    <LegalPage title="Privacy policy" updated="November 24, 2026">
       <p>
         Smashy is a free community site for Super Smash Bros. players. This page explains, in plain words, what we
         collect, why, who else is involved, and how you can delete it. We don&apos;t sell your data, and we don&apos;t
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
         <li><b>Reports</b> you send about posts, clips or chats, and moderators&apos; decisions.</li>
         <li><b>Visit counts:</b> Vercel Web Analytics counts page views: which page, the site that sent you there, your country, and your device and browser type. It uses no cookies and doesn&apos;t identify you or follow you to other sites; we only see totals. Vercel Speed Insights likewise measures how fast pages load (timings, the page, device type), with no cookies.</li>
         <li><b>Error reports:</b> when a page breaks, we record the error message and the page address so we can fix it. They don&apos;t include your account or what you typed.</li>
-        <li><b>On your device only:</b> your theme choice and which Reels clips you&apos;ve watched (so you see new ones first) are kept in your browser, not on our servers. We use one cookie to keep you signed in, and one to remember your age check while you join. No tracking or advertising cookies.</li>
+        <li><b>On your device only:</b> your theme choice and which Reels clips you&apos;ve watched (so you see new ones first) are kept in your browser, not on our servers. The list of watched clips is sent along when you open Reels, so new ones come first; we don&apos;t save it. We use one cookie to keep you signed in, one to remember your age check while you join, and one that carries that list of watched clips to the Reels page. No tracking or advertising cookies.</li>
       </ul>
 
       <h2>Teens (13 to 17)</h2>

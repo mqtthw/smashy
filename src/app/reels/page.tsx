@@ -5,6 +5,8 @@ import ReelFeed from "@/components/reels/ReelFeed";
 import { getGuestReels, getReels, refreshReelsIfStale, searchReels } from "@/lib/reels";
 import { cleanReelQuery } from "@/lib/reelSearch";
 import { getUserId } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { REEL_SEEN_COOKIE, decodeSeen } from "@/lib/reelSeenCookie";
 import { getMyGames } from "@/lib/viewer";
 import { gamesFor, isGameKey } from "@/lib/games";
 import { loadMoreReels } from "./actions";
@@ -20,8 +22,16 @@ async function Reels({ searchParams }: { searchParams: PageProps<"/reels">["sear
   const query = cleanReelQuery(qParam); // the search box (round 713)
   const userId = await getUserId();
   const myGames = await getMyGames(userId);
-  // Guests: the kept, shared first page (round 582).
-  const first = await (query ? searchReels({ q: query, game, limit: 15 }) : userId ? getReels({ myGames, game, limit: 15, userId }) : getGuestReels(game, 15)).catch((e) => {
+  // What this device already watched, from its cookie (round 805): the first clips come back in the right
+  // order, so the page no longer asks again and swaps them a second later.
+  const seen = query ? [] : decodeSeen((await cookies()).get(REEL_SEEN_COOKIE)?.value);
+  // Guests who haven't watched anything here: the kept, shared first page (round 582).
+  const first = await (query
+    ? searchReels({ q: query, game, limit: 15 })
+    : userId || seen.length
+      ? getReels({ myGames, game, limit: 15, seen, userId })
+      : getGuestReels(game, 15)
+  ).catch((e) => {
     console.error("Reels load failed", e);
     return null;
   });
@@ -30,7 +40,7 @@ async function Reels({ searchParams }: { searchParams: PageProps<"/reels">["sear
   // key: switching games starts a fresh feed
   return (
     <LangProvider lang={await getLang()}>
-      <ReelFeed key={`${game ?? "all"}|${query ?? ""}`} initial={first.reels} hasMore={first.hasMore} loadMore={loadMoreReels} signedIn={!!userId} games={gamesFor(myGames)} game={game} query={query} />
+      <ReelFeed key={`${game ?? "all"}|${query ?? ""}`} initial={first.reels} hasMore={first.hasMore} loadMore={loadMoreReels} signedIn={!!userId} games={gamesFor(myGames)} game={game} query={query} seenApplied={seen} />
     </LangProvider>
   );
 }

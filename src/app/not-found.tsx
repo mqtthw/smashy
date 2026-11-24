@@ -4,6 +4,14 @@ import { T } from "@/lib/i18n/client";
 
 export const metadata: Metadata = { title: "Page not found" };
 
+/** Where a visitor with a broken link most likely wanted to go (round 806): the guest home page's main places. */
+const PLACES = [
+  { href: "/events", k: "ui.guest.t.events" },
+  { href: "/search?tab=players", k: "ui.guest.t.players" },
+  { href: "/history", k: "ui.guest.t.history" },
+  { href: "/games", k: "ui.guest.t.characters" },
+] as const;
+
 export default function NotFound() {
   return (
     <div className="px-4 py-16 text-center">
@@ -14,6 +22,13 @@ export default function NotFound() {
           <T k="ui.error.home" />
         </Link>
       </div>
+      <nav className="mt-6 flex flex-wrap justify-center gap-2">
+        {PLACES.map((p) => (
+          <Link key={p.href} href={p.href} className="chip">
+            <T k={p.k} />
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 }
