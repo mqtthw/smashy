@@ -2,9 +2,10 @@
 // played opponents and recent sets, from their public start.gg results. Reached from player search,
 // set pages, and the names in other players' stats.
 //
-// Open to everyone, signed in or not, and kept out of search engines. A player's history is up to
-// 7 start.gg requests and start.gg allows the whole site 80 a minute, so visitors who aren't
-// signed in have limits members don't (guestBudget.ts). Players who asked not to be listed, and
+// Open to everyone, signed in or not. Search engines are told about players with a top 8 at a major
+// (round 791); everyone else's page is marked "don't index". A player's history is up to 7 start.gg
+// requests and start.gg allows the whole site 80 a minute, so visitors who aren't signed in see
+// Smashy's saved copy where there is one, and otherwise have limits members don't (guestBudget.ts). Players who asked not to be listed, and
 // Smashy members who don't show their stats (the default for teens), have no page here.
 import { startggKey } from "@/lib/seasonsMath";
 import { SeasonRanks } from "@/components/seasons/SeasonParts";
@@ -12,7 +13,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BackLink from "@/components/ui/BackLink";
 import { notFound } from "next/navigation";
-import { after } from "next/server";
+import { after, connection } from "next/server";
 import { cache, Suspense } from "react";
 import PlayerMajors from "@/components/history/PlayerMajors";
 import ImportHistory from "@/components/stats/ImportHistory";
@@ -25,10 +26,16 @@ import { getClaim, getImportState, getSavedResults, saveResults } from "@/lib/cl
 import { mergeResults } from "@/lib/playerResults";
 import type { GuestLookup } from "@/lib/guestBudget";
 import { guestLookup } from "@/lib/guestLookup";
-import { computeStats, getLinkedPlayer, getRecentSets, getVisibleRecentSets, headToHead, playerOnSmashy } from "@/lib/playerStats";
+import { computeStats, getLinkedPlayer, getRecentSets, getVisibleRecentSets, headToHead, hideHiddenOpponents, playerOnSmashy } from "@/lib/playerStats";
 import { getPlayerResults, getStartggPlayer } from "@/lib/startggPlayers";
 import { getSavedPlayer } from "@/lib/playerIndex";
-import { savePlayerSnapshot } from "@/lib/playerSnapshots";
+import { getPlayerSnapshot, savePlayerSnapshot, snapshotStale, type PlayerSnapshot } from "@/lib/playerSnapshots";
+import { isCrawler } from "@/lib/guestPages";
+import { playerSearchFacts } from "@/lib/playerSearchable";
+import { CONTACT_EMAIL } from "@/lib/contact";
+import { headers } from "next/headers";
+import TimeAgo from "@/components/ui/TimeAgo";
+import { unixNow } from "@/lib/format";
 import { getUserId } from "@/lib/supabase/server";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
@@ -41,7 +48,27 @@ import type { PlayerSet } from "@/lib/playerStats";
 /** One start.gg fetch per page view: the header's character icons and the sets below share it. */
 const recentSets = cache((playerId: string): Promise<PlayerSet[] | null> => getVisibleRecentSets(playerId).catch(() => null));
 
-export const metadata: Metadata = { title: "Player", robots: { index: false } };
+/** Who may be shown, asked once per page view (the title and the page both need it). */
+const onSmashyOnce = cache((playerId: string) => playerOnSmashy(playerId));
+
+/**
+ * The page's title and whether search engines may list it: only a player Smashy may show who has a top 8 at
+ * a major. Read from Smashy's own tables; start.gg isn't asked. Anyone else: a plain title and "don't index".
+ */
+export async function generateMetadata(props: PageProps<"/players/[id]">): Promise<Metadata> {
+  const plain: Metadata = { title: "Player", robots: { index: false } };
+  const { id } = await props.params;
+  if (!/^\d{1,12}$/.test(id)) return plain;
+  await connection(); // who may be shown is checked on every visit
+  const [facts, onSmashy, t] = await Promise.all([playerSearchFacts(id).catch(() => null), onSmashyOnce(id).catch(() => null), getT()]);
+  if (!facts || !onSmashy?.allowed) return plain;
+  return {
+    title: t("people.player.metaTitle", { tag: facts.tag }),
+    description: t("people.player.metaDescription", { tag: facts.tag }),
+    alternates: { canonical: `/players/${id}` },
+    ...(facts.top8 ? {} : { robots: { index: false } }),
+  };
+}
 
 type Translate = (key: MessageKey, values?: Values) => string;
 
@@ -73,19 +100,35 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
   // Smashy has saved (the tag and their top 8s at majors) with a note, instead of a wall that says
   // "busy, sign in". On a busy day that wall was all most visitors would have seen of player lookup.
   let guestBusy = false;
-  if (!userId) {
+  // A guest and a saved copy of this player (docs/searchable-player-pages-plan.md, step S2): the page is
+  // built from the copy and start.gg isn't asked at all during the visit, so it costs the same whoever
+  // opens it, person or bot. Members keep the live lookup. No copy: the lookup below, as before.
+  let copy: PlayerSnapshot | null = userId ? null : await getPlayerSnapshot(id).catch(() => null);
+  const copyPlayer = copy ? await getSavedPlayer(id).catch(() => null) : null;
+  if (!copyPlayer) copy = null; // nothing to call them by: look them up as before
+  if (copy && snapshotStale(copy.savedAt, unixNow() * 1000) && !isCrawler((await headers()).get("user-agent"))) {
+    // Older than a day: refreshed after the page is sent, and only when this visitor is within the guest
+    // limits and start.gg has room (the same two checks a live guest lookup passes). Crawlers never start one.
+    if ((await guestLookup()) === "ok") {
+      after(async () => {
+        const [sets, results] = await Promise.all([getRecentSets(id).catch(() => []), getPlayerResults(id).catch(() => [])]);
+        await savePlayerSnapshot({ playerId: id, sets, results, viewerSignedIn: false, hasCopy: true });
+      });
+    }
+  }
+  if (!userId && !copy) {
     const gate = await guestLookup();
     if (gate === "slow_down") return <GuestLimit gate={gate} next={`/players/${id}`} t={t} />;
     guestBusy = gate === "busy";
   }
 
-  const [asked, onSmashy] = await Promise.all([guestBusy ? Promise.resolve(undefined) : getStartggPlayer(id).catch(() => undefined), playerOnSmashy(id)]);
+  const [asked, onSmashy] = await Promise.all([guestBusy || copy ? Promise.resolve(undefined) : getStartggPlayer(id).catch(() => undefined), onSmashyOnce(id)]);
   // start.gg didn't answer (busy, or down): carry on with the tag Smashy saved the last time it saw
   // this player (round 733). Their majors and saved results don't need start.gg, so the page still has
   // something to show instead of only "try again in a minute".
-  const saved = asked === undefined ? await getSavedPlayer(id).catch(() => null) : null;
+  const saved = copyPlayer ?? (asked === undefined ? await getSavedPlayer(id).catch(() => null) : null);
   const player = asked === undefined && saved ? { ...saved, profileUrl: null } : asked;
-  const busy = asked === undefined && !!saved;
+  const busy = asked === undefined && !!saved && !copy;
   if (!onSmashy.allowed) {
     // They asked not to be listed, or they're a member who keeps their stats to themselves.
     // Nothing about them is shown, not even the tag.
@@ -100,7 +143,11 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
     <LangProvider lang={lang}>
       <header className="flex flex-col items-center gap-1 px-4 pt-4 text-center">
         {/* Their most played character in a big glossy bubble (rounds 486 and 494), from the same sets as the stats below. */}
-        {guestBusy ? (
+        {copy ? (
+          <Suspense fallback={<span className="portrait-bubble h-32 w-32" aria-hidden />}>
+            <PlayerMainIcon playerId={player.playerId} tag={player.tag} saved={copy.sets} />
+          </Suspense>
+        ) : guestBusy ? (
           <span className="portrait-bubble relative h-32 w-32"><span className="text-5xl font-bold text-[#7a2a20]" aria-hidden>{[...player.tag][0]?.toUpperCase()}</span></span>
         ) : (
           <Suspense fallback={<span className="portrait-bubble h-32 w-32" aria-hidden />}>
@@ -121,6 +168,10 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
               {withNode(t("people.player.notOnSmashy", { link: "\u0001" }), <Link href="/link/startgg" className="link">{t("people.linkStartgg")}</Link>)}
             </span>
           )}
+          {/* Their page can be found through search engines (round 791), so the way out is on the page itself. */}
+          {!onSmashy.handle && (
+            <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Please don't list start.gg player ${player.playerId} (${player.tag})`)}`} className="link">{t("people.player.askHide")}</a>
+          )}
           {player.profileUrl && (
             <a href={player.profileUrl} target="_blank" rel="noopener noreferrer" className="link">{t("people.player.openStartgg")}<NewTab /></a>
           )}
@@ -132,7 +183,7 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
         </Suspense>
       </header>
       {/* In a bracket right now (round 455): still in or out, who they lost to, who's next. */}
-      {!guestBusy && (
+      {!guestBusy && !copy && (
         <Suspense fallback={null}>
           <PlayerLiveCard playerId={player.playerId} tag={player.tag} />
         </Suspense>
@@ -141,7 +192,11 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
       <Suspense fallback={null}>
         <PlayerMajors playerId={player.playerId} />
       </Suspense>
-      {guestBusy ? (
+      {copy ? (
+        <Suspense fallback={<CardListSkeleton count={3} label={t("people.player.loadingSets")} className="p-4" />}>
+          <SavedPlayerSets playerId={player.playerId} copy={copy} />
+        </Suspense>
+      ) : guestBusy ? (
         <div className="m-4 card flex flex-col gap-2 p-4">
           <p className="text-sm text-muted">{t("people.player.busy")}</p>
           <div className="flex flex-wrap gap-2">
@@ -163,8 +218,8 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
  * The header's picture: their most played character's stock icon, big, with the next two smaller
  * beside it. A player with no character data (or none with an icon) gets the tag's first letter.
  */
-async function PlayerMainIcon({ playerId, tag }: { playerId: string; tag: string }) {
-  const sets = await recentSets(playerId);
+async function PlayerMainIcon({ playerId, tag, saved }: { playerId: string; tag: string; saved?: PlayerSet[] }) {
+  const sets = saved ?? (await recentSets(playerId)); // only their own characters are read, so a saved copy needs no hiding
   const icons = (sets ? computeStats(sets).characters : [])
     .map((c) => (c.game ? { name: c.name, src: stockIconUrl({ game: c.game, character: characterKey(c.name) }) } : null))
     .filter((c): c is { name: string; src: string } => !!c?.src)
@@ -189,6 +244,31 @@ async function PlayerMainIcon({ playerId, tag }: { playerId: string; tag: string
         </span>
       )}
     </span>
+  );
+}
+
+/**
+ * A guest's view from the saved copy (step S2): record, characters, opponents, results and sets as of when it
+ * was saved, with a line saying so. Opponents who hide their stats are left out exactly as on a live lookup;
+ * if that can't be checked, no sets are shown.
+ */
+async function SavedPlayerSets({ playerId, copy }: { playerId: string; copy: PlayerSnapshot }) {
+  const t = await getT();
+  const claim = await getClaim(playerId).catch(() => null);
+  const claimed = claim?.showStats ? claim : null;
+  const [sets, saved] = await Promise.all([hideHiddenOpponents(copy.sets).catch(() => null), claimed ? getSavedResults(claimed.userId).catch(() => []) : Promise.resolve([])]);
+  const results = claimed ? mergeResults(saved, copy.results) : copy.results;
+  const stats = sets ? computeStats(sets) : null;
+  return (
+    <section className="flex flex-col gap-3 p-4">
+      <p role="status" className="text-meta text-muted">
+        {t("people.player.savedCopy")} <TimeAgo at={copy.savedAt} serverNow={unixNow()} /> ·{" "}
+        <Link href={`/signin?next=${encodeURIComponent(`/players/${playerId}`)}`} className="link">{t("people.player.savedLive")}</Link>
+      </p>
+      {stats && stats.sets > 0 && <PlayerStatsCard stats={stats} />}
+      <PlayerResultsCard results={results} career={!!claimed && saved.length > 0} />
+      {sets?.length ? <SearchableSets sets={sets} /> : <p className="text-muted">{t("people.noSets")}</p>}
+    </section>
   );
 }
 

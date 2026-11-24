@@ -161,6 +161,27 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
         ))}
       </nav>
 
+      {/* The starter guides come first (round 793): they're what a newcomer can use straight away, and the
+          questions box under them says "No questions yet" until people start asking. */}
+      {essentials.length > 0 && (
+        <Section id="start" title={t("people.new.start", { game: short })}>
+          <p className="text-sm text-muted">{t("people.new.startBody", { game: short })}</p>
+          <ul className="flex flex-col gap-3">
+            {essentials.map((e) => (
+              <li key={e.url} className="flex flex-col gap-1 rounded-xl border border-line p-3">
+                <span className="font-semibold">{e.title}</span>
+                <span className="text-sm text-muted">{e.why}</span>
+                {e.credit && <span className="text-meta text-muted">{e.credit}</span>}
+                <a href={e.url} target="_blank" rel="noopener noreferrer" className="text-sm text-brand">
+                  {e.cta} ↗
+                <NewTab /></a>
+              </li>
+            ))}
+          </ul>
+          <Link href={`/games/${game}`} className="text-sm text-brand">{t("people.new.moreResources", { game: short })}</Link>
+        </Section>
+      )}
+
       <Section id="ask" title={t("people.new.ask")}>
         <p className="text-sm text-muted">{t("people.new.askBody")}</p>
         <Link href={`/discuss/new?game=${game}&flair=newplayer`} className="btn btn-md btn-primary self-start">{t("people.new.askButton", { game: short })}</Link>
@@ -188,25 +209,6 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
           {withNode(t("people.new.inPerson", { link: "\u0001" }), <Link href="/events" className="link">{t("people.new.findLocal")}</Link>)}
         </p>
       </Section>
-
-      {essentials.length > 0 && (
-        <Section id="start" title={t("people.new.start", { game: short })}>
-          <p className="text-sm text-muted">{t("people.new.startBody", { game: short })}</p>
-          <ul className="flex flex-col gap-3">
-            {essentials.map((e) => (
-              <li key={e.url} className="flex flex-col gap-1 rounded-xl border border-line p-3">
-                <span className="font-semibold">{e.title}</span>
-                <span className="text-sm text-muted">{e.why}</span>
-                {e.credit && <span className="text-meta text-muted">{e.credit}</span>}
-                <a href={e.url} target="_blank" rel="noopener noreferrer" className="text-sm text-brand">
-                  {e.cta} ↗
-                <NewTab /></a>
-              </li>
-            ))}
-          </ul>
-          <Link href={`/games/${game}`} className="text-sm text-brand">{t("people.new.moreResources", { game: short })}</Link>
-        </Section>
-      )}
 
       <Section id="watch" title={t("people.new.watch")}>
         <Suspense fallback={<CardListSkeleton count={2} label={t("people.new.loadingVideos")} />}>

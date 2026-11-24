@@ -230,6 +230,11 @@ export const peopleEs: Record<keyof typeof peopleEn, string> = {
   // Player pages
   "people.player.busyTitle": "La búsqueda de jugadores está saturada ahora",
   "people.player.busySaved": "start.gg está ocupado ahora, así que esto es lo que Smashy tiene guardado. Los sets recientes volverán en un minuto.",
+  "people.player.metaTitle": "{tag}: resultados y sets de Smash",
+  "people.player.metaDescription": "Resultados de torneos, top 8 en majors, personajes y sets recientes de {tag}, desde start.gg.",
+  "people.player.askHide": "Pedir no aparecer",
+  "people.player.savedCopy": "Resultados guardados de start.gg, última actualización",
+  "people.player.savedLive": "Inicia sesión para ver los resultados en vivo",
   "people.player.manyTitle": "Son muchos jugadores en poco tiempo",
   "people.player.busy": "Smashy obtiene los jugadores de start.gg, que solo permite cierto número de solicitudes por minuto, y los brackets en vivo van primero. Inténtalo de nuevo en un minuto, o inicia sesión: los miembros no esperan.",
   "people.player.many": "Los visitantes pueden buscar un número limitado de jugadores cada pocos minutos. Inténtalo de nuevo en un rato, o inicia sesión para seguir.",

@@ -1,7 +1,7 @@
 // The limit on how fast a signed-out visitor may open pages that read start.gg (it stops crawlers
 // from using up the site's start.gg allowance).
 import { beforeEach, describe, expect, it } from "vitest";
-import { CRAWLER_PAGES, GUEST_PAGES, GUEST_PAGES_WINDOW_MS, countsAsGuestPage, crawlerName, takeCrawlerPage, crawlerOffLimits, isCrawler, readsOutside, resetGuestPages, takeGuestPage, notABrowser } from "@/lib/guestPages";
+import { CRAWLER_PAGES, GUEST_PAGES, GUEST_PAGES_WINDOW_MS, countsAsCrawlerPage, isPlayerPage, countsAsGuestPage, crawlerName, takeCrawlerPage, crawlerOffLimits, isCrawler, readsOutside, resetGuestPages, takeGuestPage, notABrowser } from "@/lib/guestPages";
 
 const T0 = 1_800_000_000_000;
 const noHeaders = () => null;
@@ -90,7 +90,7 @@ describe("crawlers and the pages robots.txt keeps them out of", () => {
   });
 
   it("keeps them out of brackets from other sites, set pages, player lookups and calendar files only", () => {
-    for (const path of ["/brackets/startgg/1616744", "/brackets/startgg/1616744/top8.png", "/sets/startgg/98765/opengraph-image", "/sets/startgg/98765", "/players/222927", "/events/port-priority-dx/calendar.ics", "/host/3f2a/calendar.ics"]) expect(crawlerOffLimits(path), path).toBe(true);
+    for (const path of ["/brackets/startgg/1616744", "/brackets/startgg/1616744/top8.png", "/sets/startgg/98765/opengraph-image", "/sets/startgg/98765", "/players/compare", "/events/port-priority-dx/calendar.ics", "/host/3f2a/calendar.ics"]) expect(crawlerOffLimits(path), path).toBe(true);
     for (const path of ["/", "/events", "/events/genesis-x4", "/events/weekly/smash-honor--oxford", "/host/3f2a", "/host/3f2a/bracket", "/brackets", "/u/mango", "/games/ultimate/roy"]) expect(crawlerOffLimits(path), path).toBe(false);
   });
 });
@@ -135,5 +135,26 @@ describe("a named crawler's pace on start.gg-backed pages (round 771)", () => {
   it("doesn't share a count with an address of the same spelling", () => {
     for (let i = 0; i < CRAWLER_PAGES; i++) takeCrawlerPage("googlebot", i);
     expect(takeGuestPage("googlebot", CRAWLER_PAGES).ok).toBe(true);
+  });
+});
+
+describe("player pages are open to named crawlers, at their pace (round 791)", () => {
+  const none = () => null;
+  it("a player's own page is no longer off limits; the compare page still is", () => {
+    expect(crawlerOffLimits("/players/222927")).toBe(false);
+    expect(crawlerOffLimits("/players/compare")).toBe(true);
+    expect(isPlayerPage("/players/222927")).toBe(true);
+    expect(isPlayerPage("/players/compare")).toBe(false);
+    expect(isPlayerPage("/players/222927/anything")).toBe(false);
+  });
+  it("counts toward a crawler's pace, like tournament pages; preloads and other pages don't", () => {
+    expect(countsAsCrawlerPage("/players/222927", none)).toBe(true);
+    expect(countsAsCrawlerPage("/events/genesis-x4", none)).toBe(true);
+    expect(countsAsCrawlerPage("/players/222927", (n) => (n === "sec-fetch-dest" ? "empty" : null))).toBe(false);
+    expect(countsAsCrawlerPage("/events", none)).toBe(false);
+    expect(countsAsCrawlerPage("/u/mango", none)).toBe(false);
+  });
+  it("doesn't add player pages to a person's page limit (they have the lookup limits instead)", () => {
+    expect(countsAsGuestPage("/players/222927", false, none)).toBe(false);
   });
 });

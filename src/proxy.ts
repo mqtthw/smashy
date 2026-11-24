@@ -2,7 +2,7 @@
 // start.gg requests, and slows down one signed-out address that opens start.gg-backed pages faster
 // than a person would (see lib/guestPages.ts).
 import { NextResponse, type NextRequest } from "next/server";
-import { GUEST_PAGES_RETRY_S, countsAsGuestPage, crawlerName, crawlerOffLimits, isAiTrainingCrawler, isCrawler, notABrowser, takeCrawlerPage, takeGuestPage } from "@/lib/guestPages";
+import { GUEST_PAGES_RETRY_S, countsAsCrawlerPage, countsAsGuestPage, crawlerName, crawlerOffLimits, isPlayerPage, isAiTrainingCrawler, isCrawler, notABrowser, takeCrawlerPage, takeGuestPage } from "@/lib/guestPages";
 import { updateSession } from "@/lib/supabase/proxy";
 import { apiBucket, takeApiCall } from "@/lib/apiLimit";
 import { canonicalLinkHeader } from "@/lib/siteMeta";
@@ -38,7 +38,10 @@ export async function proxy(request: NextRequest) {
     response.headers.set("RateLimit-Limit", String(limit)); // no "Remaining" here: answers kept by the network would show an old count
     return response;
   }
-  if (crawlerOffLimits(request.nextUrl.pathname) && (isCrawler(ua) || notABrowser(ua, (name) => request.headers.get(name)))) {
+  // Player pages (round 791) are open to crawlers that name themselves, but not to scrapers that pose as a
+  // browser without loading pages like one.
+  const posing = isPlayerPage(request.nextUrl.pathname) && !isCrawler(ua) && notABrowser(ua, (name) => request.headers.get(name));
+  if (posing || (crawlerOffLimits(request.nextUrl.pathname) && (isCrawler(ua) || notABrowser(ua, (name) => request.headers.get(name))))) {
     return new NextResponse("This page isn't open to crawlers. See /robots.txt.\n", {
       status: 403,
       headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex", "Cache-Control": "no-store" },
@@ -47,7 +50,7 @@ export async function proxy(request: NextRequest) {
   // Round 771: a crawler that names itself opens the start.gg-backed pages it's allowed on (tournaments,
   // weeklies) at a slow pace, counted by its name, since it comes from many addresses.
   const crawler = crawlerName(ua);
-  if (crawler && countsAsGuestPage(request.nextUrl.pathname, false, (name) => request.headers.get(name)) && !takeCrawlerPage(crawler, Date.now()).ok) {
+  if (crawler && countsAsCrawlerPage(request.nextUrl.pathname, (name) => request.headers.get(name)) && !takeCrawlerPage(crawler, Date.now()).ok) {
     return new NextResponse("Slow down: these pages read start.gg, which allows Smashy only so many requests a minute. Come back in a couple of minutes.\n", {
       status: 429,
       headers: { "Retry-After": String(GUEST_PAGES_RETRY_S), "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" },

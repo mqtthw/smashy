@@ -9,6 +9,7 @@ import { majorHref } from "@/lib/handMajors";
 import { siteUrl } from "@/lib/siteMeta";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createGuestClient, hasSupabase } from "@/lib/supabase/guest";
+import { searchablePlayerIds } from "@/lib/playerSearchable";
 
 async function entries(): Promise<MetadataRoute.Sitemap> {
   "use cache: remote"; // shared by every server (round 676): it reads every region's saved events (7 MB)
@@ -95,8 +96,12 @@ async function entries(): Promise<MetadataRoute.Sitemap> {
   const upcoming = await upcomingTournamentSlugs();
   const listed = new Set(out.map((e) => e.url)); // an upcoming major is already in the list
   for (const slug of upcoming.slugs) if (!listed.has(url(`/events/${slug}`))) out.push({ url: url(`/events/${slug}`), changeFrequency: "daily", priority: 0.6 });
+  // Players with a top 8 at a major (round 791, docs/searchable-player-pages-plan.md): their pages are open to
+  // search engines; everyone else's player page is marked "don't index". Hidden players are never listed.
+  const players = await searchablePlayerIds().catch(() => ({ ids: [] as string[], failed: true }));
+  for (const id of players.ids) out.push({ url: url(`/players/${id}`), changeFrequency: "weekly", priority: 0.5 });
   // If a lookup failed, this list is missing pages: keep it for minutes (and try again soon), not hours.
-  const failed = [majors, threads, highlights, scenes, hosted, matchupGuides, matchupPosts].some((r) => r.error) || !!seasonsError || upcoming.failed;
+  const failed = [majors, threads, highlights, scenes, hosted, matchupGuides, matchupPosts].some((r) => r.error) || !!seasonsError || upcoming.failed || players.failed;
   if (failed) cacheLife("minutes");
   else cacheLife("hours");
   return out;

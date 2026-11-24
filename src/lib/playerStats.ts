@@ -134,7 +134,11 @@ export type PlayerStats = {
  * Throws when it can't tell who hides them: not knowing must never show a hidden player.
  */
 export async function getVisibleRecentSets(playerId: string): Promise<PlayerSet[]> {
-  const sets = await getRecentSets(playerId);
+  return hideHiddenOpponents(await getRecentSets(playerId));
+}
+
+/** The same rule for sets from anywhere (a saved copy, step S2 of the searchable player pages plan). */
+export async function hideHiddenOpponents(sets: PlayerSet[]): Promise<PlayerSet[]> {
   const hidden = await playersHidingStats(sets.map((s) => s.opp.playerId));
   if (!hidden.size) return sets;
   return sets.map((s) => (hidden.has(s.opp.playerId) ? { ...s, opp: { ...s.opp, playerId: "" }, oppCharacters: [] } : s));

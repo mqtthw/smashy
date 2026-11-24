@@ -228,6 +228,11 @@ export const peopleEn = {
   // Player pages
   "people.player.busyTitle": "Player lookup is busy right now",
   "people.player.busySaved": "start.gg is busy right now, so this is what Smashy has saved. Recent sets will be back in a minute.",
+  "people.player.metaTitle": "{tag}: Smash results and sets",
+  "people.player.metaDescription": "{tag}'s tournament placements, top 8s at majors, characters and recent sets, from start.gg.",
+  "people.player.askHide": "Ask not to be listed",
+  "people.player.savedCopy": "Saved results from start.gg, last updated",
+  "people.player.savedLive": "Sign in for live results",
   "people.player.manyTitle": "That's a lot of players in a short time",
   "people.player.busy": "Smashy reads players from start.gg, which only allows so many requests a minute, and live brackets come first. Try again in a minute, or sign in: members don't wait.",
   "people.player.many": "Visitors can look up a limited number of players every few minutes. Try again in a little while, or sign in to keep going.",

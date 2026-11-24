@@ -2866,6 +2866,27 @@ export type Database = {
           },
         ]
       }
+      player_snapshots: {
+        Row: {
+          player_id: number
+          results: Json
+          saved_at: string
+          sets: Json
+        }
+        Insert: {
+          player_id: number
+          results?: Json
+          saved_at?: string
+          sets?: Json
+        }
+        Update: {
+          player_id?: number
+          results?: Json
+          saved_at?: string
+          sets?: Json
+        }
+        Relationships: []
+      }
       poll_votes: {
         Row: {
           choice: number

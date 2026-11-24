@@ -34,6 +34,39 @@ export function takeGuestLookup(address: string, now: number, startggLoad: numbe
   return "ok";
 }
 
+/** Give back the lookup just counted for this address (it was turned away as "busy", which isn't the visitor's doing). */
+export function refundGuestLookup(address: string) {
+  const times = seen.get(address);
+  if (times?.length) seen.set(address, times.slice(0, -1));
+}
+
+// The whole site's pace for guests (docs/searchable-player-pages-plan.md, step S3). The two limits above
+// are per address and per server, so a bot coming from many addresses through two or three servers passed
+// both and still used up start.gg's 75 requests a minute (2,000 "start.gg is busy" errors on 2026-11-23).
+// Before a guest's lookup asks start.gg anything, it takes a ticket from the site-wide count the servers
+// already share (take_startgg_slots): a few slots, granted only while the whole site has sent fewer than
+// GUEST_SITE_PER_MINUTE requests in the last minute. So guests' lookups, people's and bots' alike, fit in
+// about half of the allowance and the other half is always there for members and live brackets. A guest
+// past the pace gets the page from what Smashy has saved, with "try again" (round 781).
+/** Slots a guest lookup reserves up front (a lookup then sends up to 8 requests of its own). */
+export const GUEST_TICKET = 4;
+/** Guests' lookups start only while the whole site is under this many start.gg requests a minute (of 75). */
+export const GUEST_SITE_PER_MINUTE = 36;
+
+/**
+ * Whether the site has room for one more guest lookup. `take(want, perMinute)` answers how many slots it
+ * granted, or null when the shared count can't be asked: then the per-server check above is all there is,
+ * and the lookup goes ahead rather than turning every guest away while the database is slow.
+ */
+export async function guestSiteRoom(take: (want: number, perMinute: number) => Promise<number | null>): Promise<boolean> {
+  try {
+    const granted = await take(GUEST_TICKET, GUEST_SITE_PER_MINUTE);
+    return granted === null || granted >= GUEST_TICKET;
+  } catch {
+    return true;
+  }
+}
+
 /** For tests: forget every address. */
 export function resetGuestLookups() {
   seen.clear();

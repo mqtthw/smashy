@@ -45,7 +45,18 @@ export function crawlerOffLimits(path: string): boolean {
   // Round 656: and their share pictures (a set's card, an event's Top 8 graphic). In the week to Nov 21
   // something walked ~1,900 set cards, each drawn from scratch; link previews and browsers showing the
   // graphic on a page still get them.
-  return /^\/(brackets|sets)\/[^/]+\/[^/]+\/?(opengraph-image|top8\.png)?$/.test(path) || /^\/players\/[^/]+\/?$/.test(path) || /\/calendar\.ics$/.test(path);
+  // Round 791: a player's own page (/players/<number>) is open to search engines now; the compare page isn't.
+  return /^\/(brackets|sets)\/[^/]+\/[^/]+\/?(opengraph-image|top8\.png)?$/.test(path) || (/^\/players\/[^/]+\/?$/.test(path) && !isPlayerPage(path)) || /\/calendar\.ics$/.test(path);
+}
+
+/**
+ * A start.gg player's page (docs/searchable-player-pages-plan.md, step S5). Open to crawlers that say who
+ * they are, at the crawler pace below; a visitor who isn't signed in sees Smashy's saved copy or keeps to the
+ * site-wide guest pace (guestBudget.ts), so a crawl can't use up start.gg's allowance. Scrapers that pose as
+ * a browser but don't load pages like one are still turned away here (round 475).
+ */
+export function isPlayerPage(path: string): boolean {
+  return /^\/players\/\d{1,12}\/?$/.test(path);
 }
 
 // Fetchers that build a link preview when someone shares a link (Discord, X, Slack and so on):
@@ -147,6 +158,15 @@ export function takeCrawlerPage(name: string, now: number): { ok: boolean } {
 export function countsAsGuestPage(path: string, signedIn: boolean, header: (name: string) => string | null): boolean {
   if (!readsOutside(path)) return false;
   if (signedIn) return false;
+  return wholePageLoad(header);
+}
+
+/** Whether a named crawler's request counts toward its pace: a whole page load of a start.gg-backed page or a player page. */
+export function countsAsCrawlerPage(path: string, header: (name: string) => string | null): boolean {
+  return (readsOutside(path) || isPlayerPage(path)) && wholePageLoad(header);
+}
+
+function wholePageLoad(header: (name: string) => string | null): boolean {
   const dest = header("sec-fetch-dest");
   if (dest && dest !== "document") return false;
   if (/prefetch/i.test(header("purpose") ?? "") || /prefetch/i.test(header("sec-purpose") ?? "")) return false;
