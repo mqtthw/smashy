@@ -112,6 +112,24 @@ export function tweetLinks(text: string, max = 2): { id: string; href: string }[
   return out;
 }
 
+/**
+ * The post's text without the links that already show as a player or a tweet card below it (round 841),
+ * but only a link alone on its line: one inside a sentence stays, so the sentence still reads. A thread
+ * showed "www.youtube.com/watch?v=…" in red right above the same video.
+ */
+export function withoutEmbeddedLinkLines(text: string, maxPlayers = 3, maxTweets = 2): string {
+  const players = new Set(playerLinks(text, maxPlayers).map((p) => p.src));
+  const tweets = new Set(tweetLinks(text, maxTweets).map((t) => t.href));
+  const kept = text.split("\n").filter((line) => {
+    const url = line.trim();
+    if (!/^https:\/\/\S+$/.test(url)) return true;
+    if (tweets.has(url)) return false;
+    const e = toEmbed(url);
+    return !(e?.kind === "player" && players.has(e.src));
+  });
+  return kept.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
 // Link previews of posts (round 459)
 /** The id of the first Twitch clip linked in the text (outside ||spoilers||), or null. */
 export function twitchClipIdIn(text: string): string | null {

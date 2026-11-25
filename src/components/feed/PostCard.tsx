@@ -10,7 +10,7 @@ import RepostButton from "./RepostButton";
 import LinkifiedText from "./LinkifiedText";
 import PostMedia from "./PostMedia";
 import EmbedPlayer from "@/components/highlights/EmbedPlayer";
-import { playerLinks, tweetLinks } from "@/lib/embeds";
+import { playerLinks, tweetLinks, withoutEmbeddedLinkLines } from "@/lib/embeds";
 import TweetEmbed from "./TweetEmbed";
 import PollCard from "./PollCard";
 import TranslateButton from "@/components/ui/TranslateButton";
@@ -107,7 +107,7 @@ export default function PostCard({
         </div>
       )}
       <div className={`mt-0.5 ${post.title && !full ? "line-clamp-4" : ""}`}>
-        <LinkifiedText text={post.body} game={post.game === "general" ? null : post.game} players={post.mentioned} />
+        <LinkifiedText text={post.removedReason ? post.body : withoutEmbeddedLinkLines(post.body)} game={post.game === "general" ? null : post.game} players={post.mentioned} />
       </div>
       {!post.removedReason && <TranslateButton text={post.title ? `${post.title}\n\n${post.body}` : post.body} source={{ kind: "post", id: post.id }} />}
       <PostMedia media={post.media} />
