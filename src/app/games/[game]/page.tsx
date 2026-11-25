@@ -62,7 +62,7 @@ async function GameHub({ params, searchParams }: Pick<PageProps<"/games/[game]">
                 <p className="text-sm text-muted">{e.why}</p>
                 {e.credit && <p className="text-meta text-muted">{e.credit}</p>}
                 <a href={e.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-primary self-start">
-                  {e.cta} ↗
+                  {e.cta} ↗︎
                 <NewTab /></a>
               </li>
             ))}
@@ -108,11 +108,11 @@ async function GameHub({ params, searchParams }: Pick<PageProps<"/games/[game]">
                 {e.credit && <p className="text-meta text-muted">{e.credit}</p>}
                 <div className="flex flex-wrap items-center gap-3">
                   <a href={e.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">
-                    {e.cta} ↗
+                    {e.cta} ↗︎
                   <NewTab /></a>
                   {e.more && (
                     <a href={e.more.url} target="_blank" rel="noopener noreferrer" className="link text-sm">
-                      {e.more.label} ↗
+                      {e.more.label} ↗︎
                     <NewTab /></a>
                   )}
                 </div>
@@ -149,7 +149,7 @@ async function GameHub({ params, searchParams }: Pick<PageProps<"/games/[game]">
                     <div className="flex flex-wrap gap-x-3 gap-y-1">
                       {e.links.map((l) => (
                         <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" className="link text-sm">
-                          {l.label} ↗
+                          {l.label} ↗︎
                         <NewTab /></a>
                       ))}
                     </div>

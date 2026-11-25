@@ -177,6 +177,16 @@ export function computeStats(sets: PlayerSet[]): PlayerStats {
   };
 }
 
+/**
+ * The characters for a player's portrait (round 838): their most played, big, then up to two more only
+ * if each was played in at least a fifth of their sets. A player who is almost always one character
+ * (Zain's Marth, Jmook's Sheik) shows just that one, instead of an occasional pick beside it.
+ */
+export const PORTRAIT_MIN_SHARE = 20;
+export function portraitCharacters<T extends { share: number }>(characters: T[]): T[] {
+  return characters.filter((c, i) => i === 0 || c.share >= PORTRAIT_MIN_SHARE).slice(0, 3);
+}
+
 export type HeadToHead = { wins: number; losses: number; sets: PlayerSet[] };
 
 /** One player's record against another, from the first player's recent sets. */

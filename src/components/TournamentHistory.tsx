@@ -91,7 +91,8 @@ export default function TournamentHistory({
                     {` · ${e.eventName}`}
                   </p>
                 </div>
-                <GameBadge game={e.game} />
+                {/* Only when they've played more than one game (round 835), like the filter above. */}
+                {gamesPlayed.length > 1 && <GameBadge game={e.game} />}
               </Link>
             </li>
           );

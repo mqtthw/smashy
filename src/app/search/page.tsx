@@ -296,7 +296,7 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
             <ul className="divide-y divide-line">
               {hits.map((h) => (
                 <li key={h.link.url} className="flex flex-col py-2">
-                  <a href={h.link.url} target="_blank" rel="noopener noreferrer" className="link text-sm font-semibold">{h.link.title} ↗<NewTab /></a>
+                  <a href={h.link.url} target="_blank" rel="noopener noreferrer" className="link text-sm font-semibold">{h.link.title} ↗︎<NewTab /></a>
                   <span className="text-meta text-muted">{h.section}{h.link.by ? ` · ${h.link.by}` : ""}</span>
                 </li>
               ))}
@@ -499,7 +499,7 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
             <ul className="divide-y divide-line">
               {library.map((h) => (
                 <li key={h.link.url} className="flex flex-col py-2">
-                  <a href={h.link.url} target="_blank" rel="noopener noreferrer" className="link text-sm font-semibold">{h.link.title} ↗<NewTab /></a>
+                  <a href={h.link.url} target="_blank" rel="noopener noreferrer" className="link text-sm font-semibold">{h.link.title} ↗︎<NewTab /></a>
                   <span className="text-meta text-muted">
                     {h.character ? (
                       <Link href={`/games/${h.game}/${h.character}#library`} className="hover:underline">{h.name} ({GAMES[h.game].short})</Link>

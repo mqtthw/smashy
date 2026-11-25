@@ -13,8 +13,7 @@ import RateAppPrompt from "@/components/RateAppPrompt";
 import NativeAppBridge from "@/components/NativeAppBridge";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import ServiceWorker from "@/components/push/ServiceWorker";
-import { Analytics } from "@vercel/analytics/next";
-import SpeedInsightsFiltered from "@/components/SpeedInsightsFiltered";
+import SpeedInsightsFiltered, { AnalyticsFiltered } from "@/components/SpeedInsightsFiltered";
 import { siteUrl } from "@/lib/siteMeta";
 import { T } from "@/lib/i18n/client";
 import "./globals.css";
@@ -110,8 +109,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ScrollIndicator />
         <ServiceWorker />
         <KeyboardShortcuts />
-        {/* Visit counts (Vercel Web Analytics, round 520): no cookies, no ads; see /privacy. */}
-        <Analytics />
+        {/* Visit counts (Vercel Web Analytics, round 520): no cookies, no ads; see /privacy. The scraper's
+            visits aren't counted (round 823). */}
+        <AnalyticsFiltered />
         {/* Real visitors' page speed (Vercel Speed Insights, round 523). Player pages aren't measured (round 804). */}
         <SpeedInsightsFiltered />
       </body>

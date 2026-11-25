@@ -147,7 +147,9 @@ export default function PostCard({
       <div className="min-w-0 flex-1">
         <header className="flex items-center gap-1.5 text-sm">
           {/* The name wins the space on small screens; @handle and city show when there's room. */}
-          <Link href={`/u/${post.author.handle}`} className="min-w-[3.5rem] truncate font-bold hover:underline">{post.author.tag}</Link>
+          {/* Never squeezed below 3.5rem, or below the name itself when it's shorter (round 833): a flat
+              3.5rem left a gap after short names like "blair", before the character icon. */}
+          <Link href={`/u/${post.author.handle}`} className="truncate font-bold hover:underline" style={{ minWidth: `min(3.5rem, ${Array.from(post.author.tag).length * 0.75}ch)` }}>{post.author.tag}</Link>
           <MainBadge main={post.author.main} />
           <span className="hidden truncate text-muted sm:inline">@{post.author.handle}</span>
           {post.author.homeCity && <span className="hidden truncate text-muted sm:inline">· {post.author.homeCity}</span>}

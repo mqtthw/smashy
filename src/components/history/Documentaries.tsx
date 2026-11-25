@@ -17,7 +17,7 @@ export default function Documentaries() {
         {FILMS.map((f) => (
           <li key={f.title} className="px-4 py-2.5">
             <a href={f.href} target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">
-              {f.title} ↗<NewTab />
+              {f.title} ↗︎<NewTab />
             </a>
             <span className="text-meta text-muted"> · {f.years}</span>
             <p className="text-sm text-muted">{f.about}</p>

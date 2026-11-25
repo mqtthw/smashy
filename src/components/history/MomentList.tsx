@@ -20,7 +20,7 @@ export default function MomentList({ moments, lang, t }: { moments: Moment[]; la
           <span className="w-14 shrink-0 pt-0.5 text-meta text-muted">{momentDay(m.day, lang, m.monthOnly)}</span>
           <div className="min-w-0 flex-1">
             <a href={m.link} target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">
-              {m.title} ↗<NewTab />
+              {m.title} ↗︎<NewTab />
             </a>
             {m.note && <p className="text-sm text-muted">{m.note}</p>}
             {m.suggestedBy && <p className="text-meta text-muted">{t("history.moment.suggestedBy", { handle: m.suggestedBy })}</p>}

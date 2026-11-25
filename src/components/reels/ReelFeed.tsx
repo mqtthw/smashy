@@ -261,10 +261,11 @@ function ReelItem({ reel, active, hostname, signedIn, liked: clipLiked, likedAtL
     // overflow-clip, not -hidden: the blurred backdrop is drawn 25% larger, and a "hidden" box can still be
     // scrolled by the browser, so tapping a report reason slid the whole clip sideways.
     <article className={`relative flex h-full flex-col overflow-clip bg-neutral-950 text-white ${canFill && whole ? "max-md:justify-center" : ""}`} aria-label={reel.title || t("media.reels.clip")}>
-      {/* Blurred backdrop from the clip's own thumbnail, so wide clips don't float in empty space. */}
+      {/* Blurred backdrop from the clip's own thumbnail, so wide clips don't float in empty space. Stronger on
+          phones (round 827): at 35% the bands above and below a whole wide clip read as flat grey. */}
       {reel.thumbnailUrl && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={reel.thumbnailUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" className="pointer-events-none absolute inset-0 h-full w-full scale-125 object-cover opacity-35 blur-2xl" />
+        <img src={reel.thumbnailUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" className="pointer-events-none absolute inset-0 h-full w-full scale-125 object-cover opacity-35 blur-2xl max-md:opacity-60" />
       )}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" aria-hidden="true" />
 
@@ -874,11 +875,13 @@ export default function ReelFeed({
         </button>
       )}
 
+      {/* Near the top, under the tabs (round 827): low down it covered Comment, Save and Share. Below the "Tap for
+          sound" pill when that's showing. */}
       {hint && ready && reels.length > 1 && (
         <button
           type="button"
           onClick={() => goTo(1)}
-          className="absolute bottom-40 left-1/2 z-20 flex -translate-x-1/2 animate-bounce items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-black shadow-lg"
+          className={`absolute ${soundPref && !activated ? (query ? "top-40" : "top-28") : query ? "top-28" : "top-16"} left-1/2 z-20 flex -translate-x-1/2 animate-bounce items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-black shadow-lg`}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current" strokeWidth={2.5}><path d="M6 15l6-6 6 6" /></svg>
           {t("media.reels.swipeHint")}

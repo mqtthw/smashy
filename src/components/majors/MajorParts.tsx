@@ -86,7 +86,7 @@ export function MajorsRow({ majors }: { majors: Major[] }) {
           <Link href="/pickem" className="font-semibold text-brand hover:underline"><T k="browse.majors.pickem" /></Link>
         </span>
       </div>
-      <div className="flex gap-3 overflow-x-auto px-4 pb-1">
+      <div className="scroll-fade flex gap-3 overflow-x-auto px-4 pb-1">
         {majors.map((m) => <MajorCard key={m.slug} m={m} />)}
       </div>
     </section>

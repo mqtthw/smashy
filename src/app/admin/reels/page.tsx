@@ -58,7 +58,7 @@ async function ReelsAdmin() {
             {suggested.map((c) => (
               <li key={c.login} className="card flex items-center gap-3 p-3 text-sm">
                 <a href={channelUrl(c)} target="_blank" rel="noopener noreferrer" className="min-w-0 flex-1 truncate font-semibold hover:underline">
-                  {c.displayName ?? c.login} ↗
+                  {c.displayName ?? c.login} ↗︎
                 </a>
                 <form action={approveChannel.bind(null, c.login)}>
                   <button className="btn btn-sm btn-primary">Approve</button>

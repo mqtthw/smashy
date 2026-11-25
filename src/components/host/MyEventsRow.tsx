@@ -21,7 +21,7 @@ export default function MyEventsRow({ events, startgg = [], now = 0 }: { events:
   return (
     <section aria-labelledby="my-events" className="border-b border-line py-3">
       <h2 id="my-events" className="px-4 text-title font-bold"><T k="hostsetup.mine.title" /></h2>
-      <ul className="flex gap-3 overflow-x-auto px-4 pt-3 pb-1">
+      <ul className="scroll-fade flex gap-3 overflow-x-auto px-4 pt-3 pb-1">
         {events.map((e) => {
           const tag: Tag =
             e.status === "completed"

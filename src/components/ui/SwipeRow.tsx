@@ -18,7 +18,7 @@ export default function SwipeRow({ label, labelledBy, className = "", children }
     row.scrollLeft = current.offsetLeft - row.clientWidth / 2 + current.clientWidth / 2;
   }, []);
   return (
-    <nav ref={ref} aria-label={label} aria-labelledby={labelledBy} className={`relative -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 ${className}`}>
+    <nav ref={ref} aria-label={label} aria-labelledby={labelledBy} className={`scroll-fade relative -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 ${className}`}>
       {children}
     </nav>
   );

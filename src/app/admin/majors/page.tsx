@@ -46,7 +46,7 @@ async function MajorsAdmin({ searchParams }: { searchParams: PageProps<"/admin/m
       </p>
       <p className="font-semibold">{m.title}</p>
       {m.note && <p className="text-muted">{m.note}</p>}
-      <a href={m.link} target="_blank" rel="noopener noreferrer" className="break-all text-brand">{m.link} ↗</a>
+      <a href={m.link} target="_blank" rel="noopener noreferrer" className="break-all text-brand">{m.link} ↗︎</a>
       <div className="mt-1 flex gap-2">{buttons}</div>
     </li>
   );
@@ -106,7 +106,7 @@ async function MajorsAdmin({ searchParams }: { searchParams: PageProps<"/admin/m
               {waiting ? "Waiting" : "Showing"} · {v.majorName} · {GAMES[v.game].short}
               {v.by ? ` · suggested by @${v.by}` : ""}
             </p>
-            <a href={v.url} target="_blank" rel="noopener noreferrer" className="break-all text-brand">{v.label ? `${v.label}: ` : ""}{v.url} ↗</a>
+            <a href={v.url} target="_blank" rel="noopener noreferrer" className="break-all text-brand">{v.label ? `${v.label}: ` : ""}{v.url} ↗︎</a>
             <div className="mt-1 flex gap-2">
               {waiting && <form action={reviewMajorVodAction.bind(null, v.id, true)}><button className="btn btn-sm btn-primary">Approve</button></form>}
               <form action={reviewMajorVodAction.bind(null, v.id, false)}><button className={`btn btn-sm ${waiting ? "btn-outline" : "btn-danger"}`}>{waiting ? "Reject" : "Take down"}</button></form>
@@ -136,7 +136,7 @@ async function MajorsAdmin({ searchParams }: { searchParams: PageProps<"/admin/m
                 </p>
               )}
               <p>“{r.message}”</p>
-              {r.link && <a href={r.link} target="_blank" rel="noopener noreferrer" className="break-all text-brand">{r.link} ↗</a>}
+              {r.link && <a href={r.link} target="_blank" rel="noopener noreferrer" className="break-all text-brand">{r.link} ↗︎</a>}
               <div className="mt-1 flex flex-wrap gap-2">
                 {r.major && isManualMajor(r.major.slug) && (
                   <Link href={`/admin/majors/edit/${r.major.slug.slice(MANUAL_PREFIX.length)}`} className="btn btn-sm btn-outline">Edit the major</Link>
@@ -204,7 +204,7 @@ async function MajorsAdmin({ searchParams }: { searchParams: PageProps<"/admin/m
                 {s.by?.handle ? `@${s.by.handle}` : "A member"} · {s.createdAt.slice(0, 10)} · {s.kind === "link" ? "Link" : "Before 2017, typed in"}
               </p>
               {s.kind === "link" && s.link && (
-                <a href={s.link} target="_blank" rel="noopener noreferrer" className="break-all font-semibold text-brand">{s.link} ↗</a>
+                <a href={s.link} target="_blank" rel="noopener noreferrer" className="break-all font-semibold text-brand">{s.link} ↗︎</a>
               )}
               {s.kind === "manual" && s.details && (
                 <div className="flex flex-col gap-1">
@@ -214,7 +214,7 @@ async function MajorsAdmin({ searchParams }: { searchParams: PageProps<"/admin/m
                     {s.details.city ? ` · ${s.details.city}` : ""}
                     {s.details.country ? ` · ${s.details.country}` : ""}
                   </p>
-                  <a href={s.details.sourceUrl} target="_blank" rel="noopener noreferrer" className="break-all text-brand">Source: {s.details.sourceUrl} ↗</a>
+                  <a href={s.details.sourceUrl} target="_blank" rel="noopener noreferrer" className="break-all text-brand">Source: {s.details.sourceUrl} ↗︎</a>
                   {s.details.games.filter((g) => g.game || g.top8.trim()).map((g, i) => (
                     <div key={i} className="rounded-lg bg-surface p-2">
                       <p className="font-semibold">{g.eventName || g.game}{g.entrants ? ` · ${g.entrants} entrants` : ""}</p>

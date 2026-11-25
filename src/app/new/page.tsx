@@ -173,7 +173,7 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
                 <span className="text-sm text-muted">{e.why}</span>
                 {e.credit && <span className="text-meta text-muted">{e.credit}</span>}
                 <a href={e.url} target="_blank" rel="noopener noreferrer" className="text-sm text-brand">
-                  {e.cta} ↗
+                  {e.cta} ↗︎
                 <NewTab /></a>
               </li>
             ))}

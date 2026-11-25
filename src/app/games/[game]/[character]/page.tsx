@@ -189,7 +189,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           <div className="flex flex-wrap gap-2">
             {frameData.map((f) => (
               <a key={f.url} href={f.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">
-                {frameData.length > 1 ? t("media.char.frameDataOf", { label: f.label }) : t("media.char.openFrameData")} ↗
+                {frameData.length > 1 ? t("media.char.frameDataOf", { label: f.label }) : t("media.char.openFrameData")} ↗︎
               <NewTab /></a>
             ))}
           </div>
@@ -253,7 +253,7 @@ function withBold(text: string, placeholder: string, node: React.ReactNode) {
 function LibraryList({ links, t }: { links: CommunityLink[]; t: TFn }) {
   const item = (l: CommunityLink) => (
     <li key={l.url} className="text-sm">
-      <a href={l.url} target="_blank" rel="noopener noreferrer" className="link">{l.title} ↗<NewTab /></a>
+      <a href={l.url} target="_blank" rel="noopener noreferrer" className="link">{l.title} ↗︎<NewTab /></a>
       {l.by && <span className="text-muted"> · {l.by}</span>}
     </li>
   );

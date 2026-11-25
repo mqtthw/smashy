@@ -85,7 +85,7 @@ async function SceneDetails({ params }: Pick<PageProps<"/scenes/[slug]">, "param
           <ul className="mt-3 flex flex-wrap gap-2">
             {links.map((l) => (
               <li key={l.url}>
-                <a href={l.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">{l.label} ↗<NewTab /></a>
+                <a href={l.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">{l.label} ↗︎<NewTab /></a>
               </li>
             ))}
           </ul>

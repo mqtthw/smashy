@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import { CHARACTERS, parseMains } from "@/lib/characters";
-import { badgeMain, costumeIcons, mainCode, stockIconUrl } from "@/lib/mainBadge";
+import { badgeMain, costumeIcons, mainCode, pixelArtIcon, stockIconUrl } from "@/lib/mainBadge";
 import { STOCK_COSTUMES } from "@/lib/stockCostumes";
 
 describe("main badge", () => {
@@ -50,5 +50,17 @@ describe("main badge", () => {
     expect(mainCode({ game: "melee", character: "captain-falcon" })).toBe("CF");
     expect(mainCode({ game: "melee", character: "mr-game-and-watch" })).toBe("MGW");
     expect(mainCode({ game: "pplus", character: "rob" })).toBe("ROB");
+  });
+});
+
+describe("pixelArtIcon (round 836)", () => {
+  it("keeps hard pixel edges for big Melee, 64 and Brawl icons only", () => {
+    expect(pixelArtIcon("/stock/melee/fox.webp", 36)).toBe(true);
+    expect(pixelArtIcon("/stock/melee/costumes/fox-2.webp", 84)).toBe(true);
+    expect(pixelArtIcon("/stock/brawl/wolf.webp", 36)).toBe(true);
+    expect(pixelArtIcon("/stock/smash64/ness.webp", 32)).toBe(true);
+    expect(pixelArtIcon("/stock/melee/fox.webp", 24)).toBe(false); // shrinking: smooth
+    expect(pixelArtIcon("/stock/ultimate/mario.webp", 36)).toBe(false); // smooth art
+    expect(pixelArtIcon("/stock/smash4/mario.webp", 84)).toBe(false);
   });
 });

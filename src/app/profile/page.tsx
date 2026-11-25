@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import TopClips from "@/components/feed/TopClips";
 import GameBadge from "@/components/GameBadge";
 import { ADULT_AGE, ageFromBirthdate } from "@/lib/age";
 import { GAME_KEYS, type GameKey } from "@/lib/games";
@@ -52,7 +53,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 function GuestProfile() {
   return (
-    <div className="flex flex-col gap-4 p-6">
+    <div className="flex flex-col gap-4 px-4 py-6">
       <h1 className="text-2xl font-bold"><T k="profile.guestTitle" /></h1>
       <div className="card p-5">
         <p className="font-semibold"><T k="profile.guest" /></p>
@@ -72,6 +73,10 @@ function GuestProfile() {
         <h2 className="text-meta font-semibold uppercase tracking-wide text-muted"><T k="people.profile.theme" /></h2>
         <ThemeToggle />
       </section>
+      {/* The top clips (round 837): the guest profile ended in half a screen of empty space. */}
+      <Suspense fallback={null}>
+        <TopClips headingId="profile-clips" bleed />
+      </Suspense>
     </div>
   );
 }
@@ -208,7 +213,7 @@ async function ProfileContent({ searchParams }: { searchParams: PageProps<"/prof
 
   return (
     <LangProvider lang={lang}>
-    <div className="flex flex-col gap-5 p-6">
+    <div className="flex flex-col gap-5 px-4 py-6">
       <div className="flex items-center gap-4">
         {/* The profile picture in a glossy bubble ring (round 504). */}
         <span className="portrait-bubble h-20 w-20">
@@ -327,7 +332,7 @@ async function ProfileContent({ searchParams }: { searchParams: PageProps<"/prof
       <p className="flex flex-wrap gap-4 text-meta text-muted">
         <Link href="/privacy" className="underline">{t("people.profile.privacy")}</Link>
         <Link href="/terms" className="underline">{t("signin.terms")}</Link>
-        <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="underline">{t("people.profile.discord")} ↗</a>
+        <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="underline">{t("people.profile.discord")} ↗︎</a>
         <a href="/profile/export" className="underline" download>{t("people.profile.download")}</a>
         <Link href="/profile/delete" className="underline">{t("people.profile.delete")}</Link>
       </p>

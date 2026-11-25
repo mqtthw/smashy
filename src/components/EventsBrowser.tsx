@@ -62,7 +62,7 @@ export default function EventsBrowser({
   return (
     <div>
       <div className="sticky top-0 z-[5] flex flex-col gap-3 border-b border-line glass-sticky px-4 py-3">
-        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible" role="group" aria-label={t("browse.list.filterGame")}>
+        <div className="scroll-fade flex gap-2 overflow-x-auto pr-6 sm:pr-0 sm:[mask-image:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible" role="group" aria-label={t("browse.list.filterGame")}>
           {gameKeys.map((key) => (
             <button
               key={key}

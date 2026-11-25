@@ -123,9 +123,12 @@
   --panel: #2a0c0c;
     --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.24) 0%, rgb(255 255 255 / 0.08) 50%, rgb(255 150 120 / 0.07) 51%, rgb(255 150 120 / 0.16) 100%);
     --primary-glow: 0 0 14px rgb(232 48 31 / 0.5);
+    /* Stars (round 825): three large, odd-sized tiles of faint dots, so on a phone they don't line up in a
+       visible grid or read as specks on the cards; they used to be two small, brighter tiles. */
     --sky:
-      radial-gradient(circle at 23px 17px, rgb(255 255 255 / 0.55) 0.6px, transparent 1.2px) 0 0 / 173px 151px,
-      radial-gradient(circle at 91px 64px, rgb(255 255 255 / 0.3) 0.6px, transparent 1.2px) 0 0 / 127px 197px,
+      radial-gradient(circle at 23px 17px, rgb(255 255 255 / 0.3) 0.6px, transparent 1.2px) 0 0 / 263px 229px,
+      radial-gradient(circle at 91px 64px, rgb(255 255 255 / 0.18) 0.6px, transparent 1.2px) 0 0 / 197px 311px,
+      radial-gradient(circle at 140px 205px, rgb(255 255 255 / 0.12) 0.5px, transparent 1px) 0 0 / 331px 283px,
       radial-gradient(60% 22% at 30% 20%, rgb(255 90 40 / 0.16), transparent 70%),
       radial-gradient(55% 30% at 85% 78%, rgb(222 36 22 / 0.22), transparent 70%),
       linear-gradient(180deg, #140405 0%, #2a0909 50%, #4a1210 100%);
@@ -176,9 +179,12 @@
   --panel: #2a0c0c;
   --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.24) 0%, rgb(255 255 255 / 0.08) 50%, rgb(255 150 120 / 0.07) 51%, rgb(255 150 120 / 0.16) 100%);
   --primary-glow: 0 0 14px rgb(232 48 31 / 0.5);
+  /* Stars (round 825): three large, odd-sized tiles of faint dots, so on a phone they don't line up in a
+     visible grid or read as specks on the cards; they used to be two small, brighter tiles. */
   --sky:
-    radial-gradient(circle at 23px 17px, rgb(255 255 255 / 0.55) 0.6px, transparent 1.2px) 0 0 / 173px 151px,
-    radial-gradient(circle at 91px 64px, rgb(255 255 255 / 0.3) 0.6px, transparent 1.2px) 0 0 / 127px 197px,
+    radial-gradient(circle at 23px 17px, rgb(255 255 255 / 0.3) 0.6px, transparent 1.2px) 0 0 / 263px 229px,
+    radial-gradient(circle at 91px 64px, rgb(255 255 255 / 0.18) 0.6px, transparent 1.2px) 0 0 / 197px 311px,
+    radial-gradient(circle at 140px 205px, rgb(255 255 255 / 0.12) 0.5px, transparent 1px) 0 0 / 331px 283px,
     radial-gradient(60% 22% at 30% 20%, rgb(255 90 40 / 0.16), transparent 70%),
     radial-gradient(55% 30% at 85% 78%, rgb(222 36 22 / 0.22), transparent 70%),
     linear-gradient(180deg, #140405 0%, #2a0909 50%, #4a1210 100%);
@@ -365,11 +371,17 @@ body::before {
 /* Reels on a phone (round 818): dark to the edges. The strip under the clock and the band behind the
    bottom menu used to show the site's red sky around the black clips ("the red bars are way too big"). */
 @media (width < 48rem) {
+  /* iPhone Safari (iOS 27) ignores the theme-color setting and paints its clock strip and bottom bar in
+     the page's own background colour, so that is dark on Reels too (round 822; found on the Mac's iPhone
+     Simulator: with only theme-color dark, both bars stayed sky blue in light mode). */
+  body.reels-open {
+    background: #0a0a0a;
+  }
   body.reels-open::before,
   body.reels-open::after {
     background: #0a0a0a;
   }
-  /* The bottom menu takes its dark-theme glass on Reels in light mode too (round 820): its light pill
+  /* The bottom menu takes its dark-theme glass on Reels in light mode too (round 821): its light pill
      stood out on the black page. */
   body.reels-open nav.glass-bar {
     --glass-bar: rgb(40 8 8 / 0.62);
@@ -513,6 +525,16 @@ body::before {
   color: var(--danger);
   &:hover:not(:disabled) {
     background: color-mix(in srgb, var(--danger) 10%, transparent);
+  }
+}
+
+/* A row that scrolls sideways on a phone fades out at its right edge (round 834), so it's clear there's
+   more to swipe to; cut-off chips and cards used to just stop at the screen edge. Phones only: from
+   md up these rows wrap or fit. The rows keep their own right padding, so the last item clears the fade
+   once scrolled to the end. */
+@utility scroll-fade {
+  @media (width < 48rem) {
+    mask-image: linear-gradient(to right, black calc(100% - 1.5rem), transparent);
   }
 }
 

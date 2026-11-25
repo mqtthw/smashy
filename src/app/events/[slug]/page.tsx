@@ -214,7 +214,7 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
         {/* Majors that are over: their Liquipedia page (Smash history; links only). */}
         {major && over && (
           <a href={liquipediaSearch(t.name)} target="_blank" rel="noopener noreferrer" className="-mt-2 self-center text-sm text-muted underline">
-            {tr("history.liquipedia")} ↗<NewTab />
+            {tr("history.liquipedia")} ↗︎<NewTab />
           </a>
         )}
         {going && (
@@ -240,20 +240,22 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
           <h2 className="font-bold">{tr("nav.events")}</h2>
           <p className="mb-2 text-meta text-muted">{tr("browse.event.timesLocal", { zone: zoneLabel(t.startAt, t.timezone) })}</p>
           <ul className="flex flex-col gap-2">
+            {/* The game label sits under the name with the sign-ups (round 839): beside the name it squeezed names
+                into a narrow column ("Ultimate" over "Singles") on phones. */}
             {shownEvents.map((e) => (
               <li key={e.id} className="flex flex-col gap-0.5">
                 <div className="flex items-center justify-between gap-3">
-                <span className="flex min-w-0 items-center gap-2">
+                <span className="flex min-w-0 flex-1 items-center gap-2">
                   <span className="w-[4.5rem] shrink-0 text-sm font-bold tabular-nums">
                     {e.startAt ? formatEventTime(e.startAt, t.timezone, lang).replace(/\s(GMT[+-][\d:]+|[A-Z]{2,5})$/, "") : tr("browse.tba")}
                     {e.startAt && multiDay && <span className="block text-meta font-normal text-muted">{formatEventDate(e.startAt, t.timezone, lang).split(",")[0]}</span>}
                   </span>
-                  <GameBadge game={e.game} />
-                  <span className="min-w-0">
+                  <span className="min-w-0 flex-1">
                     <span className="flex min-w-0 items-center gap-1.5">
                       <span className="line-clamp-2 leading-tight">{bracketName(e.name, e.game)}</span>
                     </span>
-                    <span className="block text-meta text-muted">
+                    <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-meta text-muted">
+                      <GameBadge game={e.game} />
                       {e.online ? `${tr("event.online")} · ` : ""}{e.numEntrants ? (over || done(e) || e.state === "ACTIVE" ? tr("browse.entrants", { n: e.numEntrants }) : tr("browse.event.signedUp", { n: e.numEntrants })) : tr("browse.event.noSignups")}
                     </span>
                   </span>
@@ -275,17 +277,17 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
                 {earlierEvents.map((e) => (
                   <li key={e.id} className="flex flex-col gap-0.5">
                     <div className="flex items-center justify-between gap-3">
-                    <span className="flex min-w-0 items-center gap-2">
+                    <span className="flex min-w-0 flex-1 items-center gap-2">
                       <span className="w-[4.5rem] shrink-0 text-sm font-bold tabular-nums">
                         {e.startAt ? formatEventTime(e.startAt, t.timezone, lang).replace(/\s(GMT[+-][\d:]+|[A-Z]{2,5})$/, "") : tr("browse.tba")}
                         {e.startAt && multiDay && <span className="block text-meta font-normal text-muted">{formatEventDate(e.startAt, t.timezone, lang).split(",")[0]}</span>}
                       </span>
-                      <GameBadge game={e.game} />
-                      <span className="min-w-0">
+                      <span className="min-w-0 flex-1">
                         <span className="flex min-w-0 items-center gap-1.5">
                           <span className="line-clamp-2 leading-tight">{bracketName(e.name, e.game)}</span>
                         </span>
-                        <span className="block text-meta text-muted">
+                        <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-meta text-muted">
+                          <GameBadge game={e.game} />
                           {e.online ? `${tr("event.online")} · ` : ""}{e.numEntrants ? (over || done(e) || e.state === "ACTIVE" ? tr("browse.entrants", { n: e.numEntrants }) : tr("browse.event.signedUp", { n: e.numEntrants })) : tr("browse.event.noSignups")}
                         </span>
                       </span>

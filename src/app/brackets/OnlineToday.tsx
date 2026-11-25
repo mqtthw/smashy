@@ -28,7 +28,8 @@ export default async function OnlineToday({ as: Heading = "h2", fold = false }: 
           return (
             <li key={t.slug}>
               <Link href={live && t.events.length ? bracketPath("startgg", (currentBracket(t) ?? [...t.events].sort((a, b) => (b.numEntrants ?? 0) - (a.numEntrants ?? 0))[0]).id) : `/events/${t.slug}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-surface">
-                <span className="flex shrink-0 flex-col gap-1">
+                {/* A fixed-width column of centred game labels (round 831), so every name starts at the same place. */}
+                <span className="flex w-[4.25rem] shrink-0 flex-col gap-1 [&>.badge]:justify-center">
                   {games.slice(0, 2).map((g) => <GameBadge key={g} game={g} />)}
                 </span>
                 <span className="min-w-0 flex-1">

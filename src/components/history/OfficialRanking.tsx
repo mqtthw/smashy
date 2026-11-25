@@ -45,7 +45,7 @@ export default async function OfficialRanking({ year, game, byMajor, t }: { year
   };
   const source = (page: string, label: string) => (
     <a href={SMASHWIKI + page} target="_blank" rel="noopener noreferrer" className="link">
-      {label} ↗<NewTab />
+      {label} ↗︎<NewTab />
     </a>
   );
   const body = (r: Ranking) => (

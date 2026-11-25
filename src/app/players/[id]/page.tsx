@@ -29,7 +29,7 @@ import { getClaim, getImportState, getSavedResults, saveResults } from "@/lib/cl
 import { mergeResults } from "@/lib/playerResults";
 import { arrivedFromSearch, type GuestLookup } from "@/lib/guestBudget";
 import { guestLookup } from "@/lib/guestLookup";
-import { computeStats, getLinkedPlayer, getRecentSets, getVisibleRecentSets, headToHead, hideHiddenOpponents, playerOnSmashy } from "@/lib/playerStats";
+import { computeStats, getLinkedPlayer, getRecentSets, getVisibleRecentSets, headToHead, hideHiddenOpponents, playerOnSmashy, portraitCharacters } from "@/lib/playerStats";
 import { getPlayerResults, getStartggPlayer } from "@/lib/startggPlayers";
 import { getSavedPlayer } from "@/lib/playerIndex";
 import { getPlayerSnapshot, savePlayerSnapshot, snapshotStale, type PlayerSnapshot } from "@/lib/playerSnapshots";
@@ -45,7 +45,7 @@ import { getLang, getT } from "@/lib/i18n/server";
 import type { MessageKey, Values } from "@/lib/i18n/core";
 import NewTab from "@/components/ui/NewTab";
 import { characterKey } from "@/lib/characters";
-import { stockIconUrl } from "@/lib/mainBadge";
+import { pixelArtIcon, stockIconUrl } from "@/lib/mainBadge";
 import type { PlayerSet } from "@/lib/playerStats";
 
 /** One start.gg fetch per page view: the header's character icons and the sets below share it. */
@@ -234,7 +234,7 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
 
 /**
  * The header's picture: their most played character's stock icon, big, with the next two smaller
- * beside it. A player with no character data (or none with an icon) gets the tag's first letter.
+ * beside it when they're played often enough (see portraitCharacters). A player with no character data (or none with an icon) gets the tag's first letter.
  */
 async function FollowButton({ playerId, tag, userId }: { playerId: string; tag: string; userId: string | null }) {
   const following = await followsPlayer(userId, playerId).catch(() => false);
@@ -243,16 +243,17 @@ async function FollowButton({ playerId, tag, userId }: { playerId: string; tag: 
 
 async function PlayerMainIcon({ playerId, tag, saved }: { playerId: string; tag: string; saved?: PlayerSet[] }) {
   const sets = saved ?? (await recentSets(playerId)); // only their own characters are read, so a saved copy needs no hiding
-  const icons = (sets ? computeStats(sets).characters : [])
-    .map((c) => (c.game ? { name: c.name, src: stockIconUrl({ game: c.game, character: characterKey(c.name) }) } : null))
-    .filter((c): c is { name: string; src: string } => !!c?.src)
-    .slice(0, 3);
+  const icons = portraitCharacters(
+    (sets ? computeStats(sets).characters : [])
+      .map((c) => (c.game ? { name: c.name, share: c.share, src: stockIconUrl({ game: c.game, character: characterKey(c.name) }) } : null))
+      .filter((c): c is { name: string; share: number; src: string } => !!c?.src),
+  );
   const [main, ...others] = icons;
   return (
     <span className="portrait-bubble relative h-32 w-32" title={icons.map((c) => c.name).join(", ") || undefined}>
       {main ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={main.src} alt={main.name} width={84} height={84} className="h-[84px] w-[84px]" />
+        <img src={main.src} alt={main.name} width={84} height={84} className="h-[84px] w-[84px]" style={{ imageRendering: pixelArtIcon(main.src, 84) ? "pixelated" : undefined }} />
       ) : (
         <span className="text-5xl font-bold text-[#7a2a20]" aria-hidden>{[...tag][0]?.toUpperCase()}</span>
       )}

@@ -5,6 +5,10 @@ export const playEn = {
   "play.general": "General",
   "play.guestTitle": "Find people to play right now",
   "play.guestBody": "Lobbies and live chat are for members. Joining is free.",
+  // What members get on Play, listed for guests (round 829)
+  "play.guest.point1": "Open lobbies: find a netplay match in seconds",
+  "play.guest.point2": "Live chat for each game",
+  "play.guest.point3": "Smashy Ladder: ranked sets and a new standings table every season",
   "play.join": "Join Smashy",
   "play.openLobbies": "Open lobbies",
   "play.roomChat": "{room} chat",

@@ -4,7 +4,7 @@ import GetTheApp from "@/components/GetTheApp";
 import { Suspense } from "react";
 import OnlineToday from "@/app/brackets/OnlineToday";
 import RecentWinners from "@/components/events/RecentWinners";
-import ClipStrip from "@/components/feed/ClipStrip";
+import TopClips from "@/components/feed/TopClips";
 import GameBadge from "@/components/GameBadge";
 import { MajorCard } from "@/components/majors/MajorParts";
 import Icon, { type IconName } from "@/components/ui/Icon";
@@ -14,7 +14,6 @@ import type { MessageKey } from "@/lib/i18n/core";
 import { getLang, getT } from "@/lib/i18n/server";
 import { isInviteOnly } from "@/lib/invites";
 import { majorsFor, type Major } from "@/lib/majors";
-import { getTopClips } from "@/lib/reels";
 import { HOME_REGION, regionName } from "@/lib/regions";
 import { detectedRegion } from "@/lib/viewerRegion";
 import Fold from "@/components/ui/Fold";
@@ -22,11 +21,12 @@ import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
 import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 
 // The big "start here" buttons at the top (round 654, for visitors from the Reddit posts): Smashy's
-// strongest parts, none of which need an account.
+// strongest parts, none of which need an account. Character pages come first (round 824, Matthew: more
+// people will be interested in them than in Smash history, which swapped places with them).
 const START: { icon: IconName; title: MessageKey; text: MessageKey; href: string }[] = [
-  { icon: "trophy", title: "ui.guest.t.history", text: "ui.guest.t.historyText", href: "/history" },
-  { icon: "calendar", title: "ui.guest.t.events", text: "ui.guest.t.eventsText", href: "/events" },
   { icon: "file", title: "ui.guest.t.characters", text: "ui.guest.t.charactersText", href: "/games" },
+  { icon: "calendar", title: "ui.guest.t.events", text: "ui.guest.t.eventsText", href: "/events" },
+  { icon: "trophy", title: "ui.guest.t.history", text: "ui.guest.t.historyText", href: "/history" },
   { icon: "users", title: "ui.guest.t.newPlayers", text: "ui.guest.t.newPlayersText", href: "/new" },
   { icon: "play", title: "ui.guest.t.reels", text: "ui.guest.t.reelsText", href: "/reels" },
   { icon: "chart", title: "ui.guest.t.players", text: "ui.guest.t.playersText", href: "/search?tab=players" },
@@ -54,11 +54,6 @@ function notOver<T extends { startAt: number; endAt: number | null }>(list: T[])
   return list.filter((t) => (t.endAt ?? t.startAt + 86400) > now);
 }
 
-/** The top clips, loaded after the rest of the welcome so it never waits on them. */
-async function GuestClips() {
-  const clips = await getTopClips({ myGames: [], limit: 8 }).catch(() => null);
-  return clips ? <ClipStrip reels={clips} headingId="guest-clips" bleed as="h3" /> : null;
-}
 
 /**
  * What a visitor who isn't signed in sees first: what Smashy is and how to join, then what's
@@ -126,7 +121,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
             <h3 className="font-bold"><Icon name="trophy" /> {t("ui.guest.majors")}</h3>
             <Link href="/events" className="text-sm font-semibold text-brand">{t("ui.guest.allEvents")}</Link>
           </div>
-          <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
+          <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
             {nextMajors.map((m) => <MajorCard key={m.slug} m={m} />)}
           </div>
         </div>
@@ -181,8 +176,11 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
                       <RecentWinners slug={ev.slug} />
                     </Suspense>
                   </span>
-                  <span className="shrink-0 text-sm text-muted">
-                    {[formatEventDate(ev.startAt, ev.timezone, lang), ev.numAttendees ? t("browse.recent.players", { n: ev.numAttendees }) : null].filter(Boolean).join(" · ")}
+                  {/* Date over player count (round 828): on one line they took half a phone's width and cut the
+                      winners' names short. */}
+                  <span className="shrink-0 text-right text-sm leading-snug text-muted">
+                    <span className="block">{formatEventDate(ev.startAt, ev.timezone, lang)}</span>
+                    {ev.numAttendees ? <span className="block">{t("browse.recent.players", { n: ev.numAttendees })}</span> : null}
                   </span>
                 </Link>
               </li>
@@ -200,7 +198,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
       </div>
 
       <Suspense fallback={null}>
-        <GuestClips />
+        <TopClips headingId="guest-clips" bleed as="h3" />
       </Suspense>
 
       <div className="flex flex-col gap-2">

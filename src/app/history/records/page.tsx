@@ -226,7 +226,7 @@ async function Records({ searchParams }: { searchParams: PageProps<"/history/rec
           </ol>
           <p className="text-sm">
             <a href={SMASHWIKI + allTime.page} target="_blank" rel="noopener noreferrer" className="link">
-              {t("history.ranking.full", { name: allTime.name })} ↗<NewTab />
+              {t("history.ranking.full", { name: allTime.name })} ↗︎<NewTab />
             </a>
           </p>
         </section>

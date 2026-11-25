@@ -57,7 +57,7 @@ async function Queue() {
             )}
             <div className="min-w-0 flex-1 basis-48">
               <a href={clipUrl(c)} target="_blank" rel="noopener noreferrer" className="block truncate font-semibold hover:underline">
-                {c.title || "Untitled clip"} ↗
+                {c.title || "Untitled clip"} ↗︎
               </a>
               <p className="text-muted">
                 {platformName(c.platform)} · {c.channelName} · {c.views.toLocaleString("en-US")} views · shared by{" "}

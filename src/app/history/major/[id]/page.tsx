@@ -124,14 +124,14 @@ async function MajorView({ params }: { params: PageProps<"/history/major/[id]">[
         <p>{t("history.major.handAdded")}</p>
         {m.sourceUrl && host && (
           <a href={m.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-brand">
-            {t("history.major.source", { host })} ↗<NewTab />
+            {t("history.major.source", { host })} ↗︎<NewTab />
           </a>
         )}
         {/* Placings matched to start.gg players came from start.gg (round 526). */}
         {events.some((e) => e.top8.some((r) => r.playerId)) && <p>{t("history.major.alsoStartgg")}</p>}
         {chars.size > 0 && <p>{t("history.characters.credit")}</p>}
         <a href={liquipediaSearch(m.name)} target="_blank" rel="noopener noreferrer" className="self-start text-brand">
-          {t("history.liquipedia")} ↗<NewTab />
+          {t("history.liquipedia")} ↗︎<NewTab />
         </a>
         {m.suggestedBy && <p>{t("history.major.suggestedBy", { handle: m.suggestedBy })}</p>}
         {m.addedBy && <p>{t("history.major.addedBy", { handle: m.addedBy })}</p>}

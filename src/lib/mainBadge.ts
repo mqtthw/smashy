@@ -50,3 +50,13 @@ export function mainCode(main: Main): string {
   const words = name.replace(/[.&]/g, " ").split(/\s+/).filter(Boolean);
   return (words.length > 1 ? words.map((w) => w[0]).join("") : words[0].slice(0, 3)).slice(0, 3).toUpperCase();
 }
+
+/**
+ * Whether an icon is pixel art that should be enlarged with hard pixel edges (round 836). Melee, 64 and
+ * Brawl icons are small pixel drawings; enlarged smoothly (the character page's 36 px heading icon, a
+ * player page's 84 px portrait) they look blurry. Only for big displays: shrinking with hard edges
+ * drops pixels and looks noisy, and Ultimate's and Smash 4's smooth art looks the same either way.
+ */
+export function pixelArtIcon(src: string, size: number): boolean {
+  return size >= 32 && /\/stock\/(melee|smash64|brawl)\//.test(src);
+}

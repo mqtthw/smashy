@@ -164,7 +164,7 @@ export default function MoreMenu({ className, profile, admin }: { className: str
                 {/* The Smashy Discord (round 812): a new member had to ask whether there was one. */}
                 <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 px-5 py-3 text-base font-semibold text-muted hover:bg-surface hover:text-foreground">
                   <Icon name="chat" className="text-xl" />
-                  {t("people.profile.discord")} ↗
+                  {t("people.profile.discord")} ↗︎
                 </a>
                 <Link href="/help" prefetch={false} className="flex items-center gap-4 px-5 py-3 text-base font-semibold text-muted hover:bg-surface hover:text-foreground">
                   <Icon name="heart" className="text-xl" />

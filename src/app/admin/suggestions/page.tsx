@@ -38,7 +38,7 @@ async function SuggestionsAdmin() {
             </p>
             {s.link && (
               <a href={s.link} target="_blank" rel="noopener noreferrer nofollow" className="break-all font-semibold text-brand hover:underline">
-                {s.link} ↗
+                {s.link} ↗︎
               </a>
             )}
             {s.details && <p className="whitespace-pre-line break-words">{s.details}</p>}

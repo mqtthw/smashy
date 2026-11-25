@@ -136,7 +136,7 @@ export default function AboutPage() {
         <h2 id="discord" className="font-bold"><T k="ui.about.discordTitle" /></h2>
         <p className="text-sm text-muted"><T k="ui.about.discordBody" /></p>
         <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="btn btn-md btn-outline self-start">
-          <T k="ui.about.discordJoin" /> ↗
+          <T k="ui.about.discordJoin" /> ↗︎
         </a>
         <p className="mt-2 text-sm text-muted">
           <T k="ui.about.api" /> <Link href="/developers" className="link"><T k="ui.about.apiLink" /></Link>

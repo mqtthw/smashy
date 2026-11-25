@@ -5,6 +5,7 @@ import ChatRoom from "@/components/play/ChatRoom";
 import HostLobbyForm from "@/components/play/HostLobbyForm";
 import LobbyList from "@/components/play/LobbyList";
 import OnlineLadders from "@/components/play/OnlineLadders";
+import TopClips from "@/components/feed/TopClips";
 import PlayNow from "@/components/play/PlayNow";
 import { getMyPlaySettings, getPlayFriends, getPlayRequests } from "@/lib/playNow";
 import { isPlayGame } from "@/lib/playGames";
@@ -23,6 +24,14 @@ import { CardListSkeleton } from "@/components/ui/Skeleton";
 import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import { signInPath } from "@/lib/returnTo";
+import Icon, { type IconName } from "@/components/ui/Icon";
+import type { MessageKey } from "@/lib/i18n/core";
+
+const GUEST_POINTS: { icon: IconName; text: MessageKey }[] = [
+  { icon: "gamepad", text: "play.guest.point1" },
+  { icon: "chat", text: "play.guest.point2" },
+  { icon: "chart", text: "play.guest.point3" },
+];
 
 export const metadata: Metadata = { title: "Play Smash online: netplay lobbies and ladders", description: "Find Super Smash Bros. netplay lobbies, ranked online ladders and chat with the smash community." };
 
@@ -56,9 +65,24 @@ async function PlayContent({ searchParams }: { searchParams: PageProps<"/play">[
           <p className="mt-1 text-sm text-muted">
             {t("play.guestBody")}
           </p>
-          <Link href={signInPath("/play")} className="mt-3 inline-block btn btn-md btn-primary">{t("play.join")}</Link>
+          {/* What members get here (round 829): the guest page was one small card over an empty screen. */}
+          <ul className="mt-4 flex flex-col gap-2 text-sm">
+            {GUEST_POINTS.map((p) => (
+              <li key={p.text} className="flex items-start gap-2">
+                <span className="mt-0.5 shrink-0 text-brand"><Icon name={p.icon} /></span>
+                {t(p.text)}
+              </li>
+            ))}
+          </ul>
+          <Link href={signInPath("/play")} className="mt-4 inline-block btn btn-md btn-primary">{t("play.join")}</Link>
         </div>
         <OnlineLadders game={game} />
+        {/* This game's top clips (round 837): the guest page ended in half a screen of empty space. */}
+        <div className="mt-6">
+          <Suspense fallback={null}>
+            <TopClips headingId="play-clips" game={game} />
+          </Suspense>
+        </div>
       </LangProvider>
     );
   }

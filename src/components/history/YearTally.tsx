@@ -73,7 +73,7 @@ export default async function YearTally({ year, game, byMajor, t }: { year: numb
             <span key={`${r.game}|${r.name}`}>
               {i > 0 && " · "}
               <a href={r.url} target="_blank" rel="noopener noreferrer" className="link">
-                {r.name}{!game ? ` (${GAMES[r.game].short})` : ""} ↗<NewTab />
+                {r.name}{!game ? ` (${GAMES[r.game].short})` : ""} ↗︎<NewTab />
               </a>
             </span>
           ))}

@@ -13,6 +13,13 @@ const SHOW_FROM_VISIT = 2;
 /** Pages where it stays out of the way: signing in and setting up a profile. */
 export const SIGNING_UP = /^\/(signin|welcome)(\/|$)/;
 
+/**
+ * The only pages it shows on (round 826): the Feed and the Events list, the two people come back to.
+ * On every page it stacked on the bottom menu and covered a fifth of a phone screen, over clips on
+ * Reels and over buttons elsewhere.
+ */
+export const SHOWS_ON = /^\/(events)?$/;
+
 /** Which store this phone gets apps from: iPhones and iPads (any browser) the App Store, Android Google Play. */
 export function storeFor(ua: string, maxTouchPoints = 0): "apple" | "google" | null {
   if (/iPhone|iPad|iPod/.test(ua)) return "apple";
@@ -62,7 +69,7 @@ export default function InstallPrompt() {
   }, []);
 
   // Not over the sign-in and sign-up forms (round 681): it covered "Create profile" mid-sign-up.
-  if (!store || SIGNING_UP.test(pathname ?? "")) return null;
+  if (!store || !SHOWS_ON.test(pathname ?? "")) return null;
   const close = () => {
     setStore(null);
     try {
@@ -71,12 +78,13 @@ export default function InstallPrompt() {
   };
 
   return (
-    <div role="dialog" aria-label={t("ui.install.title")} className="fixed inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 flex items-center gap-3 rounded-2xl border border-line bg-background p-3 shadow-xl md:hidden">
+    // One compact row (round 826): the title, and the reason in one line that trims itself on narrow phones.
+    <div role="dialog" aria-label={t("ui.install.title")} className="fixed inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 flex items-center gap-2.5 rounded-2xl border border-line bg-background px-2.5 py-2 shadow-xl md:hidden">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/icon" alt="" width={40} height={40} className="h-10 w-10 shrink-0 rounded-xl" />
-      <div className="min-w-0 flex-1 text-sm">
-        <p className="font-bold">{t("ui.install.title")}</p>
-        <p className="text-muted">{t("ui.install.storeBody")}</p>
+      <img src="/icon" alt="" width={32} height={32} className="h-8 w-8 shrink-0 rounded-lg" />
+      <div className="min-w-0 flex-1 leading-tight">
+        <p className="text-sm font-bold">{t("ui.install.title")}</p>
+        <p className="truncate text-xs text-muted">{t("ui.install.storeBody")}</p>
       </div>
       <a href={store === "apple" ? APP_STORE_URL : PLAY_STORE_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn btn-sm btn-primary shrink-0">
         {store === "apple" ? t("ui.getApp.appStore") : t("ui.getApp.googlePlay")}

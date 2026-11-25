@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ cacheLife: () => {} }));
 
-const { computeStats, headToHead } = await import("@/lib/playerStats");
+const { computeStats, headToHead, portraitCharacters } = await import("@/lib/playerStats");
 type PlayerSet = Parameters<typeof computeStats>[0][number];
 
 const set = (id: string, opp: string, won: boolean, chars: string[] = [], dq = false): PlayerSet => ({
@@ -47,5 +47,20 @@ describe("player stats", () => {
     expect(headToHead(sets, "a", "3")).toMatchObject({ wins: 1, losses: 1 });
     expect(headToHead(sets, "b")).toMatchObject({ wins: 1, losses: 0 }); // the DQ doesn't count
     expect(headToHead(sets, "zzz").sets).toEqual([]);
+  });
+});
+
+describe("portraitCharacters (round 838)", () => {
+  const c = (name: string, share: number) => ({ name, share });
+  it("shows only the main when the others are occasional picks", () => {
+    expect(portraitCharacters([c("Marth", 88), c("Falco", 7), c("Fox", 3)]).map((x) => x.name)).toEqual(["Marth"]);
+  });
+  it("keeps second and third characters played in at least a fifth of sets", () => {
+    expect(portraitCharacters([c("Fox", 55), c("Falco", 30), c("Marth", 20), c("Sheik", 10)]).map((x) => x.name)).toEqual(["Fox", "Falco", "Marth"]);
+    expect(portraitCharacters([c("Sheik", 70), c("Marth", 19)]).map((x) => x.name)).toEqual(["Sheik"]);
+  });
+  it("always keeps the most played, and handles none", () => {
+    expect(portraitCharacters([c("Peach", 12)]).map((x) => x.name)).toEqual(["Peach"]);
+    expect(portraitCharacters([])).toEqual([]);
   });
 });

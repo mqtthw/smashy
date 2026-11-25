@@ -83,7 +83,7 @@ async function ClipsAdmin() {
                   <a key={u.href} href={u.href} download={u.name} className="btn btn-sm btn-primary">Download ({u.length})</a>
                 ))}
                 {links.map((l) => (
-                  <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-ghost">On {l.site} ↗</a>
+                  <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-ghost">On {l.site} ↗︎</a>
                 ))}
               </div>
             </li>

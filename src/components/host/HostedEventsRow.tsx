@@ -42,7 +42,7 @@ export default function HostedEventsRow({ events, friends = {} }: { events: Host
           </div>
         </div>
       ) : (
-        <ul className="flex gap-3 overflow-x-auto px-4 pt-3 pb-1">
+        <ul className="scroll-fade flex gap-3 overflow-x-auto px-4 pt-3 pb-1">
           {events.map((e) => (
             <li key={e.id} className="w-60 shrink-0">
               <Link href={`/host/${e.id}`} className="card flex h-full flex-col gap-1.5 p-3 hover:bg-surface">

@@ -50,7 +50,7 @@ export default function LiveStream({ streams, live, over = false, eventName, eve
         {links.map((s) => (
           <li key={s.source + s.name}>
             <a href={s.href} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">
-              {s.source === "TWITCH" ? "Twitch" : "YouTube"} · {s.name} ↗
+              {s.source === "TWITCH" ? "Twitch" : "YouTube"} · {s.name} ↗︎
             <NewTab /></a>
           </li>
         ))}

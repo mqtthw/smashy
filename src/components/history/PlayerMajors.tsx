@@ -31,6 +31,7 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
   const games = [...new Set(saved.map((r) => r.game))] as GameKey[];
   const byGame = new Map(await Promise.all(games.map(async (g) => [g, await winBrackets(g).catch(() => null)] as const)));
   const rows = bestPerMajor([...saved, ...games.flatMap((g) => handAddedPlacings(byGame.get(g) ?? [], g, linksForGame(links, g), playerId))]);
+  const multiGame = new Set(rows.map((r) => r.game)).size > 1;
   // The characters they played at each: a hand-added result's own, else the sets start.gg saved for that bracket.
   const needSets = rows.filter((r) => !r.characters?.length && r.eventId);
   const sets = needSets.length ? await getMajorCharacters([...new Set(needSets.map((r) => r.slug))]).catch((): MajorCharacters => new Map()) : new Map();
@@ -140,7 +141,9 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
                   {r.entrants ? ` · ${t("browse.entrants", { n: r.entrants })}` : ""}
                 </span>
               </span>
-              <GameBadge game={r.game} />
+              {/* Only when this player's majors span more than one game (round 835): otherwise every row said the
+                  same "Melee", already said above, and took room from the event name. */}
+              {multiGame && <GameBadge game={r.game} />}
             </Link>
           </li>
         ))}

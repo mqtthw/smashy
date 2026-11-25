@@ -14,7 +14,7 @@ import { ClipSkeleton } from "@/components/ui/Skeleton";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 
-// Reels is dark in both themes, so the phone's browser bars are too (round 820): in light mode Safari's bar
+// Reels is dark in both themes, so the phone's browser bars are too (round 821): in light mode Safari's bar
 // and the clock strip were sky blue around the black clips. One colour, no light/dark split.
 export const viewport: Viewport = { themeColor: "#0a0a0a" };
 

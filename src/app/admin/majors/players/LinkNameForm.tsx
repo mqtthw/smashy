@@ -17,7 +17,7 @@ export default function LinkNameForm({ name, games, suggestions }: { name: strin
             </button>
           </form>
         ))}
-        <a href={`/search?q=${encodeURIComponent(name)}`} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-ghost">Find a player ↗</a>
+        <a href={`/search?q=${encodeURIComponent(name)}`} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-ghost">Find a player ↗︎</a>
       </div>
       <form action={action} className="flex flex-wrap gap-2">
         <label className="sr-only" htmlFor={`player-${name}`}>start.gg player id or Smashy player page</label>

@@ -1,6 +1,6 @@
 // Which store the "Get the Smashy app" card sends a phone to (round 642).
 import { describe, expect, it } from "vitest";
-import { SIGNING_UP, storeFor } from "@/components/InstallPrompt";
+import { SHOWS_ON, SIGNING_UP, storeFor } from "@/components/InstallPrompt";
 
 describe("the app store for this phone", () => {
   it("sends iPhones and iPads to the App Store, in any browser", () => {
@@ -19,5 +19,12 @@ describe("SIGNING_UP (round 681)", () => {
   it("keeps the app banner off the sign-in and sign-up pages only", () => {
     for (const p of ["/signin", "/signin/", "/welcome", "/welcome/x"]) expect(SIGNING_UP.test(p)).toBe(true);
     for (const p of ["/", "/signing", "/welcomes", "/events", "/u/welcome"]) expect(SIGNING_UP.test(p)).toBe(false);
+  });
+});
+
+describe("SHOWS_ON (round 826)", () => {
+  it("shows the app banner on the Feed and the Events list only", () => {
+    for (const p of ["/", "/events"]) expect(SHOWS_ON.test(p)).toBe(true);
+    for (const p of ["/reels", "/play", "/profile", "/events/genesis-x4", "/signin", "/welcome", "/eventsx", "/games"]) expect(SHOWS_ON.test(p)).toBe(false);
   });
 });

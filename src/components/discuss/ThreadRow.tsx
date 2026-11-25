@@ -8,6 +8,14 @@ import type { Post } from "@/lib/posts";
 import { hideInlineSpoilers } from "@/lib/spoilerText";
 import Icon from "@/components/ui/Icon";
 
+/**
+ * A thread's text for its two-line preview (round 839): web addresses left out, since in two lines a
+ * long YouTube or X link crowded out what the poster actually wrote. The thread itself shows them.
+ */
+export function excerpt(body: string): string {
+  return body.replace(/(?:https?:\/\/|www\.)\S+/gi, " ").replace(/\s+/g, " ").trim();
+}
+
 /** One thread in a board: flair, title, a line of the text, who started it, and how much it's discussed. */
 export default function ThreadRow({ post, now }: { post: Post; now: number }) {
   const matchup = post.game !== "general" && post.character
@@ -24,7 +32,7 @@ export default function ThreadRow({ post, now }: { post: Post; now: number }) {
           {post.spoiler && <span className="badge border border-brand font-normal text-brand"><T k="feed.compose.spoiler" /></span>}
         </div>
         <h2 className="font-bold leading-snug">{hideInlineSpoilers(post.title ?? "")}</h2>
-        {!post.spoiler && <p className="line-clamp-2 text-sm text-muted">{hideInlineSpoilers(post.body)}</p>}
+        {!post.spoiler && excerpt(post.body) && <p className="line-clamp-2 text-sm text-muted">{hideInlineSpoilers(excerpt(post.body))}</p>}
         <p className="text-meta text-muted">
           {post.author.tag} · <TimeAgo at={post.createdAt} serverNow={now} /> · <Icon name="chat" /> {post.replyCount} · <Icon name="heart" /> {post.likeCount}
         </p>

@@ -101,15 +101,20 @@ async function RecentResults({ tournaments }: { tournaments: SmashyTournament[] 
   );
 }
 
-/** Events hosted on Smashy itself (any game the viewer plays, online or in person). */
-async function Hosted() {
+/**
+ * Events hosted on Smashy itself (any game the viewer plays, online or in person), around `children`
+ * (the region's list). With none to show, the "Run your local on Smashy" card goes after the region's
+ * tournaments instead of before them (round 839): it pushed the real list half a screen down.
+ */
+async function Hosted({ children }: { children: React.ReactNode }) {
   const userId = await getUserId();
   const [events, myGames] = await Promise.all([getUpcomingHostedEvents({ limit: 30, viewerId: userId }).catch(() => []), getMyGames(userId)]);
   const games = new Set<string>(myGames.length ? myGames : ["melee", "ultimate", "pplus"]);
   // Online events from Smashy hosts are on the Online tab; this row is for in-person ones.
   const shown = events.filter((e) => games.has(e.game) && !e.online);
   const friendsIn = await getFollowedEntrants(userId, shown.map((e) => e.id)).catch(() => ({} as Record<string, string[]>));
-  return <HostedEventsRow events={shown} friends={Object.fromEntries(shown.map((e) => [e.id, followedLabel(friendsIn[e.id])]))} />;
+  const row = <HostedEventsRow events={shown} friends={Object.fromEntries(shown.map((e) => [e.id, followedLabel(friendsIn[e.id])]))} />;
+  return shown.length ? <>{row}{children}</> : <>{children}{row}</>;
 }
 
 /** Past its end time (the Online tab keeps finished brackets a couple of hours, for results). */
@@ -240,8 +245,9 @@ async function EventsTabs({ searchParams }: { searchParams: PageProps<"/events">
         // shared lists now (rounds 563-564), so waiting for the slowest costs little.
         <Suspense fallback={<CardListSkeleton count={5} label={t("browse.events.loading")} className="p-4" />}>
           <Majors />
-          <Hosted />
-          <RegionEvents searchParams={searchParams} />
+          <Hosted>
+            <RegionEvents searchParams={searchParams} />
+          </Hosted>
         </Suspense>
       )}
     </LangProvider>

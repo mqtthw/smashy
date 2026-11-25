@@ -16,7 +16,7 @@ export default function ClipStrip({ reels, headingId, bleed = false, as: Heading
         <Heading id={headingId} className="font-bold"><Icon name="play" /> <T k="feed.clips.title" /></Heading>
         <Link href="/reels" className="text-sm font-semibold text-brand"><T k="feed.clips.watch" /></Link>
       </div>
-      <ul className={`flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] ${bleed ? "-mx-4 px-4" : "px-4"}`}>
+      <ul className={`scroll-fade flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] ${bleed ? "-mx-4 px-4" : "px-4"}`}>
         {reels.map((r) => (
           <li key={r.clipId} className="w-32 shrink-0">
             <Link href={`/reels/${encodeURIComponent(r.clipId)}`} className="group flex flex-col gap-1">
