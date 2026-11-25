@@ -239,7 +239,6 @@ export const peopleEn = {
   "people.player.tryAgain": "Try again",
   "people.player.signInOrJoin": "Sign in or join",
   "people.player.hidden": "This player's stats aren't shown on Smashy.",
-  "people.player.via": "Player · via start.gg",
   "people.player.claimedBy": "✓ Claimed on Smashy by @{handle}",
   "people.player.notOnSmashy": "Is this you? {link}.",
   "people.player.openStartgg": "Open on start.gg ↗︎",

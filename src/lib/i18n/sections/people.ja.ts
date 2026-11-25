@@ -241,7 +241,6 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
   "people.player.tryAgain": "もう一度試す",
   "people.player.signInOrJoin": "ログインまたは登録",
   "people.player.hidden": "このプレイヤーの成績はSmashyでは表示されていません。",
-  "people.player.via": "プレイヤー · start.gg経由",
   "people.player.claimedBy": "✓ Smashyで@{handle}が本人登録済み",
   "people.player.notOnSmashy": "あなたですか？{link}",
   "people.player.openStartgg": "start.ggで開く ↗︎",

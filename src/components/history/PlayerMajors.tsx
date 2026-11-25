@@ -48,11 +48,11 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
       const brackets = byGame.get(g);
       return brackets ? playerMilestone(brackets, g, linksForGame(links, g), playerId) : null;
     })
-    .filter((m): m is Milestone => !!m && !!(m.first || m.run || m.wait));
+    .filter((m): m is Milestone => !!m && !!(m.first || m.run)); // "won again after N years" was dropped in round 845
   // The community's rankings that listed them (matched by the tags they placed under in that game).
   const ranked = games
     .map((g) => ({ game: g, places: rankingPlaces(g, playerNameKeys(byGame.get(g) ?? [], linksForGame(links, g), playerId), (n) => nameKey(tagOnly(n))) }))
-    .filter((r) => r.places.length > 0);
+    .filter((r) => r.places.some((p) => p.ranking.kind !== "mid")); // shown: year-end ones only
   const span = (r: RankingPlace["ranking"]) => (r.alsoYears?.length ? `${r.year}–${r.alsoYears.at(-1)}` : String(r.year));
   const year = (iso: string) => iso.slice(0, 4);
   const named = (name: string, iso: string) => (name.includes(year(iso)) ? name : `${name} (${year(iso)})`);
@@ -101,11 +101,6 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
                   · {t("history.player.run", { n: m.run.streak })} <Link href={majorHref(m.run.majorSlug)} className="hover:underline">{m.run.majorName}</Link>
                 </span>
               )}
-              {m.wait && (
-                <span className="text-muted">
-                  · {t("history.player.wait", { n: Math.floor((Date.parse(m.wait.startAt) - Date.parse(m.wait.previousAt)) / (365.25 * 86400_000)) })} <Link href={majorHref(m.wait.majorSlug)} className="hover:underline">{m.wait.majorName}</Link>
-                </span>
-              )}
             </li>
           ))}
         </ul>
@@ -123,7 +118,6 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
                     {span(p.ranking)} #{p.rank}
                   </Link>
                 ))}
-              <span className="text-meta text-muted">· {t("history.player.rankedIn", { n: places.length })}</span>
             </li>
           ))}
         </ul>

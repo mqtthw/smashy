@@ -81,7 +81,6 @@ export const historyEn = {
   "history.player.milestones": "Milestones",
   "history.player.firstWin": "First major win:",
   "history.player.run": "{n} in a row at",
-  "history.player.wait": "won again after {n} years at",
   "history.player.rankings": "Official rankings",
   "history.player.yearEnd": "Ranked:",
   "history.player.rankedIn": "in 1 published ranking|in {n} published rankings, mid-year ones included",

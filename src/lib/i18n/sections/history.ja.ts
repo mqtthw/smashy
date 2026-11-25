@@ -82,7 +82,6 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.player.milestones": "主な記録",
   "history.player.firstWin": "大型大会初優勝：",
   "history.player.run": "{n}連覇：",
-  "history.player.wait": "{n}年ぶりの優勝：",
   "history.player.rankings": "公式ランキング",
   "history.player.yearEnd": "ランキング：",
   "history.player.rankedIn": "発表されたランキング1件に掲載|発表されたランキング{n}件に掲載（年の途中のものを含む）",

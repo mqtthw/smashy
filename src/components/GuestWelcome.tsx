@@ -20,16 +20,17 @@ import Fold from "@/components/ui/Fold";
 import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
 import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 
-// The big "start here" buttons at the top (round 654, for visitors from the Reddit posts): Smashy's
-// strongest parts, none of which need an account. Character pages come first (round 824, Matthew: more
+// The "start here" links at the top (round 654, for visitors from the Reddit posts): Smashy's
+// strongest parts, none of which need an account. A row of short links since round 845: as six cards
+// with a sales line each, the first screen read like a generic landing page (Reddit: "looks vibe coded"). Character pages come first (round 824, Matthew: more
 // people will be interested in them than in Smash history, which swapped places with them).
-const START: { icon: IconName; title: MessageKey; text: MessageKey; href: string }[] = [
-  { icon: "file", title: "ui.guest.t.characters", text: "ui.guest.t.charactersText", href: "/games" },
-  { icon: "calendar", title: "ui.guest.t.events", text: "ui.guest.t.eventsText", href: "/events" },
-  { icon: "trophy", title: "ui.guest.t.history", text: "ui.guest.t.historyText", href: "/history" },
-  { icon: "users", title: "ui.guest.t.newPlayers", text: "ui.guest.t.newPlayersText", href: "/new" },
-  { icon: "play", title: "ui.guest.t.reels", text: "ui.guest.t.reelsText", href: "/reels" },
-  { icon: "chart", title: "ui.guest.t.players", text: "ui.guest.t.playersText", href: "/search?tab=players" },
+const START: { icon: IconName; title: MessageKey; href: string }[] = [
+  { icon: "file", title: "ui.guest.t.characters", href: "/games" },
+  { icon: "calendar", title: "ui.guest.t.events", href: "/events" },
+  { icon: "trophy", title: "ui.guest.t.history", href: "/history" },
+  { icon: "users", title: "ui.guest.t.newPlayers", href: "/new" },
+  { icon: "play", title: "ui.guest.t.reels", href: "/reels" },
+  { icon: "chart", title: "ui.guest.t.players", href: "/search?tab=players" },
 ];
 
 /** 20 random Melee and Ultimate stock icons for the Character pages button to rotate through. */
@@ -83,21 +84,15 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
         <div className="flex flex-col gap-1">
           {/* Phones have no sidebar, so by day the logo and its sun open the page there (round 774). */}
           <span className="day-only logo-sun mx-auto mt-6 mb-8 inline-block text-5xl md:hidden"><Logo className="" /></span>
-          <h2 id="guest-welcome" className="text-2xl leading-tight font-bold">
-            <span className="day-only">{t("ui.guest.headlineDay")}</span>
-            <span className="night-only">{t("ui.guest.headline")}</span>
-          </h2>
+          <h2 id="guest-welcome" className="text-2xl leading-tight font-bold">{t("ui.guest.headline")}</h2>
           <p className="text-muted">{t("ui.guest.pitch")}</p>
         </div>
-        <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <ul className="flex flex-wrap gap-2">
           {START.map((f) => (
             <li key={f.href}>
-              <Link href={f.href} className="card flex h-full flex-col gap-1 p-3 hover:bg-surface">
-                <span className="flex items-center gap-2 font-bold">
-                  {f.href === "/games" ? <RotatingCharacterIcon icons={icons} /> : <Icon name={f.icon} className="text-xl text-brand" />}
-                  {t(f.title)}
-                </span>
-                <span className="text-sm text-muted">{t(f.text)}</span>
+              <Link href={f.href} className="chip font-semibold hover:bg-surface">
+                {f.href === "/games" ? <RotatingCharacterIcon icons={icons} /> : <Icon name={f.icon} className="text-brand" />}
+                {t(f.title)}
               </Link>
             </li>
           ))}

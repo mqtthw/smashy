@@ -82,7 +82,6 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.player.milestones": "Hitos",
   "history.player.firstWin": "Primera victoria en un major:",
   "history.player.run": "{n} seguidas en",
-  "history.player.wait": "volvió a ganar tras {n} años en",
   "history.player.rankings": "Rankings oficiales",
   "history.player.yearEnd": "En el ranking:",
   "history.player.rankedIn": "en 1 ranking publicado|en {n} rankings publicados, incluidos los de mitad de año",

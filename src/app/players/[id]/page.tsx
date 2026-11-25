@@ -160,24 +160,14 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
             <PlayerMainIcon playerId={player.playerId} tag={player.tag} />
           </Suspense>
         )}
-        <p className="mt-2 text-meta text-muted">{t("people.player.via")}</p>
         {busy && <p role="status" className="rounded-lg bg-surface px-3 py-1 text-meta text-muted">{t("people.player.busySaved")}</p>}
         <h1 className="flex max-w-full flex-col items-center text-3xl leading-tight break-words">
           {player.prefix && <span className="font-sans text-body font-semibold tracking-wide text-muted">{player.prefix}</span>}
           {player.tag}
         </h1>
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-meta">
-          {onSmashy.handle ? (
-            <Link href={`/u/${onSmashy.handle}`} className="link">{t("people.player.claimedBy", { handle: onSmashy.handle })}</Link>
-          ) : (
-            <span className="text-muted">
-              {withNode(t("people.player.notOnSmashy", { link: "\u0001" }), <Link href="/link/startgg" className="link">{t("people.linkStartgg")}</Link>)}
-            </span>
-          )}
-          {/* Their page can be found through search engines (round 791), so the way out is on the page itself. */}
-          {!onSmashy.handle && (
-            <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Please don't list start.gg player ${player.playerId} (${player.tag})`)}`} className="link">{t("people.player.askHide")}</a>
-          )}
+        {/* One row of links (round 845); "Is this you?" and "Ask not to be listed" are at the page's foot. */}
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-meta">
+          {onSmashy.handle && <Link href={`/u/${onSmashy.handle}`} className="link">{t("people.player.claimedBy", { handle: onSmashy.handle })}</Link>}
           {player.profileUrl && (
             <a href={player.profileUrl} target="_blank" rel="noopener noreferrer" className="link">{t("people.player.openStartgg")}<NewTab /></a>
           )}
@@ -227,6 +217,13 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
         <Suspense fallback={<CardListSkeleton count={3} label={t("people.player.loadingSets")} className="p-4" />}>
           <PlayerSets playerId={player.playerId} tag={player.tag} viewerId={userId} />
         </Suspense>
+      )}
+      {!onSmashy.handle && (
+        <p className="flex flex-wrap gap-x-3 gap-y-1 border-t border-line px-4 py-4 text-meta text-muted">
+          <span>{withNode(t("people.player.notOnSmashy", { link: "\u0001" }), <Link href="/link/startgg" className="link">{t("people.linkStartgg")}</Link>)}</span>
+          {/* Their page can be found through search engines (round 791), so the way out is on the page itself. */}
+          <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Please don't list start.gg player ${player.playerId} (${player.tag})`)}`} className="link">{t("people.player.askHide")}</a>
+        </p>
       )}
     </LangProvider>
   );

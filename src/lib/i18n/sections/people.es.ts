@@ -241,7 +241,6 @@ export const peopleEs: Record<keyof typeof peopleEn, string> = {
   "people.player.tryAgain": "Reintentar",
   "people.player.signInOrJoin": "Inicia sesión o únete",
   "people.player.hidden": "Las estadísticas de este jugador no se muestran en Smashy.",
-  "people.player.via": "Jugador · vía start.gg",
   "people.player.claimedBy": "✓ Reclamado en Smashy por @{handle}",
   "people.player.notOnSmashy": "¿Eres tú? {link}.",
   "people.player.openStartgg": "Abrir en start.gg ↗︎",
