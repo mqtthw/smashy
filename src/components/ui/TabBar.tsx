@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 export type Tab = { key: string; label: string; href: string };
 
 /**
- * X-style tab row: equal-width tabs, bold label with a short brand-red bar under the active one.
+ * A row of slanted plates (round 846; it was an X-style underlined row): the active one solid red.
  * Tabs are links, so every view has a shareable URL.
  * `sticky` pins the row to the top of the screen while the list scrolls.
  * The tapped tab is underlined the moment it's tapped (round 553), before its page arrives.
@@ -47,7 +47,7 @@ export default function TabBar({
     <nav
       ref={nav}
       aria-label={label}
-      className={`flex border-b border-line ${sticky ? "sticky top-0 z-[5] glass-sticky" : ""} overflow-x-auto`}
+      className={`flex gap-1.5 border-b border-line px-4 py-2.5 [scrollbar-width:none] ${sticky ? "sticky top-0 z-[5] glass-sticky" : ""} overflow-x-auto`}
     >
       {tabs.map((t) => {
         const on = t.key === shown;
@@ -60,12 +60,9 @@ export default function TabBar({
               if (!e.defaultPrevented && !on) setTapped({ key: t.key, was: active });
             }}
             aria-current={on ? "page" : undefined}
-            className={`flex flex-1 shrink-0 justify-center px-4 text-body transition-colors hover:bg-surface ${on ? "font-bold text-foreground" : "text-muted"}`}
+            className={`plate text-body ${on ? "plate-on" : ""}`}
           >
-            <span className="relative py-3.5">
-              {t.label}
-              {on && <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1 rounded-full bg-brand" />}
-            </span>
+            <span>{t.label}</span>
           </Link>
         );
       })}
