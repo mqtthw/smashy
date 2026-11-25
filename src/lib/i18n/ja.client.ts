@@ -1820,6 +1820,7 @@ export const ja = {
   "browse.online.tomorrow": "明日 · {day}",
   "browse.online.onSmashy": "Smashyで開催",
   "browse.online.onSmashyHint": "Smashyで運営される大会：ここでエントリー、チェックイン、セットの対戦ができます",
+  "browse.online.bracketCount": "ブラケット1個|ブラケット{n}個",
   "browse.online.count": "1件の大会。時刻はあなたのタイムゾーンです。start.gg、Smashy、および独自サイトで毎週開催されるシリーズのオンライン大会。|{n}件の大会。時刻はあなたのタイムゾーンです。start.gg、Smashy、および独自サイトで毎週開催されるシリーズのオンライン大会。",
   "browse.online.emptySmashy": "現在Smashyで開催中のオンライン大会はありません。主催してみましょう：エントリー、チェックイン、ライブのセット進行が使えます。",
   "browse.online.emptyOpen": "この条件でエントリー受付中の大会は現在ありません。「エントリー受付中」をオフにしてみてください。",

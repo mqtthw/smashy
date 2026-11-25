@@ -1,5 +1,6 @@
 "use client";
 
+import { shortBracketNames } from "@/lib/bracketNames";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import GameBadge from "@/components/GameBadge";
@@ -149,8 +150,12 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
                         {r.signupsOpen && <span className="font-semibold text-brand">{t("event.status.open")}</span>}
                         {r.friends && <span className="text-muted"><Icon name="user" /> {r.friends}</span>}
                       </span>
-                      {r.brackets.length > 1 && (
-                        <span className="mt-1 block truncate text-meta text-muted">{r.brackets.map((b) => b.name).join(" · ")}</span>
+                      {/* Only the part of each bracket's name after the tournament's, and just a count for a
+                          season series with many weekly brackets ("#1 · #2 · #3…" said nothing; round 840). */}
+                      {shortBracketNames(r.name, r.brackets.map((b) => b.name)).length > 1 && (
+                        <span className="mt-1 block truncate text-meta text-muted">
+                          {r.brackets.length > 4 ? t("browse.online.bracketCount", { n: r.brackets.length }) : shortBracketNames(r.name, r.brackets.map((b) => b.name)).join(" · ")}
+                        </span>
                       )}
                     </span>
                   </RowLink>

@@ -17,6 +17,7 @@ export default async function EventRulesets({
   seriesId,
   seriesName,
   attached: started,
+  finished = false,
 }: {
   games: GameKey[];
   tournamentSlug?: string;
@@ -24,6 +25,8 @@ export default async function EventRulesets({
   seriesName?: string;
   /** The attached rulesets, when the page already started loading them (round 708: the event page starts them alongside its other lookups). */
   attached?: Promise<Attachment[]>;
+  /** A finished tournament (round 840): with no ruleset attached and nothing for this viewer to attach, the card isn't shown. */
+  finished?: boolean;
 }) {
   const userId = await getUserId();
   const [attached, mine, t] = await Promise.all([
@@ -36,6 +39,9 @@ export default async function EventRulesets({
   const myIds = new Set(mine.map((r) => r.id));
   const options = mine.filter((r) => games.includes(r.game)).map((r) => ({ id: r.id, name: r.name, game: r.game }));
 
+  // "The organizer hasn't attached a ruleset yet. Check start.gg or ask the TO" is advice for before the
+  // tournament; on a finished one it was a dead card (round 840).
+  if (finished && attached.length === 0 && options.length === 0) return null;
   return (
     <section className="flex flex-col gap-3 card p-4">
       <h2 className="font-bold">{t("media.rs.heading")}</h2>

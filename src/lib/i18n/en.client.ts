@@ -1821,6 +1821,7 @@ export const en = {
   "browse.online.tomorrow": "Tomorrow · {day}",
   "browse.online.onSmashy": "On Smashy",
   "browse.online.onSmashyHint": "Brackets run on Smashy: sign up, check in and play your sets here",
+  "browse.online.bracketCount": "1 bracket|{n} brackets",
   "browse.online.count": "1 bracket. Times are in your time zone. Online brackets on start.gg, on Smashy and a few weekly series on their own sites.|{n} brackets. Times are in your time zone. Online brackets on start.gg, on Smashy and a few weekly series on their own sites.",
   "browse.online.emptySmashy": "No online brackets on Smashy right now. Host one: sign-ups, check-in and live sets are built in.",
   "browse.online.emptyOpen": "No brackets taking sign-ups for this filter right now. Try turning off \"Sign-ups open\".",

@@ -111,6 +111,7 @@ export const browseEs: Record<keyof typeof browseEn, string> = {
   "browse.online.tomorrow": "Mañana · {day}",
   "browse.online.onSmashy": "En Smashy",
   "browse.online.onSmashyHint": "Brackets que corren en Smashy: inscríbete, haz check-in y juega tus sets aquí",
+  "browse.online.bracketCount": "1 bracket|{n} brackets",
   "browse.online.count": "1 bracket. Las horas están en tu zona horaria. Brackets en línea de start.gg, de Smashy y algunas series semanales en sus propios sitios.|{n} brackets. Las horas están en tu zona horaria. Brackets en línea de start.gg, de Smashy y algunas series semanales en sus propios sitios.",
   "browse.online.emptySmashy": "No hay brackets en línea en Smashy ahora mismo. Organiza uno: inscripciones, check-in y sets en vivo ya vienen incluidos.",
   "browse.online.emptyOpen": "No hay brackets con inscripciones abiertas para este filtro ahora mismo. Prueba a quitar \"Inscripciones abiertas\".",

@@ -311,6 +311,7 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
           seriesId={seriesId}
           seriesName={seriesNameFor(t.name)}
           attached={rulesets}
+          finished={over}
         />
 
         {t.region && (
