@@ -111,6 +111,7 @@ export const browseFr: Record<keyof typeof browseEn, string> = {
   "browse.online.tomorrow": "Demain · {day}",
   "browse.online.onSmashy": "Sur Smashy",
   "browse.online.onSmashyHint": "Brackets qui se jouent sur Smashy : inscris-toi, fais ton check-in et joue tes sets ici",
+  "browse.online.big": "Gros brackets en ligne",
   "browse.online.bracketCount": "1 bracket|{n} brackets",
   "browse.online.count": "1 bracket. Les horaires sont dans ton fuseau horaire. Brackets en ligne sur start.gg, sur Smashy et quelques séries hebdomadaires sur leurs propres sites.|{n} brackets. Les horaires sont dans ton fuseau horaire. Brackets en ligne sur start.gg, sur Smashy et quelques séries hebdomadaires sur leurs propres sites.",
   "browse.online.emptySmashy": "Aucun bracket en ligne sur Smashy pour le moment. Organises-en un : inscriptions, check-in et sets en direct sont inclus.",

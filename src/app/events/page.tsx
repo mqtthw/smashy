@@ -17,6 +17,9 @@ import FollowedPlayers from "@/components/events/FollowedPlayers";
 import { bracketPath } from "@/lib/brackets/types";
 import { upcomingRecurring } from "@/lib/recurringOnline";
 import OnlineEventsList, { type OnlineRow } from "@/components/events/OnlineEventsList";
+import GameBadge from "@/components/GameBadge";
+import LocalTime from "@/components/ui/LocalTime";
+import { bigOnline } from "@/lib/bigOnline";
 import TabBar from "@/components/ui/TabBar";
 import { bracketStart, currentBracket, formatEventDate, isRunning, unixNow } from "@/lib/format";
 import { regionName } from "@/lib/regions";
@@ -197,8 +200,35 @@ async function OnlineEvents() {
           {t("browse.events.startggDown")}
         </p>
       )}
+      {/* The biggest online brackets this week, above the full list (round 844). */}
+      <BigOnline rows={bigOnline(rows, nowSec)} t={t} />
       <OnlineEventsList rows={rows} />
     </>
+  );
+}
+
+/** "Big online brackets" (round 844): 100+ players, this week, biggest first, as a sideways row of cards above the list. */
+function BigOnline({ rows, t }: { rows: OnlineRow[]; t: Awaited<ReturnType<typeof getT>> }) {
+  if (!rows.length) return null;
+  return (
+    <section aria-labelledby="big-online" className="border-b border-line py-3">
+      <h2 id="big-online" className="px-4 text-title font-bold">{t("browse.online.big")}</h2>
+      <ul className="scroll-fade flex gap-3 overflow-x-auto px-4 pt-2 pb-1">
+        {rows.map((r) => (
+          <li key={r.key} className="w-60 shrink-0">
+            <Link href={r.href} className="card flex h-full flex-col gap-1.5 p-3 hover:bg-surface">
+              <span className="text-meta font-semibold text-brand">
+                {r.live ? t("browse.live") : <LocalTime iso={new Date(r.startAt * 1000).toISOString()} style="dayDateTime" />}
+              </span>
+              <span className="line-clamp-2 font-bold">{r.name}</span>
+              <span className="mt-auto flex flex-wrap items-center gap-1.5">
+                {r.games.map((g) => <GameBadge key={g.game} game={g.game} entrants={g.entrants} />)}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
