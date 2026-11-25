@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 export type Tab = { key: string; label: string; href: string };
 
@@ -30,8 +30,22 @@ export default function TabBar({
   // Remembers which tab was active when another was tapped, so the server's answer takes over again.
   const [tapped, setTapped] = useState<{ key: string; was: string } | null>(null);
   const shown = tapped && tapped.was === active ? tapped.key : active;
+  // The active tab scrolls into view when the row is wider than the screen (round 842): Search → Events
+  // opened with its own tab hidden past the right edge, so nothing looked selected. Only the row
+  // scrolls, never the page.
+  const nav = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const row = nav.current;
+    const tab = row?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!row || !tab || row.scrollWidth <= row.clientWidth) return;
+    const left = tab.offsetLeft - row.offsetLeft;
+    if (left < row.scrollLeft || left + tab.offsetWidth > row.scrollLeft + row.clientWidth) {
+      row.scrollLeft = Math.max(0, left - (row.clientWidth - tab.offsetWidth) / 2);
+    }
+  }, [shown]);
   return (
     <nav
+      ref={nav}
       aria-label={label}
       className={`flex border-b border-line ${sticky ? "sticky top-0 z-[5] glass-sticky" : ""} overflow-x-auto`}
     >

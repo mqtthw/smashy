@@ -362,6 +362,7 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
   "people.search.try": "プレイヤーのタグ、クルーや学校、キャラ（「ファルコン」「プリン」）、テクニック（「波動シャイン」）、#SSBU_CLOUD のようなハッシュタグで検索してみてください。",
   "people.search.lookUpAny": "Smashyにいてもいなくても、どのプレイヤーのセットでも調べる →",
   "people.search.browseResources": "キャラ別に攻略情報を見る →",
+  "people.search.browseByCharacter": "キャラ別にガイドを見る →",
   "people.search.findPartner": "ダブルスの相方を探す →",
   "people.search.hostedOn": "（Smashyで開催）",
   "people.search.liveNow": "● 配信中",
@@ -376,7 +377,7 @@ export const peopleJa: Record<keyof typeof peopleEn, string> = {
   "people.search.askThe": "{name}（{game}）のDiscordで質問する ↗︎",
   "people.search.morePosts": "投稿をもっと見る →",
   "people.search.noResults": "「{q}」の結果はありません。",
-  "people.search.eventsNote": "ここではSmashyで開催される大会を検索します。start.ggの大会、大型大会、近くのローカル大会は{link}をご覧ください。",
+  "people.search.eventsNote": "ここではSmashyで開催される大会と大型大会を検索します。近くのローカル大会は{link}をご覧ください。",
   "people.search.signedInMore": "一部の結果はログイン時のみ表示されます。",
   "people.search.lookingPartner": " · 相方募集中",
 

@@ -511,6 +511,27 @@ export async function searchPastMajorsForAdmin(q: string, year: number | null): 
   return ((data ?? []) as DbMajor[]).map((r) => toMajor(r, nowMs));
 }
 
+/**
+ * Majors whose name contains `q` (any capitals), past and upcoming, not hidden, newest first: Search's
+ * Events tab (round 842), which only knew events hosted on Smashy, so "genesis" found nothing.
+ */
+export async function searchMajors(q: string, limit = 10): Promise<Major[]> {
+  await connection();
+  // Characters that mean something to a LIKE pattern or a PostgREST filter become spaces.
+  const words = q.replace(/[%_\\,()*]/g, " ").replace(/\s+/g, " ").trim().slice(0, 60);
+  if (words.length < 2) return [];
+  const { data, error } = await (await createClient())
+    .from("majors")
+    .select(MAJOR_COLUMNS)
+    .eq("hidden", false)
+    .ilike("name", `%${words}%`)
+    .order("start_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  const nowMs = Date.now();
+  return ((data ?? []) as DbMajor[]).map((r) => toMajor(r, nowMs));
+}
+
 /** One major by slug (null if it isn't one, or is hidden). */
 export async function getMajor(slug: string): Promise<Major | null> {
   await connection();

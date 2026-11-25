@@ -362,6 +362,7 @@ export const peopleFr: Record<keyof typeof peopleEn, string> = {
   "people.search.try": "Essaie le tag d'un joueur, un crew ou une école, un perso (« falcon », « puff »), une tech (« waveshine ») ou un hashtag comme #SSBU_CLOUD.",
   "people.search.lookUpAny": "Consulter les sets de n'importe quel joueur, sur Smashy ou non →",
   "people.search.browseResources": "Ou parcourir les ressources par perso →",
+  "people.search.browseByCharacter": "Parcourir les guides par personnage →",
   "people.search.findPartner": "Trouver un partenaire de doubles →",
   "people.search.hostedOn": " organisés sur Smashy",
   "people.search.liveNow": "● En direct",
@@ -376,7 +377,7 @@ export const peopleFr: Record<keyof typeof peopleEn, string> = {
   "people.search.askThe": "Demande sur le Discord {name} ({game}) ↗︎",
   "people.search.morePosts": "Plus de publications →",
   "people.search.noResults": "Aucun résultat pour « {q} ».",
-  "people.search.eventsNote": "Ceci cherche les tournois organisés sur Smashy. Pour les tournois start.gg, les majors et les locaux près de chez toi, va voir {link}.",
+  "people.search.eventsNote": "Ceci cherche les tournois organisés sur Smashy et les majors. Pour les locaux près de chez toi, va voir {link}.",
   "people.search.signedInMore": "Certains résultats ne sont visibles que si tu es connecté.",
   "people.search.lookingPartner": " · cherche un partenaire",
 

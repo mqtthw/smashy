@@ -69,6 +69,11 @@ import TabBar from "@/components/ui/TabBar";
 import { PeopleSkeleton } from "@/components/ui/Skeleton";
 import Icon from "@/components/ui/Icon";
 import NewTab from "@/components/ui/NewTab";
+import { searchMajors } from "@/lib/majors";
+import { majorHref } from "@/lib/handMajors";
+
+/** Searches to try on the empty search page (round 842): a character, a nickname, some tech, a tag. */
+const SEARCH_EXAMPLES = ["falcon", "puff", "waveshine", "Zain", "#SSBU_CLOUD"];
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getT())("ui.title.search"), robots: { index: false } };
@@ -365,11 +370,20 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
     return (
       <>
         <SearchBox q={q} t={t} />
-        <div className="flex flex-col gap-2 p-4 text-sm text-muted">
-          <p>{t("people.search.try")}</p>
-          <Link href="/search?tab=players" className="text-brand"><Icon name="trophy" /> {t("people.search.lookUpAny")}</Link>
-          <Link href="/games" className="text-brand">{t("people.search.browseResources")}</Link>
-          <Link href="/search?doubles=1" className="text-brand"><Icon name="users" /> {t("people.search.findPartner")}</Link>
+        {/* An empty search page (round 842): the examples are buttons to tap, and the other ways in are
+            cards, instead of a paragraph and three plain links on an empty page. */}
+        <div className="flex flex-col gap-3 p-4">
+          <p className="text-sm text-muted">{t("people.search.try")}</p>
+          <div className="flex flex-wrap gap-2">
+            {SEARCH_EXAMPLES.map((ex) => (
+              <Link key={ex} href={`/search?q=${encodeURIComponent(ex)}`} className="chip">{ex}</Link>
+            ))}
+          </div>
+          <ul className="card mt-1 flex flex-col divide-y divide-line overflow-hidden">
+            <li><Link href="/search?tab=players" className="flex items-center gap-3 px-4 py-3 font-semibold hover:bg-surface"><Icon name="trophy" className="text-lg text-brand" /> {t("people.search.lookUpAny")}</Link></li>
+            <li><Link href="/games" className="flex items-center gap-3 px-4 py-3 font-semibold hover:bg-surface"><Icon name="file" className="text-lg text-brand" /> {t("people.search.browseByCharacter")}</Link></li>
+            <li><Link href="/search?doubles=1" className="flex items-center gap-3 px-4 py-3 font-semibold hover:bg-surface"><Icon name="users" className="text-lg text-brand" /> {t("people.search.findPartner")}</Link></li>
+          </ul>
         </div>
         <Suspense fallback={null}>
           <SearchDiscovery />
@@ -387,6 +401,8 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
     tab === "top" ? searchHostedEvents(q, 3, userId).catch(() => []) : tab === "events" ? searchHostedEvents(q, 30, userId, { past: true }).catch(() => []) : Promise.resolve([]),
     want("events") ? searchSeasons(q, tab === "top" ? 3 : 10).catch(() => []) : Promise.resolve([]),
   ]);
+  // Majors from Smash history and the majors list, past and upcoming (round 842).
+  const majors = want("events") ? await searchMajors(q, tab === "top" ? 3 : 15).catch(() => []) : [];
   const [posts, highlights, winners] = await Promise.all([
     getPostsByIds(postIds, userId),
     getHighlightsByIds(highlightIds, userId),
@@ -405,7 +421,7 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
           .slice(0, 2)
       : [];
   const now = unixNow();
-  const nothing = !characters.length && !people.length && !posts.length && !highlights.length && !events.length && !seasons.length && !library.length && !askCommunity.length;
+  const nothing = !characters.length && !people.length && !posts.length && !highlights.length && !events.length && !majors.length && !seasons.length && !library.length && !askCommunity.length;
 
   return (
     <>
@@ -439,6 +455,27 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
                       </span>
                     </span>
                     <GameBadge game={e.game} />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {majors.length > 0 && (
+          <section className="flex flex-col gap-1 px-4" aria-labelledby="search-majors">
+            <h2 id="search-majors" className="font-bold">{t("browse.majors.title")}</h2>
+            <ul className="divide-y divide-line">
+              {majors.map((m) => (
+                <li key={m.slug}>
+                  <Link href={majorHref(m.slug)} className="flex items-center gap-3 py-2 hover:underline">
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate font-semibold">{m.name}</span>
+                      <span className="block truncate text-meta text-muted">
+                        {[m.live ? t("people.search.liveNow") : m.startAt.slice(0, 4), m.city, m.entrants ? t("browse.entrants", { n: m.entrants }) : null].filter(Boolean).join(" · ")}
+                      </span>
+                    </span>
+                    <span className="flex shrink-0 flex-col items-end gap-1">{m.games.slice(0, 2).map((g) => <GameBadge key={g} game={g} />)}</span>
                   </Link>
                 </li>
               ))}

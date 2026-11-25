@@ -360,6 +360,7 @@ export const peopleEn = {
   "people.search.try": "Try a player's tag, a crew or college, a character (“falcon”, “puff”), some tech (“waveshine”), or a hashtag like #SSBU_CLOUD.",
   "people.search.lookUpAny": "Look up any player's sets, on Smashy or not →",
   "people.search.browseResources": "Or browse resources by character →",
+  "people.search.browseByCharacter": "Browse guides by character →",
   "people.search.findPartner": "Find a doubles partner →",
   "people.search.hostedOn": " hosted on Smashy",
   "people.search.liveNow": "● Live now",
@@ -374,7 +375,7 @@ export const peopleEn = {
   "people.search.askThe": "Ask the {name} ({game}) Discord ↗︎",
   "people.search.morePosts": "More posts →",
   "people.search.noResults": "No results for “{q}”.",
-  "people.search.eventsNote": "This searches events hosted on Smashy. For start.gg tournaments, majors and locals near you, see {link}.",
+  "people.search.eventsNote": "This searches events hosted on Smashy and majors. For locals near you, see {link}.",
   "people.search.signedInMore": "Some results are only visible when you're signed in.",
   "people.search.lookingPartner": " · looking for a partner",
 
