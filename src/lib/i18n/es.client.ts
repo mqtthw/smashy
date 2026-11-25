@@ -974,8 +974,6 @@ export const es = {
   "feed.clips.title": "Los mejores clips ahora",
   "feed.clips.watch": "Ver Reels →",
   "feed.clips.clip": "Clip",
-  "feed.clipsWeek.title": "Clips de la semana",
-  "feed.clipsWeek.sub": "Los clips con más me gusta en Smashy en los últimos 7 días",
   "feed.card.of": "de {n}",
   "feed.card.signedUp": "Inscrito",
   "feed.card.verified": "✓ verificado en start.gg",

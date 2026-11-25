@@ -28,6 +28,7 @@ src/app/welcome/actions.ts
 src/lib/accounts.ts
 src/lib/avatars.ts
 src/lib/claimedHistory.ts
+src/lib/clipsOfWeekPostRun.ts
 src/lib/communitySuggestions.ts
 src/lib/digest.ts
 src/lib/discord.ts

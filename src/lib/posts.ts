@@ -1,4 +1,5 @@
 import { badgeMain } from "./mainBadge";
+import { CLIPS_POST_TITLE } from "./clipsOfWeekPost";
 import type { Main } from "./characters";
 // Loading posts for the feed and post pages (server-side, as the current user so privacy rules apply).
 import { characterName } from "./characters";
@@ -768,7 +769,7 @@ async function clipsOfWeekIds(game: FeedGame | null, limit: number, perAuthor: n
   const db = audience === "member" ? (await import("./supabase/admin")).createAdminClient({ forPage: true }) : createGuestClient();
   let q = db
     .from("posts")
-    .select("id, author_id, body, like_count, reaction_count, created_at, videos:post_videos ( status )")
+    .select("id, author_id, title, body, like_count, reaction_count, created_at, videos:post_videos ( status )")
     .is("parent_id", null)
     .is("removed_at", null)
     .is("ruleset_id", null)
@@ -783,7 +784,8 @@ async function clipsOfWeekIds(game: FeedGame | null, limit: number, perAuthor: n
     cacheLife("seconds"); // a failed read isn't kept as "no clips" for minutes
     return [];
   }
-  const rows = (data ?? []).map((r) => ({
+  // The weekly "Clips of the week" post holds clips itself; it never picks itself (round 843).
+  const rows = (data ?? []).filter((r) => !r.title?.startsWith(CLIPS_POST_TITLE)).map((r) => ({
     id: r.id,
     authorId: r.author_id,
     body: r.body,
