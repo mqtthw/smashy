@@ -20,6 +20,7 @@ import { CardListSkeleton } from "@/components/ui/Skeleton";
 import CharacterIcon from "@/components/CharacterIcon";
 import { characterDiscord } from "@/lib/characterDiscords";
 import { CHARACTER_COURSES, CHARACTER_LIBRARIES, cookbookUrl, FRAME_DATA_SOURCE, frameDataLinks, libraryType, LIBRARY_SECTIONS, type CommunityLink } from "@/lib/essentials";
+import { characterOverview, inLang } from "@/lib/characterOverviews";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import type { MessageKey, Values } from "@/lib/i18n/core";
@@ -83,6 +84,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
   const now = unixNow();
   const discord = characterDiscord(game, character);
   const frameData = frameDataLinks(game, character, name);
+  const overview = characterOverview(game, character);
   const cookbook = cookbookUrl(game, character);
   const courses = CHARACTER_COURSES[game]?.[character] ?? [];
   const library = CHARACTER_LIBRARIES[game]?.[character] ?? null;
@@ -108,6 +110,48 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           </Link>
         )}
       </header>
+
+      {/* Playstyle and properties first (round 917): a short summary of one named community source, credited
+          and linked; nothing here is Smashy's own advice (src/lib/characterOverviews.ts). */}
+      {overview && (
+        <section aria-labelledby="overview" className="card flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-2">
+            <h2 id="overview" className="font-bold">{t("media.char.ov.playstyle")}</h2>
+            <p>{inLang(overview.playstyle, lang)}</p>
+            {overview.stats && (
+              <p className="flex flex-wrap gap-2 text-meta">
+                {overview.stats.weight !== undefined && <span className="badge border border-line">{t("media.char.ov.weight", { n: overview.stats.weight })}</span>}
+                {overview.stats.fallSpeed !== undefined && <span className="badge border border-line">{t("media.char.ov.fall", { n: overview.stats.fallSpeed })}</span>}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <h3 className="text-sm font-bold">{t("media.char.ov.traits", { name })}</h3>
+            <dl className="flex flex-col divide-y divide-line">
+              {overview.traits.map((tr) => (
+                <div key={tr.name} className="py-2 first:pt-0 last:pb-0">
+                  <dt className="font-bold text-brand">{tr.name}</dt>
+                  <dd className="text-sm">{inLang(tr.text, lang)}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {([["strengths", overview.strengths], ["weaknesses", overview.weaknesses]] as const).map(([kind, list]) => (
+              <div key={kind} className="flex flex-col gap-1">
+                <h3 className="text-sm font-bold">{t(`media.char.ov.${kind}`)}</h3>
+                <ul className="flex list-disc flex-col gap-1 pl-5 text-sm">
+                  {list.map((line) => <li key={line.en}>{inLang(line, lang)}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="border-t border-line pt-3 text-meta text-muted">
+            {t("media.char.ov.source", { title: overview.source.title, by: overview.source.by })}{" "}
+            <a href={overview.source.url} target="_blank" rel="noopener noreferrer" className="link font-semibold">{t("media.char.ov.full")} ↗︎<NewTab /></a>
+          </p>
+        </section>
+      )}
 
       {discord && (
         <section aria-labelledby="community-discord" className="card flex flex-col gap-2 p-4">
