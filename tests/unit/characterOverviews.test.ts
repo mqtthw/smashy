@@ -21,6 +21,6 @@ describe("character overviews", () => {
     expect(inLang({ en: "a", fr: "b" }, "fr")).toBe("b");
     expect(inLang({ en: "a" }, "ja")).toBe("a");
     expect(characterOverview("ultimate", "king-k-rool")?.stats?.weight).toBe(133);
-    expect(characterOverview("melee", "fox")).toBeNull();
+    expect(characterOverview("melee", "nobody")).toBeNull();
   });
 });

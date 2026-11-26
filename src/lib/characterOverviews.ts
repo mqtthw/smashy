@@ -922,6 +922,188 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "Faster characters such as Fox close and create distance much more quickly than he can." },
       ],
     },
+    // Round 928 batch: Melee guides from Smashboards that Matthew copied out. Older than the Ultimate ones,
+    // but Melee itself hasn't changed; what dates is the players' understanding of it, so each still shows
+    // when it was written. Tier placements in the guides are left out.
+    fox: {
+      source: { title: "Guide to Ace Arwing Pilot Fox McCloud", url: "https://smashboards.com/guides/guide-to-ace-arwing-pilot-fox-mccloud-updated-for-2015.100/", by: "CunningKitsune (Smashboards)", written: "2004, updated through February 2015" },
+      playstyle: {
+        en: "Very fast and very technical. The guide describes lightning-quick moves, fast and effective finishers, versatile play and a projectile he can fire constantly, and says he is second to none in the hands of an experienced, technically sound player. It warns that excelling with him takes a lot of time and consistent practice, and that new players often run or Illusion themselves off the stage.",
+      },
+      traits: [
+        {
+          name: "The shine",
+          text: { en: "His Reflector, listed among his main strengths." },
+        },
+        {
+          name: "Blaster",
+          text: { en: "A projectile he can spam without equal, though it doesn't stun as it did in the first game." },
+        },
+        {
+          name: "Fast-faller",
+          text: { en: "The guide lists this as both a strength and a weakness." },
+        },
+      ],
+      strengths: [
+        { en: "Lightning speed on nearly every move, with little lag." },
+        { en: "Great at controlling the pace of the fight." },
+        { en: "A combo character with fast, effective finishers." },
+        { en: "A very powerful grab game." },
+        { en: "A very adaptive playing style." },
+      ],
+      weaknesses: [
+        { en: "Fast-paced, demanding and often unforgiving controls; consistency suffers without regular practice or under pressure." },
+        { en: "Many opportunities to self-destruct." },
+        { en: "His recoveries can be edgeguarded relatively well." },
+        { en: "Low overall range." },
+        { en: "So common in tournaments that nearly every player has experience against him." },
+      ],
+    },
+    falco: {
+      source: { title: "EH | Saiblade's Comprehensive Guide to Falco", url: "https://smashboards.com/guides/eh-saiblades-comprehensive-guide-to-falco-wip.585/", by: "Saiblade (Smashboards)", written: "August 2015" },
+      playstyle: {
+        en: "A fast character with a plethora of options, who is great at putting on pressure, restricting what the opponent can do, and walling out certain opponents. The guide is written for total beginners and starts from the techniques every new Falco needs: short hopping, fast falling, wavedashing and jump cancelling.",
+      },
+      traits: [
+        {
+          name: "Laser",
+          text: { en: "The guide says it is arguably the best projectile in the game." },
+        },
+        {
+          name: "Shield pressure",
+          text: { en: "Listed as amazing, helped by many moves that come out early." },
+        },
+        {
+          name: "Fast-faller",
+          text: { en: "Listed as both a strength and a weakness." },
+        },
+      ],
+      strengths: [
+        { en: "Fantastic aerials and amazing jump heights." },
+        { en: "Incredible combo potential." },
+        { en: "Great at pressure and at restricting options." },
+        { en: "Fast." },
+      ],
+      weaknesses: [
+        { en: "Not the greatest of recoveries." },
+        { en: "Requires a lot of technique, and so fast hands." },
+      ],
+    },
+    "captain-falcon": {
+      source: { title: "SSBM - The Falcon Talk", url: "https://smashboards.com/guides/ssbm-the-falcon-talk.1098/", by: "magicsixball (Smashboards)", written: "June 2017" },
+      playstyle: {
+        en: "The fastest character on the ground, with some of the best mobility in the air, who has to win through movement and precision. The guide's first lesson is not to try to out-speed other characters' attacks, because their hitboxes are all faster than his: play around the opponent's options instead. It says Falcon requires discipline and precision, and has a lot of potential.",
+      },
+      traits: [
+        {
+          name: "Grounded movement",
+          text: { en: "Most of the guide's notes are on this: dash dances of varied speed and range, short dashes, fox-trots, wavedashes, pivots and stopping his momentum by crouching." },
+        },
+        {
+          name: "Spacing with jumps and drift",
+          text: { en: "The other half of his neutral: using his jump and air drift to place himself." },
+        },
+      ],
+      strengths: [
+        { en: "The fastest ground speed in the game." },
+        { en: "One of the best for aerial mobility." },
+      ],
+      weaknesses: [
+        { en: "A poor recovery." },
+        { en: "Slow hitboxes, and no fast options on the ground." },
+        { en: "Weaknesses that opponents can exploit; the guide's advice is to accept them early and make them harder to exploit." },
+      ],
+    },
+    bowser: {
+      source: { title: "Koopa King", url: "https://smashboards.com/guides/koopa-king.194/", by: "Sauron_The_Great (Smashboards)", written: "January 2015" },
+      playstyle: {
+        en: "Heavy, slow and strong: a scary opponent at close range who is extremely hard to KO. The guide says he has few options, so he has to keep dominance on the ground, ideally on small stages, and lean on his strength: forward smash, Fire Breath for quick damage, and Koopa Klaw.",
+      },
+      traits: [
+        {
+          name: "Up special out of shield",
+          text: { en: "Shield an attack at close range, then use his up special. The guide's words: it hurts a lot." },
+        },
+        {
+          name: "Fire Breath",
+          text: { en: "Racks up damage quickly and edgeguards well." },
+        },
+        {
+          name: "Koopa Klaw (side special)",
+          text: { en: "Powerful and fairly long-ranged, but it can take him off the stage with the opponent." },
+        },
+      ],
+      strengths: [
+        { en: "The heaviest character in the game, so he is hard to KO." },
+        { en: "One of the strongest characters; up air and forward air are extremely powerful." },
+        { en: "Decent hitboxes on most moves." },
+      ],
+      weaknesses: [
+        { en: "Heavy, big and slow, so he is extremely easy to combo." },
+        { en: "A very bad recovery with little vertical range." },
+        { en: "No reliable way to deal with projectiles." },
+        { en: "Poor combos and few ways to punish." },
+      ],
+    },
+    "ice-climbers": {
+      source: { title: "How to play Ice Climbers, without wobbling", url: "https://smashboards.com/guides/how-to-play-ice-climbers-without-wobbling-wip.1069/", by: "Nametaken121 (Smashboards)", written: "March 2017" },
+      playstyle: {
+        en: "Look for a grab. The basics, in the guide's words, are to stand just outside the reach of the opponent's approach and answer it with a grab, which leads to chain grabs between the two climbers (or to wobbling, their infinite, which this guide deliberately plays without). Against opponents camping on platforms, their up air pokes them back down.",
+      },
+      traits: [
+        {
+          name: "Two climbers",
+          text: { en: "Popo and Nana count as two characters, which is what makes their grab combos possible. Together their recovery is decent; Popo alone has the worst in the game." },
+        },
+        {
+          name: "Wobbling",
+          text: { en: "An infinite from a grab, in which the two climbers keep hitting the opponent so they can never act. The guide calls relying on it a crutch and teaches the rest of their game." },
+        },
+        {
+          name: "Wavedash",
+          text: { en: "The second longest in the game." },
+        },
+      ],
+      strengths: [
+        { en: "Grabs that lead to chain grabs and very large punishes." },
+        { en: "A long wavedash." },
+        { en: "A disjointed up air for reaching platforms." },
+      ],
+      weaknesses: [
+        { en: "Popo alone has the worst recovery." },
+        { en: "The guide's author believes top-tier characters have moves that beat out most of theirs." },
+      ],
+    },
+    "mr-game-and-watch": {
+      source: { title: "Flatten The Competition: A Game and Watch Guide", url: "https://smashboards.com/guides/flatten-the-competition-a-game-and-watch-guide.43/", by: "LiteralGrill (Smashboards)", written: "October 2014" },
+      playstyle: {
+        en: "A light, rarely played character with serious combo potential. The guide says he takes work: his defense is bad, so players are told to master light shielding and wavedashing, and to avoid attacks rather than shield them. When he gets a hit or a grab, knowing the follow-up is where his strength lies.",
+      },
+      traits: [
+        {
+          name: "Judge",
+          text: { en: "His hammer shows a random number from 1 to 9 with a different effect each time. A 9 does 32%% and can KO at single-digit percents; an 8 freezes the opponent." },
+        },
+        {
+          name: "Oil Panic",
+          text: { en: "Listed with Judge as a move that can KO in one hit." },
+        },
+      ],
+      strengths: [
+        { en: "Powerful killing moves, and moves that stay out a long time." },
+        { en: "Several disjointed attacks." },
+        { en: "A grab game with chain grabs and combos." },
+        { en: "Good edgeguarding and good combo potential." },
+        { en: "Few people know how to play against him." },
+      ],
+      weaknesses: [
+        { en: "The second lightest character, so he doesn't live long, and he is easily comboed." },
+        { en: "A bad defensive game: a bad shield, poor options out of shield, a bad roll and sidestep." },
+        { en: "Awful to approach with, and slow overall." },
+        { en: "A predictable recovery." },
+        { en: "Only two of his aerials can be L-cancelled." },
+      ],
+    },
   },
 };
 
