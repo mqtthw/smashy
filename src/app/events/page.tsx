@@ -308,7 +308,6 @@ export default function EventsPage(props: PageProps<"/events">) {
           <Link href="/leagues" className="chip py-1"><T k="league.title" /></Link>
           <Link href="/seasons" className="chip py-1"><T k="season.navLink" /></Link>
           <Link href="/history" className="chip py-1"><T k="history.navLink" /></Link>
-          <Link href="/events/past" className="chip py-1"><T k="browse.past.navLink" /></Link>
           <Link href="/scenes" className="chip py-1"><T k="browse.events.scenesRulesets" /></Link>
           <Link href="/strike" className="chip py-1"><T k="browse.events.strikeStages" /></Link>
         </OverflowRow>

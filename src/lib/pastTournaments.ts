@@ -1,4 +1,4 @@
-// The past-tournament finder (/events/past): what the page asked for, and how the tournaments start.gg
+// The past-tournament finder (on the Brackets page, /brackets): what the page asked for, and how the tournaments start.gg
 // returned are filtered by size and sorted. start.gg can search finished tournaments by region, name, game
 // and dates, but not by size, so the entrant minimum and "biggest first" are done here. Plain logic, tested.
 import { isGameKey, type GameKey } from "./games";

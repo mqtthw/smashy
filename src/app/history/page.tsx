@@ -2,7 +2,7 @@
 // tournament page, which already has the top 8, the bracket and set VODs. Facts only (names, dates,
 // places, entrant counts) from start.gg and parry.gg, credited on the page.
 import type { Metadata } from "next";
-import SwipeRow from "@/components/ui/SwipeRow";
+import OverflowRow from "@/components/ui/OverflowRow";
 import Link from "next/link";
 import { after, connection } from "next/server";
 import { Suspense } from "react";
@@ -73,17 +73,17 @@ async function Archive({ searchParams }: { searchParams: PageProps<"/history">["
 
   return (
     <>
-      <SwipeRow label={t("history.years")}>
+      <OverflowRow label={t("history.years")}>
         {years.map((y) => (
           <Link key={y} href={href(y, game)} aria-current={y === year ? "page" : undefined} className="chip py-1">{y}</Link>
         ))}
-      </SwipeRow>
-      <SwipeRow label={t("history.games")}>
+      </OverflowRow>
+      <OverflowRow label={t("history.games")}>
         <Link href={href(year, null)} aria-current={!game ? "page" : undefined} className="chip py-1">{t("history.allGames")}</Link>
         {GAME_KEYS.map((g) => (
           <Link key={g} href={href(year, g)} aria-current={game === g ? "page" : undefined} className="chip py-1">{GAMES[g].short}</Link>
         ))}
-      </SwipeRow>
+      </OverflowRow>
 
       {moments.length > 0 && (
         <section aria-labelledby="history-moments" className="flex flex-col gap-2">

@@ -248,6 +248,9 @@ export type SmashyTournament = {
   streams: { source: string; name: string }[]; // e.g. { source: "TWITCH", name: "vgbootcamp" }
   /** Smashy's region code from the venue's country and state (round 704), e.g. "US-TX"; null if not a listed region. */
   region?: string | null;
+  /** The venue on the map (round 855, Events' "Near me"); missing on copies saved before then. */
+  lat?: number | null;
+  lng?: number | null;
 };
 
 // ---------- Raw start.gg response shapes ----------
@@ -279,10 +282,12 @@ type RawTournament = {
   streams?: { streamName: string | null; streamSource: string | null }[] | null;
   addrState?: string | null;
   countryCode?: string | null;
+  lat?: number | null;
+  lng?: number | null;
 };
 
 const TOURNAMENT_FIELDS = `
-  id name slug city addrState countryCode venueName venueAddress startAt endAt timezone numAttendees isRegistrationOpen
+  id name slug city addrState countryCode lat lng venueName venueAddress startAt endAt timezone numAttendees isRegistrationOpen
   images { type url }
   streams { streamName streamSource }
   events(filter: { videogameId: $videogameIds }) {
@@ -315,6 +320,8 @@ function toSmashyTournament(raw: RawTournament, keep: Keep = "in_person"): Smash
     city: raw.city,
     venueName: raw.venueName,
     venueAddress: raw.venueAddress,
+    lat: typeof raw.lat === "number" ? raw.lat : null,
+    lng: typeof raw.lng === "number" ? raw.lng : null,
     startAt: raw.startAt,
     endAt: raw.endAt,
     timezone: raw.timezone,
@@ -469,7 +476,7 @@ export async function getRecentRegionTournaments(region: string, weeks = 8): Pro
 export const PAST_SEARCH_MAX = 300;
 
 /**
- * The past-tournament finder (round 794, /events/past): finished tournaments in a region and/or with a name,
+ * The past-tournament finder (round 794, on /brackets): finished tournaments in a region and/or with a name,
  * in one game or all of Smashy's, optionally in one year, newest first. start.gg can't sort or filter by
  * size, so this reads up to the newest PAST_SEARCH_MAX matches and the page filters by entrants. Kept in
  * the shared cache: a day for past years (they don't change), an hour for this year. `total` is how many

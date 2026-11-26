@@ -34,6 +34,10 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["ffmpeg-static"],
   outputFileTracingIncludes: { "/api/post-videos/finish": ["./node_modules/ffmpeg-static/ffmpeg*"] },
   // The service worker (push notifications) must always be fetched fresh so fixes reach phones.
+  // Past tournaments moved onto the Brackets page (round 854); the search's ?q=…&region=… carries over.
+  async redirects() {
+    return [{ source: "/events/past", destination: "/brackets", permanent: true }];
+  },
   async headers() {
     return [
       { source: "/sw.js", headers: [{ key: "Cache-Control", value: "no-cache, no-store, must-revalidate" }] },

@@ -20,6 +20,9 @@ export type EventRow = {
   events: EventTime[]; // each bracket and when it starts
   expected: boolean;
   live: boolean; // started and not over yet
+  /** The venue on the map, for "Near me" (round 855); null when not known. */
+  lat?: number | null;
+  lng?: number | null;
 };
 
 // One badge per game. A tournament can run several brackets per game (singles, doubles,
@@ -39,6 +42,8 @@ function tournamentRow(t: SmashyTournament, now: number): EventRow {
     events: t.events.map((e) => ({ name: e.name, game: e.game, startAt: e.startAt, entrants: e.numEntrants })),
     expected: false,
     live: isRunning(t, now),
+    lat: t.lat ?? null,
+    lng: t.lng ?? null,
   };
 }
 

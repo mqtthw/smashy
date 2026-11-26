@@ -1,13 +1,11 @@
-// Past tournaments (round 794): find finished start.gg tournaments by region, name, game, year and size,
+// Past tournaments (round 794; on the Brackets page since round 854, Matthew: "Open any bracket" and
+// "Past tournaments" were redundant as separate pages): find finished start.gg tournaments by region, name, game, year and size,
 // newest or biggest first. A 2016 r/smashbros request start.gg never fully answered ("a list of European
 // tournaments that ran Project M and had 100+ entrants"). start.gg can't sort or filter by size, so the
 // newest few hundred matches are read (lib/startgg.ts searchPastTournaments) and filtered here; guests'
 // searches count toward the same limit as player lookups.
-import type { Metadata } from "next";
 import Link from "next/link";
 import { connection } from "next/server";
-import { Suspense } from "react";
-import { CardListSkeleton } from "@/components/ui/Skeleton";
 import { formatEventDate } from "@/lib/format";
 import { GAME_KEYS, GAMES } from "@/lib/games";
 import { guestLookup } from "@/lib/guestLookup";
@@ -18,14 +16,9 @@ import { PAST_SEARCH_MAX, searchPastTournaments } from "@/lib/startgg";
 import { getUserId } from "@/lib/supabase/server";
 import { getViewerRegion } from "@/lib/viewerRegion";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getT();
-  return { title: t("browse.past.title"), description: t("browse.past.intro"), robots: { index: false } };
-}
-
 const GROUPS = ["United States", "Canada", "Countries"] as const;
 
-async function Finder({ searchParams }: { searchParams: PageProps<"/events/past">["searchParams"] }) {
+export default async function PastFinder({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const sp = await searchParams;
   await connection(); // the year list ends at this year
   const thisYear = new Date().getUTCFullYear();
@@ -53,12 +46,11 @@ async function Finder({ searchParams }: { searchParams: PageProps<"/events/past"
   }
 
   return (
-    <>
-      <Link href="/events" className="text-sm text-muted hover:text-foreground">← {t("nav.events")}</Link>
-      <h1 className="text-2xl font-bold">{t("browse.past.title")}</h1>
-      <p className="text-sm text-muted">{t("browse.past.intro")}</p>
+    <section aria-labelledby="past-tournaments" className="flex flex-col gap-4">
+      <h2 id="past-tournaments" className="font-bold">{t("browse.past.title")}</h2>
+      <p className="-mt-2 text-sm text-muted">{t("browse.past.intro")}</p>
 
-      <form method="get" action="/events/past" className="card grid grid-cols-1 gap-3 p-4 text-sm sm:grid-cols-2">
+      <form method="get" action="/brackets#past-tournaments" className="card grid grid-cols-1 gap-3 p-4 text-sm sm:grid-cols-2">
         <label className="flex flex-col gap-1 sm:col-span-2">
           {t("browse.past.name")}
           <input name="q" defaultValue={q.name ?? ""} maxLength={60} placeholder={t("browse.past.namePlaceholder")} className="field" />
@@ -109,7 +101,7 @@ async function Finder({ searchParams }: { searchParams: PageProps<"/events/past"
       {problem === "needs" && <p className="card p-4 text-sm text-muted">{t("browse.past.needs")}</p>}
       {problem === "limit" && (
         <p className="card p-4 text-sm text-muted">
-          {t("browse.past.limit")} <Link href={`/signin?next=${encodeURIComponent("/events/past")}`} className="link">{t("browse.past.signIn")}</Link>
+          {t("browse.past.limit")} <Link href={`/signin?next=${encodeURIComponent("/brackets")}`} className="link">{t("browse.past.signIn")}</Link>
         </p>
       )}
       {problem === "failed" && <p className="card p-4 text-sm text-muted">{t("browse.past.failed")}</p>}
@@ -149,16 +141,6 @@ async function Finder({ searchParams }: { searchParams: PageProps<"/events/past"
         </section>
       )}
       <p className="text-meta text-muted">{t("browse.past.source")}</p>
-    </>
-  );
-}
-
-export default function PastTournamentsPage(props: PageProps<"/events/past">) {
-  return (
-    <section className="mx-auto flex max-w-3xl flex-col gap-4 p-4">
-      <Suspense fallback={<CardListSkeleton count={6} />}>
-        <Finder searchParams={props.searchParams} />
-      </Suspense>
     </section>
   );
 }

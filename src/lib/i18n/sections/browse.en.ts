@@ -22,12 +22,11 @@ export const browseEn = {
 
   // Events page
   "browse.events.moreNav": "More for events",
-  "browse.events.openAnyBracket": "Open any bracket",
+  "browse.events.openAnyBracket": "Find a bracket",
   "browse.followed.title": "Players you follow",
   "browse.followed.nothing": "Nothing coming up on start.gg",
   "browse.followed.cantCheck": "Couldn't check start.gg right now",
   "browse.followed.more": "Showing the {n} you followed most recently.",
-  "browse.past.navLink": "Past tournaments",
   "browse.past.title": "Past tournaments",
   "browse.past.intro": "Find finished tournaments on start.gg by region, name, game, year and size, newest or biggest first. Results come from start.gg.",
   "browse.past.name": "Tournament name (optional)",

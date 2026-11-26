@@ -4,6 +4,7 @@ import { shortBracketNames } from "@/lib/bracketNames";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import GameBadge from "@/components/GameBadge";
+import OverflowRow from "@/components/ui/OverflowRow";
 import LocalTime from "@/components/ui/LocalTime";
 import StartsIn from "@/components/host/StartsIn";
 import { GAMES, GAME_KEYS, type GameKey } from "@/lib/games";
@@ -96,19 +97,21 @@ export default function OnlineEventsList({ rows }: { rows: OnlineRow[] }) {
 
   return (
     <div>
-      <div ref={bar} className="sticky top-0 z-[5] flex gap-2 overflow-x-auto border-b border-line glass-sticky px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible" role="group" aria-label={t("browse.list.filterGame")}>
+      {/* One line of filters; what doesn't fit is under More, and a filter that's on stays in the row (round 853). */}
+      <div ref={bar} className="sticky top-0 z-[5] border-b border-line glass-sticky px-4 py-3">
+        <OverflowRow label={t("browse.list.filterGame")}>
         {[ALL, ...shownGames].map((g) => (
           <button key={g} type="button" onClick={() => setGame(g)} aria-pressed={gameNow === g} className="chip shrink-0">
             {g === ALL ? t("browse.list.allGames") : GAMES[g as GameKey].short}
           </button>
         ))}
-        <span className="mx-1 w-px shrink-0 bg-line" aria-hidden="true" />
         <button type="button" onClick={() => setOpenOnly(openOnly === "yes" ? "no" : "yes")} aria-pressed={openOnly === "yes"} className="chip shrink-0">
           {t("event.status.open")}
         </button>
         <button type="button" onClick={() => setSmashyOnly(smashyOnly === "yes" ? "no" : "yes")} aria-pressed={smashyOnly === "yes"} className="chip shrink-0" title={t("browse.online.onSmashyHint")}>
           {t("browse.online.onSmashy")}
         </button>
+        </OverflowRow>
       </div>
       <p className="px-4 pt-2 text-meta text-muted">
         {t("browse.online.count", { n: visible.length })}
