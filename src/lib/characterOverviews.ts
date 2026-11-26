@@ -701,6 +701,150 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "The guide says he may not suit players who struggle to control very fast characters, or to use a recovery that has no hitbox." },
       ],
     },
+    // Round 926 batch: the last usable guides in Matthew's Smashboards document. Four of these link to
+    // Smashboards' guides section until he sends each guide's address (Hero's came with the copy).
+    palutena: {
+      source: { title: "The playful Goddess of Skyworld: Lady Palutena", url: "https://smashboards.com/guides/", by: "BelChydru (Smashboards)", written: "December 2018" },
+      playstyle: {
+        en: "A bait-and-punish character: the guide says she thrives by tricking the opponent into thinking they can punish her, then capitalizing on their mistake. Her speed and her aerials let her punish consistently, and she is elusive on stage and strong at edgeguarding.",
+      },
+      traits: [
+        {
+          name: "Back air and forward air",
+          text: { en: "Forward air is her spacing tool and starts combos at low to mid percent. The guide says opponents need a very long-reaching hit to challenge back air; it is her best edgeguarding tool and a KO move." },
+        },
+        {
+          name: "Jab and down tilt",
+          text: { en: "The first hit of jab pokes shields and baits; down tilt starts slowly but ends deceptively fast, which makes it a good bait in neutral." },
+        },
+        {
+          name: "Warp",
+          text: { en: "Her up special: she disappears and reappears where she chooses, invisible and unable to be hit on the way. The guide uses it strictly for recovering, and says it makes her hard to punish when she goes offstage to edgeguard." },
+        },
+      ],
+      strengths: [
+        { en: "Edgeguards with ease, with a reliable spike." },
+        { en: "Projectiles with decent damage and KO potential." },
+        { en: "Throw combos, and a throw that KOs." },
+        { en: "Two invincible moves." },
+      ],
+      weaknesses: [
+        { en: "A poor ground game, because her jab and tilts are slow." },
+        { en: "Not very good options out of shield." },
+        { en: "Struggles with up-close pressure." },
+      ],
+    },
+    hero: {
+      source: { title: "My definitive Hero guide", url: "https://smashboards.com/guides/my-definitive-hero-guide.1279/", by: "Linkmain-maybe (Smashboards)", written: "January 2022" },
+      playstyle: {
+        en: "The guide's author stresses they aren't a professional. In their description Hero has a difficult neutral, with no burst options and few safe moves, so he conditions the opponent with long-range spells and wins exchanges on reads. His reward is in advantage: big single hits rather than combos, and taking stocks extremely early, which the guide calls his biggest strength.",
+      },
+      traits: [
+        {
+          name: "Spells and MP",
+          text: { en: "His specials cost MP. Frizz and Zap are his main tools for testing an opponent's habits; his recovery spells (Woosh and Zoom) cost MP too, so he recovers with jumps and air dodges when he can. He regains MP while hanging on the ledge." },
+        },
+        {
+          name: "The spell menu",
+          text: { en: "The guide rates his menu of spells very powerful at the ledge, for catching opponents as they grab it or stall there. Flame Slash and Kacrackle Slash are two of the strong spells it describes." },
+        },
+        {
+          name: "Up tilt",
+          text: { en: "The move that carries his juggling: exceptionally long range, and it forces air dodges." },
+        },
+      ],
+      strengths: [
+        { en: "Takes stocks extremely early." },
+        { en: "Strong edgeguarding, thanks to a far-reaching recovery and strong aerials." },
+        { en: "Good tech-chase potential." },
+      ],
+      weaknesses: [
+        { en: "A difficult neutral: no burst options and few safe moves." },
+        { en: "Tall and heavy, so he is very easy to combo, with limited options under pressure." },
+        { en: "Being pressured in shield is one of his biggest weaknesses." },
+      ],
+    },
+    cloud: {
+      source: { title: "BREAKING THE LIMITS: Cloud Guide", url: "https://smashboards.com/guides/", by: "Afro Ninja (Smashboards)", written: "February 2019" },
+      playstyle: {
+        en: "A well-rounded swordsman with a good neutral game and some of the biggest disjointed hits in the game. The guide calls him easy for beginners, and a good second character to cover a main who struggles against swords.",
+      },
+      traits: [
+        {
+          name: "Limit",
+          text: { en: "His charge mechanic. It is weaker than in Smash 4 but still gives good comeback potential, and his recovery depends on it: without Limit it is very exploitable." },
+        },
+      ],
+      strengths: [
+        { en: "A good neutral game." },
+        { en: "Some of the biggest disjointed hitboxes in the game." },
+        { en: "A good juggle and combo game." },
+        { en: "Decent weight, which gives him good survivability." },
+        { en: "Easy to pick up." },
+      ],
+      weaknesses: [
+        { en: "Without Limit, his recovery is very exploitable." },
+        { en: "Despite his reach, he can still be walled out by strong zoners." },
+      ],
+    },
+    snake: {
+      source: { title: "Solid Snake Guide", url: "https://smashboards.com/guides/", by: "Falc01 (Smashboards)", written: "March 2019" },
+      playstyle: {
+        en: "Snake controls the game and its pace with explosives. The guide says he wants grenades out most of the time, either dropped while jumping in to approach or laid around the stage so the opponent has to come to him, and that good Snake players are always in control through this move.",
+      },
+      traits: [
+        {
+          name: "Grenades",
+          text: { en: "He can have two out at once, and can drop them by shielding or rolling while holding one. Holding a grenade when hit blows up both players, so he can go for trades when he's even or ahead on stocks." },
+        },
+        {
+          name: "C4",
+          text: { en: "A stage-control tool that he detonates himself. The guide suggests placing it at one edge of the stage rather than the center, and warns that it goes off on its own after half a minute." },
+        },
+        {
+          name: "Nikita",
+          text: { en: "His edgeguarding tool. It leaves him quite vulnerable, so the guide says to use it only when the opponent is offstage, and to aim it above them to limit their options." },
+        },
+        {
+          name: "Up smash",
+          text: { en: "An unorthodox smash attack that the guide treats as a neutral and ledge-trap tool, for opponents who keep trying to jump over him." },
+        },
+      ],
+      strengths: [
+        { en: "Controls space and the pace of the match with grenades and C4." },
+        { en: "A forward smash that does huge damage and can KO very early, on a hard read." },
+        { en: "Strong edgeguarding with Nikita." },
+      ],
+      weaknesses: [
+        { en: "His own explosives can hurt or KO him." },
+        { en: "His strongest hits are slow and punishable if dodged or baited." },
+      ],
+    },
+    inkling: {
+      source: { title: "Stay Fresh!! An Inkling Guide (parts 1 and 2)", url: "https://smashboards.com/guides/", by: "Ink Floyd (Smashboards)", written: "March 2019" },
+      playstyle: {
+        en: "At the start of a match Inkling's main goal in neutral is a grab, which opens the most options for damage: punish a spacing mistake with one, or bait the opponent into trying to punish and grab instead. From the throw she starts a combo and keeps the pressure on.",
+      },
+      traits: [
+        {
+          name: "Ink",
+          text: { en: "Some of her attacks cover the opponent in ink, and an inked opponent takes more damage. The rapid jab is one way to apply it." },
+        },
+        {
+          name: "Splat Roller",
+          text: { en: "Her side special, one of her ways to take a stock: landing it and following up." },
+        },
+        {
+          name: "Ways to take a stock",
+          text: { en: "The guide lists three: edgeguarding, landing a roller and following up, or a grab into up throw and up air." },
+        },
+      ],
+      strengths: [
+        { en: "A grab that leads into combos and pressure." },
+        { en: "Good movement tools for baiting: the guide points to fox-trotting and dash dancing." },
+      ],
+      weaknesses: [],
+    },
   },
   melee: {
     // Round 918 batch (English first).

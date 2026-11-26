@@ -139,7 +139,8 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
             </dl>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            {([["strengths", overview.strengths], ["weaknesses", overview.weaknesses]] as const).map(([kind, list]) => (
+            {/* A side the source says nothing about is left out, not filled in. */}
+            {([["strengths", overview.strengths], ["weaknesses", overview.weaknesses]] as const).filter(([, list]) => list.length > 0).map(([kind, list]) => (
               <div key={kind} className="flex flex-col gap-1">
                 <h3 className="text-sm font-bold">{t(`media.char.ov.${kind}`)}</h3>
                 <ul className="flex list-disc flex-col gap-1 pl-5 text-sm">
