@@ -14,6 +14,7 @@ import { regionName } from "./regions";
 import { hotScore, type ThreadSort, type TopWindow } from "./threadRank";
 import { CLIPS_OF_WEEK, CLIPS_OF_WEEK_DAYS, TWEET_LOOKUPS, isClipPost, pickClipsOfWeek } from "./clipsOfWeek";
 import { tweetLinks } from "./embeds";
+import { CLIP_CARD_MAX_MS, hashtagPattern, pickClipCards } from "./clipCards";
 import { createClient } from "./supabase/server";
 import { createGuestClient } from "./supabase/guest";
 import { cacheLife } from "next/cache";
@@ -727,6 +728,54 @@ async function reelPostVideoIds(games: string[]): Promise<string[]> {
     .limit(60);
   if (error) throw error;
   return (data ?? []).map((r) => r.id as string);
+}
+
+/**
+ * Which post is the looping clip for which term (round 914, clipCards.ts): short videos posted with a
+ * term's hashtag that a site admin posted or reposted. The same for every viewer, so it's kept for a few
+ * minutes and shared by every server; read with the admin connection (who the site admins are isn't
+ * public). Only ids leave here: getClipCards reads each post as the viewer.
+ */
+async function clipCardIds(tags: string[]): Promise<{ id: string; tag: string }[]> {
+  "use cache: remote";
+  cacheLife({ stale: 60, revalidate: 300, expire: 3600 });
+  const { createAdminClient } = await import("./supabase/admin");
+  const db = createAdminClient({ forPage: true });
+  const [admins, posts] = await Promise.all([
+    db.from("site_admins").select("user_id"),
+    db
+      .from("posts")
+      .select("id, author_id, body, videos:post_videos!inner ( duration_ms )")
+      // Whole hashtags only; the tags are lowercase letters and digits (glossary.ts), safe in a pattern.
+      .filter("body", "imatch", hashtagPattern(tags))
+      .is("parent_id", null)
+      .is("removed_at", null)
+      .eq("spoiler", false)
+      .lte("videos.duration_ms", CLIP_CARD_MAX_MS)
+      .order("created_at", { ascending: true })
+      .limit(300),
+  ]);
+  if (admins.error) throw admins.error;
+  if (posts.error) throw posts.error;
+  const adminIds = new Set((admins.data ?? []).map((a) => a.user_id as string));
+  const rows = (posts.data ?? []).map((r) => ({ id: r.id as string, authorId: r.author_id as string, body: r.body as string }));
+  const others = rows.filter((r) => !adminIds.has(r.authorId)).map((r) => r.id);
+  let reposted = new Set<string>();
+  if (others.length && adminIds.size) {
+    const { data, error } = await db.from("reposts").select("post_id").in("user_id", [...adminIds]).in("post_id", others);
+    if (error) throw error;
+    reposted = new Set((data ?? []).map((r) => r.post_id as string));
+  }
+  return pickClipCards(rows, adminIds, reposted, tags);
+}
+
+/** The clip for each term that has one, by the term's hashtag. Read as the viewer, so the posts table's rules apply. */
+export async function getClipCards(tags: string[], userId: string | null): Promise<Map<string, Post>> {
+  if (!tags.length) return new Map();
+  const picks = await clipCardIds([...tags].sort());
+  const posts = await getPostsByIds([...new Set(picks.map((p) => p.id))], userId);
+  const byId = new Map(posts.filter((p) => p.video && p.video.durationMs <= CLIP_CARD_MAX_MS && !p.removedReason && !p.spoiler).map((p) => [p.id, p]));
+  return new Map(picks.flatMap((p) => (byId.has(p.id) ? [[p.tag, byId.get(p.id)!] as const] : [])));
 }
 
 /**

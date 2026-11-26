@@ -18,6 +18,7 @@ import { HOME_REGION, regionName } from "@/lib/regions";
 import { detectedRegion } from "@/lib/viewerRegion";
 import Fold from "@/components/ui/Fold";
 import OverflowRow from "@/components/ui/OverflowRow";
+import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
 
 // The "start here" links at the top (round 654, for visitors from the Reddit posts): Smashy's
 // strongest parts, none of which need an account. A row of short links since round 845: as six cards
@@ -45,13 +46,17 @@ const STEPS: { title: MessageKey; text: MessageKey; href: string }[] = [
 
 // Further down: the parts that come alive with an account.
 const ALSO: { title: MessageKey; text: MessageKey; href: string }[] = [
-  { title: "ui.guest.f.host", text: "ui.guest.f.hostText", href: "/host/about" },
+  // My sets first (round 914, Matthew: it will be used more).
   { title: "ui.guest.f.mySets", text: "ui.guest.f.mySetsText", href: "/my-sets" },
+  { title: "ui.guest.f.host", text: "ui.guest.f.hostText", href: "/host/about" },
 ];
 
 
-// Four fighters' stock icons for the "Pick a character" entry (spread across Melee's cast).
-const MENU_FIGHTERS = [...(STOCK_ICON_KEYS.melee ?? [])].filter((_, i, all) => i % Math.max(1, Math.floor(all.length / 4)) === 0).slice(0, 4);
+// The fighters on the "Pick a character" entry: four icons that each keep changing (round 914, Matthew:
+// "it would be cool for them to rotate"). Every Melee and Ultimate stock icon, dealt into four piles so
+// the same fighter is never shown twice at once.
+const ALL_FIGHTERS = (["melee", "ultimate"] as const).flatMap((g) => [...(STOCK_ICON_KEYS[g] ?? [])].map((k) => `/stock/${g}/${k}.webp`));
+const MENU_FIGHTERS = [0, 1, 2, 3].map((pile) => ALL_FIGHTERS.filter((_, i) => i % 4 === pile));
 
 function notOver<T extends { startAt: number; endAt: number | null }>(list: T[]): T[] {
   const now = Date.now() / 1000;
@@ -132,10 +137,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
                 {/* Something real on the entry: fighters to pick from, how many tournaments are coming up. */}
                 {s.href === "/games" && (
                   <span aria-hidden="true" className="menu-icons mr-3 flex shrink-0 gap-1">
-                    {MENU_FIGHTERS.map((k) => (
-                      // eslint-disable-next-line @next/next/no-img-element -- tiny local icons; the image optimizer would add four requests for nothing
-                      <img key={k} src={`/stock/melee/${k}.webp`} alt="" width={24} height={24} className="h-6 w-6 object-contain" />
-                    ))}
+                    {MENU_FIGHTERS.map((icons, pile) => <RotatingCharacterIcon key={pile} icons={icons} size={24} />)}
                   </span>
                 )}
                 {s.href === "/events" && comingUp > 0 && (

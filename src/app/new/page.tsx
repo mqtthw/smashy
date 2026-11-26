@@ -23,6 +23,7 @@ import { getLang, getT } from "@/lib/i18n/server";
 import NewTab from "@/components/ui/NewTab";
 import EmbedPlayer from "@/components/highlights/EmbedPlayer";
 import { toEmbed } from "@/lib/embeds";
+import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 import { starterVideos, type StarterVideo } from "@/lib/starterVideos";
 
 /** Puts a link (or other node) where "\u0001" sits in a translated sentence. */
@@ -191,8 +192,9 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
   const essentials = (GAME_ESSENTIALS[game] ?? []).filter((e) => !e.general);
   const short = GAMES[game].short;
   const [lang, t] = await Promise.all([getLang(), getT()]);
-  // The menu skin's "Watch first" (round 911): the first video big, the rest two to a row.
+  // Beginner videos from the community (round 911), in "Watch and learn" since round 914.
   const videos = starterVideos(game);
+  const fighters = [...(STOCK_ICON_KEYS[game] ?? [])].slice(0, 26);
   // The skin numbers the sections in the order they come, whichever of them this game has.
   let step = 0;
 
@@ -208,14 +210,20 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
 
       {/* The starter guides come first (round 793): they're what a newcomer can use straight away, and the
           questions box under them says "No questions yet" until people start asking. */}
-      {videos.length > 0 && (
-        <Section id="watch-first" num={++step} skinOnly title={t("people.new.videos.title")}>
-          <p className="text-sm text-muted">{t("people.new.videos.body")}</p>
-          <ul className="grid gap-4 sm:grid-cols-2 [&>li:first-child]:sm:col-span-2">
-            {videos.map((v) => <VideoTile key={v.url} v={v} by={(name) => t("people.new.videos.by", { name })} />)}
-          </ul>
-        </Section>
-      )}
+      {/* Step 1 is playing (round 914, Matthew: "players should play first and find a character that
+          interests them"); the beginner videos moved down to "Watch and learn". */}
+      <Section id="play-first" num={++step} title={t("people.new.play.title")}>
+        <p className="text-sm text-muted">{t("people.new.play.body")}</p>
+        {fighters.length > 0 && (
+          <Link href={`/games/${game}`} aria-hidden="true" tabIndex={-1} className="flex flex-wrap gap-1.5">
+            {fighters.map((k) => (
+              // eslint-disable-next-line @next/next/no-img-element -- tiny local icons
+              <img key={k} src={`/stock/${game}/${k}.webp`} alt="" width={28} height={28} loading="lazy" className="h-7 w-7 object-contain" />
+            ))}
+          </Link>
+        )}
+        <Link href={`/games/${game}`} className="btn btn-md btn-primary self-start">{t("people.new.play.button", { game: short })}</Link>
+      </Section>
 
       {essentials.length > 0 && (
         <Section id="start" num={++step} title={t("people.new.start", { game: short })}>
@@ -259,6 +267,7 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
             </div>
           ))}
         </dl>
+        <Link href="/glossary" className="text-sm font-semibold text-brand">{t("people.gl.all")}</Link>
       </Section>
 
       <Section id="ask" num={++step} title={t("people.new.ask")}>
@@ -290,6 +299,11 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
       </Section>
 
       <Section id="watch" num={++step} title={t("people.new.watch")}>
+        {videos.length > 0 && (
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {videos.map((v) => <VideoTile key={v.url} v={v} by={(name) => t("people.new.videos.by", { name })} />)}
+          </ul>
+        )}
         <Suspense fallback={<CardListSkeleton count={2} label={t("people.new.loadingVideos")} />}>
           <Videos game={game} />
         </Suspense>

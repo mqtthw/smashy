@@ -44,6 +44,7 @@ async function entries(): Promise<MetadataRoute.Sitemap> {
     { url: url("/ladder"), changeFrequency: "daily", priority: 0.6 },
     { url: url("/pickem"), changeFrequency: "daily", priority: 0.6 },
     { url: url("/new"), changeFrequency: "daily", priority: 0.6 },
+    { url: url("/glossary"), changeFrequency: "weekly", priority: 0.6 },
     { url: url("/replays"), changeFrequency: "monthly", priority: 0.5 },
   ];
   for (const g of GAME_KEYS) {
