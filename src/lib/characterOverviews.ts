@@ -517,6 +517,191 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "Characters who can keep him away have the advantage." },
       ],
     },
+    // Round 923 batch: more Smashboards guides from Matthew's document (see the round 922 note above).
+    "dr-mario": {
+      source: { title: "The Complete Ultimate Dr. Mario Guide", url: "https://smashboards.com/guides/", by: "ASAP_Smash (Smashboards)", written: "February 2019" },
+      playstyle: {
+        en: "A slow, hard-hitting version of Mario that the guide calls a high-risk, high-reward glass cannon and a “methodical set-up” character. Because approaching and recovering are bad for him, he stays on the ground, zones with pills to make people jump, and punishes from shield. The guide's word for what he needs is patience.",
+      },
+      traits: [
+        {
+          name: "Pills",
+          text: { en: "Better suited to zoning than Mario's fireballs: his neutral is about forcing people to jump over them. Some of his bread-and-butter combos start with a pill." },
+        },
+        {
+          name: "Up special out of shield",
+          text: { en: "His up special is a strong punish from shield, and his jab and down tilt combo into it for a KO." },
+        },
+        {
+          name: "Neutral air",
+          text: { en: "The reverse of most neutral airs: it gets stronger the longer it's out, so he can space it for a stronger hit." },
+        },
+      ],
+      strengths: [
+        { en: "A high damage multiplier: he hits harder than Mario." },
+        { en: "Better stage control and KO options than Mario." },
+      ],
+      weaknesses: [
+        { en: "A terrible run speed." },
+        { en: "A terrible recovery, so he has to play safe near the edge." },
+        { en: "Bad at approaching." },
+      ],
+    },
+    mewtwo: {
+      source: { title: "Mewtwo Guide", url: "https://smashboards.com/guides/", by: "Macchus (Smashboards)", written: "January 2019" },
+      playstyle: {
+        en: "A glass cannon. Mewtwo puts out high damage and strong combo strings and has smash attacks that KO at low percent, but his body is huge and he is light and floaty, so he gets comboed and KO'd just as easily. For neutral the guide points to Shadow Ball, down tilt, forward tilt, neutral air, forward air and jab as his reliable tools.",
+      },
+      traits: [
+        {
+          name: "Shadow Ball",
+          text: { en: "His projectile and a main pressure tool. It can be turned around in the air (B-reversed) and jump-cancelled, and he can follow it in." },
+        },
+        {
+          name: "Teleport",
+          text: { en: "His recovery, which the guide rates as strong, and a movement tool on stage." },
+        },
+        {
+          name: "Confusion",
+          text: { en: "His side special reflects projectiles, but with a delay, so it has to be used on prediction rather than on reaction." },
+        },
+      ],
+      strengths: [
+        { en: "Strong damage and fast movement." },
+        { en: "Smash attacks that KO at low percents." },
+        { en: "A strong recovery." },
+        { en: "Strong combo potential." },
+      ],
+      weaknesses: [
+        { en: "A large body that is juggled easily." },
+        { en: "Light and floaty, so he is KO'd early." },
+        { en: "All his smash attacks hit on one side only." },
+        { en: "No combos from any throw." },
+      ],
+    },
+    chrom: {
+      source: { title: "A Comprehensive Competitive Guide to Chrom", url: "https://smashboards.com/guides/", by: "TheDMatch (Smashboards)", written: "January 2019" },
+      playstyle: {
+        en: "A fast sword character who rushes down, hits with several low-lag aerials and finishes with plenty of kill confirms. The guide compares him to Melee's Marth for his quick movement, combos and flow. His neutral and his best moves revolve around his aerials, and he is a threat on the ground too.",
+      },
+      traits: [
+        {
+          name: "Compared with Roy",
+          text: { en: "His sword does the same damage along its whole length, where Roy's is strongest at the hilt. That makes spacing with it easier and his KOs more consistent; Roy can KO earlier and has the better recovery." },
+        },
+        {
+          name: "Soaring Slash (up special)",
+          text: { en: "The guide calls it probably his best move as an attack: a big first hit, super armor at the start, about 23% if every hit connects, and one of his fastest options out of shield. As a recovery it goes mostly straight up." },
+        },
+        {
+          name: "Aerials",
+          text: { en: "Neutral air, forward air and up air are rated among the best aerials in the game; falling up air starts combos and juggles, and up air is his fastest out-of-shield option." },
+        },
+      ],
+      strengths: [
+        { en: "Speed: the 11th best initial dash and 4th best air speed, on a comfortably heavy character." },
+        { en: "Consistent KO power with many kill confirms." },
+        { en: "Excellent juggling." },
+      ],
+      weaknesses: [
+        { en: "A recovery on the bad side: it can be exploited, especially by characters with good edgeguards." },
+        { en: "A situational neutral special." },
+      ],
+    },
+    sonic: {
+      source: { title: "Art of Sonic Guide for Ultimate", url: "https://smashboards.com/guides/", by: "Sonic Meaper (Smashboards)", written: "January 2019" },
+      playstyle: {
+        en: "The guide describes Smash 4's Sonic as a heavy bait-and-punish character built around Spin Dash, and Ultimate's Sonic as one who uses many tools instead, because Spin Dash was weakened (an uncharged one stops at a shield). It says he does better than before in both advantage and disadvantage.",
+      },
+      traits: [
+        {
+          name: "Spin Dash",
+          text: { en: "No longer the center of his game: it stops at shields unless charged." },
+        },
+        {
+          name: "Homing Attack",
+          text: { en: "Starts much faster than in Smash 4, which the guide says makes it almost impossible to react to, and it helps him get out of disadvantage as long as it isn't overused." },
+        },
+        {
+          name: "Spring Jump",
+          text: { en: "His up special, part of a recovery the guide lists among his strengths." },
+        },
+      ],
+      strengths: [
+        { en: "Combo game." },
+        { en: "Recovery." },
+        { en: "Edgeguarding." },
+        { en: "Higher damage output than in Smash 4." },
+      ],
+      weaknesses: [
+        { en: "Finds it harder to take stocks." },
+        { en: "Weaker defensive options." },
+        { en: "Lighter than before." },
+      ],
+    },
+    rob: {
+      source: { title: "Robotic Operating Basics", url: "https://smashboards.com/guides/", by: "Jams. (Smashboards)", written: "January 2019" },
+      playstyle: {
+        en: "R.O.B. generally wants to make the opponent come to him, using his two projectiles, the laser and the Gyro. When he has to approach, neutral air is his strong tool against characters with mediocre range, and forward air against long-range characters like swordfighters. He is very strong at the ledge and offstage.",
+      },
+      traits: [
+        {
+          name: "Robo Beam (laser)",
+          text: { en: "Can be aimed up to catch jump-ins or down to hit small characters. Like Gyro it is laggy, so at mid range it can be punished by jumping over it." },
+        },
+        {
+          name: "Gyro",
+          text: { en: "A spinning top he charges and throws, which then stays on the stage as an item. It sets up ledge traps and combos, for example hitting the opponent into a Gyro lying behind them." },
+        },
+        {
+          name: "Neutral air",
+          text: { en: "A strong edgeguard that KOs very early offstage, and a ledge trap that covers several get-up options. Spaced, it is safe on shield." },
+        },
+        {
+          name: "Robo Burner",
+          text: { en: "His up special. Besides recovering, it lets him follow up where his normal air movement can't, and get past opponents who rely on horizontal projectiles." },
+        },
+      ],
+      strengths: [
+        { en: "Projectiles that force the opponent to approach." },
+        { en: "Edgeguarding and ledge trapping." },
+        { en: "A down air spike that the guide says demolishes linear, delayed recoveries." },
+      ],
+      weaknesses: [
+        { en: "Pretty terrible in disadvantage: a huge frame with mediocre frame data and nothing to escape true combos with." },
+        { en: "His projectiles are laggy and punishable at mid range." },
+      ],
+    },
+    greninja: {
+      source: { title: "Greninjuts-Two: A Beginner to Intermediate Guide to Greninja", url: "https://smashboards.com/guides/", by: "Ludi (Ludiloco on Smashboards)", written: "February 2019" },
+      playstyle: {
+        en: "Bait and punish. Greninja has some of the best mobility in the game, but his moves are fairly committal and his approaches fairly linear, so the guide has him use that speed to feint, draw a response and punish it rather than rush in. Water Shuriken, his long-range projectile, makes opponents come to him. The guide warns he can't be played recklessly.",
+      },
+      traits: [
+        {
+          name: "Water Shuriken",
+          text: { en: "An exceptional long-range projectile and an important tool for his bait-and-punish game." },
+        },
+        {
+          name: "Mobility",
+          text: { en: "His neutral relies on it: he approaches with a feint, and punishes when the opponent contests the feint." },
+        },
+        {
+          name: "Combos",
+          text: { en: "The guide describes one of the most diverse and deep combo trees, rewarding players who can execute it." },
+        },
+      ],
+      strengths: [
+        { en: "Blistering mobility." },
+        { en: "A deep, varied combo game." },
+        { en: "One of the most unique kits for baiting and punishing." },
+      ],
+      weaknesses: [
+        { en: "His moves are medium-to-large commitments." },
+        { en: "Most of his approach options are fairly linear." },
+        { en: "The guide says he may not suit players who struggle to control very fast characters, or to use a recovery that has no hitbox." },
+      ],
+    },
   },
   melee: {
     // Round 918 batch (English first).
