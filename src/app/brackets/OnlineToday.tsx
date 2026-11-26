@@ -5,7 +5,6 @@ import { bracketPath } from "@/lib/brackets/types";
 import { currentBracket, formatEventTime } from "@/lib/format";
 import { onlineToday } from "@/lib/onlineToday";
 import { getOnlineTournaments } from "@/lib/startgg";
-import Icon from "@/components/ui/Icon";
 import { getT } from "@/lib/i18n/server";
 import Fold from "@/components/ui/Fold";
 
@@ -19,7 +18,7 @@ export default async function OnlineToday({ as: Heading = "h2", fold = false }: 
   const rows = onlineToday(await getOnlineTournaments().catch(() => []));
   const tr = await getT();
   if (!rows.length) return null;
-  const heading = <Heading id="online-today" className="font-bold"><Icon name="globe" /> {tr("browse.brackets.onlineToday")}</Heading>;
+  const heading = <Heading id="online-today" className="font-bold">{tr("browse.brackets.onlineToday")}</Heading>;
   const allLink = <Link href="/events?view=online" className="text-meta text-brand">{tr("browse.brackets.allOnline")}</Link>;
   const list = (
       <ul className="card divide-y divide-line">

@@ -7,7 +7,6 @@ import RecentWinners from "@/components/events/RecentWinners";
 import TopClips from "@/components/feed/TopClips";
 import GameBadge from "@/components/GameBadge";
 import { MajorCard } from "@/components/majors/MajorParts";
-import Icon, { type IconName } from "@/components/ui/Icon";
 import { getRegionEvents } from "@/lib/events";
 import { dateBadgeParts, formatEventDate, isRunning, whenLabel } from "@/lib/format";
 import type { MessageKey } from "@/lib/i18n/core";
@@ -22,15 +21,17 @@ import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 
 // The "start here" links at the top (round 654, for visitors from the Reddit posts): Smashy's
 // strongest parts, none of which need an account. A row of short links since round 845: as six cards
-// with a sales line each, the first screen read like a generic landing page (Reddit: "looks vibe coded"). Character pages come first (round 824, Matthew: more
+// with a sales line each, the first screen read like a generic landing page (Reddit: "looks vibe coded").
+// No stock line icons on them or the headings below (round 848, Matthew: they give the site away as
+// template-made); only the character link keeps its real stock icon. Character pages come first (round 824, Matthew: more
 // people will be interested in them than in Smash history, which swapped places with them).
-const START: { icon: IconName; title: MessageKey; href: string }[] = [
-  { icon: "file", title: "ui.guest.t.characters", href: "/games" },
-  { icon: "calendar", title: "ui.guest.t.events", href: "/events" },
-  { icon: "trophy", title: "ui.guest.t.history", href: "/history" },
-  { icon: "users", title: "ui.guest.t.newPlayers", href: "/new" },
-  { icon: "play", title: "ui.guest.t.reels", href: "/reels" },
-  { icon: "chart", title: "ui.guest.t.players", href: "/search?tab=players" },
+const START: { title: MessageKey; href: string }[] = [
+  { title: "ui.guest.t.characters", href: "/games" },
+  { title: "ui.guest.t.events", href: "/events" },
+  { title: "ui.guest.t.history", href: "/history" },
+  { title: "ui.guest.t.newPlayers", href: "/new" },
+  { title: "ui.guest.t.reels", href: "/reels" },
+  { title: "ui.guest.t.players", href: "/search?tab=players" },
 ];
 
 /** 20 random Melee and Ultimate stock icons for the Character pages button to rotate through. */
@@ -44,9 +45,9 @@ function characterIcons(): string[] {
 }
 
 // Further down: the parts that come alive with an account.
-const ALSO: { icon: IconName; title: MessageKey; text: MessageKey; href: string }[] = [
-  { icon: "trophy", title: "ui.guest.f.host", text: "ui.guest.f.hostText", href: "/host/about" },
-  { icon: "gamepad", title: "ui.guest.f.mySets", text: "ui.guest.f.mySetsText", href: "/my-sets" },
+const ALSO: { title: MessageKey; text: MessageKey; href: string }[] = [
+  { title: "ui.guest.f.host", text: "ui.guest.f.hostText", href: "/host/about" },
+  { title: "ui.guest.f.mySets", text: "ui.guest.f.mySetsText", href: "/my-sets" },
 ];
 
 
@@ -91,7 +92,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
           {START.map((f) => (
             <li key={f.href}>
               <Link href={f.href} className="chip font-semibold hover:bg-surface">
-                {f.href === "/games" ? <RotatingCharacterIcon icons={icons} /> : <Icon name={f.icon} className="text-brand" />}
+                {f.href === "/games" && <RotatingCharacterIcon icons={icons} />}
                 {t(f.title)}
               </Link>
             </li>
@@ -113,7 +114,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
       {nextMajors.length > 0 && (
         <div className="flex flex-col gap-2">
           <div className="flex items-baseline justify-between">
-            <h3 className="font-bold"><Icon name="trophy" /> {t("ui.guest.majors")}</h3>
+            <h3 className="font-bold">{t("ui.guest.majors")}</h3>
             <Link href="/events" className="text-sm font-semibold text-brand">{t("ui.guest.allEvents")}</Link>
           </div>
           <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
@@ -123,7 +124,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
       )}
 
       {upcoming.length > 0 && (
-        <Fold id="home-coming-up" heading={<h3 className="font-bold"><Icon name="calendar" /> {t("ui.guest.comingUp", { region: regionName(region) })}</h3>}>
+        <Fold id="home-coming-up" heading={<h3 className="font-bold">{t("ui.guest.comingUp", { region: regionName(region) })}</h3>}>
           {live && (
             <Link href={`/events/${live.slug}`} className="hero-card flex min-h-36 flex-col justify-between gap-3 p-4">
               <span className="relative inline-flex w-fit items-center gap-1.5 rounded-full border border-white/35 bg-black/25 px-2.5 py-0.5 text-meta font-bold">
@@ -160,7 +161,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
       )}
 
       {results.length > 0 && (
-        <Fold id="home-results" heading={<h3 className="font-bold"><Icon name="trophy" /> {t("media.scene.results", { name: regionName(region) })}</h3>}>
+        <Fold id="home-results" heading={<h3 className="font-bold">{t("media.scene.results", { name: regionName(region) })}</h3>}>
           <ul className="card flex flex-col divide-y divide-line">
             {results.map((ev) => (
               <li key={ev.id}>
@@ -202,7 +203,6 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
           {ALSO.map((f) => (
             <li key={f.title}>
               <Link href={f.href} className="card flex h-full gap-3 p-3 hover:bg-surface">
-                <Icon name={f.icon} className="mt-0.5 text-2xl text-brand" />
                 <span className="min-w-0">
                   <span className="block font-semibold">{t(f.title)}</span>
                   <span className="block text-sm text-muted">{t(f.text)}</span>
