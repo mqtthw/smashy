@@ -131,7 +131,8 @@ export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
             className="md:relative md:justify-center md:p-3 lg:justify-start lg:p-0"
             selectClassName="md:max-lg:absolute md:max-lg:inset-0 md:max-lg:max-w-none md:max-lg:opacity-0"
           />
-          <ThemeButton className="md:p-3 lg:p-0" labelClassName="md:max-lg:sr-only" />
+          {/* The menu skin is one dark look, so the Light/Dark button hides under it (round 932). */}
+          <ThemeButton className="skin-old md:p-3 lg:p-0" labelClassName="md:max-lg:sr-only" />
         </div>
       </div>
     </nav>

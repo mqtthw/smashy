@@ -68,8 +68,9 @@ function GuestProfile() {
         <h2 className="text-meta font-semibold uppercase tracking-wide text-muted"><T k="lang.label" /></h2>
         <LanguageSwitch />
       </section>
-      {/* Light or dark without an account (round 773): on a phone this is where a visitor finds it. */}
-      <section className="card flex flex-col gap-2 p-4">
+      {/* Light or dark without an account (round 773): on a phone this is where a visitor finds it. Hidden
+          under the menu skin, which is one dark look (round 932). */}
+      <section className="skin-old card flex flex-col gap-2 p-4">
         <h2 className="text-meta font-semibold uppercase tracking-wide text-muted"><T k="people.profile.theme" /></h2>
         <ThemeToggle />
       </section>
@@ -297,7 +298,8 @@ async function ProfileContent({ searchParams }: { searchParams: PageProps<"/prof
 
       <section className="card flex flex-col gap-2 p-4">
         <h2 className="text-meta font-semibold uppercase tracking-wide text-muted">{t("people.profile.theme")}</h2>
-        <ThemeToggle />
+        {/* No Light/Dark choice under the menu skin (round 932): it did nothing there. */}
+        <div className="skin-old"><ThemeToggle /></div>
         <MainIconsToggle />
         <SpoilerModeToggle />
       </section>
