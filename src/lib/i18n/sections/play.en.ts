@@ -190,7 +190,7 @@ export const playEn = {
   "play.pickem.noMajors": "No majors coming up right now. Pick'em opens when the next one is announced on start.gg.",
   "play.pickem.liveNow": " · Live now",
   "play.pickem.entrants": "· 1 entrant|· {n} entrants",
-  "play.pickem.pickNow": "Pick now →",
+  "play.pickem.pickNow": "Pick now",
   "play.pickem.final": "Final",
   "play.pickem.locked": "Locked",
   "play.pickem.yourPicks": "Your picks",
@@ -315,7 +315,7 @@ export const playEn = {
   "play.replays.card.title": "Melee replay stats",
   "play.replays.card.self": "From their own Slippi replays (self-reported).",
   "play.replays.card.onlyYou": "Only you can see these.",
-  "play.replays.card.update": "Update them on Replay stats →",
+  "play.replays.card.update": "Update them on Replay stats",
 
   // Messages: inbox (/messages)
   "play.msg.title": "Messages",

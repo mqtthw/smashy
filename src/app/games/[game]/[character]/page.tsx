@@ -118,7 +118,6 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           <a href={discord.invite} target="_blank" rel="noopener noreferrer" className="btn btn-md btn-primary self-start">
             {t("media.char.joinDiscord", { name })}
           <NewTab /></a>
-          <p className="text-meta text-muted">{t("media.char.discordNote")}</p>
         </section>
       )}
 
@@ -129,7 +128,6 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           <a href={cookbook} target="_blank" rel="noopener noreferrer" className="btn btn-md btn-primary self-start">
             {t("media.char.openCookbook", { name })}
           <NewTab /></a>
-          <p className="text-meta text-muted">{t("media.char.cookbookNote")}</p>
         </section>
       )}
 
@@ -224,7 +222,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
       <section className="flex flex-col">
         <h2 className="mb-2 font-bold">{t("media.char.recentPosts", { name })}</h2>
         {/* Their board in Discuss (round 807): threads tagged with them, like Smashboards' character boards. */}
-        <Link href={`/discuss?game=${game}&character=${character}`} className="mb-2 self-start link text-sm">{t("media.char.board", { name })} →</Link>
+        <Link href={`/discuss?game=${game}&character=${character}`} className="mb-2 self-start link text-sm">{t("media.char.board", { name })}</Link>
         {posts === null ? (
           <p className="text-sm text-muted">{t("media.char.postsFailed")}</p>
         ) : posts.length === 0 ? (

@@ -3,10 +3,9 @@ import GameBadge from "@/components/GameBadge";
 import LocalTime from "@/components/ui/LocalTime";
 import type { HostedEventCard as Card } from "@/lib/posts";
 import Icon from "@/components/ui/Icon";
+import PlaceMark from "@/components/ui/PlaceMark";
 import { T } from "@/lib/i18n/client";
 import type { MessageKey } from "@/lib/i18n/core";
-
-const MEDAL = ["🥇", "🥈", "🥉"];
 
 /**
  * A hosted event on a post. It always shows the event as it is now: sign-ups while open, "Live now"
@@ -26,7 +25,7 @@ export default function HostedEventCard({ e }: { e: Card }) {
       {e.status === "completed" && e.podium.length > 0 ? (
         <ol className="flex flex-col text-sm">
           {e.podium.map((p) => (
-            <li key={`${p.place}-${p.tag}`}>{MEDAL[p.place - 1] ?? `${p.place}.`} {p.tag ?? <span className="text-muted"><T k="season.hiddenPlayer" /></span>}</li>
+            <li key={`${p.place}-${p.tag}`} className="flex items-center gap-2"><PlaceMark place={p.place} size="sm" /> {p.tag ?? <span className="text-muted"><T k="season.hiddenPlayer" /></span>}</li>
           ))}
         </ol>
       ) : (

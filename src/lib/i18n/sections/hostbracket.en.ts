@@ -56,7 +56,7 @@ export const hostbracketEn = {
   "hostbracket.view.liveNow": "Live now",
   "hostbracket.view.upNext": "Up next",
   "hostbracket.view.toRound1": "← Round 1",
-  "hostbracket.view.toTop8": "Top 8 →",
+  "hostbracket.view.toTop8": "Top 8",
   "hostbracket.view.winners": "Winners",
   "hostbracket.view.losers": "Losers",
   "hostbracket.view.found": "1 set found|{n} sets found",

@@ -102,8 +102,8 @@ export const eventFr: Record<keyof typeof eventEn, string> = {
   "event.series.liveNow": "En direct : {name}",
   "event.series.nextUp": "Prochaine : {name}",
   "event.series.playingN": "1 en jeu|{n} en jeu",
-  "event.series.watch": "Regarder →",
-  "event.series.signUp": "S'inscrire →",
+  "event.series.watch": "Regarder",
+  "event.series.signUp": "S'inscrire",
   "event.series.numbers": "La série en chiffres",
   "event.series.played": "édition jouée|éditions jouées",
   "event.series.avgPlayers": "joueurs en moyenne",
@@ -209,10 +209,10 @@ export const eventFr: Record<keyof typeof eventEn, string> = {
 
   // Series
   "event.nextEdition": "Prochaine édition : {name}",
-  "event.signUpArrow": "S'inscrire →",
+  "event.signUpArrow": "S'inscrire",
   "event.otherEditions": "Autres éditions",
   "event.series": "Série :",
-  "event.seriesStats": "Vainqueurs, participation et rivalités →",
+  "event.seriesStats": "Vainqueurs, participation et rivalités",
   "event.seriesMedals": "Médailles de la série",
   "event.seriesMedalsHint": "Top 3 sur 1 édition de cette série.|Top 3 sur {n} éditions de cette série.",
 

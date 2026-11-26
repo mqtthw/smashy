@@ -343,5 +343,5 @@ export const hostrunJa: Record<keyof typeof hostrunEn, string> = {
   "hostrun.bot.server": "Discordサーバー {id}",
   "hostrun.bot.unlink": "連携を解除",
   "hostrun.bot.privacy": "ボットはログインしなくてもsmashy.ggで見られる内容だけを表示します。10代の名前は出さず、誰にもメンションしません。大会開始・試合の呼び出し・結果の投稿は、大会ページ（Discord）でチャンネルを接続してください。",
-  "hostrun.bot.link": "/bracket や /next のために、Smashyボットもサーバーに追加しよう →",
+  "hostrun.bot.link": "/bracket や /next のために、Smashyボットもサーバーに追加しよう",
 };

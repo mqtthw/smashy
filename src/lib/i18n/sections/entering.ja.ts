@@ -114,7 +114,7 @@ export const enteringJa: Record<keyof typeof enteringEn, string> = {
   "entering.mysets.startggDown": "今は start.gg に接続できませんでした。このページは少ししたら再試行します。",
   "entering.mysets.noEvents": "今後の大会はありません",
   "entering.mysets.noEventsNote": "start.gg で大会に参加登録すると、ここに表示されます。",
-  "entering.mysets.findEvent": "大会を探す →",
+  "entering.mysets.findEvent": "大会を探す",
   "entering.mysets.calledVs": "vs {name}",
   "entering.mysets.calledVsAt": "vs {name}・{station}番台",
   "entering.mysets.liveNote": "大会の開催中は30秒ごとに更新されます。",

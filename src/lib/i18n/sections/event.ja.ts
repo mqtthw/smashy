@@ -102,8 +102,8 @@ export const eventJa: Record<keyof typeof eventEn, string> = {
   "event.series.liveNow": "開催中：{name}",
   "event.series.nextUp": "次回：{name}",
   "event.series.playingN": "{n}人が参加中|{n}人が参加中",
-  "event.series.watch": "見る →",
-  "event.series.signUp": "エントリー →",
+  "event.series.watch": "見る",
+  "event.series.signUp": "エントリー",
   "event.series.numbers": "数字で見るシリーズ",
   "event.series.played": "回開催|回開催",
   "event.series.avgPlayers": "人（平均参加者）",
@@ -209,10 +209,10 @@ export const eventJa: Record<keyof typeof eventEn, string> = {
 
   // Series
   "event.nextEdition": "次回: {name}",
-  "event.signUpArrow": "参加登録 →",
+  "event.signUpArrow": "参加登録",
   "event.otherEditions": "ほかの回",
   "event.series": "シリーズ:",
-  "event.seriesStats": "優勝者、参加人数、ライバル関係 →",
+  "event.seriesStats": "優勝者、参加人数、ライバル関係",
   "event.seriesMedals": "シリーズのメダル",
   "event.seriesMedalsHint": "このシリーズ1回分でのTop 3入り。|このシリーズ{n}回分でのTop 3入り。",
 

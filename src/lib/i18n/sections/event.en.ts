@@ -100,8 +100,8 @@ export const eventEn = {
   "event.series.liveNow": "Live now: {name}",
   "event.series.nextUp": "Next up: {name}",
   "event.series.playingN": "1 playing|{n} playing",
-  "event.series.watch": "Watch →",
-  "event.series.signUp": "Sign up →",
+  "event.series.watch": "Watch",
+  "event.series.signUp": "Sign up",
   "event.series.numbers": "The series in numbers",
   "event.series.played": "edition played|editions played",
   "event.series.avgPlayers": "players on average",
@@ -207,10 +207,10 @@ export const eventEn = {
 
   // Series
   "event.nextEdition": "Next up: {name}",
-  "event.signUpArrow": "Sign up →",
+  "event.signUpArrow": "Sign up",
   "event.otherEditions": "Other editions",
   "event.series": "Series:",
-  "event.seriesStats": "Winners, attendance and rivalries →",
+  "event.seriesStats": "Winners, attendance and rivalries",
   "event.seriesMedals": "Series medals",
   "event.seriesMedalsHint": "Top 3 finishes across 1 edition of this series.|Top 3 finishes across {n} editions of this series.",
 

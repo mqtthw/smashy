@@ -341,5 +341,5 @@ export const hostrunEn = {
   "hostrun.bot.server": "Discord server {id}",
   "hostrun.bot.unlink": "Unlink",
   "hostrun.bot.privacy": "The bot shows what anyone can see on smashy.gg without signing in: teens aren't named, and it never pings anyone. For posts when your bracket starts, set calls and results, connect a channel on your event's page (Discord).",
-  "hostrun.bot.link": "Also add the Smashy bot to your server, for /bracket and /next →",
+  "hostrun.bot.link": "Also add the Smashy bot to your server, for /bracket and /next",
 } as const;

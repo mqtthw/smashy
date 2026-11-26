@@ -43,7 +43,7 @@ export default async function NearbyEvents({ region, slug, signedIn, lang, t }: 
         })}
       </ul>
       <Link href={`/events?region=${encodeURIComponent(region)}`} className="block border-t border-line px-4 py-3 text-sm font-semibold text-brand hover:bg-surface">
-        {t("browse.event.nearbyAll", { place })} →
+        {t("browse.event.nearbyAll", { place })}
       </Link>
       {!signedIn && (
         <div className="flex items-center gap-3 border-t border-line bg-surface px-4 py-3">

@@ -6,6 +6,7 @@ import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import Avatar from "@/components/ui/Avatar";
 import Icon from "@/components/ui/Icon";
+import { MedalCounts } from "@/components/ui/PlaceMark";
 import LocalTime from "@/components/ui/LocalTime";
 import { PageSkeleton } from "@/components/ui/Skeleton";
 import { GAMES } from "@/lib/games";
@@ -111,7 +112,7 @@ async function Series({ params }: { params: PageProps<"/host/[id]/series">["para
       )}
       {streak && summary.streak && (
         <p className="text-sm">
-          🔥 <b>{streak.name}</b> {t("event.series.streak", { n: summary.streak.wins })}
+          <b>{streak.name}</b> {t("event.series.streak", { n: summary.streak.wins })}
         </p>
       )}
 
@@ -147,10 +148,8 @@ async function Series({ params }: { params: PageProps<"/host/[id]/series">["para
                 <span className="min-w-0 flex-1 truncate font-semibold">
                   {p.handle ? <Link href={`/u/${p.handle}`} className="hover:underline">{p.name}</Link> : p.name}
                 </span>
-                <span className="shrink-0 tabular-nums">
-                  {p.gold > 0 && `🥇${p.gold} `}
-                  {p.silver > 0 && `🥈${p.silver} `}
-                  {p.bronze > 0 && `🥉${p.bronze} `}
+                <span className="shrink-0">
+                  <MedalCounts gold={p.gold} silver={p.silver} bronze={p.bronze} />
                 </span>
                 <span className="w-28 shrink-0 text-right text-meta text-muted">
                   {p.best ? `${t("event.series.bestPlace", { place: ordinal(p.best) })} · ` : ""}
@@ -192,7 +191,7 @@ async function Series({ params }: { params: PageProps<"/host/[id]/series">["para
                   <span className="block truncate">
                     {e.winner ? (
                       <>
-                        🏆 <b>{e.winner.name}</b>
+                        <Icon name="trophy" className="text-[var(--gold)]" /> <b>{e.winner.name}</b>
                       </>
                     ) : e.status === "canceled" ? (
                       <span className="text-muted">{t("event.series.canceled")}</span>

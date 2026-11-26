@@ -97,7 +97,7 @@ export const setroomJa: Record<keyof typeof setroomEn, string> = {
   "setroom.strike.title": "ステージ拒否",
   "setroom.strike.intro": "オフラインのセットのステージ拒否を1台のスマホで。第1試合は拒否、その後は各試合後に拒否とカウンターピックを、地元シーンのルールセットに沿って行います。",
   "setroom.strike.gameRulesets": "{game}のルールセット",
-  "setroom.strike.go": "拒否する →",
+  "setroom.strike.go": "拒否する",
   "setroom.strike.noRuleset": "ルールセットがない？かんたんステージ拒否",
   "setroom.strike.missing": "地元シーンのルールセットがありませんか？シーンの管理者が{scenes}ページから追加できます。",
   "setroom.strike.scenes": "シーン",

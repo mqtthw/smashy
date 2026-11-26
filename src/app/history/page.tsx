@@ -1,6 +1,7 @@
 // Smash history: past majors, year by year (docs/archive-plan.md, step A1). Each major opens its
 // tournament page, which already has the top 8, the bracket and set VODs. Facts only (names, dates,
 // places, entrant counts) from start.gg and parry.gg, credited on the page.
+import Icon from "@/components/ui/Icon";
 import type { Metadata } from "next";
 import OverflowRow from "@/components/ui/OverflowRow";
 import Link from "next/link";
@@ -124,7 +125,7 @@ async function Archive({ searchParams }: { searchParams: PageProps<"/history">["
                     </span>
                     {winners.length > 0 && (
                       <span className="block truncate text-meta">
-                        <span aria-hidden>🏆 </span>
+                        <Icon name="trophy" className="mr-1 text-[var(--gold)]" />
                         <span className="sr-only">{t("history.winners")} </span>
                         {winners.map((w, i) => (
                           <span key={w.game}>
@@ -170,14 +171,14 @@ export default function HistoryPage(props: PageProps<"/history">) {
     <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold"><T k="history.title" /></h1>
-        <Link href="/history/timeline" className="self-start text-sm font-semibold text-brand"><T k="history.timeline.link" /> →</Link>
-        <Link href="/history/records" className="self-start text-sm font-semibold text-brand"><T k="history.records.link" /> →</Link>
+        <Link href="/history/timeline" className="self-start text-sm font-semibold text-brand"><T k="history.timeline.link" /></Link>
+        <Link href="/history/records" className="self-start text-sm font-semibold text-brand"><T k="history.records.link" /></Link>
       </header>
       <Suspense fallback={<CardListSkeleton count={6} />}>
         <Archive searchParams={props.searchParams} />
       </Suspense>
       <Documentaries />
-      <Link href="/history/suggest" className="text-sm font-semibold text-brand"><T k="history.suggest.link" /> →</Link>
+      <Link href="/history/suggest" className="text-sm font-semibold text-brand"><T k="history.suggest.link" /></Link>
       <p className="text-meta text-muted"><T k="history.source" /></p>
     </section>
   );

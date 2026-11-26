@@ -1,5 +1,6 @@
 // Pick'em for one singles event at a major: make your picks before it starts; after that, everyone's
 // picks on a leaderboard, scored from start.gg's final standings once it's over.
+import Icon from "@/components/ui/Icon";
 import { connection } from "next/server";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -149,7 +150,7 @@ async function Pickem({ params, searchParams }: PageProps<"/pickem/[eventId]">) 
                 <Avatar name={r.tag} src={r.avatarUrl} size="sm" />
                 <span className="min-w-0 flex-1">
                   <Link href={`/u/${r.handle}`} className="block truncate font-semibold hover:underline">{r.tag}</Link>
-                  <span className="block truncate text-meta text-muted">🏆 {tagOf(r.champion, r.tags)}</span>
+                  <span className="block truncate text-meta text-muted"><Icon name="trophy" /> {tagOf(r.champion, r.tags)}</span>
                 </span>
                 {placements && (
                   <span className="shrink-0 font-mono font-bold tabular-nums">

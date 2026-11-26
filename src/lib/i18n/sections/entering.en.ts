@@ -112,7 +112,7 @@ export const enteringEn = {
   "entering.mysets.startggDown": "We couldn't reach start.gg right now. This page will try again in a moment.",
   "entering.mysets.noEvents": "No upcoming events",
   "entering.mysets.noEventsNote": "When you sign up for a tournament on start.gg, it shows up here.",
-  "entering.mysets.findEvent": "Find an event →",
+  "entering.mysets.findEvent": "Find an event",
   "entering.mysets.calledVs": "vs {name}",
   "entering.mysets.calledVsAt": "vs {name} at station {station}",
   "entering.mysets.liveNote": "Updates every 30 seconds while your event is live.",

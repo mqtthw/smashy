@@ -418,7 +418,7 @@ function Board({ sets, t, tag }: { sets: EngineSet[]; t: Tr; tag: (id: string | 
           <div key={c.label} className="flex shrink-0 flex-col gap-2">
             <p className="text-meta text-muted">{c.label}</p>
             {c.sets.map((s) => (
-              <div key={s.key} className={`w-36 rounded-xl border bg-panel px-2 py-1 text-sm shadow-[inset_0_1px_0_var(--glass-highlight),var(--glass-shadow)] ${s.state === "ready" ? "border-brand" : "border-[var(--glass-line)]"}`}>
+              <div key={s.key} className={`w-36 rounded-xl border bg-panel px-2 py-1 text-sm ${s.state === "ready" ? "border-brand" : "border-line"}`}>
                 <p className="flex justify-between text-meta text-muted">
                   <span>{s.identifier}</span>
                   <span>{s.state === "ready" ? t("hostsetup.demo.upNext") : s.state === "done" ? "" : t("hostsetup.demo.waitingShort")}</span>
@@ -428,7 +428,7 @@ function Board({ sets, t, tag }: { sets: EngineSet[]; t: Tr; tag: (id: string | 
                   return (
                     <p key={i} className={`flex justify-between gap-2 ${won ? "font-bold" : s.state === "done" ? "text-muted" : ""}`}>
                       <span className={`truncate ${s.p[i].id === ME ? "text-brand" : ""}`}>{tag(s.p[i].id)}</span>
-                      <span className={`min-w-5 rounded px-1 text-center tabular-nums ${won ? "bg-[#e8301f] bg-[image:var(--jelly-red)] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.55)]" : ""}`}>{scoreText(s.score[i], s.score[1 - i])}</span>
+                      <span className={`min-w-5 rounded px-1 text-center tabular-nums ${won ? "bg-[#e8301f] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.55)]" : ""}`}>{scoreText(s.score[i], s.score[1 - i])}</span>
                     </p>
                   );
                 })}
@@ -487,13 +487,13 @@ function RoundRobinBoard({ sets, t, tag }: { sets: EngineSet[]; t: Tr; tag: (id:
             <div key={r} className="flex shrink-0 flex-col gap-2">
               <p className="text-meta text-muted">{t("hostbracket.round.round", { n: r })}</p>
               {rr.filter((s) => s.round === r).sort((x, y) => x.idx - y.idx).map((s) => (
-                <div key={s.key} className={`w-36 rounded-xl border bg-panel px-2 py-1 text-sm shadow-[inset_0_1px_0_var(--glass-highlight),var(--glass-shadow)] ${s.state === "ready" ? "border-brand" : "border-[var(--glass-line)]"}`}>
+                <div key={s.key} className={`w-36 rounded-xl border bg-panel px-2 py-1 text-sm ${s.state === "ready" ? "border-brand" : "border-line"}`}>
                   {([0, 1] as const).map((i) => {
                     const won = s.state === "done" && s.winner === i + 1;
                     return (
                       <p key={i} className={`flex justify-between gap-2 ${won ? "font-bold" : s.state === "done" ? "text-muted" : ""}`}>
                         <span className={`truncate ${s.p[i].id === ME ? "text-brand" : ""}`}>{tag(s.p[i].id)}</span>
-                        <span className={`min-w-5 rounded px-1 text-center tabular-nums ${won ? "bg-[#e8301f] bg-[image:var(--jelly-red)] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.55)]" : ""}`}>{scoreText(s.score[i], s.score[1 - i])}</span>
+                        <span className={`min-w-5 rounded px-1 text-center tabular-nums ${won ? "bg-[#e8301f] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.55)]" : ""}`}>{scoreText(s.score[i], s.score[1 - i])}</span>
                       </p>
                     );
                   })}

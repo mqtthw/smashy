@@ -115,7 +115,7 @@ async function Content({ searchParams }: { searchParams: SP }) {
             {t("play.ladder.standings", { game: GAMES[game].short, season: seasonName(season) })}
           </h2>
           <Link href={link({ season: season === current ? last : current })} className="text-meta text-muted hover:text-foreground">
-            {season === current ? t("play.ladder.lastSeason", { season: seasonName(last) }) : t("play.ladder.thisSeason", { season: seasonName(current) })} →
+            {season === current ? t("play.ladder.lastSeason", { season: seasonName(last) }) : t("play.ladder.thisSeason", { season: seasonName(current) })}
           </Link>
         </div>
         <nav aria-label={t("play.ladder.region")} className="flex flex-wrap gap-2">

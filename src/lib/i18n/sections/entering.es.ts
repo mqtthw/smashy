@@ -114,7 +114,7 @@ export const enteringEs: Record<keyof typeof enteringEn, string> = {
   "entering.mysets.startggDown": "No pudimos conectar con start.gg en este momento. Esta página lo intentará de nuevo en un rato.",
   "entering.mysets.noEvents": "No tienes próximos eventos",
   "entering.mysets.noEventsNote": "Cuando te inscribas en un torneo en start.gg, aparecerá aquí.",
-  "entering.mysets.findEvent": "Buscar un evento →",
+  "entering.mysets.findEvent": "Buscar un evento",
   "entering.mysets.calledVs": "vs {name}",
   "entering.mysets.calledVsAt": "vs {name} en la estación {station}",
   "entering.mysets.liveNote": "Se actualiza cada 30 segundos mientras tu evento está en vivo.",

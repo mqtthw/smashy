@@ -97,7 +97,7 @@ export const setroomFr: Record<keyof typeof setroomEn, string> = {
   "setroom.strike.title": "Stage striking",
   "setroom.strike.intro": "Strike les stages d'un set en présentiel sur un seul téléphone : strikes à la game 1, puis bans et counterpicks après chaque game, selon le ruleset de ta scène.",
   "setroom.strike.gameRulesets": "Rulesets {game}",
-  "setroom.strike.go": "Striker →",
+  "setroom.strike.go": "Striker",
   "setroom.strike.noRuleset": "Pas de ruleset ? Striking rapide",
   "setroom.strike.missing": "Le ruleset de ta scène manque ? Un admin de la scène peut l'ajouter depuis la page {scenes}.",
   "setroom.strike.scenes": "Scènes",

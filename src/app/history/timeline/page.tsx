@@ -52,7 +52,7 @@ export default function TimelinePage(props: PageProps<"/history/timeline">) {
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold"><T k="history.timeline.title" /></h1>
         <p className="text-sm text-muted"><T k="history.timeline.intro" /></p>
-        <Link href="/history/suggest?kind=moment" className="self-start text-sm font-semibold text-brand"><T k="history.timeline.suggest" /> →</Link>
+        <Link href="/history/suggest?kind=moment" className="self-start text-sm font-semibold text-brand"><T k="history.timeline.suggest" /></Link>
       </header>
       <Suspense fallback={<CardListSkeleton count={4} />}>
         <Timeline searchParams={props.searchParams} />

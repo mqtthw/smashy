@@ -156,7 +156,7 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.report.fillLink": "Completar este top 8",
   "history.report.fillIntro": "Top 8 de {game} (uno por línea tras su puesto; añade el enlace de la fuente abajo):",
   "history.major.alsoStartgg": "Algunas posiciones vienen de start.gg.",
-  "history.grid.link": "Cara a cara entre los mejores de {year} →",
+  "history.grid.link": "Cara a cara entre los mejores de {year}",
   "history.grid.title": "{game} en {year}: cara a cara en los majors",
   "history.grid.intro": "Los sets que jugaron entre sí los jugadores de {game} con más éxito del año en los majors, del bracket principal de individuales de cada major (desde el top 64). Se lee por filas: victorias y derrotas de cada fila contra cada columna. Un recuento, no un ranking.",
   "history.grid.coverage": "Sets guardados de {n} de {total} majors por ahora. Se añaden más cada día.",

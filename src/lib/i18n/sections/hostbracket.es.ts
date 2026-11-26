@@ -58,7 +58,7 @@ export const hostbracketEs: Record<keyof typeof hostbracketEn, string> = {
   "hostbracket.view.liveNow": "En vivo",
   "hostbracket.view.upNext": "A continuación",
   "hostbracket.view.toRound1": "← Ronda 1",
-  "hostbracket.view.toTop8": "Top 8 →",
+  "hostbracket.view.toTop8": "Top 8",
   "hostbracket.view.winners": "Winners",
   "hostbracket.view.losers": "Losers",
   "hostbracket.view.found": "1 set encontrado|{n} sets encontrados",

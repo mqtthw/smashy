@@ -71,7 +71,7 @@ export default function PlayerResultsCard({ results, career = false, initial = 1
         {list.slice(0, shown).map((r) => (
           <li key={r.eventId} className="flex items-center gap-3 py-2 text-sm">
             <span className={`w-12 shrink-0 text-right font-bold tabular-nums ${r.placement === 1 ? "text-brand" : r.placement <= 8 ? "" : "text-muted"}`}>
-              {r.placement === 1 ? `🏆 ${place(1)}` : place(r.placement)}
+              {place(r.placement)}
             </span>
             <span className="min-w-0 flex-1">
               <Link href={`/brackets/startgg/${r.eventId}`} className="block truncate font-semibold hover:underline">

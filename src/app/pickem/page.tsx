@@ -1,5 +1,6 @@
 // Pick'em for majors: the majors coming up (and being played), each with its singles events to
 // pick, and your own picks. No money, no prizes.
+import Icon from "@/components/ui/Icon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -75,7 +76,7 @@ async function MyPicks() {
                 <span className="block truncate font-semibold">
                   {p.tournament}: {p.eventName}
                 </span>
-                <span className="block text-meta text-muted">🏆 {p.tags[p.champion] ?? t("play.pickem.player")}</span>
+                <span className="block text-meta text-muted"><Icon name="trophy" /> {p.tags[p.champion] ?? t("play.pickem.player")}</span>
               </span>
               <span className="shrink-0 text-meta text-muted">
                 <LocalTime iso={p.locksAt} style="shortDate" />

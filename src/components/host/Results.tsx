@@ -2,8 +2,8 @@ import Link from "next/link";
 import { placeKey as ordinalKey } from "@/lib/i18n/core";
 import type { PlayerInfo, Results as ResultsData } from "@/lib/hostedBracket";
 import { getT } from "@/lib/i18n/server";
+import PlaceMark from "@/components/ui/PlaceMark";
 
-const medal = (place: number) => (place === 1 ? "🥇" : place === 2 ? "🥈" : place === 3 ? "🥉" : "");
 // Which ending a place takes in English ("1st", "12th"); each language fills in its own.
 
 /** Final placements (elimination), pool standings (round robin) or the Swiss table. */
@@ -17,11 +17,10 @@ export default async function Results({ results, players, limit }: { results: Re
       <ol className="card divide-y divide-line">
         {list.map((p) => (
           <li key={p.id} className="flex items-center gap-3 px-4 py-2">
-            <span className="w-12 font-mono text-sm tabular-nums">{t(ordinalKey(p.place), { n: p.place })}</span>
+            <span className="flex w-12 items-center gap-1.5 font-mono text-sm tabular-nums">{p.place <= 3 ? <PlaceMark place={p.place} size="sm" label={t(ordinalKey(p.place), { n: p.place })} /> : t(ordinalKey(p.place), { n: p.place })}</span>
             <span className="min-w-0 flex-1 truncate font-semibold">
               {name(p.id)?.handle ? <Link href={`/u/${name(p.id)!.handle}`} className="hover:underline">{name(p.id)!.tag}</Link> : (name(p.id)?.tag ?? t("event.results.player"))}
             </span>
-            <span aria-hidden="true">{medal(p.place)}</span>
           </li>
         ))}
       </ol>

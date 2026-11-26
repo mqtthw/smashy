@@ -155,7 +155,7 @@ export const historyEn = {
   "history.report.fillLink": "Fill in this top 8",
   "history.report.fillIntro": "{game} top 8 (one per line after its place; add the source link below):",
   "history.major.alsoStartgg": "Some placings come from start.gg.",
-  "history.grid.link": "Head-to-head among {year}'s top players →",
+  "history.grid.link": "Head-to-head among {year}'s top players",
   "history.grid.title": "{game} in {year}: head-to-head at majors",
   "history.grid.intro": "Sets the year's most successful {game} players at majors played against each other, from each major's main singles bracket (top 64 on). Read across: each row's wins and losses against each column. A count, not a ranking.",
   "history.grid.coverage": "Sets saved for {n} of {total} majors so far. More are added every day.",

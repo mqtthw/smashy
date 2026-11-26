@@ -34,27 +34,20 @@
   --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.95) 0%, rgb(255 255 255 / 0.65) 50%, rgb(250 220 214 / 0.75) 51%, rgb(255 255 255 / 0.88) 100%);
   --primary-glow: 0 2px 6px rgb(196 23 12 / 0.35);
   /* The sky behind every page (body::after) */
-  /* Day ("a bright new day for smash"; blue since round 775, Matthew: "Try blue sky"): the classic
-     Frutiger Aero sky. Clear blue at the top with sunlight coming in from the top left, where the
-     logo's sun sits; soft clouds and a few glass bubbles; fading to white lower down, where the
-     reading happens. The brand stays flame red on top of it. */
+  /* Day (blue since round 775, Matthew: "Try blue sky"): clear blue at the top with a few soft clouds,
+     fading to white lower down, where the reading happens. Round 860 took out the glass bubbles and
+     the sun behind the logo (Matthew chose a calmer look, 2026-11-25). */
   --sky:
-    radial-gradient(circle at 82% 14%, transparent 0 44px, rgb(255 255 255 / 0.85) 45px 46px, rgb(255 255 255 / 0.2) 47px 60px, transparent 61px),
-    radial-gradient(circle at 93% 31%, transparent 0 19px, rgb(255 255 255 / 0.9) 20px 21px, rgb(255 255 255 / 0.22) 22px 28px, transparent 29px),
-    radial-gradient(circle at 70% 6%, transparent 0 11px, rgb(255 255 255 / 0.9) 12px 13px, transparent 14px),
-    radial-gradient(circle at 6% 62%, transparent 0 27px, rgb(255 255 255 / 0.8) 28px 29px, rgb(255 255 255 / 0.16) 30px 38px, transparent 39px),
     radial-gradient(ellipse 16% 4.5% at 58% 9%, rgb(255 255 255 / 0.95), transparent 72%),
     radial-gradient(ellipse 11% 3.5% at 68% 12%, rgb(255 255 255 / 0.9), transparent 72%),
     radial-gradient(ellipse 13% 4% at 30% 21%, rgb(255 255 255 / 0.85), transparent 72%),
     radial-gradient(ellipse 9% 3% at 39% 24%, rgb(255 255 255 / 0.8), transparent 72%),
     radial-gradient(ellipse 14% 4% at 90% 44%, rgb(255 255 255 / 0.7), transparent 72%),
-    radial-gradient(50% 40% at 9% 0%, rgb(255 240 170 / 0.85), rgb(255 250 220 / 0.3) 55%, transparent 75%),
     linear-gradient(180deg, #7fc4f6 0%, #a9d8f9 18%, #d6eefd 42%, #f3faff 66%, #ffffff 100%);
-  /* The sun behind the logo: shown by day, gone at night (see .logo-sun). */
-  --sun: 1;
 
   /* Brand: flame red, taken from the logo */
   --brand: #c4170c;
+  --logo: #d4231a; /* the wordmark (round 860) */
   --brand-hover: #9e120a;
   --on-brand: #ffffff;
   --focus: #c4170c;
@@ -106,7 +99,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    /* Night: deep oxblood, like the app icon, with warm ember glows and a few faint stars */
+    /* Night: deep oxblood, like the app icon, with one soft ember glow */
     --background: #140405; /* the sky at the top of the screen: sticky bars and menus */
     --foreground: #fff1ee;
     --surface: rgb(255 255 255 / 0.07);
@@ -123,17 +116,13 @@
   --panel: #2a0c0c;
     --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.24) 0%, rgb(255 255 255 / 0.08) 50%, rgb(255 150 120 / 0.07) 51%, rgb(255 150 120 / 0.16) 100%);
     --primary-glow: 0 0 14px rgb(232 48 31 / 0.5);
-    /* Stars (round 825): three large, odd-sized tiles of faint dots, so on a phone they don't line up in a
-       visible grid or read as specks on the cards; they used to be two small, brighter tiles. */
+    /* Night (round 858): no stars and one soft ember glow at the top. The sparkles and the second
+       glow read as an AI-made page (Reddit, 2026-11-25); Matthew chose the calmer sky. */
     --sky:
-      radial-gradient(circle at 23px 17px, rgb(255 255 255 / 0.3) 0.6px, transparent 1.2px) 0 0 / 263px 229px,
-      radial-gradient(circle at 91px 64px, rgb(255 255 255 / 0.18) 0.6px, transparent 1.2px) 0 0 / 197px 311px,
-      radial-gradient(circle at 140px 205px, rgb(255 255 255 / 0.12) 0.5px, transparent 1px) 0 0 / 331px 283px,
-      radial-gradient(60% 22% at 30% 20%, rgb(255 90 40 / 0.16), transparent 70%),
-      radial-gradient(55% 30% at 85% 78%, rgb(222 36 22 / 0.22), transparent 70%),
-      linear-gradient(180deg, #140405 0%, #2a0909 50%, #4a1210 100%);
-  --sun: 0;
+      radial-gradient(70% 35% at 50% 0%, rgb(255 80 40 / 0.14), transparent 70%),
+      linear-gradient(180deg, #140405 0%, #220707 55%, #2e0a09 100%);
     --brand: #ff8a7c;
+    --logo: #ff5440;
     --brand-hover: #ffb0a6;
     --on-brand: #ffffff;
     --focus: #ff8a5c;
@@ -162,7 +151,7 @@
 }
 
 :root[data-theme="dark"] {
-  /* Night: deep oxblood, like the app icon, with warm ember glows and a few faint stars */
+  /* Night: deep oxblood, like the app icon, with one soft ember glow */
   --background: #140405; /* the sky at the top of the screen: sticky bars and menus */
   --foreground: #fff1ee;
   --surface: rgb(255 255 255 / 0.07);
@@ -179,17 +168,13 @@
   --panel: #2a0c0c;
   --glass-button: linear-gradient(180deg, rgb(255 255 255 / 0.24) 0%, rgb(255 255 255 / 0.08) 50%, rgb(255 150 120 / 0.07) 51%, rgb(255 150 120 / 0.16) 100%);
   --primary-glow: 0 0 14px rgb(232 48 31 / 0.5);
-  /* Stars (round 825): three large, odd-sized tiles of faint dots, so on a phone they don't line up in a
-     visible grid or read as specks on the cards; they used to be two small, brighter tiles. */
+  /* Night (round 858): no stars and one soft ember glow at the top. The sparkles and the second
+     glow read as an AI-made page (Reddit, 2026-11-25); Matthew chose the calmer sky. */
   --sky:
-    radial-gradient(circle at 23px 17px, rgb(255 255 255 / 0.3) 0.6px, transparent 1.2px) 0 0 / 263px 229px,
-    radial-gradient(circle at 91px 64px, rgb(255 255 255 / 0.18) 0.6px, transparent 1.2px) 0 0 / 197px 311px,
-    radial-gradient(circle at 140px 205px, rgb(255 255 255 / 0.12) 0.5px, transparent 1px) 0 0 / 331px 283px,
-    radial-gradient(60% 22% at 30% 20%, rgb(255 90 40 / 0.16), transparent 70%),
-    radial-gradient(55% 30% at 85% 78%, rgb(222 36 22 / 0.22), transparent 70%),
-    linear-gradient(180deg, #140405 0%, #2a0909 50%, #4a1210 100%);
-  --sun: 0;
+    radial-gradient(70% 35% at 50% 0%, rgb(255 80 40 / 0.14), transparent 70%),
+    linear-gradient(180deg, #140405 0%, #220707 55%, #2e0a09 100%);
   --brand: #ff8a7c;
+  --logo: #ff5440;
   --brand-hover: #ffb0a6;
   --on-brand: #ffffff;
   --focus: #ff8a5c;
@@ -288,7 +273,7 @@ body {
   top: env(safe-area-inset-top, 0px);
 }
 
-/* The sky behind every page: day in light mode, night with an aurora and stars in dark mode. A
+/* The sky behind every page: day in light mode, a dark oxblood night in dark mode. A
    fixed layer under all content (not a fixed background, which iPhones ignore), so it stays put
    while the page scrolls. */
 body::after {
@@ -474,8 +459,6 @@ body::before {
   line-height: 1.5rem;
   min-height: 3rem;
 }
-/* Main action on a screen: Post, Save, Join. A glossy red "jelly" button: bright top half, a hard
-   line at the middle, a highlight along the top edge. It glows a little at night. */
 /* "You're up!" (round 820, Matthew chose "B, deep red"): the call to play, the same deep red in day and
    night. bg-brand turned salmon pink at night, and the white text on it was hard to read. */
 @utility banner-up {
@@ -484,40 +467,42 @@ body::before {
   border: 1px solid #ff6a55;
 }
 
+/* Main action on a screen: Post, Save, Join. Flat flame red (round 859: gloss on every button read as
+   an AI-made page; Matthew chose gloss only on the one hero button). */
 @utility btn-primary {
-  background: #e8301f var(--jelly-red);
+  background: #e8301f;
   color: #ffffff;
+  &:hover:not(:disabled) {
+    background: #f03d2b;
+  }
+}
+/* The one big action on a page (sign up for this event, see the results, Join Smashy when signed
+   out): the only glossy "jelly" button left, with a soft glow. Use with btn-primary, at most once per
+   screen: "btn btn-lg btn-primary btn-hero". */
+@utility btn-hero {
+  background: #e8301f var(--jelly-red);
   border-color: rgb(150 12 4 / 0.35);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), var(--primary-glow);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 4px 14px rgb(232 48 31 / 0.35);
   text-shadow: 0 1px 1px rgb(0 0 0 / 0.3);
   &:hover:not(:disabled) {
     background: #f03d2b var(--jelly-red-hover);
   }
 }
-/* The one big action on a page (sign up for this event, see the results, Join Smashy when signed
-   out): the same jelly with a stronger glow. Use with btn-primary, at most once per screen:
-   "btn btn-lg btn-primary btn-hero". */
-@utility btn-hero {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 4px 14px rgb(232 48 31 / 0.45), 0 0 22px rgb(232 48 31 / 0.25);
-}
-/* Follow, Sign in: the selection jelly (glossy black by day, glossy pearl at night) */
+/* Follow, Sign in: the selection colour, flat (near-black by day, pearl at night) */
 @utility btn-inverse {
-  background: var(--jelly-select-fill) var(--jelly-select);
+  background: var(--jelly-select-fill);
   color: var(--on-select);
-  border-color: rgb(0 0 0 / 0.25);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), var(--select-shade);
   &:hover:not(:disabled) {
-    background: var(--jelly-select-fill) var(--jelly-select-hover);
+    opacity: 0.9;
   }
 }
-/* Secondary actions: Edit profile, Cancel, Following. A glass button. */
+/* Secondary actions: Edit profile, Cancel, Following. Flat, with a thin edge. */
 @utility btn-outline {
-  background: var(--glass-button);
-  border-color: var(--glass-line);
+  background: var(--surface);
+  border-color: var(--line-strong);
   color: var(--foreground);
-  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 2px 6px rgb(120 30 20 / 0.1);
   &:hover:not(:disabled) {
-    border-color: var(--line-strong);
+    background: var(--surface-2);
   }
 }
 /* Low-key actions in toolbars */
@@ -547,35 +532,25 @@ body::before {
   }
 }
 
-/* A frosted glass panel. Add your own padding (p-3 / p-4). (No backdrop blur: over the smooth sky it
-   adds little and long lists of cards would scroll slowly on phones.) */
+/* A panel: a light fill and a thin edge, no shine (round 859). Add your own padding (p-3 / p-4). */
 @utility card {
   border-radius: 5px;
-  border: 1px solid var(--glass-line);
+  border: 1px solid var(--line);
   background: var(--glass);
-  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
 }
 
-/* The big "happening now" card (home): a glossy flame-red panel with a highlight across its top
-   half. Same in both themes. Text on it is white. */
+/* The big "happening now" card (home): a solid deep-red panel (no shine since round 859). Same in both
+   themes. Text on it is white. */
 @utility hero-card {
   position: relative;
   overflow: hidden;
   border-radius: 6px;
   color: #ffffff;
-  background: linear-gradient(180deg, #ff5a3c 0%, #c4170c 60%, #7d0d06 100%);
-  box-shadow: inset 0 0 0 1px rgb(255 200 190 / 0.45), 0 8px 24px rgb(196 23 12 / 0.35);
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 50% 0;
-    background: linear-gradient(180deg, rgb(255 255 255 / 0.38), rgb(255 255 255 / 0.04));
-    border-radius: 6px 6px 60% 60% / 6px 6px 1.75rem 1.75rem;
-    pointer-events: none;
-  }
+  background: #b8160c;
+  border: 1px solid #d9301f;
 }
 
-/* A date bubble ("NOV" over "18"): a small glossy glass tile. */
+/* A date tile ("NOV" over "18"): small and flat. */
 @utility date-bubble {
   display: flex;
   flex-direction: column;
@@ -585,39 +560,36 @@ body::before {
   height: 2.75rem;
   flex-shrink: 0;
   border-radius: 5px;
-  border: 1px solid var(--glass-line);
-  background: var(--glass-button);
-  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 2px 6px rgb(120 30 20 / 0.12);
+  border: 1px solid var(--line);
+  background: var(--surface);
   line-height: 1;
 }
 
-/* A date bubble for something running right now: red jelly with white text. Use with date-bubble. */
+/* A date tile for something running right now: flame red with white text. Use with date-bubble. */
 @utility date-bubble-live {
-  border-color: rgb(150 12 4 / 0.35);
-  background: #e8301f var(--jelly-red);
+  border-color: #c4170c;
+  background: #e8301f;
   color: #ffffff;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), var(--primary-glow);
 }
 
-/* A logo or picture in a glossy glass frame (event logos). Add a size. */
+/* A logo or picture in a plain thin frame (event logos). Add a size. */
 @utility glass-frame {
   border-radius: 5px;
-  border: 1px solid var(--glass-line);
-  background: var(--glass-button);
+  border: 1px solid var(--line);
+  background: var(--surface);
   padding: 0.25rem;
-  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
 }
 
-/* A round glossy bubble for a character portrait (player pages): a white highlight top-left warming
-   to ember at the edge, with a soft glow. Same in both themes. Add a size. */
+/* A round frame for a character portrait (player pages): a plain light disc with a thin edge (no shine
+   since round 859). Add a size. */
 @utility portrait-bubble {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   border-radius: 9999px;
-  background: radial-gradient(circle at 35% 25%, rgb(255 255 255 / 0.95) 0 14%, rgb(255 255 255 / 0.45) 38%, rgb(255 170 120 / 0.3) 72%, rgb(232 89 12 / 0.4) 100%);
-  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.75), 0 0 28px rgb(255 110 60 / 0.35);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
 }
 
 /* Bars that stay on screen while the page scrolls under them (sticky tab rows, filter bars): frosted
@@ -728,10 +700,9 @@ body::before {
   &:has(:checked),
   &[aria-pressed="true"],
   &[aria-current="page"] {
-    border-color: rgb(0 0 0 / 0.25);
-    background: var(--jelly-select-fill) var(--jelly-select);
+    border-color: transparent;
+    background: var(--jelly-select-fill);
     color: var(--on-select);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), var(--select-shade);
   }
   &:has(:focus-visible) {
     outline: 2px solid var(--focus);
@@ -803,63 +774,6 @@ body::before {
   }
 }
 
-/* The sun behind the Smashy logo (round 774): by day a glowing disc with soft rays rises behind the
-   wordmark; at night it isn't there (--sun: 0). Put the class on the element that wraps the logo. */
-.logo-sun {
-  position: relative;
-  isolation: isolate;
-}
-.logo-sun::before,
-.logo-sun::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: -1;
-  border-radius: 9999px;
-  transform: translate(-50%, -58%);
-  opacity: var(--sun);
-  pointer-events: none;
-}
-/* The rays and the wide glow. */
-.logo-sun::before {
-  width: 7.2em;
-  height: 7.2em;
-  background:
-    repeating-conic-gradient(from 4deg, rgb(255 214 110 / 0.5) 0deg 7deg, transparent 7deg 22.5deg),
-    radial-gradient(closest-side, rgb(255 205 96 / 0.55), rgb(255 190 90 / 0.2) 55%, transparent 100%);
-  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
-  mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
-}
-/* The disc: white-hot in the middle, gold at the rim, with the glossy highlight every Aero orb has. */
-.logo-sun::after {
-  width: 2.9em;
-  height: 2.9em;
-  background:
-    radial-gradient(60% 38% at 50% 22%, rgb(255 255 255 / 0.85), transparent 100%),
-    radial-gradient(closest-side, #fffbe6 0%, #ffe27a 45%, #ffbe3d 80%, #ff9d2e 100%);
-  box-shadow: 0 0 1.1em 0.3em rgb(255 200 80 / 0.6);
-}
-
-/* Words that differ by day and night (the guest headline). */
-.night-only {
-  display: none;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .day-only {
-    display: none;
-  }
-  :root:not([data-theme="light"]) .night-only {
-    display: revert;
-  }
-}
-:root[data-theme="dark"] .day-only {
-  display: none;
-}
-:root[data-theme="dark"] .night-only {
-  display: revert;
-}
-
 /* Tabs as slanted plates (round 846, Matthew's pick over the X-style underline): a dark glass plate
    leaning forward like a fighting-game menu, the active one solid red. The label inside is set
    upright again. Used by TabBar. */
@@ -869,8 +783,8 @@ body::before {
   flex-shrink: 0;
   transform: skewX(-14deg);
   padding: 0.375rem 0.95rem;
-  border: 1px solid var(--glass-line);
-  background: var(--glass-button);
+  border: 1px solid var(--line);
+  background: var(--surface);
   color: var(--muted);
   white-space: nowrap;
   transition: background-color 0.15s ease, color 0.15s ease;

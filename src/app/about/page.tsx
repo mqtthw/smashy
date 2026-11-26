@@ -68,7 +68,7 @@ export default function AboutPage() {
                 <span className="flex min-w-0 flex-col gap-1">
                   <span className="font-semibold"><T k={cardKey(c, "")} /></span>
                   <span className="text-sm text-muted"><T k={cardKey(c, "Text")} /></span>
-                  <span className="mt-auto text-sm font-semibold text-brand"><T k={cardKey(c, "Go")} /> →</span>
+                  <span className="mt-auto text-sm font-semibold text-brand"><T k={cardKey(c, "Go")} /></span>
                 </span>
               </Link>
             </li>

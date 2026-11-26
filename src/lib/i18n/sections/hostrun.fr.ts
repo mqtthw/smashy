@@ -343,5 +343,5 @@ export const hostrunFr: Record<keyof typeof hostrunEn, string> = {
   "hostrun.bot.server": "Serveur Discord {id}",
   "hostrun.bot.unlink": "Délier",
   "hostrun.bot.privacy": "Le bot montre ce que tout le monde voit sur smashy.gg sans se connecter : les mineurs ne sont pas nommés et il ne mentionne jamais personne. Pour les annonces au début du bracket, les appels de sets et les résultats, connecte un salon sur la page de ton tournoi (Discord).",
-  "hostrun.bot.link": "Ajoute aussi le bot Smashy à ton serveur, pour /bracket et /next →",
+  "hostrun.bot.link": "Ajoute aussi le bot Smashy à ton serveur, pour /bracket et /next",
 };

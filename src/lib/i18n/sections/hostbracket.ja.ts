@@ -58,7 +58,7 @@ export const hostbracketJa: Record<keyof typeof hostbracketEn, string> = {
   "hostbracket.view.liveNow": "対戦中",
   "hostbracket.view.upNext": "次の対戦",
   "hostbracket.view.toRound1": "← 1回戦",
-  "hostbracket.view.toTop8": "TOP8 →",
+  "hostbracket.view.toTop8": "TOP8",
   "hostbracket.view.winners": "勝者側",
   "hostbracket.view.losers": "敗者側",
   "hostbracket.view.found": "{n}件のセットが見つかりました|{n}件のセットが見つかりました",

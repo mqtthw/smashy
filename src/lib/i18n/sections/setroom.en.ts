@@ -95,7 +95,7 @@ export const setroomEn = {
   "setroom.strike.title": "Stage striking",
   "setroom.strike.intro": "Strike stages for an in-person set on one phone: game 1 strikes, then bans and counterpicks after each game, following your scene's ruleset.",
   "setroom.strike.gameRulesets": "{game} rulesets",
-  "setroom.strike.go": "Strike →",
+  "setroom.strike.go": "Strike",
   "setroom.strike.noRuleset": "No ruleset? Quick striking",
   "setroom.strike.missing": "Your scene's ruleset missing? A scene admin can add it from the {scenes} page.",
   "setroom.strike.scenes": "Scenes",

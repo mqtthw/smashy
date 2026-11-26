@@ -191,7 +191,7 @@ export const playJa: Record<keyof typeof playEn, string> = {
   "play.pickem.noMajors": "今は予定されている大型大会がありません。次の大会がstart.ggで発表されるとPick'emが始まります。",
   "play.pickem.liveNow": " · 開催中",
   "play.pickem.entrants": "· 参加者1人|· 参加者{n}人",
-  "play.pickem.pickNow": "予想する →",
+  "play.pickem.pickNow": "予想する",
   "play.pickem.final": "終了",
   "play.pickem.locked": "締切",
   "play.pickem.yourPicks": "あなたの予想",
@@ -316,7 +316,7 @@ export const playJa: Record<keyof typeof playEn, string> = {
   "play.replays.card.title": "Melee リプレイ記録",
   "play.replays.card.self": "本人のSlippiリプレイから（自己申告）。",
   "play.replays.card.onlyYou": "自分だけが見られます。",
-  "play.replays.card.update": "リプレイ記録で更新 →",
+  "play.replays.card.update": "リプレイ記録で更新",
 
   // Messages: inbox (/messages)
   "play.msg.title": "メッセージ",

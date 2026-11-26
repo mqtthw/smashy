@@ -156,7 +156,7 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.report.fillLink": "Compléter ce top 8",
   "history.report.fillIntro": "Top 8 {game} (un par ligne après sa place ; ajoutez le lien de la source en dessous) :",
   "history.major.alsoStartgg": "Certains classements viennent de start.gg.",
-  "history.grid.link": "Face-à-face entre les meilleurs de {year} →",
+  "history.grid.link": "Face-à-face entre les meilleurs de {year}",
   "history.grid.title": "{game} en {year} : face-à-face en majors",
   "history.grid.intro": "Les sets joués entre eux par les joueurs de {game} les plus performants de l'année en majors, d'après le bracket principal en simple de chaque major (à partir du top 64). Lecture en ligne : victoires et défaites de chaque ligne contre chaque colonne. Un décompte, pas un classement.",
   "history.grid.coverage": "Sets enregistrés pour {n} majors sur {total} pour l'instant. D'autres s'ajoutent chaque jour.",

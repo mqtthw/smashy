@@ -60,7 +60,7 @@ function TabList({ pathname }: { pathname: string | null }) {
               {/* The current tab's icon sits in a glossy red bubble (round 487). */}
               <span
                 className={`flex h-9 w-9 items-center justify-center rounded-full ${
-                  active ? "bg-[image:var(--jelly-red)] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.6),0_2px_6px_rgb(196_23_12/0.4)]" : ""
+                  active ? "bg-[#e8301f] text-white" : ""
                 }`}
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true" className={active ? "h-5 w-5 fill-current" : "h-6 w-6 fill-current"}>
@@ -111,9 +111,8 @@ export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
                  md:sticky md:flex md:flex-col md:top-0 md:bottom-auto md:inset-x-auto md:h-screen md:w-20 md:shrink-0 md:rounded-none md:border-0 md:border-r md:border-line md:bg-transparent md:shadow-none md:backdrop-blur-none lg:w-56"
     >
       <Link href="/" aria-label={t("nav.home")} className="hidden py-6 text-center md:block lg:px-5 lg:text-left">
-        {/* By day a sun rises behind the logo (round 774; .logo-sun in globals.css). */}
-        <span className="logo-sun inline-block text-4xl lg:hidden"><Logo markOnly className="" /></span>
-        <span className="logo-sun hidden text-4xl lg:inline-block"><Logo className="" /></span>
+        <span className="inline-block text-3xl lg:hidden"><Logo markOnly className="" /></span>
+        <span className="hidden text-4xl lg:inline-block"><Logo className="" /></span>
       </Link>
       <Suspense fallback={<TabList pathname={null} />}>
         <ActiveTabList />

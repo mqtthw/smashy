@@ -191,7 +191,7 @@ export const playEs: Record<keyof typeof playEn, string> = {
   "play.pickem.noMajors": "No hay majors próximos ahora mismo. El Pick'em abre cuando se anuncie el siguiente en start.gg.",
   "play.pickem.liveNow": " · En vivo",
   "play.pickem.entrants": "· 1 participante|· {n} participantes",
-  "play.pickem.pickNow": "Elegir ahora →",
+  "play.pickem.pickNow": "Elegir ahora",
   "play.pickem.final": "Final",
   "play.pickem.locked": "Cerrado",
   "play.pickem.yourPicks": "Tus predicciones",
@@ -316,7 +316,7 @@ export const playEs: Record<keyof typeof playEn, string> = {
   "play.replays.card.title": "Stats de replays de Melee",
   "play.replays.card.self": "De sus propios replays de Slippi (reportadas por el jugador).",
   "play.replays.card.onlyYou": "Solo tú puedes verlas.",
-  "play.replays.card.update": "Actualízalas en Stats de replays →",
+  "play.replays.card.update": "Actualízalas en Stats de replays",
 
   // Messages: inbox (/messages)
   "play.msg.title": "Mensajes",

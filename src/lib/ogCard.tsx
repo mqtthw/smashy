@@ -8,7 +8,7 @@ import { join } from "node:path";
 import type { ReactNode } from "react";
 import { ImageResponse } from "next/og";
 import type { GameKey } from "./games";
-import { logoMark, logoWordmark, TILE, WORDMARK_RATIO } from "./iconArt";
+import { TILE, Wordmark, wordmarkFont } from "./iconArt";
 import { clip } from "./siteMeta";
 
 export { clip };
@@ -123,7 +123,6 @@ export const NO_STORE = "no-store";
 
 /** Renders a full 1200×630 preview card. */
 export async function renderOg({ label, accent = BRAND, background, children, cacheControl = CARD_CACHE }: Frame) {
-  const wordmark = await logoWordmark();
   return new ImageResponse(
     (
       <div
@@ -159,8 +158,7 @@ export async function renderOg({ label, accent = BRAND, background, children, ca
         <div style={{ position: "absolute", left: 0, top: 0, width: 16, height: 630, background: accent, display: "flex" }} />
 
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- next/og draws plain <img> */}
-          <img src={wordmark} alt="Smashy" width={Math.round(72 * WORDMARK_RATIO)} height={72} />
+          <Wordmark size={64} />
           <div style={{ display: "flex", flex: 1 }} />
           {label && <Pill color={accent}>{label}</Pill>}
         </div>
@@ -170,45 +168,27 @@ export async function renderOg({ label, accent = BRAND, background, children, ca
     ),
     {
       ...OG_SIZE,
-      fonts: [{ name: "Geist", data: await geist, weight: 400, style: "normal" }],
+      fonts: [{ name: "Geist", data: await geist, weight: 400, style: "normal" }, await wordmarkFont()],
       headers: { "Cache-Control": cacheControl },
     },
   );
 }
 
 /**
- * The generic card: the home page, and whenever a page's content isn't public. More flair than the
- * other cards (it's the one people see when smashy.gg itself is shared): the flaming S big on the
- * right over a fire glow, the logo's diagonal slash, a short line ("Everything Smash.") and what's
- * inside, with the three main games in their colors.
+ * The generic card: the home page, and whenever a page's content isn't public (it's the one people see
+ * when smashy.gg itself is shared). Plain since round 861: the wordmark, a short line and what's inside,
+ * with the three main games in their colors (the fire glow, slash and big flame S went with the old logo).
  */
 export async function siteCard(cacheControl = CARD_CACHE) {
-  const [wordmark, mark] = await Promise.all([logoWordmark(), logoMark()]);
   const games: [string, string][] = [["Melee", GAME_COLOR.melee], ["Ultimate", GAME_COLOR.ultimate], ["P+", GAME_COLOR.pplus]];
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", overflow: "hidden", background: TILE, color: INK, fontFamily: "Geist" }}>
-        {/* Fire glow behind the S, and a softer one bottom left */}
-        {/* (inside the card's edges: the image drawer cuts shapes that run past them in a straight line) */}
-        <div style={{ position: "absolute", left: 0, top: 0, width: 1200, height: 630, display: "flex", backgroundImage: "radial-gradient(circle 420px at 935px 305px, rgba(255,100,28,0.55) 0%, rgba(217,29,21,0.32) 40%, rgba(134,9,9,0.12) 70%, rgba(15,20,25,0) 100%)" }} />
-        <div style={{ position: "absolute", left: 0, top: 0, width: 1200, height: 630, display: "flex", backgroundImage: "radial-gradient(circle 360px at 80px 690px, rgba(217,29,21,0.22) 0%, rgba(15,20,25,0) 100%)" }} />
-        {/* The logo's diagonal slash, across the whole card */}
-        <div style={{ position: "absolute", left: 560, top: -200, width: 14, height: 1100, display: "flex", background: "rgba(255,255,255,0.10)", transform: "rotate(30deg)" }} />
-        <div style={{ position: "absolute", left: 610, top: -200, width: 4, height: 1100, display: "flex", background: "rgba(255,255,255,0.06)", transform: "rotate(30deg)" }} />
-        {/* The S */}
-        {/* eslint-disable-next-line @next/next/no-img-element -- next/og draws plain <img> */}
-        <img src={mark} alt="" width={470} height={470} style={{ position: "absolute", left: 700, top: 70, transform: "rotate(-6deg)" }} />
-        {/* Brand bar */}
-        <div style={{ position: "absolute", left: 0, top: 0, width: 16, height: 630, display: "flex", backgroundImage: "linear-gradient(180deg, #ff641c 0%, #d91d15 55%, #860909 100%)" }} />
-
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 30, padding: "0 0 0 88px", width: 720 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- next/og draws plain <img> */}
-          <img src={wordmark} alt="Smashy" width={Math.round(96 * WORDMARK_RATIO)} height={96} />
-          <div style={{ display: "flex", flexDirection: "column", fontSize: 104, lineHeight: 1.0, letterSpacing: -3, color: "#ffffff" }}>
-            <span>Everything</span>
-            <span style={{ color: BRAND }}>Smash.</span>
-          </div>
-          <div style={{ display: "flex", fontSize: 32, color: MUTED, letterSpacing: -0.3 }}>Locals · Brackets · Clips · Guides</div>
+      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: TILE, color: INK, fontFamily: "Geist" }}>
+        <div style={{ position: "absolute", left: 0, top: 0, width: 16, height: 630, display: "flex", background: BRAND }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 30, padding: "0 0 0 88px", width: 1100 }}>
+          <Wordmark size={150} />
+          <div style={{ display: "flex", fontSize: 52, lineHeight: 1.15, letterSpacing: -1, color: "#ffffff" }}>Smash brackets, results and history.</div>
+          <div style={{ display: "flex", fontSize: 32, color: MUTED, letterSpacing: -0.3 }}>Free, no ads · Locals · Brackets · Players · Majors since 2003</div>
           <div style={{ display: "flex", gap: 12 }}>
             {games.map(([name, color]) => (
               <div key={name} style={{ display: "flex", padding: "8px 20px", borderRadius: 9999, border: `2px solid ${color}`, color, fontSize: 26 }}>{name}</div>
@@ -219,7 +199,7 @@ export async function siteCard(cacheControl = CARD_CACHE) {
     ),
     {
       ...OG_SIZE,
-      fonts: [{ name: "Geist", data: await geist, weight: 400, style: "normal" }],
+      fonts: [{ name: "Geist", data: await geist, weight: 400, style: "normal" }, await wordmarkFont()],
       headers: { "Cache-Control": cacheControl },
     },
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import ThreadRow from "@/components/discuss/ThreadRow";
 import TabBar from "@/components/ui/TabBar";
+import OverflowRow from "@/components/ui/OverflowRow";
 import { FeedSkeleton } from "@/components/ui/Skeleton";
 import { unixNow } from "@/lib/format";
 import { GAMES, gamesFor, type GameKey } from "@/lib/games";
@@ -74,22 +75,37 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
     <LangProvider lang={lang}>
       <TabBar sticky scroll label={t("feed.discuss.board")} active={f.game ?? "all"} tabs={tabs.map((tab) => ({ ...tab, href: href(f, { game: tab.key === "all" ? undefined : (tab.key as FeedGame), character: undefined }) }))} />
       <div className="flex flex-col gap-2 border-b border-line px-4 py-3">
-        <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t("feed.discuss.sortThreads")}>
-          {THREAD_SORTS.map((s) => (
-            <Link key={s} href={href(f, { sort: s })} aria-current={f.sort === s ? "page" : undefined} className="chip">
-              {t(`feed.discuss.sort.${s}`)}
-            </Link>
-          ))}
-          {/* Threads nobody has answered yet: where experienced players can help newcomers. */}
-          <Link href={href(f, { noReplies: !f.noReplies })} aria-current={f.noReplies ? "page" : undefined} className="chip">
-            {t("feed.discuss.noReplies")}
-          </Link>
-          {f.sort === "top" &&
-            TOP_WINDOWS.map((w) => (
-              <Link key={w} href={href(f, { window: w })} aria-current={f.window === w ? "page" : undefined} className="chip text-meta">
-                {t(`feed.discuss.window.${w}`)}
+        {/* Sorting as plain words, not a row of buttons (round 863): the type filters below are the chips. */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1" role="group" aria-label={t("feed.discuss.sortThreads")}>
+          {THREAD_SORTS.map((s) => {
+            const on = f.sort === s;
+            return (
+              <Link key={s} href={href(f, { sort: s })} aria-current={on ? "page" : undefined} className={`text-sm ${on ? "font-bold text-foreground underline decoration-brand decoration-2 underline-offset-[6px]" : "text-muted hover:text-foreground"}`}>
+                {t(`feed.discuss.sort.${s}`)}
               </Link>
-            ))}
+            );
+          })}
+          {/* Threads nobody has answered yet: where experienced players can help newcomers. */}
+          {(() => {
+            const on = f.noReplies;
+            return (
+              <Link href={href(f, { noReplies: !f.noReplies })} aria-current={on ? "page" : undefined} className={`text-sm ${on ? "font-bold text-foreground underline decoration-brand decoration-2 underline-offset-[6px]" : "text-muted hover:text-foreground"}`}>
+                {t("feed.discuss.noReplies")}
+              </Link>
+            );
+          })()}
+          {f.sort === "top" && (
+            <span className="flex items-center gap-3 border-l border-line pl-4">
+              {TOP_WINDOWS.map((w) => {
+                const on = f.window === w;
+                return (
+                  <Link key={w} href={href(f, { window: w })} aria-current={on ? "page" : undefined} className={`text-meta ${on ? "font-bold text-foreground" : "text-muted hover:text-foreground"}`}>
+                    {t(`feed.discuss.window.${w}`)}
+                  </Link>
+                );
+              })}
+            </span>
+          )}
         </div>
         {/* A character's board (round 807), like Smashboards' character boards: once a game is picked. */}
         {f.game && f.game !== "general" && (
@@ -104,14 +120,15 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
             )}
           </div>
         )}
-        <div className="scroll-fade flex gap-2 overflow-x-auto pr-6 sm:pr-0 sm:[mask-image:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible" role="group" aria-label={t("feed.discuss.filterFlair")}>
-          <Link href={href(f, { flair: undefined })} aria-current={!f.flair ? "page" : undefined} className="chip shrink-0">{t("feed.discuss.everything")}</Link>
+        {/* One line of type filters; what doesn't fit goes under More (round 863, like round 852's rows). */}
+        <OverflowRow label={t("feed.discuss.filterFlair")}>
+          <Link href={href(f, { flair: undefined })} aria-current={!f.flair ? "page" : undefined} className="chip">{t("feed.discuss.everything")}</Link>
           {FLAIRS.map((fl) => (
-            <Link key={fl.key} href={href(f, { flair: fl.key })} aria-current={f.flair === fl.key ? "page" : undefined} className="chip shrink-0">
+            <Link key={fl.key} href={href(f, { flair: fl.key })} aria-current={f.flair === fl.key ? "page" : undefined} className="chip">
               {t(flairKey(fl.key))}
             </Link>
           ))}
-        </div>
+        </OverflowRow>
       </div>
       {posts.length === 0 ? (
         <>

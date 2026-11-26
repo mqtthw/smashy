@@ -75,7 +75,7 @@ function PlayerRow({ p, waiting, done, highlight, otherScore = null, projected =
           where there is a score to show (some start.gg sets record a winner without one). */}
       <span
         className={`min-w-7 shrink-0 rounded-md px-1 text-center font-mono text-meta leading-5 tabular-nums [print-color-adjust:exact] ${
-          p.score === null ? "" : !done ? "font-semibold" : p.won ? "bg-[#e8301f] bg-[image:var(--jelly-red)] font-bold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.55)]" : "bg-surface-2 text-muted"
+          p.score === null ? "" : !done ? "font-semibold" : p.won ? "bg-[#e8301f] font-bold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.55)]" : "bg-surface-2 text-muted"
         }`}
       >
         {scoreText(p.score, otherScore)}
@@ -97,7 +97,7 @@ function SetCard({ s, source, query, dim = false, found = false, proj = null }: 
     <div
       data-hit={found ? "" : undefined}
       data-open={found && s.state !== "done" ? "" : undefined}
-      className={`w-full overflow-hidden rounded-xl border bg-panel text-body shadow-[inset_0_1px_0_var(--glass-highlight),var(--glass-shadow)] ${s.state === "live" || found ? "border-brand" : "border-[var(--glass-line)]"} ${found ? "ring-2 ring-brand/40" : ""} ${dim ? "opacity-30" : ""}`}
+      className={`w-full overflow-hidden rounded-xl border bg-panel text-body ${s.state === "live" || found ? "border-brand" : "border-line"} ${found ? "ring-2 ring-brand/40" : ""} ${dim ? "opacity-30" : ""}`}
     >
       <div className="flex items-center justify-between border-b border-line bg-surface px-2.5 py-0.5 text-[11px] text-muted">
         <span>{s.identifier ? t("hostbracket.view.set", { id: s.identifier }) : localRound(s.roundLabel, t)}</span>

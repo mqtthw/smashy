@@ -22,3 +22,24 @@ export default function PlaceMark({ place, label, size = "md" }: { place: number
     </span>
   );
 }
+
+/** Gold, silver and bronze counts as small metal dots with numbers (a series' medal table). */
+export function MedalCounts({ gold, silver, bronze }: { gold: number; silver: number; bronze: number }) {
+  const parts: [number, string][] = [
+    [gold, "bg-[var(--gold)]"],
+    [silver, "bg-[var(--silver)]"],
+    [bronze, "bg-[var(--bronze)]"],
+  ];
+  return (
+    <span className="inline-flex items-center gap-2 tabular-nums">
+      {parts.map(([n, bg], i) =>
+        n > 0 ? (
+          <span key={i} className="inline-flex items-center gap-1">
+            <span aria-hidden className={`size-2.5 rounded-full ${bg}`} />
+            {n}
+          </span>
+        ) : null,
+      )}
+    </span>
+  );
+}

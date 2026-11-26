@@ -156,7 +156,7 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.report.fillLink": "このトップ8を補う",
   "history.report.fillIntro": "{game}のトップ8（順位のあとに1行ずつ。出典のリンクは下に）：",
   "history.major.alsoStartgg": "一部の順位はstart.ggによります。",
-  "history.grid.link": "{year}年のトップ選手同士の対戦成績 →",
+  "history.grid.link": "{year}年のトップ選手同士の対戦成績",
   "history.grid.title": "{year}年の{game}：大型大会での対戦成績",
   "history.grid.intro": "その年の大型大会で最も活躍した{game}の選手同士の対戦セットです（各大会のシングルス本戦、トップ64から）。行ごとに読みます：各行の選手の各列の選手に対する勝敗。数を数えたもので、ランキングではありません。",
   "history.grid.coverage": "今のところ{total}大会中{n}大会のセットを保存済みです。毎日追加されます。",

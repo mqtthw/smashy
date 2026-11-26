@@ -1,5 +1,10 @@
 # Logo artwork
 
+**Not used by the site since rounds 860-861 (2026-11-25).** This flame logo was AI-made; the site now
+shows a plain type wordmark ("Smashy" in Source Sans 3 Black, `src/components/Logo.tsx`) and a white S
+on a red tile (`src/lib/iconArt.tsx`) until an artist draws a real logo. The store apps' own icon is
+still built from `tile.png` until the next store build.
+
 The Smashy logo: "SMASHY" in heavy serif capitals with a flame fill, a white band, a dark outline
 and a soft shadow, with a diagonal cross through the S.
 

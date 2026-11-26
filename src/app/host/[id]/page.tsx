@@ -9,6 +9,7 @@ import EntrantActions from "@/components/host/EntrantActions";
 import HostPanel from "@/components/host/HostPanel";
 import StartggImport from "@/components/host/StartggImport";
 import Icon from "@/components/ui/Icon";
+import { MedalCounts } from "@/components/ui/PlaceMark";
 import LiveDot from "@/components/ui/LiveDot";
 import { scoreLine } from "@/lib/brackets/score";
 import BracketControls from "@/components/host/BracketControls";
@@ -612,7 +613,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
             {medals.map((m) => (
               <li key={m.userId} className="flex items-center gap-2 py-1.5 text-sm">
                 <Link href={`/u/${m.handle}`} className="min-w-0 flex-1 truncate hover:underline">{m.tag}</Link>
-                <span className="shrink-0 tabular-nums">{m.gold > 0 && `🥇${m.gold} `}{m.silver > 0 && `🥈${m.silver} `}{m.bronze > 0 && `🥉${m.bronze}`}</span>
+                <span className="shrink-0"><MedalCounts gold={m.gold} silver={m.silver} bronze={m.bronze} /></span>
               </li>
             ))}
           </ol>

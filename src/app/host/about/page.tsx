@@ -72,7 +72,7 @@ export default function HostAboutPage() {
                 const inner = (
                   <>
                     <span className="min-w-0">
-                      <span className="block font-semibold"><T k={f.title} />{f.href ? " →" : ""}</span>
+                      <span className="block font-semibold"><T k={f.title} /></span>
                       <span className="block text-sm text-muted"><T k={f.text} /></span>
                     </span>
                   </>

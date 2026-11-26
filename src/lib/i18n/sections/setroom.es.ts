@@ -97,7 +97,7 @@ export const setroomEs: Record<keyof typeof setroomEn, string> = {
   "setroom.strike.title": "Stage striking",
   "setroom.strike.intro": "Banea stages para un set presencial en un solo teléfono: strikes en el game 1, luego bans y counterpicks después de cada game, según el ruleset de tu escena.",
   "setroom.strike.gameRulesets": "Rulesets de {game}",
-  "setroom.strike.go": "Banear →",
+  "setroom.strike.go": "Banear",
   "setroom.strike.noRuleset": "¿Sin ruleset? Striking rápido",
   "setroom.strike.missing": "¿Falta el ruleset de tu escena? Un admin de la escena puede agregarlo desde la página {scenes}.",
   "setroom.strike.scenes": "Escenas",
