@@ -21,6 +21,7 @@ import CharacterIcon from "@/components/CharacterIcon";
 import { characterDiscord } from "@/lib/characterDiscords";
 import { CHARACTER_COURSES, CHARACTER_LIBRARIES, cookbookUrl, FRAME_DATA_SOURCE, frameDataLinks, libraryType, LIBRARY_SECTIONS, type CommunityLink } from "@/lib/essentials";
 import { characterOverview, inLang } from "@/lib/characterOverviews";
+import { statLines } from "@/lib/characterStatLines";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import type { MessageKey, Values } from "@/lib/i18n/core";
@@ -85,6 +86,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
   const discord = characterDiscord(game, character);
   const frameData = frameDataLinks(game, character, name);
   const overview = characterOverview(game, character);
+  const stats = game === "ultimate" ? statLines(character) : [];
   const cookbook = cookbookUrl(game, character);
   const courses = CHARACTER_COURSES[game]?.[character] ?? [];
   const library = CHARACTER_LIBRARIES[game]?.[character] ?? null;
@@ -118,7 +120,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           <div className="flex flex-col gap-2">
             <h2 id="overview" className="font-bold">{t("media.char.ov.playstyle")}</h2>
             <p>{inLang(overview.playstyle, lang)}</p>
-            {overview.stats && (
+            {overview.stats && stats.length === 0 && (
               <p className="flex flex-wrap gap-2 text-meta">
                 {overview.stats.weight !== undefined && <span className="badge border border-line">{t("media.char.ov.weight", { n: overview.stats.weight })}</span>}
                 {overview.stats.fallSpeed !== undefined && <span className="badge border border-line">{t("media.char.ov.fall", { n: overview.stats.fallSpeed })}</span>}
@@ -150,6 +152,34 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
             {t("media.char.ov.source", { title: overview.source.title, by: overview.source.by })}{" "}
             {overview.source.written && <>{t("media.char.ov.written", { date: overview.source.written })}{" "}</>}
             <a href={overview.source.url} target="_blank" rel="noopener noreferrer" className="link font-semibold">{t("media.char.ov.full")} ↗︎<NewTab /></a>
+          </p>
+        </section>
+      )}
+
+      {/* The character's measured numbers (round 925), from KuroganeHammer's tables, each with where it ranks
+          among the cast and a bar for that rank. Ultimate only for now. */}
+      {stats.length > 0 && (
+        <section aria-labelledby="properties" className="card flex flex-col gap-3 p-4">
+          <h2 id="properties" className="font-bold">{t("media.char.st.title")}</h2>
+          <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+            {stats.map((st) => (
+              <div key={st.field} className="flex flex-col gap-1">
+                <div className="flex items-baseline justify-between gap-2">
+                  <dt className="text-sm text-muted">{t(`media.char.st.${st.field}`)}</dt>
+                  <dd className="text-sm">
+                    <span className="text-base font-bold tabular-nums">{st.value}</span>{" "}
+                    <span className="text-meta text-muted">{t("media.char.st.rank", { n: st.rank, total: st.total })}</span>
+                  </dd>
+                </div>
+                <span aria-hidden="true" className="block h-1.5 overflow-hidden rounded-full bg-surface-2">
+                  <span className="block h-full rounded-full bg-brand" style={{ width: `${Math.max(4, Math.round(st.share * 100))}%` }} />
+                </span>
+              </div>
+            ))}
+          </dl>
+          <p className="text-meta text-muted">
+            {t("media.char.st.source")}{" "}
+            <a href="https://kuroganehammer.com/Ultimate/Attributes" target="_blank" rel="noopener noreferrer" className="link font-semibold">KuroganeHammer ↗︎<NewTab /></a>
           </p>
         </section>
       )}

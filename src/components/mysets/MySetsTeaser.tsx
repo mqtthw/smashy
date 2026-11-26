@@ -26,9 +26,9 @@ export default async function MySetsTeaser({ userId }: { userId: string | null }
         href={up ? `/host/set/${hosted.id}` : `/host/${hosted.eventId}`}
         className={`flex items-center gap-3 py-2.5 pr-12 pl-4 ${up ? "banner-up teaser-up" : "card hover:bg-surface"}`}
       >
-        {/* The GameCube controller (round 920, Matthew): on the gold bar it sits in a dark slanted tile, gold on dark. */}
-        <span aria-hidden="true" className={up ? "flex size-9 shrink-0 -skew-x-[10deg] items-center justify-center bg-[#1a1200] text-[#ffd447]" : "shrink-0 text-muted"}>
-          <Icon name="gamepad" className={`text-2xl ${up ? "skew-x-[10deg]" : ""}`} />
+        {/* The GameCube controller (round 920, Matthew): black on the gold bar, with no tile round it (round 925). */}
+        <span aria-hidden="true" className={up ? "shrink-0 text-[#1a1200]" : "shrink-0 text-muted"}>
+          <Icon name="gamepad" className={up ? "text-3xl" : "text-2xl"} />
         </span>
         <span className="min-w-0 flex-1">
           <span className={`block font-bold ${up ? "text-lg leading-tight font-black tracking-wide uppercase italic" : ""}`}>
@@ -60,9 +60,9 @@ export default async function MySetsTeaser({ userId }: { userId: string | null }
       href="/my-sets"
       className={`flex items-center gap-3 py-2.5 pr-12 pl-4 ${up ? "banner-up teaser-up" : "card hover:bg-surface"}`}
     >
-      {/* The GameCube controller (round 920, Matthew): on the gold bar it sits in a dark slanted tile, gold on dark. */}
-      <span aria-hidden="true" className={up ? "flex size-9 shrink-0 -skew-x-[10deg] items-center justify-center bg-[#1a1200] text-[#ffd447]" : "shrink-0 text-muted"}>
-        <Icon name="gamepad" className={`text-2xl ${up ? "skew-x-[10deg]" : ""}`} />
+      {/* The GameCube controller (round 920, Matthew): black on the gold bar, with no tile round it (round 925). */}
+      <span aria-hidden="true" className={up ? "shrink-0 text-[#1a1200]" : "shrink-0 text-muted"}>
+        <Icon name="gamepad" className={up ? "text-3xl" : "text-2xl"} />
       </span>
       <span className="min-w-0 flex-1">
         <span className={`block font-bold ${up ? "text-lg leading-tight font-black tracking-wide uppercase italic" : ""}`}>{up ? (set.called ? t("entering.mysets.calledNow") : t("entering.mysets.playingNow")) : t("play.teaser.next", { name: vs })}</span>
