@@ -701,10 +701,9 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "The guide says he may not suit players who struggle to control very fast characters, or to use a recovery that has no hitbox." },
       ],
     },
-    // Round 926 batch: the last usable guides in Matthew's Smashboards document. Four of these link to
-    // Smashboards' guides section until he sends each guide's address (Hero's came with the copy).
+    // Round 926 batch: the last usable guides in Matthew's Smashboards document.
     palutena: {
-      source: { title: "The playful Goddess of Skyworld: Lady Palutena", url: "https://smashboards.com/guides/", by: "BelChydru (Smashboards)", written: "December 2018" },
+      source: { title: "The playful Goddess of Skyworld: Lady Palutena", url: "https://smashboards.com/guides/the-playful-goddess-of-skyworld-lady-palutena.1176/", by: "BelChydru (Smashboards)", written: "December 2018" },
       playstyle: {
         en: "A bait-and-punish character: the guide says she thrives by tricking the opponent into thinking they can punish her, then capitalizing on their mistake. Her speed and her aerials let her punish consistently, and she is elusive on stage and strong at edgeguarding.",
       },
@@ -765,7 +764,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     cloud: {
-      source: { title: "BREAKING THE LIMITS: Cloud Guide", url: "https://smashboards.com/guides/", by: "Afro Ninja (Smashboards)", written: "February 2019" },
+      source: { title: "BREAKING THE LIMITS: Cloud Guide", url: "https://smashboards.com/guides/breaking-the-limits-cloud-guide-ssbu.1210/", by: "Afro Ninja (Smashboards)", written: "February 2019" },
       playstyle: {
         en: "A well-rounded swordsman with a good neutral game and some of the biggest disjointed hits in the game. The guide calls him easy for beginners, and a good second character to cover a main who struggles against swords.",
       },
@@ -788,7 +787,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     snake: {
-      source: { title: "Solid Snake Guide", url: "https://smashboards.com/guides/", by: "Falc01 (Smashboards)", written: "March 2019" },
+      source: { title: "Solid Snake Guide", url: "https://smashboards.com/guides/solid-snake-guide.1219/", by: "Falc01 (Smashboards)", written: "March 2019" },
       playstyle: {
         en: "Snake controls the game and its pace with explosives. The guide says he wants grenades out most of the time, either dropped while jumping in to approach or laid around the stage so the opponent has to come to him, and that good Snake players are always in control through this move.",
       },
@@ -821,7 +820,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     inkling: {
-      source: { title: "Stay Fresh!! An Inkling Guide (parts 1 and 2)", url: "https://smashboards.com/guides/", by: "Ink Floyd (Smashboards)", written: "March 2019" },
+      source: { title: "Stay Fresh!! An Inkling Guide (parts 1 and 2)", url: "https://smashboards.com/guides/stay-fresh-an-inkling-guide-part-1-moveset-and-uses.1224/", by: "Ink Floyd (Smashboards)", written: "March 2019" },
       playstyle: {
         en: "At the start of a match Inkling's main goal in neutral is a grab, which opens the most options for damage: punish a spacing mistake with one, or bait the opponent into trying to punish and grab instead. From the throw she starts a combo and keeps the pressure on.",
       },
