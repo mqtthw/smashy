@@ -6,12 +6,16 @@ import GameBadge from "@/components/GameBadge";
 import EventTimes, { zoneLabel } from "@/components/events/EventTimes";
 import type { EventRow } from "@/lib/eventRows";
 import { dayDate, dayKey, monthGrid, monthOf, shiftMonth, weekStartFor } from "@/lib/eventCalendar";
+import { isNear, type Point } from "@/lib/distance";
 import { dateBadgeParts, formatEventDate } from "@/lib/format";
 import { GAMES, GAME_KEYS, type GameKey } from "@/lib/games";
 import { useStoredState } from "@/lib/useStoredState";
 import { useLang, useT } from "@/lib/i18n/client";
 
 const ALL = "all";
+
+/** The city menu's "Near me" choice. */
+const NEAR = "@near";
 
 export default function EventsBrowser({
   rows,
@@ -35,17 +39,41 @@ export default function EventsBrowser({
     return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([name]) => name);
   }, [rows]);
 
+  // "Near me" (round 855, Matthew: easier than scrolling a long list of cities): the browser's location,
+  // asked for only when it's picked, kept on this device, and tournaments within about 50 miles.
+  const [hereRaw, setHereRaw] = useStoredState("smashy.events.here", "");
+  const here: Point | null = (() => {
+    const [lat, lng] = hereRaw.split(",").map(Number);
+    return Number.isFinite(lat) && Number.isFinite(lng) && hereRaw ? { lat, lng } : null;
+  })();
+  const [locating, setLocating] = useState<"idle" | "busy" | "failed">("idle");
+  const canNear = rows.some((r) => typeof r.lat === "number");
+  const pickCity = (value: string) => {
+    if (value !== NEAR) { setLocating("idle"); return setCity(value); }
+    if (!("geolocation" in navigator)) return setLocating("failed");
+    setLocating("busy");
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setHereRaw(`${pos.coords.latitude.toFixed(3)},${pos.coords.longitude.toFixed(3)}`);
+        setCity(NEAR);
+        setLocating("idle");
+      },
+      () => setLocating("failed"),
+      { maximumAge: 30 * 60_000, timeout: 15_000 },
+    );
+  };
+
   const gameKeys = [ALL, ...GAME_KEYS.filter((g) => !GAMES[g].legacy || rows.some((r) => !r.expected && r.games.some((x) => x.game === g)))];
   // A remembered filter that no longer applies (a city with nothing this week, a game chip that isn't
   // shown) counts as "All", for both the menu and the list.
-  const shownCity = cities.includes(city) ? city : ALL;
+  const shownCity = cities.includes(city) || (city === NEAR && here && canNear) ? city : ALL;
   const shownGame = gameKeys.includes(game) ? game : ALL;
   const matching = rows.filter(
-    (r) => (shownGame === ALL || r.games.some((g) => g.game === shownGame)) && (shownCity === ALL || r.city === shownCity),
+    (r) => (shownGame === ALL || r.games.some((g) => g.game === shownGame)) && (shownCity === ALL || (shownCity === NEAR && here ? isNear(here, r.lat, r.lng) : r.city === shownCity)),
   );
-  // The calendar (round 729): open or closed is remembered; the picked day isn't (it's for one look-up,
+  // The calendar (round 729; open by default and smaller since round 855, Matthew): open or closed is remembered; the picked day isn't (it's for one look-up,
   // like "I'm in Texas that weekend, what's on?"). Days are each venue's own date.
-  const [calendar, setCalendar] = useStoredState("smashy.events.calendar", "off");
+  const [calendar, setCalendar] = useStoredState("smashy.events.calendar", "on");
   const [picked, setPicked] = useState<string | null>(null);
   const days = useMemo(() => {
     const counts = new Map<string, number>();
@@ -80,10 +108,12 @@ export default function EventsBrowser({
           {t("browse.list.city")}
           <select
             value={shownCity}
-            onChange={(e) => setCity(e.target.value)}
+            onChange={(e) => pickCity(e.target.value)}
             className="field px-2 py-1"
+            aria-busy={locating === "busy"}
           >
             <option value={ALL}>{t("browse.list.allOf", { region: regionLabel })}</option>
+            {canNear && <option value={NEAR}>{t("browse.list.nearMe")}</option>}
             {cities.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -91,12 +121,14 @@ export default function EventsBrowser({
             ))}
           </select>
         </label>
+          {locating === "busy" && <span role="status" className="animate-pulse text-meta text-muted">{t("browse.list.locating")}</span>}
           <button type="button" onClick={() => setCalendar(calendar === "on" ? "off" : "on")} aria-pressed={calendar === "on"} className="chip ml-auto shrink-0">
             {t("browse.cal.toggle")}
           </button>
         </div>
       </div>
 
+      {locating === "failed" && <p role="status" className="px-4 pt-3 text-sm text-muted">{t("browse.list.nearFailed")}</p>}
       {calendar === "on" && days.size > 0 && <EventCalendar days={days} picked={day} onPick={setPicked} />}
       {day && (
         <p className="flex items-center gap-2 px-4 pt-3 text-sm">
@@ -186,10 +218,10 @@ function EventCalendar({ days, picked, onPick }: { days: Map<string, number>; pi
   // Weekday initials for the header: any week will do, 2023-01-01 was a Sunday.
   const weekdays = Array.from({ length: 7 }, (_, i) => new Date(Date.UTC(2023, 0, 1 + start + i)).toLocaleDateString(lang, { weekday: "narrow", timeZone: "UTC" }));
   const title = dayDate(`${shown}-01`).toLocaleDateString(lang, { month: "long", year: "numeric", timeZone: "UTC" });
-  const arrow = "rounded-full p-2 text-muted hover:bg-surface disabled:opacity-30";
+  const arrow = "rounded-full p-1.5 text-muted hover:bg-surface disabled:opacity-30";
   return (
-    <section aria-label={t("browse.cal.label")} className="card mx-3 mt-3 p-3">
-      <div className="mb-2 flex items-center justify-between">
+    <section aria-label={t("browse.cal.label")} className="card mx-3 mt-3 p-2.5 sm:max-w-sm">
+      <div className="mb-1 flex items-center justify-between">
         <button type="button" onClick={() => setMonth(shiftMonth(shown, -1))} disabled={shown <= first} aria-label={t("browse.cal.prev")} className={arrow}>
           <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current" strokeWidth={2.5}><path d="M15 6l-6 6 6 6" /></svg>
         </button>
@@ -208,7 +240,7 @@ function EventCalendar({ days, picked, onPick }: { days: Map<string, number>; pi
           const num = Number(d.slice(8));
           const isPicked = picked === d;
           const label = `${dayDate(d).toLocaleDateString(lang, { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" })}: ${t("browse.cal.count", { n })}`;
-          if (!n) return <span key={d} className={`flex h-11 flex-col items-center justify-start pt-1.5 text-sm text-muted/60 ${today === d ? "font-bold text-foreground" : ""}`}>{num}</span>;
+          if (!n) return <span key={d} className={`flex h-8 flex-col items-center justify-start pt-1 text-meta text-muted/60 ${today === d ? "font-bold text-foreground" : ""}`}>{num}</span>;
           return (
             <button
               key={d}
@@ -217,12 +249,12 @@ function EventCalendar({ days, picked, onPick }: { days: Map<string, number>; pi
               aria-pressed={isPicked}
               aria-label={label}
               title={label}
-              className={`mx-auto flex h-11 w-11 flex-col items-center justify-start rounded-xl pt-1.5 text-sm font-semibold ${isPicked ? "bg-brand text-white" : "hover:bg-surface"} ${today === d && !isPicked ? "ring-1 ring-line" : ""}`}
+              className={`mx-auto flex h-8 w-9 flex-col items-center justify-start rounded-md pt-1 text-meta font-semibold ${isPicked ? "bg-brand text-white" : "hover:bg-surface"} ${today === d && !isPicked ? "ring-1 ring-line" : ""}`}
             >
               {num}
               {/* One dot, or up to three for a busy day. */}
               <span aria-hidden="true" className="mt-0.5 flex gap-0.5">
-                {Array.from({ length: Math.min(n, 3) }, (_, k) => <span key={k} className={`h-1.5 w-1.5 rounded-full ${isPicked ? "bg-white" : "bg-brand"}`} />)}
+                {Array.from({ length: Math.min(n, 3) }, (_, k) => <span key={k} className={`h-1 w-1 rounded-full ${isPicked ? "bg-white" : "bg-brand"}`} />)}
               </span>
             </button>
           );

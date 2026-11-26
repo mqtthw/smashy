@@ -32,7 +32,7 @@ describe("Events list rows", () => {
         { name: "Melee Singles", game: "melee", startAt: 1_000_000, entrants: 30 },
         { name: "Melee Doubles", game: "melee", startAt: 1_003_600, entrants: 12 },
       ],
-      expected: false, live: false,
+      expected: false, live: false, lat: null, lng: null,
     });
   });
 

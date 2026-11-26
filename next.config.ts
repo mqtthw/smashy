@@ -44,12 +44,13 @@ const nextConfig: NextConfig = {
       {
         // Baseline protections on every page: browsers don't guess file types, other sites only learn
         // Smashy's address (not which page) from links, and pages can't ask for the camera,
-        // microphone, location, payments or USB.
+        // microphone, payments or USB. Location: only Smashy's own pages may ask (Events' "Near me",
+        // round 855), and the browser still asks the visitor first.
         source: "/:path*",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self), payment=(), usb=()" },
         ],
       },
       {
