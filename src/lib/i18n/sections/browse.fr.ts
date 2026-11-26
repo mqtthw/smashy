@@ -67,6 +67,7 @@ export const browseFr: Record<keyof typeof browseEn, string> = {
   "browse.events.startggDown": "Impossible de joindre start.gg pour le moment. On affiche les brackets organisés sur Smashy ; réessaie dans quelques minutes.",
   "browse.events.viewLabel": "Vue des tournois",
   "browse.events.nearYou": "Près de toi",
+  "browse.events.firstTime": "Premier tournoi ? Voilà à quoi t’attendre",
 
   // Events list (near you)
   "browse.list.zoneOne": "Les horaires sont à l'heure locale du lieu ({zone}).",

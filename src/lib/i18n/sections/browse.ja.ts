@@ -67,6 +67,7 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
   "browse.events.startggDown": "現在start.ggに接続できません。Smashyで開催中の大会を表示しています。数分後にもう一度お試しください。",
   "browse.events.viewLabel": "大会の表示",
   "browse.events.nearYou": "近くの大会",
+  "browse.events.firstTime": "はじめての大会？当日の流れはこちら",
 
   // Events list (near you)
   "browse.list.zoneOne": "時刻は会場の現地時間（{zone}）です。",

@@ -1781,6 +1781,7 @@ export const en = {
   "browse.events.mySets": "My sets",
   "browse.events.scenesRulesets": "Scenes & rulesets",
   "browse.events.strikeStages": "Strike stages",
+  "browse.events.firstTime": "First tournament? Here's what to expect",
   "browse.list.zoneOne": "Times are local to the venue ({zone}).",
   "browse.list.zoneEach": "Times are local to each venue.",
   "browse.list.filterGame": "Filter by game",

@@ -65,6 +65,7 @@ export const browseEn = {
   "browse.events.startggDown": "Couldn't reach start.gg right now. Showing brackets hosted on Smashy; try again in a few minutes.",
   "browse.events.viewLabel": "Events view",
   "browse.events.nearYou": "Near you",
+  "browse.events.firstTime": "First tournament? Here's what to expect",
 
   // Events list (near you)
   "browse.list.zoneOne": "Times are local to the venue ({zone}).",

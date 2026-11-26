@@ -18,6 +18,7 @@ import { getUserId } from "@/lib/supabase/server";
 import { getMyGames } from "@/lib/viewer";
 import { vodSetPath } from "@/lib/vods";
 import { LangProvider, T } from "@/lib/i18n/client";
+import type { MessageKey } from "@/lib/i18n/core";
 import { getLang, getT } from "@/lib/i18n/server";
 import NewTab from "@/components/ui/NewTab";
 
@@ -32,14 +33,38 @@ export const metadata: Metadata = pageMeta("New to Smash? Getting started in com
 const MAIN_GAMES = GAME_KEYS.filter((g) => !GAMES[g].legacy);
 const LOBBY_GAMES: readonly GameKey[] = ["melee", "ultimate", "pplus"];
 
-function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
+// The menu skin (round 910) numbers the sections like a path to follow, and adds two of its own: what a
+// first local is like, and the words a newcomer will hear. `skinOnly` sections show only under the skin.
+function Section({ id, title, num, skinOnly, children }: { id: string; title: string; num?: number; skinOnly?: boolean; children: React.ReactNode }) {
   return (
-    <section aria-labelledby={id} className="card flex flex-col gap-3 p-4">
-      <h2 id={id} className="font-bold">{title}</h2>
+    <section aria-labelledby={id} className={`card flex scroll-mt-16 flex-col gap-3 p-4 ${skinOnly ? "skin-new" : ""}`}>
+      <h2 id={id} className="flex items-center gap-3 font-bold">
+        {num !== undefined && <span aria-hidden="true" className="skin-new menu-bar-num">{num}</span>}
+        {title}
+      </h2>
       {children}
     </section>
   );
 }
+
+// Words a newcomer hears at a tournament. The words themselves stay as players say them; only the
+// meanings are translated (people.new.w.*). Plain facts about how tournaments work, not advice.
+const WORDS: { term: string; key: string }[] = [
+  { term: "Local", key: "local" },
+  { term: "Major", key: "major" },
+  { term: "Bracket", key: "bracket" },
+  { term: "Double elimination", key: "double" },
+  { term: "Set", key: "set" },
+  { term: "Stock", key: "stock" },
+  { term: "Seed", key: "seed" },
+  { term: "Pools", key: "pools" },
+  { term: "Friendlies", key: "friendlies" },
+  { term: "Main", key: "main" },
+  { term: "TO", key: "to" },
+  { term: "DQ", key: "dq" },
+  { term: "Netplay", key: "netplay" },
+];
+const LOCAL_STEPS = ["people.new.local.s1", "people.new.local.s2", "people.new.local.s3", "people.new.local.s4", "people.new.local.s5"] as const;
 
 /** Beginners' questions: unanswered first (so helpers see them), then the newest answered ones. */
 async function Questions({ game, userId }: { game: GameKey; userId: string | null }) {
@@ -164,7 +189,7 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
       {/* The starter guides come first (round 793): they're what a newcomer can use straight away, and the
           questions box under them says "No questions yet" until people start asking. */}
       {essentials.length > 0 && (
-        <Section id="start" title={t("people.new.start", { game: short })}>
+        <Section id="start" num={1} title={t("people.new.start", { game: short })}>
           <p className="text-sm text-muted">{t("people.new.startBody", { game: short })}</p>
           {/* Rows between thin lines, the name as the link (round 891): a box per tool inside the section's box
               read as boxes inside boxes. */}
@@ -183,7 +208,31 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
         </Section>
       )}
 
-      <Section id="ask" title={t("people.new.ask")}>
+      <Section id="first-local" num={2} skinOnly title={t("people.new.local.title")}>
+        <p className="text-sm text-muted">{t("people.new.local.body")}</p>
+        <ol className="flex flex-col gap-2 text-sm">
+          {LOCAL_STEPS.map((k, i) => (
+            <li key={k} className="flex gap-3">
+              <span aria-hidden="true" className="w-4 shrink-0 text-right font-black text-brand italic">{i + 1}</span>
+              <span>{t(k)}</span>
+            </li>
+          ))}
+        </ol>
+        <Link href="/events" className="btn btn-md btn-primary self-start">{t("people.new.local.find")}</Link>
+      </Section>
+
+      <Section id="words" num={3} skinOnly title={t("people.new.w.title")}>
+        <dl className="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+          {WORDS.map((w) => (
+            <div key={w.key}>
+              <dt className="font-bold text-brand">{w.term}</dt>
+              <dd className="text-muted">{t(`people.new.w.${w.key}` as MessageKey)}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      <Section id="ask" num={4} title={t("people.new.ask")}>
         <p className="text-sm text-muted">{t("people.new.askBody")}</p>
         <Link href={`/discuss/new?game=${game}&flair=newplayer`} className="btn btn-md btn-primary self-start">{t("people.new.askButton", { game: short })}</Link>
         <Suspense fallback={<CardListSkeleton count={2} label={t("people.new.loadingQuestions")} />}>
@@ -191,7 +240,7 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
         </Suspense>
       </Section>
 
-      <Section id="level" title={t("people.new.level")}>
+      <Section id="level" num={5} title={t("people.new.level")}>
         <Suspense fallback={<CardListSkeleton count={2} label={t("people.new.loadingLobbies")} />}>
           <Lobbies game={game} userId={userId} />
         </Suspense>
@@ -211,7 +260,7 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
         </p>
       </Section>
 
-      <Section id="watch" title={t("people.new.watch")}>
+      <Section id="watch" num={6} title={t("people.new.watch")}>
         <Suspense fallback={<CardListSkeleton count={2} label={t("people.new.loadingVideos")} />}>
           <Videos game={game} />
         </Suspense>

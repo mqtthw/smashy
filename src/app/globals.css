@@ -1199,3 +1199,12 @@ body::before {
 :root[data-skin="melee"] .bg-\[var\(--logo\)\] {
   background: #d4231a;
 }
+/* Reels on a phone: the bottom menu's dark glass is indigo under the skin, not oxblood. */
+@media (width < 48rem) {
+  :root[data-skin="melee"] body.reels-open nav.glass-bar {
+    --glass-bar: rgb(13 11 42 / 0.84);
+    --glass-line: rgb(190 200 255 / 0.3);
+    --foreground: #f4f3ff;
+    --muted: #b6b8de;
+  }
+}

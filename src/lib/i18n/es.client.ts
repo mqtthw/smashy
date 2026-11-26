@@ -1780,6 +1780,7 @@ export const es = {
   "browse.events.mySets": "Mis sets",
   "browse.events.scenesRulesets": "Escenas y rulesets",
   "browse.events.strikeStages": "Strikear stages",
+  "browse.events.firstTime": "¿Tu primer torneo? Esto es lo que te espera",
   "browse.list.zoneOne": "Las horas son locales del lugar ({zone}).",
   "browse.list.zoneEach": "Las horas son locales de cada lugar.",
   "browse.list.filterGame": "Filtrar por juego",

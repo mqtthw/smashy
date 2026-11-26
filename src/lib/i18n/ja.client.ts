@@ -1780,6 +1780,7 @@ export const ja = {
   "browse.events.mySets": "自分のセット",
   "browse.events.scenesRulesets": "シーンとルールセット",
   "browse.events.strikeStages": "ステージ拒否",
+  "browse.events.firstTime": "はじめての大会？当日の流れはこちら",
   "browse.list.zoneOne": "時刻は会場の現地時間（{zone}）です。",
   "browse.list.zoneEach": "時刻は各会場の現地時間です。",
   "browse.list.filterGame": "ゲームで絞り込む",

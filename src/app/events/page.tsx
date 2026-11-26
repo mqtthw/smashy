@@ -301,6 +301,8 @@ export default function EventsPage(props: PageProps<"/events">) {
     <section>
       <header className="px-4 pt-6 pb-3">
         <h1 className="text-2xl font-bold"><T k="nav.events" /></h1>
+        {/* For someone who has never entered one (the menu skin, round 910). */}
+        <Link href="/new#first-local" className="skin-new link mt-1 block w-fit text-sm font-semibold"><T k="browse.events.firstTime" /></Link>
         {/* Side doors, kept quiet: the page's red is for events that are live and for actions. */}
         <span id="events-more" className="sr-only"><T k="browse.events.moreNav" /></span>
         <OverflowRow labelledBy="events-more" className="mt-2 text-meta">
