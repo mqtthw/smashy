@@ -4,6 +4,7 @@ import { playerName } from "@/lib/brackets/types";
 import { createClient } from "@/lib/supabase/server";
 import { getMyActiveHostedSets } from "@/lib/hostedEvents";
 import DismissableTeaser from "./DismissableTeaser";
+import Icon from "@/components/ui/Icon";
 import { getT } from "@/lib/i18n/server";
 
 /**
@@ -25,6 +26,10 @@ export default async function MySetsTeaser({ userId }: { userId: string | null }
         href={up ? `/host/set/${hosted.id}` : `/host/${hosted.eventId}`}
         className={`flex items-center gap-3 py-2.5 pr-12 pl-4 ${up ? "banner-up teaser-up" : "card hover:bg-surface"}`}
       >
+        {/* The GameCube controller (round 920, Matthew): on the gold bar it sits in a dark slanted tile, gold on dark. */}
+        <span aria-hidden="true" className={up ? "flex size-9 shrink-0 -skew-x-[10deg] items-center justify-center bg-[#1a1200] text-[#ffd447]" : "shrink-0 text-muted"}>
+          <Icon name="gamepad" className={`text-2xl ${up ? "skew-x-[10deg]" : ""}`} />
+        </span>
         <span className="min-w-0 flex-1">
           <span className={`block font-bold ${up ? "text-lg leading-tight font-black tracking-wide uppercase italic" : ""}`}>
             {hosted.state === "live" ? t("entering.mysets.playingNow") : up ? t("play.teaser.strike") : t("play.teaser.next", { name: hosted.opponent ?? t("entering.mysets.tbd") })}
@@ -55,6 +60,10 @@ export default async function MySetsTeaser({ userId }: { userId: string | null }
       href="/my-sets"
       className={`flex items-center gap-3 py-2.5 pr-12 pl-4 ${up ? "banner-up teaser-up" : "card hover:bg-surface"}`}
     >
+      {/* The GameCube controller (round 920, Matthew): on the gold bar it sits in a dark slanted tile, gold on dark. */}
+      <span aria-hidden="true" className={up ? "flex size-9 shrink-0 -skew-x-[10deg] items-center justify-center bg-[#1a1200] text-[#ffd447]" : "shrink-0 text-muted"}>
+        <Icon name="gamepad" className={`text-2xl ${up ? "skew-x-[10deg]" : ""}`} />
+      </span>
       <span className="min-w-0 flex-1">
         <span className={`block font-bold ${up ? "text-lg leading-tight font-black tracking-wide uppercase italic" : ""}`}>{up ? (set.called ? t("entering.mysets.calledNow") : t("entering.mysets.playingNow")) : t("play.teaser.next", { name: vs })}</span>
         <span className={`block truncate text-meta ${up ? "font-semibold opacity-80" : "text-muted"}`}>

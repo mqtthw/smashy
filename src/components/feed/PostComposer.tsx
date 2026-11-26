@@ -359,7 +359,9 @@ export default function PostComposer({
         </div>
       )}
 
-      <div className="flex flex-wrap items-center gap-2">
+      {/* One row on a computer (round 920, Matthew): tighter gaps and button padding, "Result" and "Signed up"
+          without icons, and Spoiler as its eye alone (its name is the tooltip and the screen-reader label). */}
+      <div className="flex flex-wrap items-center gap-x-1 gap-y-2 [&_.btn-sm]:px-2">
         {!template && <AddPhotoButton full={mediaCount >= MAX_IMAGES} onFiles={addImages} />}
         {!template && <AddVideoButton setVideos={setVideos} full={videos.length >= MAX_POST_VIDEOS || mediaCount >= MAX_IMAGES} />}
         {!template && canPoll && !poll && (
@@ -375,7 +377,7 @@ export default function PostComposer({
           aria-label={t("feed.compose.spoilerLabel")}
           className={`btn btn-sm ${spoiler ? "btn-outline border-brand text-brand" : "btn-ghost"}`}
         >
-          <Icon name="eyeOff" /><span className="hidden sm:inline">{` ${t("feed.compose.spoiler")}${spoiler ? " ✓" : ""}`}</span>
+          <Icon name="eyeOff" />{spoiler && <span aria-hidden="true">✓</span>}
         </button>
         {!parentId && !rulesetId && !template && (
           <>
@@ -407,10 +409,10 @@ export default function PostComposer({
             {(results.length > 0 || signups.length > 0) && (
               <>
                 <button type="button" onClick={() => setPicker(picker === "placed" ? null : "placed")} className="btn btn-sm btn-outline">
-                  <Icon name="trophy" /> {t("feed.compose.shareResult")}
+                  {t("feed.compose.shareResult")}
                 </button>
                 <button type="button" onClick={() => setPicker(picker === "signed_up" ? null : "signed_up")} className="btn btn-sm btn-outline">
-                  <Icon name="calendar" /> {t("feed.compose.iSignedUp")}
+                  {t("feed.compose.iSignedUp")}
                 </button>
               </>
             )}
