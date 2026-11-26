@@ -21,6 +21,7 @@ import CharacterIcon from "@/components/CharacterIcon";
 import { characterDiscord } from "@/lib/characterDiscords";
 import { CHARACTER_COURSES, CHARACTER_LIBRARIES, cookbookUrl, FRAME_DATA_SOURCE, frameDataLinks, libraryType, LIBRARY_SECTIONS, type CommunityLink } from "@/lib/essentials";
 import { characterOverview, inLang, writtenIn } from "@/lib/characterOverviews";
+import { traitName } from "@/lib/overviewNames";
 import { statLines } from "@/lib/characterStatLines";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
@@ -132,7 +133,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
             <dl className="flex flex-col divide-y divide-line">
               {overview.traits.map((tr) => (
                 <div key={tr.name} className="py-2 first:pt-0 last:pb-0">
-                  <dt className="font-bold text-brand">{tr.name}</dt>
+                  <dt className="font-bold text-brand">{traitName(tr.name, lang)}</dt>
                   <dd className="text-sm">{inLang(tr.text, lang)}</dd>
                 </div>
               ))}

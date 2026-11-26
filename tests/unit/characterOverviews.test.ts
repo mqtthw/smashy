@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { CHARACTER_OVERVIEWS, characterOverview, inLang } from "@/lib/characterOverviews";
 import { characterName } from "@/lib/characters";
 import type { GameKey } from "@/lib/games";
+import { OVERVIEW_NAMES, traitName } from "@/lib/overviewNames";
 import { OVERVIEW_TEXT as ES } from "@/lib/overviewText.es";
 import { OVERVIEW_TEXT as FR } from "@/lib/overviewText.fr";
 import { OVERVIEW_TEXT as JA } from "@/lib/overviewText.ja";
@@ -33,6 +34,15 @@ describe("character overviews", () => {
       const missing = lines.filter((l) => !(lang in l) && !(l.en in FILES[lang])).map((l) => l.en.slice(0, 50));
       expect(missing, lang).toEqual([]);
     }
+  });
+
+  it("trait headings: every translated heading is one that's in use, and a move's own name stays as it is", () => {
+    const used = new Set<string>();
+    for (const list of Object.values(CHARACTER_OVERVIEWS)) for (const o of Object.values(list ?? {})) for (const t of o.traits) used.add(t.name);
+    for (const name of Object.keys(OVERVIEW_NAMES)) expect(used.has(name), name).toBe(true);
+    expect(traitName("Recovery", "es")).toBe("Recuperación");
+    expect(traitName("Recovery", "en")).toBe("Recovery");
+    expect(traitName("Gordo", "ja")).toBe("Gordo");
   });
 
   it("falls back to English for a language that isn't written, and gives nothing for a character without one", () => {
