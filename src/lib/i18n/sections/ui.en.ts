@@ -79,6 +79,7 @@ export const uiEn = {
   "ui.guest.new.s.characterText": "Clips and guides for every fighter.",
   "ui.guest.new.s.local": "Find a local",
   "ui.guest.new.s.localText": "Tournaments near you, for every level.",
+  "ui.guest.new.s.localCount": "in {region}",
   "ui.guest.new.s.watch": "Watch",
   "ui.guest.new.s.watchText": "Short clips of big moments and top players.",
   "ui.guest.new.s.history": "Learn the history",

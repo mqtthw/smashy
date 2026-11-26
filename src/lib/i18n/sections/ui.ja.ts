@@ -81,6 +81,7 @@ export const uiJa: Record<keyof typeof uiEn, string> = {
   "ui.guest.new.s.characterText": "すべてのファイターのクリップとガイド。",
   "ui.guest.new.s.local": "近くの大会を探す",
   "ui.guest.new.s.localText": "近くで開かれる大会。レベルは問いません。",
+  "ui.guest.new.s.localCount": "{region}",
   "ui.guest.new.s.watch": "観る",
   "ui.guest.new.s.watchText": "名場面やトッププレイヤーの短いクリップ。",
   "ui.guest.new.s.history": "歴史を知る",

@@ -982,3 +982,220 @@ body::before {
   line-height: 1.2rem;
   color: var(--muted);
 }
+
+/* ---------- The menu skin, alive (round 909; Matthew: "make it feel more alive") ----------
+   Behind every page: a grid floor that runs towards you and a big wireframe figure turning slowly in the
+   top corner. On the page: titles draw a red-to-gold bar under themselves, the front page's menu slides
+   in and keeps a gold cursor on one entry (the first, until you point at another), a ticker of what's on
+   runs across the top, the selected tab glows, the one hero button gets a passing shine. Everything that
+   moves is a transform or an opacity (cheap for phones) and stops for people who ask for less motion. */
+:root[data-skin="melee"] {
+  --sky:
+    radial-gradient(90% 55% at 50% 0%, rgb(124 72 224 / 0.55), transparent 70%),
+    radial-gradient(60% 40% at 100% 100%, rgb(212 35 26 / 0.16), transparent 70%),
+    linear-gradient(180deg, #1c1260 0%, #0d0b2a 60%);
+  & body::after {
+    z-index: -3;
+  }
+  /* The wireframe figure. */
+  &::before {
+    content: "";
+    position: fixed;
+    top: -22vmin;
+    right: -26vmin;
+    width: 92vmin;
+    height: 92vmin;
+    z-index: -2;
+    pointer-events: none;
+    opacity: 0.3;
+    background: center / contain no-repeat
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200' fill='none' stroke='%23a8b0ff' stroke-width='0.6'%3E%3Ccircle r='96'/%3E%3Ccircle r='70'/%3E%3Cpolygon points='0,-96 83,-48 83,48 0,96 -83,48 -83,-48'/%3E%3Cpolygon points='0,-70 61,35 -61,35'/%3E%3Cpolygon points='0,70 61,-35 -61,-35'/%3E%3Cpath d='M0-96V96M-83-48L83 48M-83 48L83-48'/%3E%3Cellipse rx='96' ry='30'/%3E%3Cellipse rx='30' ry='96'/%3E%3C/svg%3E");
+    animation: skin-spin 140s linear infinite;
+  }
+  /* The grid floor. */
+  &::after {
+    content: "";
+    position: fixed;
+    left: -60%;
+    right: -60%;
+    bottom: -64px;
+    height: 62vh;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(0deg, rgb(160 170 255 / 0.3) 0 2px, transparent 2px 64px),
+      repeating-linear-gradient(90deg, rgb(160 170 255 / 0.3) 0 2px, transparent 2px 64px);
+    transform-origin: 50% 0;
+    transform: perspective(420px) rotateX(64deg);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 45%);
+    mask-image: linear-gradient(180deg, transparent 0%, black 45%);
+    animation: skin-floor 2.6s linear infinite;
+  }
+  /* The reading column sits on a calm pane, so the moving floor shows around it and faintly through it. */
+  & main#main {
+    background: rgb(13 11 42 / 0.66);
+  }
+
+  /* Page titles: a red-to-gold bar draws itself under the title. */
+  & h1:not(.font-sans, .sr-only)::after {
+    content: "";
+    display: block;
+    width: 7rem;
+    max-width: 100%;
+    height: 3px;
+    margin-top: 0.2em;
+    background: linear-gradient(90deg, #d4231a, #ffd447);
+    transform: skewX(-24deg);
+    transform-origin: 0 50%;
+    animation: skin-bar 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  & .plate-on {
+    animation: skin-pulse 1.8s ease-in-out infinite;
+  }
+  & a.card {
+    transition: border-color 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+    &:hover {
+      border-color: #ffd447;
+      transform: translateY(-2px);
+    }
+  }
+  /* A shine passes over the one hero button now and then. */
+  & .btn-hero {
+    position: relative;
+    overflow: hidden;
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.55) 50%, transparent 65%);
+      transform: translateX(-120%);
+      animation: skin-shine 3.6s ease-in-out infinite;
+      pointer-events: none;
+    }
+  }
+
+  /* The front page's menu. */
+  & .menu-list > li {
+    position: relative;
+    animation: skin-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    transition: transform 0.14s ease;
+    &:nth-child(2) { animation-delay: 0.06s; }
+    &:nth-child(3) { animation-delay: 0.12s; }
+    &:nth-child(4) { animation-delay: 0.18s; }
+    &:nth-child(5) { animation-delay: 0.24s; }
+    /* The cursor: a gold arrowhead that nudges at the entry it's on. */
+    &::before {
+      content: "";
+      position: absolute;
+      left: -13px;
+      top: 50%;
+      margin-top: -7px;
+      border: 7px solid transparent;
+      border-left: 10px solid #ffd447;
+      border-right: 0;
+      opacity: 0;
+      filter: drop-shadow(0 0 4px rgb(255 212 71 / 0.8));
+    }
+  }
+  /* The entry the cursor is on: the one you point at or tab to; with neither, the first. */
+  & .menu-list > li:hover,
+  & .menu-list > li:focus-within,
+  & .menu-list:not(:hover, :focus-within) > li:first-child {
+    transform: translateX(8px);
+    filter: drop-shadow(0 0 10px rgb(255 212 71 / 0.45));
+    &::before {
+      opacity: 1;
+      animation: skin-nudge 0.7s ease-in-out infinite;
+    }
+    & .menu-bar {
+      background: var(--jelly-select);
+      border-color: #fff0b0;
+      border-left-color: #1a1200;
+      color: #1a1200;
+    }
+    & .menu-bar-sub {
+      color: #3b2a00;
+    }
+    & .menu-bar-num {
+      background: #1a1200;
+      color: #ffd447;
+    }
+  }
+  /* The fighters on "Pick a character" bob one after another. */
+  & .menu-icons > img {
+    animation: skin-bob 1.6s ease-in-out infinite;
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.4s; }
+    &:nth-child(4) { animation-delay: 0.6s; }
+  }
+
+  /* The ticker: what's on, running right to left; it waits while you point at it. */
+  & .ticker {
+    overflow: hidden;
+    border-block: 1px solid var(--glass-line);
+    background: rgb(6 5 24 / 0.7);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+  }
+  & .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: skin-ticker 60s linear infinite;
+  }
+  & .ticker:hover .ticker-track,
+  & .ticker:focus-within .ticker-track {
+    animation-play-state: paused;
+  }
+}
+@keyframes skin-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes skin-floor {
+  from { transform: perspective(420px) rotateX(64deg) translateY(0); }
+  to { transform: perspective(420px) rotateX(64deg) translateY(64px); }
+}
+@keyframes skin-bar {
+  from { transform: skewX(-24deg) scaleX(0); }
+  to { transform: skewX(-24deg) scaleX(1); }
+}
+@keyframes skin-pulse {
+  0%, 100% { box-shadow: 0 0 0 rgb(255 212 71 / 0); }
+  50% { box-shadow: 0 0 14px rgb(255 212 71 / 0.6); }
+}
+@keyframes skin-shine {
+  0%, 60% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+@keyframes skin-in {
+  from { opacity: 0; translate: -28px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes skin-nudge {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 4px 0; }
+}
+@keyframes skin-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+@keyframes skin-ticker {
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-skin="melee"]::before,
+  :root[data-skin="melee"]::after,
+  :root[data-skin="melee"] :is(.plate-on, .btn-hero::after, .menu-list > li, .menu-list > li::before, .menu-icons > img, h1::after) {
+    animation: none !important;
+  }
+  :root[data-skin="melee"] .ticker {
+    overflow-x: auto;
+  }
+  :root[data-skin="melee"] .ticker-track {
+    animation: none;
+  }
+}
+/* The small logo tile (a white S on the logo colour) stays red under the skin, where the wordmark is white. */
+:root[data-skin="melee"] .bg-\[var\(--logo\)\] {
+  background: #d4231a;
+}

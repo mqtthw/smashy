@@ -81,6 +81,7 @@ export const uiFr: Record<keyof typeof uiEn, string> = {
   "ui.guest.new.s.characterText": "Des clips et des guides pour chaque combattant.",
   "ui.guest.new.s.local": "Trouve un local",
   "ui.guest.new.s.localText": "Des tournois près de chez toi, pour tous les niveaux.",
+  "ui.guest.new.s.localCount": "· {region}",
   "ui.guest.new.s.watch": "Regarde",
   "ui.guest.new.s.watchText": "De courts clips de grands moments et de top joueurs.",
   "ui.guest.new.s.history": "Découvre l’histoire",

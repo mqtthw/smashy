@@ -6,6 +6,8 @@ import RecentWinners from "@/components/events/RecentWinners";
 import TopClips from "@/components/feed/TopClips";
 import GameBadge from "@/components/GameBadge";
 import { MajorCard } from "@/components/majors/MajorParts";
+import { MajorDates } from "@/components/majors/MajorText";
+import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 import { getRegionEvents } from "@/lib/events";
 import { dateBadgeParts, formatEventDate, isRunning, whenLabel } from "@/lib/format";
 import type { MessageKey } from "@/lib/i18n/core";
@@ -48,6 +50,9 @@ const ALSO: { title: MessageKey; text: MessageKey; href: string }[] = [
 ];
 
 
+// Four fighters' stock icons for the "Pick a character" entry (spread across Melee's cast).
+const MENU_FIGHTERS = [...(STOCK_ICON_KEYS.melee ?? [])].filter((_, i, all) => i % Math.max(1, Math.floor(all.length / 4)) === 0).slice(0, 4);
+
 function notOver<T extends { startAt: number; endAt: number | null }>(list: T[]): T[] {
   const now = Date.now() / 1000;
   return list.filter((t) => (t.endAt ?? t.startAt + 86400) > now);
@@ -77,6 +82,14 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
   // The week's biggest finished tournaments (latest day first), with who won: real results from the scene, no account needed.
   const results = (events?.recent ?? []).slice(0, 3);
   const nextMajors = majorsFor(majors, []).slice(0, 6); // the main games' majors, soonest first
+  // The menu skin (round 909): how many tournaments are coming up here, and the ticker's lines (what's on
+  // near the visitor, then the majors, then the week's results).
+  const comingUp = notOver(events?.tournaments ?? []).length;
+  const ticker: { href: string; label: React.ReactNode; name: string; live?: boolean }[] = [
+    ...upcoming.map((ev) => ({ href: `/events/${ev.slug}`, label: whenLabel(ev, undefined, lang), name: ev.name, live: isRunning(ev) })),
+    ...nextMajors.map((m) => ({ href: `/events/${m.slug}`, label: m.live ? t("browse.majors.happeningNow") : <MajorDates m={m} />, name: m.name, live: m.live })),
+    ...results.map((ev) => ({ href: `/events/${ev.slug}`, label: t("ui.guest.results"), name: ev.name })),
+  ].filter((it, i, all) => all.findIndex((o) => o.href === it.href) === i);
 
   return (
     <section aria-labelledby="guest-welcome" className="flex flex-col gap-6 border-b border-line px-4 py-6">
@@ -84,19 +97,53 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
           menu of first steps, each with one line saying what's behind it; the people who already compete
           get their links in a quiet row under it. */}
       <div className="skin-new flex flex-col gap-4">
+        {/* What's on, running across the top (round 909). The second copy only makes the loop seamless. */}
+        {ticker.length > 0 && (
+          <div className="ticker -mx-4 -mt-2">
+            <div className="ticker-track">
+              {[0, 1].map((copy) => (
+                <ul key={copy} aria-hidden={copy === 1} className="flex shrink-0">
+                  {ticker.map((it) => (
+                    <li key={it.href} className="shrink-0">
+                      <Link href={it.href} tabIndex={copy === 1 ? -1 : undefined} className="flex items-center gap-2 px-4 py-1.5 text-sm whitespace-nowrap hover:underline">
+                        <span className={`text-meta font-black tracking-wide uppercase italic ${it.live ? "text-like" : "text-brand"}`}>{it.label}</span>
+                        <span className="font-semibold">{it.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="flex flex-col gap-1">
           <h2 className="text-3xl leading-none">{t("ui.guest.new.headline")}</h2>
           <p className="text-muted">{t("ui.guest.new.pitch")}</p>
         </div>
-        <ol className="flex flex-col gap-2">
+        <ol className="menu-list flex flex-col gap-2">
           {STEPS.map((s, i) => (
             <li key={s.href}>
               <Link href={s.href} className="menu-bar">
                 <span className="menu-bar-num" aria-hidden="true">{i + 1}</span>
-                <span className="min-w-0">
+                <span className="min-w-0 flex-1">
                   <span className="block text-lg leading-tight font-black tracking-wide uppercase italic">{t(s.title)}</span>
                   <span className="menu-bar-sub">{t(s.text)}</span>
                 </span>
+                {/* Something real on the entry: fighters to pick from, how many tournaments are coming up. */}
+                {s.href === "/games" && (
+                  <span aria-hidden="true" className="menu-icons mr-3 flex shrink-0 gap-1">
+                    {MENU_FIGHTERS.map((k) => (
+                      // eslint-disable-next-line @next/next/no-img-element -- tiny local icons; the image optimizer would add four requests for nothing
+                      <img key={k} src={`/stock/melee/${k}.webp`} alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+                    ))}
+                  </span>
+                )}
+                {s.href === "/events" && comingUp > 0 && (
+                  <span className="mr-3 flex shrink-0 flex-col items-center leading-none">
+                    <span className="text-2xl font-black italic">{comingUp}</span>
+                    <span className="text-[0.625rem] font-bold tracking-wide uppercase">{t("ui.guest.new.s.localCount", { region: regionName(region) })}</span>
+                  </span>
+                )}
               </Link>
             </li>
           ))}

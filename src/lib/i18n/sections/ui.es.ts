@@ -81,6 +81,7 @@ export const uiEs: Record<keyof typeof uiEn, string> = {
   "ui.guest.new.s.characterText": "Clips y guías de cada luchador.",
   "ui.guest.new.s.local": "Encuentra un local",
   "ui.guest.new.s.localText": "Torneos cerca de ti, para todos los niveles.",
+  "ui.guest.new.s.localCount": "en {region}",
   "ui.guest.new.s.watch": "Mira",
   "ui.guest.new.s.watchText": "Clips cortos de grandes momentos y de los mejores jugadores.",
   "ui.guest.new.s.history": "Conoce la historia",
