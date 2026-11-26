@@ -26,6 +26,7 @@ import { GAMES, gamesFor } from "@/lib/games";
 import { getMyGames, getMyHomeCity, needsProfile } from "@/lib/viewer";
 import { FeedSkeleton } from "@/components/ui/Skeleton";
 import GuestWelcome from "@/components/GuestWelcome";
+import { FeedTicker } from "@/components/LiveTicker";
 import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
 import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 import FeedStarter from "@/components/feed/FeedStarter";
@@ -207,6 +208,12 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
         <MySetsTeaser userId={userId} />
       </Suspense>
       <LiveMajorsBanner majors={liveMajors} />
+      {/* The ticker for signed-in players too (round 915); guests get theirs inside the welcome. */}
+      {userId && pageNum === 0 && !before && (
+        <Suspense fallback={null}>
+          <FeedTicker userId={userId} majors={majors.upcoming} />
+        </Suspense>
+      )}
       {pageNum === 0 && !before && <NewPostsBanner since={new Date(now * 1000).toISOString()} game={game} following={view === "following"} viewerId={userId} />}
       {userId && (
         <TabBar

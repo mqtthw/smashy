@@ -6,7 +6,6 @@ import RecentWinners from "@/components/events/RecentWinners";
 import TopClips from "@/components/feed/TopClips";
 import GameBadge from "@/components/GameBadge";
 import { MajorCard } from "@/components/majors/MajorParts";
-import { MajorDates } from "@/components/majors/MajorText";
 import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 import { getRegionEvents } from "@/lib/events";
 import { dateBadgeParts, formatEventDate, isRunning, whenLabel } from "@/lib/format";
@@ -19,6 +18,7 @@ import { detectedRegion } from "@/lib/viewerRegion";
 import Fold from "@/components/ui/Fold";
 import OverflowRow from "@/components/ui/OverflowRow";
 import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
+import LiveTicker, { tickerItems } from "@/components/LiveTicker";
 
 // The "start here" links at the top (round 654, for visitors from the Reddit posts): Smashy's
 // strongest parts, none of which need an account. A row of short links since round 845: as six cards
@@ -90,11 +90,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
   // The menu skin (round 909): how many tournaments are coming up here, and the ticker's lines (what's on
   // near the visitor, then the majors, then the week's results).
   const comingUp = notOver(events?.tournaments ?? []).length;
-  const ticker: { href: string; label: React.ReactNode; name: string; live?: boolean }[] = [
-    ...upcoming.map((ev) => ({ href: `/events/${ev.slug}`, label: whenLabel(ev, undefined, lang), name: ev.name, live: isRunning(ev) })),
-    ...nextMajors.map((m) => ({ href: `/events/${m.slug}`, label: m.live ? t("browse.majors.happeningNow") : <MajorDates m={m} />, name: m.name, live: m.live })),
-    ...results.map((ev) => ({ href: `/events/${ev.slug}`, label: t("ui.guest.results"), name: ev.name })),
-  ].filter((it, i, all) => all.findIndex((o) => o.href === it.href) === i);
+  const ticker = tickerItems(events, majors, lang, t);
 
   return (
     <section aria-labelledby="guest-welcome" className="flex flex-col gap-6 border-b border-line px-4 py-6">
@@ -102,25 +98,8 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
           menu of first steps, each with one line saying what's behind it; the people who already compete
           get their links in a quiet row under it. */}
       <div className="skin-new flex flex-col gap-4">
-        {/* What's on, running across the top (round 909). The second copy only makes the loop seamless. */}
-        {ticker.length > 0 && (
-          <div className="ticker -mx-4 -mt-2">
-            <div className="ticker-track">
-              {[0, 1].map((copy) => (
-                <ul key={copy} aria-hidden={copy === 1} className="flex shrink-0">
-                  {ticker.map((it) => (
-                    <li key={it.href} className="shrink-0">
-                      <Link href={it.href} tabIndex={copy === 1 ? -1 : undefined} className="flex items-center gap-2 px-4 py-1.5 text-sm whitespace-nowrap hover:underline">
-                        <span className={`text-meta font-black tracking-wide uppercase italic ${it.live ? "text-like" : "text-brand"}`}>{it.label}</span>
-                        <span className="font-semibold">{it.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* What's on, running across the top (round 909; its own component since round 915). */}
+        <LiveTicker items={ticker} className="-mx-4 -mt-2" />
         <div className="flex flex-col gap-1">
           <h2 className="text-3xl leading-none">{t("ui.guest.new.headline")}</h2>
           <p className="text-muted">{t("ui.guest.new.pitch")}</p>
