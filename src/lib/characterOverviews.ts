@@ -359,6 +359,38 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "Each Pokémon has a clear flaw on its own." },
       ],
     },
+    // Round 921 batch (English first).
+    roy: {
+      source: {
+        title: "Roy F.A.Q./Guide",
+        url: "https://docs.google.com/document/d/1Amg18hCm9V_k9YR_rJ7ArMP-oF2ww8MPAxg05hjJm8s/",
+        by: "BBaller",
+      },
+      playstyle: {
+        en: "A fast, hard-hitting swordfighter that the guide calls a fundamentals-based character. He finds openings through calculated aggression rather than throwing moves out, and generally does well against characters that lack the disjoints, frame data or speed to keep up with him. The guide finds him easier at low and mid level and harder at high level, where patience and knowing why his tools work matter.",
+      },
+      traits: [
+        {
+          name: "Sourspots",
+          text: { en: "Hits toward the end of his sword deal less damage and knockback, which can be an advantage or a disadvantage depending on the move and the situation. (Chrom, his echo fighter, has even damage along the whole sword.)" },
+        },
+        {
+          name: "Blazer",
+          text: { en: "His up special can be angled to recover more horizontally, and there are several ways to mix up his recovery. (Chrom's travels mainly straight up.)" },
+        },
+      ],
+      strengths: [
+        { en: "High kill power." },
+        { en: "Moves that are safe on shield." },
+        { en: "Speed that many opponents don't know how to deal with." },
+      ],
+      weaknesses: [
+        { en: "A somewhat poor disadvantage state when he's being comboed." },
+        { en: "Can be gimped, especially by characters with easy ways to do it." },
+        { en: "No projectiles to camp with, or easy answers to someone camping him with projectiles." },
+        { en: "Short characters make it hard to space his short-hop and landing aerials." },
+      ],
+    },
   },
   melee: {
     // Round 918 batch (English first).
@@ -401,6 +433,40 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       weaknesses: [
         { en: "The shortest grab range in the game, which also makes him less of a tech-chase character." },
         { en: "Not a very defensive character." },
+      ],
+    },
+    mario: {
+      source: {
+        title: "The Fundamentals of Mario",
+        url: "https://docs.google.com/document/d/1EhHgPgiP72WuTRw4lpISYVsJuxNzydjTogpHqy_rSuI/edit",
+        by: "Reynolds",
+      },
+      playstyle: {
+        en: "An improvisational character. The guide says Mario has no highly centralizing tools, just a lot of okay options, so there are always several paths once he gets an opening, and few bread-and-butter combos to fish for. Because openings are hard to find as Mario, the advice is to space just outside the opponent's reach, punish what misses, make every opening count, and not overextend.",
+      },
+      traits: [
+        {
+          name: "Compared with Dr. Mario",
+          text: { en: "Slightly better reach, less landing lag on every aerial, and better launch angles (up tilt especially). His aerials are weaker, which lets combos go on longer. Dr. Mario has stronger hits and more guaranteed finishers; the guide's view is that if either is stronger, it's marginal." },
+        },
+        {
+          name: "Fireballs",
+          text: { en: "The author prefers them to Dr. Mario's pills: they contest campy opponents, help his own recovery and edgeguards, and are his only practical true jab reset." },
+        },
+        {
+          name: "Forward smash",
+          text: { en: "A large, powerful, disjointed hit that lingers. It gives easy kill confirms and a space the opponent has to respect." },
+        },
+      ],
+      strengths: [
+        { en: "Several tools usually apply in the same situation, so his punishes can go many ways." },
+        { en: "Combos extend further thanks to weaker aerials and low landing lag." },
+        { en: "Less explored than popular characters, with room to develop a style of your own." },
+      ],
+      weaknesses: [
+        { en: "Finding an opening is hard." },
+        { en: "Nothing in his kit is particularly powerful." },
+        { en: "Faster characters such as Fox close and create distance much more quickly than he can." },
       ],
     },
   },
