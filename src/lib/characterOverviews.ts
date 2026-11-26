@@ -1104,6 +1104,341 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "Only two of his aerials can be L-cancelled." },
       ],
     },
+    // Round 929 batch: the rest of the Melee guides Matthew copied out (his second document).
+    jigglypuff: {
+      source: { title: "Become the next Sleepy Singer!", url: "https://smashboards.com/guides/become-the-next-sleepy-singer.689/", by: "tough9870 (Smashboards)", written: "November 2015" },
+      playstyle: {
+        en: "An aerial character. The guide's author, who says they aren't a professional, describes a ground game that runs from decent to not so good and an air game that is spot on: fast attacks, the best maneuverability in the air, and Rest, a KO move that is ready at almost any time. The advice is to stay in the air and approach with forward, neutral and back airs, which are safe when spaced.",
+      },
+      traits: [
+        {
+          name: "Rest",
+          text: { en: "The strongest instant-knockback move in the game. If it misses, Jigglypuff is left extremely vulnerable." },
+        },
+        {
+          name: "Wall of Pain",
+          text: { en: "A string of back airs or forward airs, which can lead into other moves, including Rest." },
+        },
+        {
+          name: "Pound",
+          text: { en: "Useful as a mix-up when approaching." },
+        },
+      ],
+      strengths: [
+        { en: "The fastest maneuverability in the air, and possibly the greatest aerial game in Melee." },
+        { en: "A deadly edgeguarding game." },
+        { en: "Excellent recovery options." },
+        { en: "Light, so she escapes combos easily." },
+        { en: "Great combo potential and powerful smash attacks." },
+      ],
+      weaknesses: [
+        { en: "Light, so she is KO'd early." },
+        { en: "Slow walking and running, with a short wavedash and dash dance." },
+        { en: "No projectile." },
+        { en: "A missed Rest is punished heavily." },
+      ],
+    },
+    kirby: {
+      source: { title: "Kirby: What I've discovered", url: "https://smashboards.com/guides/kirby-what-ive-discovered.1117/", by: "Dupe (Smashboards)", written: "October 2017" },
+      playstyle: {
+        en: "The guide says Kirby's neutral is like Jigglypuff's, only worse at it, because he lacks her drift in the air. So he combines spaced back airs with his ground movement to build a wall: back air and forward air in the air, forward and up tilts on the ground. His movement is clunky at first but workable across small areas.",
+      },
+      traits: [
+        {
+          name: "Movement",
+          text: { en: "18th in dash speed and 17th in wavedash length, with a 4-frame jumpsquat, the same as Fox's." },
+        },
+        {
+          name: "Recovery",
+          text: { en: "Above the stage it is one of the better ones, alongside Jigglypuff's and Peach's. Level with the ledge or below it, he has to use his up special, which is easy to hit and to keep offstage." },
+        },
+      ],
+      strengths: [
+        { en: "A good recovery from above the stage." },
+        { en: "Back air spacing that can form a decent wall." },
+      ],
+      weaknesses: [
+        { en: "Little drift in the air." },
+        { en: "A terrible up special for recovering from low." },
+        { en: "Needs near frame-perfect movement against Fox and Falco." },
+      ],
+    },
+    luigi: {
+      source: { title: "Luigi | A Guide to Mastery", url: "https://smashboards.com/guides/luigi-a-guide-to-mastery-by-dire-creeper-outdated-read-the-note.506/", by: "Dire Creeper (Smashboards)", written: "June 2015; its author marks it as outdated" },
+      playstyle: {
+        en: "Odd in a new player's hands, powerful and agile in a smart player's. The guide says his ground movement is ridiculously fast and versatile because he has the longest wavedash in the game, and that his aerials are some of the best for their power, speed and low lag. He has the worst horizontal air speed, so he relies on that wavedash to move and approach. The guide calls him very difficult to master.",
+      },
+      traits: [
+        {
+          name: "Wavedash",
+          text: { en: "The longest in the game, and the basis of how he moves and approaches." },
+        },
+        {
+          name: "Floatiness",
+          text: { en: "It helps his combos and air game, keeps him out of most mid-to-high percent combos and chain grabs, and helps his recovery; it works against him when he is being juggled and needs to land." },
+        },
+        {
+          name: "Neutral air",
+          text: { en: "One of the best of its kind: out on frame 3, sends straight up, and interrupts opponents' combos." },
+        },
+      ],
+      strengths: [
+        { en: "Very fast, versatile ground movement." },
+        { en: "Some of the best aerials in the game, and a good variety of KO and combo moves." },
+        { en: "High priority on his moves." },
+      ],
+      weaknesses: [
+        { en: "The worst horizontal air speed in the game." },
+        { en: "A predictable recovery that is easy to edgeguard, despite its distance." },
+        { en: "Needs very high technical skill and fast hands." },
+      ],
+    },
+    marth: {
+      source: { title: "It's All About the Spacing", url: "https://smashboards.com/guides/its-all-about-the-spacing.172/", by: "JUSTN (Smashboards)", written: "January 2015, updated March 2015" },
+      playstyle: {
+        en: "A swordsman who wins on range and spacing. The guide, whose author says they are no expert, describes a sword that out-ranges opponents up close and quick attacks that interrupt them. Its title is the lesson: space attacks so the tip of the sword connects.",
+      },
+      traits: [
+        {
+          name: "The tipper",
+          text: { en: "His sword does much more damage and knockback at its tip. The guide calls it his bread and butter." },
+        },
+        {
+          name: "Forward air",
+          text: { en: "Described as a Marth player's most used move: it interrupts opponents' aerials, can lead to a grab, and starts the Ken Combo." },
+        },
+        {
+          name: "Forward smash",
+          text: { en: "One of his best attacks and his most reliable finisher; tipped, it KOs at low percent." },
+        },
+      ],
+      strengths: [
+        { en: "Out-ranges opponents at close quarters." },
+        { en: "Quick attacks that interrupt." },
+      ],
+      weaknesses: [
+        { en: "His weight makes him easy to chain grab, and Fox and Falco can combo him heavily." },
+        { en: "A predictable recovery that is easily edgeguarded." },
+        { en: "Little shield pressure." },
+      ],
+    },
+    mewtwo: {
+      source: { title: "The forgotten #150 pokemon", url: "https://smashboards.com/guides/the-forgotten-150-pokemon.757/", by: "ShadowKing (Smashboards)", written: "December 2015" },
+      playstyle: {
+        en: "A short guide written to show Mewtwo is better than his reputation. It points to his tail as his best spacing tool, Shadow Ball as a very strong projectile, down tilt as a combo starter and up tilt as a juggle and KO move.",
+      },
+      traits: [
+        {
+          name: "Tail",
+          text: { en: "His best spacing tool." },
+        },
+        {
+          name: "Shadow Ball",
+          text: { en: "A very strong projectile." },
+        },
+      ],
+      strengths: [
+        { en: "One of the best recoveries." },
+        { en: "The third best wavedash." },
+        { en: "Strong KO moves." },
+      ],
+      weaknesses: [
+        { en: "Light, so he can be KO'd very early." },
+        { en: "Can be comboed at any percent." },
+        { en: "Lacks speed." },
+      ],
+    },
+    ness: {
+      source: { title: "Ness", url: "https://smashboards.com/guides/ness.1057/", by: "Chief_ (Smashboards)", written: "February 2017" },
+      playstyle: {
+        en: "The guide calls Ness a fundamental and complex character. His neutral is built on the double jump cancel, which lets him vary his movement on the ground, on platforms and when landing; he uses PK Fire to make space, dash dancing to bait, and spaced forward airs to gain ground and start pressure.",
+      },
+      traits: [
+        {
+          name: "Double jump cancel",
+          text: { en: "A technique with his second jump (the guide writes DJC). It makes his aerials good for mix-ups, for hitting awkward angles and for poking through platforms." },
+        },
+        {
+          name: "Punishes",
+          text: { en: "From a dash attack, down throw or up throw he follows with forward air or up air; a down air can lead to a tech chase on fast-fallers." },
+        },
+      ],
+      strengths: [
+        { en: "Forward air has good knockback and combo potential." },
+        { en: "Down air and his up special can gimp fast-fallers early." },
+        { en: "Up air is good for juggling." },
+      ],
+      weaknesses: [
+        { en: "A bad recovery." },
+        { en: "Limited options from the ledge." },
+        { en: "A terrible jab and a short grab range." },
+      ],
+    },
+    peach: {
+      source: { title: "Fieari's Newbie Peach Training Guide", url: "https://smashboards.com/guides/fiearis-newbie-peach-training-guide.1074/", by: "Fieari, reposted by ZexM (Smashboards)", written: "2004" },
+      playstyle: {
+        en: "A beginner's guide from 2004. It describes Peach as a wicked brawler at close range whose ground game is mostly three things: down smash, dash attack and turnips. What sets her apart is her float, which she uses to hover at head height where most ground attacks miss her, and to attack on the way down.",
+      },
+      traits: [
+        {
+          name: "Float",
+          text: { en: "Holding jump lets her hover. Floating level with the opponent's face makes most of their ground attacks miss and forces them to jump at her." },
+        },
+        {
+          name: "Float cancel",
+          text: { en: "An aerial started while floating has its landing lag cancelled when she drops, faster than L-cancelling. The guide's first combo from it is a float-cancelled aerial into down smash." },
+        },
+        {
+          name: "Turnips",
+          text: { en: "She pulls them from the ground and throws them: her projectile, and one of her three main ground tools." },
+        },
+      ],
+      strengths: [
+        { en: "Strong close-quarters attacks." },
+        { en: "Floating lets her avoid ground attacks and attack with almost no landing lag." },
+      ],
+      weaknesses: [],
+    },
+    pichu: {
+      source: { title: "Pichu Power of The Mouse", url: "https://smashboards.com/guides/pichu-power-of-the-mouse.311/", by: "Ace Mcconnell (Smashboards)", written: "March 2015" },
+      playstyle: {
+        en: "The guide's author, who doesn't claim to be a pro, opens by saying Pichu is fundamentally flawed and then explains how to play him anyway. The core idea is to keep self-damage down: use neutral air where forward air or down air would do, and save the electric moves for where they matter, such as Thunder Jolt for pressure and edgeguarding.",
+      },
+      traits: [
+        {
+          name: "Self-damage",
+          text: { en: "His electric attacks hurt him too: about 1% from Thunder Jolt and 4% each time he uses his up special." },
+        },
+        {
+          name: "Thunder Jolt",
+          text: { en: "His only projectile. The guide says to use it in the air where possible, and that its slow travel makes it an effective edgeguard." },
+        },
+        {
+          name: "Recovery",
+          text: { en: "Very reliable, though predictable: side special, then jump, then up special gets him back from almost anywhere." },
+        },
+      ],
+      strengths: [
+        { en: "A very reliable recovery." },
+        { en: "A projectile that pressures and edgeguards." },
+      ],
+      weaknesses: [
+        { en: "Half his moves damage himself." },
+        { en: "Poor attack range." },
+      ],
+    },
+    samus: {
+      source: { title: "Samus: The Missile Maniac", url: "https://smashboards.com/guides/samus-the-missile-maniac.260/", by: "gamegod7 (Smashboards)", written: "February 2015" },
+      playstyle: {
+        en: "An introduction for new Samus players. It describes a floaty, hard-to-KO character with solid projectiles that make space and can KO at high percent, who moves well on the ground through wavedashing. The guide recommends her to players who don't want to learn a huge amount of technique before being a threat.",
+      },
+      traits: [
+        {
+          name: "Missiles and missile cancelling",
+          text: { en: "Missile cancelling lets her have several projectiles out at once." },
+        },
+        {
+          name: "Grapple Beam",
+          text: { en: "The longest grab in the game, and it can latch onto the stage to recover, which makes her harder to edgeguard. As a grab it is slow and easy to punish." },
+        },
+        {
+          name: "Neutral air",
+          text: { en: "A long-lasting aerial with a lot of priority." },
+        },
+      ],
+      strengths: [
+        { en: "Floaty: she recovers from long distances and is hard to KO." },
+        { en: "Solid projectiles." },
+        { en: "A good crouch cancel, which helps her survive at high percents." },
+        { en: "A wall jump." },
+      ],
+      weaknesses: [
+        { en: "Heavy, so without good DI she can be comboed easily." },
+        { en: "Very few options out of shield." },
+        { en: "A slow, dangerous grab." },
+      ],
+    },
+    sheik: {
+      source: { title: "Ocarina' is like Steins;Gate", url: "https://smashboards.com/guides/ocarina-is-like-steins-gate.244/", by: "dude it's raining (Smashboards)", written: "February 2015" },
+      playstyle: {
+        en: "Sheik's general strategy, in the guide's words: rack up damage with needles and her strong grab game, then start a combo with her strong tilts that leads to a KO or an edgeguard. She also looks to gimp at early percents because of her offstage game. Early in a stock, when many of her moves can be crouch cancelled, the guide says her best punish is a grab.",
+      },
+      traits: [
+        {
+          name: "Needles",
+          text: { en: "An excellent projectile for building damage and for edgeguarding." },
+        },
+        {
+          name: "Tilts",
+          text: { en: "All extremely fast and strong, and they lead into each other and into her aerials." },
+        },
+        {
+          name: "Grab game",
+          text: { en: "Down throw leads into follow-ups, chain grabs and tech chases." },
+        },
+      ],
+      strengths: [
+        { en: "Tech chasing." },
+        { en: "Edgeguarding with back air and needles." },
+        { en: "High ground speed, which gives her strong stage control." },
+        { en: "Fast, powerful attacks; the guide says technical skill matters less for her than for most." },
+      ],
+      weaknesses: [
+        { en: "A very punishable recovery." },
+        { en: "Her weight makes her susceptible to many combos." },
+        { en: "Much of her moveset can be crouch cancelled at early percents." },
+        { en: "A short dash dance and wavedash." },
+      ],
+    },
+    ganondorf: {
+      source: { title: "The Power of The Triforce", url: "https://smashboards.com/guides/the-power-of-the-triforce.58/", by: "Sauron_The_Great (Smashboards)", written: "October 2014" },
+      playstyle: {
+        en: "A short, casual guide. Its summary: his attacks are slow but strong, and he can be played as all-out attack or as rock-solid defense. It rates his aerials especially highly and says his grab combos are excellent when chained, particularly against Fox and Falco.",
+      },
+      traits: [
+        {
+          name: "Up air",
+          text: { en: "He can fit two into one jump, and a reversed up air can't be teched." },
+        },
+        {
+          name: "Down air",
+          text: { en: "A meteor smash the guide rates among the best in the game." },
+        },
+      ],
+      strengths: [
+        { en: "Excellent range, with one of the farthest-reaching forward smashes." },
+        { en: "Powerful throws that chain well." },
+        { en: "An excellent edgeguarding game." },
+        { en: "Heavy and hard to KO." },
+      ],
+      weaknesses: [
+        { en: "No projectile, which the guide calls his main weakness." },
+        { en: "Slow." },
+      ],
+    },
+    roy: {
+      source: { title: "How to utilize Roy and his (not so) great moves", url: "https://smashboards.com/guides/how-to-utilize-roy-and-his-not-so-great-moves-wip.1131/", by: "Zacory (Foxy) (Smashboards)", written: "December 2017" },
+      playstyle: {
+        en: "A guide by a two-year Roy player on getting the most from each of his moves. It describes a fast character, because of his fall speed and an excellent wavedash that gives both distance and options, who struggles against projectiles.",
+      },
+      traits: [
+        {
+          name: "Wavedash",
+          text: { en: "Excellent: good distance and good options out of it. His jump takes 5 frames to leave the ground, which the guide calls not terrible, just not the fastest." },
+        },
+        {
+          name: "Forward tilt",
+          text: { en: "Situational, but his best answer to projectiles: it moves him forward and hits them out of the air." },
+        },
+      ],
+      strengths: [
+        { en: "Fast movement." },
+        { en: "An excellent wavedash." },
+      ],
+      weaknesses: [
+        { en: "Struggles against projectiles." },
+      ],
+    },
   },
 };
 
