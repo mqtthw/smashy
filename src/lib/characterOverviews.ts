@@ -170,7 +170,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         by: "Soul Train",
       },
       playstyle: {
-        en: "A defensive heavyweight who excels at trapping and surviving. He uses his long hammer and Gordo to push opponents to the edge and take their stock early from there; the guide calls the opponent being offstage his one true advantage state. A patient Dedede always has a chance.",
+        en: "A defensive heavyweight who excels at trapping and surviving. He uses his long hammer and Gordo to push opponents to the edge and take their stock early from there; the opponent being offstage is his one true advantage state. A patient Dedede always has a chance.",
       },
       traits: [
         {
@@ -185,7 +185,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       strengths: [
         { en: "Lives a very long time." },
         { en: "Ledge traps and edgeguards that can end stocks very early." },
-        { en: "Big damage from few hits: the guide lists combos doing 63% off two moves." },
+        { en: "Big damage from few hits, with combos doing 63% off two moves." },
       ],
       weaknesses: [
         { en: "Large and fast-falling with high end lag on most moves: a lackluster neutral, and he can't approach easily, so patient keepaway is hard for him." },
@@ -200,12 +200,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         by: "the Piranha Plant Discord (the guide's author isn't named)",
       },
       playstyle: {
-        en: "A keepaway character built around anti-airs. Plant pokes, zones with Ptooie, closes off space with Poison Breath, and catches people as they come down; the guide says most of its damage comes from anti-airs and ledge trapping, and that it isn't built to approach.",
+        en: "A keepaway character built around anti-airs. Plant pokes, zones with Ptooie, closes off space with Poison Breath, and catches people as they come down. Most of its damage comes from anti-airs and ledge trapping, and it isn't built to approach.",
       },
       traits: [
         {
           name: "Ptooie",
-          text: { en: "The spiked ball. Used to zone and to lock down an opponent's shield; the guide warns that spamming it is a common beginner mistake." },
+          text: { en: "The spiked ball. Used to zone and to lock down an opponent's shield. Spamming it is a common beginner mistake." },
         },
         {
           name: "Poison Breath",
@@ -232,12 +232,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         by: "Issun, with thanks to the Robin Discord",
       },
       playstyle: {
-        en: "Versatile, adaptive and territorial. Robin controls space with ranged spells and with the long, hard-hitting Levin Sword, and changes the game plan by matchup and by which resources are left. The guide says Robin excels when in control, and can be frustratingly complicated for beginners.",
+        en: "Versatile, adaptive and territorial. Robin controls space with ranged spells and with the long, hard-hitting Levin Sword, and changes the game plan by matchup and by which resources are left. Robin excels when in control, and can be frustratingly complicated for beginners.",
       },
       traits: [
         {
           name: "Limited resources",
-          text: { en: "The Levin Sword and each spell tome run out and come back after a while, so Robin regularly loses some of the best options and has to adapt. With the Levin Sword gone (about 10 seconds), the guide advises playing more passively." },
+          text: { en: "The Levin Sword and each spell tome run out and come back after a while, so Robin regularly loses some of the best options and has to adapt. With the Levin Sword gone (about 10 seconds), it is better to play more passively." },
         },
         {
           name: "Levin Sword",
@@ -266,7 +266,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         by: "Spectrum, Natedawg, Marshi, Danilio8 and CptRemex",
       },
       playstyle: {
-        en: "Bait and punish. The guide recommends neither pure rushdown nor camping: make the opponent miss, then counterattack with a high-damage punish. That can lean aggressive (pressing the opponent into hasty choices) or defensive (giving up a little space and punishing the approach).",
+        en: "Bait and punish. Neither pure rushdown nor camping works: make the opponent miss, then counterattack with a high-damage punish. That can lean aggressive (pressing the opponent into hasty choices) or defensive (giving up a little space and punishing the approach).",
       },
       traits: [
         {
@@ -275,11 +275,11 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Desync",
-          text: { en: "Making the two climbers act separately. The guide says it essentially doubles their coverage and opens up a huge range of combos, punishes and early KO setups, and it teaches the desync techniques in order." },
+          text: { en: "Making the two climbers act separately. It essentially doubles their coverage and opens up a huge range of combos, punishes and early KO setups." },
         },
         {
           name: "Grab, Blizzard, up air",
-          text: { en: "Their strongest KO confirms and combos come from grabbing, from freezing the opponent with Blizzard, or from up air while synced, so the guide suggests asking how each combo leads to one of those." },
+          text: { en: "Their strongest KO confirms and combos come from grabbing, from freezing the opponent with Blizzard, or from up air while synced, so it helps to ask how each combo leads to one of those." },
         },
       ],
       strengths: [
@@ -302,12 +302,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       },
       stats: { weight: 107 },
       playstyle: {
-        en: "A big character with a sword-like tail and tools for defensive, balanced or offensive play. The guide describes a patient neutral built on being unpredictable: wait, threaten with position and huge hitboxes, punish the opponent's mistake, then keep the advantage for as long as possible.",
+        en: "A big character with a sword-like tail and tools for defensive, balanced or offensive play. His neutral is patient and built on being unpredictable: wait, threaten with position and huge hitboxes, punish the opponent's mistake, then keep the advantage for as long as possible.",
       },
       traits: [
         {
           name: "Neutral air",
-          text: { en: "The centerpiece of his moves: disjointed, long-lasting, and the usual way into advantage. The guide warns it is easy to lean on too much and become predictable." },
+          text: { en: "The centerpiece of his moves: disjointed, long-lasting, and the usual way into advantage. It is easy to lean on too much and become predictable." },
         },
         {
           name: "The tail",
@@ -340,7 +340,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         by: "Contrary and the Pokemon Trainer community",
       },
       playstyle: {
-        en: "Three Pokémon with three movesets and three playstyles that cover for each other. The guide calls Pokémon Trainer one of the most complicated characters in the game, and the one with the most tools for the rest of the roster: Squirtle for low percents, then a switch to Ivysaur or Charizard, who take stocks more easily.",
+        en: "Three Pokémon with three movesets and three playstyles that cover for each other. Pokémon Trainer is one of the most complicated characters in the game, and the one with the most tools for the rest of the roster: Squirtle for low percents, then a switch to Ivysaur or Charizard, who take stocks more easily.",
       },
       traits: [
         {
@@ -349,7 +349,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Ivysaur",
-          text: { en: "The most versatile, and the guide's leader of the trio: zoning, mid-percent confirms and edgeguarding, with a low body and very disjointed hitboxes. Her mobility and frame data are mediocre." },
+          text: { en: "The most versatile, and the leader of the trio: zoning, mid-percent confirms and edgeguarding, with a low body and very disjointed hitboxes. Her mobility and frame data are mediocre." },
         },
         {
           name: "Charizard",
@@ -357,7 +357,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Pokémon Change",
-          text: { en: "Down special switches Pokémon. It also works as a way out of combos, and the guide suggests switching after winning an exchange, so the next Pokémon comes in from a good position." },
+          text: { en: "Down special switches Pokémon. It also works as a way out of combos. Switching after winning an exchange lets the next Pokémon come in from a good position." },
         },
       ],
       strengths: [
@@ -377,7 +377,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         by: "BBaller",
       },
       playstyle: {
-        en: "A fast, hard-hitting swordfighter that the guide calls a fundamentals-based character. He finds openings through calculated aggression rather than throwing moves out, and generally does well against characters that lack the disjoints, frame data or speed to keep up with him. The guide finds him easier at low and mid level and harder at high level, where patience and knowing why his tools work matter.",
+        en: "A fast, hard-hitting swordfighter built on fundamentals. He finds openings through calculated aggression rather than throwing moves out, and generally does well against characters that lack the disjoints, frame data or speed to keep up with him. He is easier at low and mid level and harder at high level, where patience and knowing why his tools work matter.",
       },
       traits: [
         {
@@ -406,12 +406,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     samus: {
       source: { title: "Samus/Dark Samus Competitive Guide", url: "https://smashboards.com/guides/samus-dark-samus-competitive-guide.1175/", by: "Dr. Jay (Smashboards)", written: "December 2018" },
       playstyle: {
-        en: "Patient and defensive: the guide calls her “the chess player's character”. She waits across the stage charging her Charge Shot and stopping bad approaches with missiles, then punishes a single mistake hard. She is slow, so her game is about clean, precise moves, reads and reactions rather than fast inputs.",
+        en: "Patient and defensive: “the chess player's character”. She waits across the stage charging her Charge Shot and stopping bad approaches with missiles, then punishes a single mistake hard. She is slow, so her game is about clean, precise moves, reads and reactions rather than fast inputs.",
       },
       traits: [
         {
           name: "Charge Shot",
-          text: { en: "The guide says Samus “lives and dies” by it: charge it after every KO and whenever there's a spare second, because the threat of a full charge matters far more than an uncharged shot. It also does heavy damage to shields." },
+          text: { en: "Samus “lives and dies” by it: charge it after every KO and whenever there's a spare second, because the threat of a full charge matters far more than an uncharged shot. It also does heavy damage to shields." },
         },
         {
           name: "Missiles",
@@ -419,7 +419,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Samus or Dark Samus",
-          text: { en: "They play the same. The main difference the guide gives is that Dark Samus's projectiles travel lower to the ground, which helps against short characters, while Samus's forward smash reaches slightly further." },
+          text: { en: "They play the same. The main difference is that Dark Samus's projectiles travel lower to the ground, which helps against short characters, while Samus's forward smash reaches slightly further." },
         },
       ],
       strengths: [
@@ -435,12 +435,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     yoshi: {
       source: { title: "Competitive Guide to Playing as and Against Yoshi", url: "https://smashboards.com/guides/competitive-guide-to-playing-as-and-against-yoshi-in-smash-ultimate.1168/", by: "Dr. Jay (Smashboards)", written: "December 2018" },
       playstyle: {
-        en: "A mobile, rushdown-style character. With the best air speed in the game and a solid dash, Yoshi weaves in and out of range (the guide's phrase is a “guerrilla warfare dinosaur”) and fights mostly with fast aerials that lead into combos and KO confirms. His eggs are a good projectile, but he is more of a rushdown character than a zoner.",
+        en: "A mobile, rushdown-style character. With the best air speed in the game and a solid dash, Yoshi weaves in and out of range like a “guerrilla warfare dinosaur” and fights mostly with fast aerials that lead into combos and KO confirms. His eggs are a good projectile, but he is more of a rushdown character than a zoner.",
       },
       traits: [
         {
           name: "Double jump armor",
-          text: { en: "His midair jump (and Egg Lay and the standing Ground Pound) has armor: he takes the damage but not the knockback. It wins trades and makes recovering much easier. The guide's advice against Yoshi is to watch for the double jump and punish it; one heavy hit goes through the armor." },
+          text: { en: "His midair jump (and Egg Lay and the standing Ground Pound) has armor: he takes the damage but not the knockback. It wins trades and makes recovering much easier. Opponents should watch for the double jump and punish it; one heavy hit goes through the armor." },
         },
         {
           name: "Recovery",
@@ -448,7 +448,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Egg Toss and Ground Pound",
-          text: { en: "Eggs can be angled to cover many directions and bounce. Ground Pound is used to recover, edgeguard and KO, and helps him avoid being juggled. The guide says his side special is best avoided." },
+          text: { en: "Eggs can be angled to cover many directions and bounce. Ground Pound is used to recover, edgeguard and KO, and helps him avoid being juggled. His side special is best avoided." },
         },
       ],
       strengths: [
@@ -464,7 +464,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     jigglypuff: {
       source: { title: "Jigglypuff Beginner's Guide", url: "https://smashboards.com/guides/jigglypuff-beginners-guide.1215/", by: "Zarxrax (Smashboards)", written: "March 2019" },
       playstyle: {
-        en: "An air fighter through and through. Jigglypuff floats just outside the opponent's range throwing out long-lasting aerials, then weaves in when there's an opening. She is fast in the air and slow on the ground, so the guide says to spend little time grounded and to avoid shielding where possible.",
+        en: "An air fighter through and through. Jigglypuff floats just outside the opponent's range throwing out long-lasting aerials, then weaves in when there's an opening. She is fast in the air and slow on the ground, so she should spend little time grounded and avoid shielding where possible.",
       },
       traits: [
         {
@@ -473,7 +473,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Six jumps",
-          text: { en: "One from the ground and five in the air. The guide suggests counting them so she never ends up offstage without enough to get back." },
+          text: { en: "One from the ground and five in the air. Count them, so she never ends up offstage without enough to get back." },
         },
         {
           name: "Shield break",
@@ -494,7 +494,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     ganondorf: {
       source: { title: "Hail to the Demon King: A Ganondorf Guide", url: "https://smashboards.com/guides/hail-to-the-demon-king-a-ganondorf-guide-ver-1-7-0.1178/", by: "King9999 (Smashboards)", written: "January 2019, updated through patch 11.0.0" },
       playstyle: {
-        en: "Slow and enormously powerful. He hits harder than almost anyone and his sword smash attacks reach a long way, but he moves slowly and his recovery is poor, so opponents who can keep him out have the advantage. Against them the guide advises patience and picking moves carefully.",
+        en: "Slow and enormously powerful. He hits harder than almost anyone and his sword smash attacks reach a long way, but he moves slowly and his recovery is poor, so opponents who can keep him out have the advantage. Against them he needs patience and carefully picked moves.",
       },
       traits: [
         {
@@ -503,7 +503,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Flame Choke and Dark Dive",
-          text: { en: "The guide calls Flame Choke one of his best moves: it grabs the opponent and sets up tech chases. Dark Dive can't be blocked, so it catches opponents who shield expecting a smash attack." },
+          text: { en: "Flame Choke is one of his best moves: it grabs the opponent and sets up tech chases. Dark Dive can't be blocked, so it catches opponents who shield expecting a smash attack." },
         },
         {
           name: "Wizard's Foot",
@@ -526,7 +526,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     "dr-mario": {
       source: { title: "The Complete Ultimate Dr. Mario Guide", url: "https://smashboards.com/guides/the-complete-ultimate-dr-mario-guide.1207/", by: "ASAP_Smash (Smashboards)", written: "February 2019" },
       playstyle: {
-        en: "A slow, hard-hitting version of Mario that the guide calls a high-risk, high-reward glass cannon and a “methodical set-up” character. Because approaching and recovering are bad for him, he stays on the ground, zones with pills to make people jump, and punishes from shield. The guide's word for what he needs is patience.",
+        en: "A slow, hard-hitting version of Mario: a high-risk, high-reward glass cannon and a “methodical set-up” character. Because approaching and recovering are bad for him, he stays on the ground, zones with pills to make people jump, and punishes from shield. What he needs most is patience.",
       },
       traits: [
         {
@@ -555,7 +555,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     mewtwo: {
       source: { title: "Mewtwo Guide", url: "https://smashboards.com/guides/mewtwo-guide.1179/", by: "Macchus (Smashboards)", written: "January 2019" },
       playstyle: {
-        en: "A glass cannon. Mewtwo puts out high damage and strong combo strings and has smash attacks that KO at low percent, but his body is huge and he is light and floaty, so he gets comboed and KO'd just as easily. For neutral the guide points to Shadow Ball, down tilt, forward tilt, neutral air, forward air and jab as his reliable tools.",
+        en: "A glass cannon. Mewtwo puts out high damage and strong combo strings and has smash attacks that KO at low percent, but his body is huge and he is light and floaty, so he gets comboed and KO'd just as easily. In neutral his reliable tools are Shadow Ball, down tilt, forward tilt, neutral air, forward air and jab.",
       },
       traits: [
         {
@@ -564,7 +564,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Teleport",
-          text: { en: "His recovery, which the guide rates as strong, and a movement tool on stage." },
+          text: { en: "His recovery, which is strong, and a movement tool on stage." },
         },
         {
           name: "Confusion",
@@ -587,7 +587,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     chrom: {
       source: { title: "A Comprehensive Competitive Guide to Chrom", url: "https://smashboards.com/guides/a-comprehensive-competitive-guide-to-chrom-ultimates-melee-character.1191/", by: "TheDMatch (Smashboards)", written: "January 2019" },
       playstyle: {
-        en: "A fast sword character who rushes down, hits with several low-lag aerials and finishes with plenty of kill confirms. The guide compares him to Melee's Marth for his quick movement, combos and flow. His neutral and his best moves revolve around his aerials, and he is a threat on the ground too.",
+        en: "A fast sword character who rushes down, hits with several low-lag aerials and finishes with plenty of kill confirms. He is like Melee's Marth in his quick movement, combos and flow. His neutral and his best moves revolve around his aerials, and he is a threat on the ground too.",
       },
       traits: [
         {
@@ -596,7 +596,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Soaring Slash (up special)",
-          text: { en: "The guide calls it probably his best move as an attack: a big first hit, super armor at the start, about 23% if every hit connects, and one of his fastest options out of shield. As a recovery it goes mostly straight up." },
+          text: { en: "Probably his best move as an attack: a big first hit, super armor at the start, about 23% if every hit connects, and one of his fastest options out of shield. As a recovery it goes mostly straight up." },
         },
         {
           name: "Aerials",
@@ -616,7 +616,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     sonic: {
       source: { title: "Art of Sonic Guide for Ultimate", url: "https://smashboards.com/guides/art-of-sonic-guide-for-ultimate-completed-more-updates-in-the-future.1192/", by: "Sonic Meaper (Smashboards)", written: "January 2019" },
       playstyle: {
-        en: "The guide describes Smash 4's Sonic as a heavy bait-and-punish character built around Spin Dash, and Ultimate's Sonic as one who uses many tools instead, because Spin Dash was weakened (an uncharged one stops at a shield). It says he does better than before in both advantage and disadvantage.",
+        en: "In Smash 4 Sonic was a heavy bait-and-punish character built around Spin Dash. In Ultimate he uses many tools instead, because Spin Dash was weakened (an uncharged one stops at a shield). He does better than before in both advantage and disadvantage.",
       },
       traits: [
         {
@@ -625,11 +625,11 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Homing Attack",
-          text: { en: "Starts much faster than in Smash 4, which the guide says makes it almost impossible to react to, and it helps him get out of disadvantage as long as it isn't overused." },
+          text: { en: "Starts much faster than in Smash 4, which makes it almost impossible to react to, and it helps him get out of disadvantage as long as it isn't overused." },
         },
         {
           name: "Spring Jump",
-          text: { en: "His up special, part of a recovery the guide lists among his strengths." },
+          text: { en: "His up special, part of a strong recovery." },
         },
       ],
       strengths: [
@@ -670,7 +670,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       strengths: [
         { en: "Projectiles that force the opponent to approach." },
         { en: "Edgeguarding and ledge trapping." },
-        { en: "A down air spike that the guide says demolishes linear, delayed recoveries." },
+        { en: "A down air spike that demolishes linear, delayed recoveries." },
       ],
       weaknesses: [
         { en: "Pretty terrible in disadvantage: a huge frame with mediocre frame data and nothing to escape true combos with." },
@@ -680,7 +680,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     greninja: {
       source: { title: "Greninjuts-Two: A Beginner to Intermediate Guide to Greninja", url: "https://smashboards.com/guides/greninjuts-two.1202/", by: "Ludi (Ludiloco on Smashboards)", written: "February 2019" },
       playstyle: {
-        en: "Bait and punish. Greninja has some of the best mobility in the game, but his moves are fairly committal and his approaches fairly linear, so the guide has him use that speed to feint, draw a response and punish it rather than rush in. Water Shuriken, his long-range projectile, makes opponents come to him. The guide warns he can't be played recklessly.",
+        en: "Bait and punish. Greninja has some of the best mobility in the game, but his moves are fairly committal and his approaches fairly linear, so he uses that speed to feint, draw a response and punish it rather than rush in. Water Shuriken, his long-range projectile, makes opponents come to him. He can't be played recklessly.",
       },
       traits: [
         {
@@ -693,7 +693,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Combos",
-          text: { en: "The guide describes one of the most diverse and deep combo trees, rewarding players who can execute it." },
+          text: { en: "One of the most diverse and deep combo trees, rewarding players who can execute it." },
         },
       ],
       strengths: [
@@ -704,19 +704,19 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       weaknesses: [
         { en: "His moves are medium-to-large commitments." },
         { en: "Most of his approach options are fairly linear." },
-        { en: "The guide says he may not suit players who struggle to control very fast characters, or to use a recovery that has no hitbox." },
+        { en: "He may not suit players who struggle to control very fast characters, or to use a recovery that has no hitbox." },
       ],
     },
     // Round 926 batch: the last usable guides in Matthew's Smashboards document.
     palutena: {
       source: { title: "The playful Goddess of Skyworld: Lady Palutena", url: "https://smashboards.com/guides/the-playful-goddess-of-skyworld-lady-palutena.1176/", by: "BelChydru (Smashboards)", written: "December 2018" },
       playstyle: {
-        en: "A bait-and-punish character: the guide says she thrives by tricking the opponent into thinking they can punish her, then capitalizing on their mistake. Her speed and her aerials let her punish consistently, and she is elusive on stage and strong at edgeguarding.",
+        en: "A bait-and-punish character: she thrives by tricking the opponent into thinking they can punish her, then capitalizing on their mistake. Her speed and her aerials let her punish consistently, and she is elusive on stage and strong at edgeguarding.",
       },
       traits: [
         {
           name: "Back air and forward air",
-          text: { en: "Forward air is her spacing tool and starts combos at low to mid percent. The guide says opponents need a very long-reaching hit to challenge back air; it is her best edgeguarding tool and a KO move." },
+          text: { en: "Forward air is her spacing tool and starts combos at low to mid percent. Opponents need a very long-reaching hit to challenge back air; it is her best edgeguarding tool and a KO move." },
         },
         {
           name: "Jab and down tilt",
@@ -724,7 +724,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Warp",
-          text: { en: "Her up special: she disappears and reappears where she chooses, invisible and unable to be hit on the way. The guide uses it strictly for recovering, and says it makes her hard to punish when she goes offstage to edgeguard." },
+          text: { en: "Her up special: she disappears and reappears where she chooses, invisible and unable to be hit on the way. It is strictly for recovering, and it makes her hard to punish when she goes offstage to edgeguard." },
         },
       ],
       strengths: [
@@ -742,7 +742,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     hero: {
       source: { title: "My definitive Hero guide", url: "https://smashboards.com/guides/my-definitive-hero-guide.1279/", by: "Linkmain-maybe (Smashboards)", written: "January 2022" },
       playstyle: {
-        en: "The guide's author stresses they aren't a professional. In their description Hero has a difficult neutral, with no burst options and few safe moves, so he conditions the opponent with long-range spells and wins exchanges on reads. His reward is in advantage: big single hits rather than combos, and taking stocks extremely early, which the guide calls his biggest strength.",
+        en: "Hero has a difficult neutral, with no burst options and few safe moves, so he conditions the opponent with long-range spells and wins exchanges on reads. His reward is in advantage: big single hits rather than combos, and taking stocks extremely early, which is his biggest strength.",
       },
       traits: [
         {
@@ -751,7 +751,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "The spell menu",
-          text: { en: "The guide rates his menu of spells very powerful at the ledge, for catching opponents as they grab it or stall there. Flame Slash and Kacrackle Slash are two of the strong spells it describes." },
+          text: { en: "His menu of spells is very powerful at the ledge, for catching opponents as they grab it or stall there. Flame Slash and Kacrackle Slash are two of its strong spells." },
         },
         {
           name: "Up tilt",
@@ -772,7 +772,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     cloud: {
       source: { title: "BREAKING THE LIMITS: Cloud Guide", url: "https://smashboards.com/guides/breaking-the-limits-cloud-guide-ssbu.1210/", by: "Afro Ninja (Smashboards)", written: "February 2019" },
       playstyle: {
-        en: "A well-rounded swordsman with a good neutral game and some of the biggest disjointed hits in the game. The guide calls him easy for beginners, and a good second character to cover a main who struggles against swords.",
+        en: "A well-rounded swordsman with a good neutral game and some of the biggest disjointed hits in the game. He is easy for beginners, and a good second character to cover a main who struggles against swords.",
       },
       traits: [
         {
@@ -795,7 +795,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     snake: {
       source: { title: "Solid Snake Guide", url: "https://smashboards.com/guides/solid-snake-guide.1219/", by: "Falc01 (Smashboards)", written: "March 2019" },
       playstyle: {
-        en: "Snake controls the game and its pace with explosives. The guide says he wants grenades out most of the time, either dropped while jumping in to approach or laid around the stage so the opponent has to come to him, and that good Snake players are always in control through this move.",
+        en: "Snake controls the game and its pace with explosives. He wants grenades out most of the time, either dropped while jumping in to approach or laid around the stage so the opponent has to come to him. Good Snake players are always in control through this move.",
       },
       traits: [
         {
@@ -804,15 +804,15 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "C4",
-          text: { en: "A stage-control tool that he detonates himself. The guide suggests placing it at one edge of the stage rather than the center, and warns that it goes off on its own after half a minute." },
+          text: { en: "A stage-control tool that he detonates himself. It is best placed at one edge of the stage rather than the center, and it goes off on its own after half a minute." },
         },
         {
           name: "Nikita",
-          text: { en: "His edgeguarding tool. It leaves him quite vulnerable, so the guide says to use it only when the opponent is offstage, and to aim it above them to limit their options." },
+          text: { en: "His edgeguarding tool. It leaves him quite vulnerable, so it should only be used when the opponent is offstage, aimed above them to limit their options." },
         },
         {
           name: "Up smash",
-          text: { en: "An unorthodox smash attack that the guide treats as a neutral and ledge-trap tool, for opponents who keep trying to jump over him." },
+          text: { en: "An unorthodox smash attack that works as a neutral and ledge-trap tool, for opponents who keep trying to jump over him." },
         },
       ],
       strengths: [
@@ -841,12 +841,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Ways to take a stock",
-          text: { en: "The guide lists three: edgeguarding, landing a roller and following up, or a grab into up throw and up air." },
+          text: { en: "There are three: edgeguarding, landing a roller and following up, or a grab into up throw and up air." },
         },
       ],
       strengths: [
         { en: "A grab that leads into combos and pressure." },
-        { en: "Good movement tools for baiting: the guide points to fox-trotting and dash dancing." },
+        { en: "Good movement tools for baiting: fox-trotting and dash dancing." },
       ],
       weaknesses: [],
     },
@@ -901,16 +901,16 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         by: "Reynolds",
       },
       playstyle: {
-        en: "An improvisational character. The guide says Mario has no highly centralizing tools, just a lot of okay options, so there are always several paths once he gets an opening, and few bread-and-butter combos to fish for. Because openings are hard to find as Mario, the advice is to space just outside the opponent's reach, punish what misses, make every opening count, and not overextend.",
+        en: "An improvisational character. Mario has no highly centralizing tools, just a lot of okay options, so there are always several paths once he gets an opening, and few bread-and-butter combos to fish for. Because openings are hard to find as Mario, he should space just outside the opponent's reach, punish what misses, make every opening count, and not overextend.",
       },
       traits: [
         {
           name: "Compared with Dr. Mario",
-          text: { en: "Slightly better reach, less landing lag on every aerial, and better launch angles (up tilt especially). His aerials are weaker, which lets combos go on longer. Dr. Mario has stronger hits and more guaranteed finishers; the guide's view is that if either is stronger, it's marginal." },
+          text: { en: "Slightly better reach, less landing lag on every aerial, and better launch angles (up tilt especially). His aerials are weaker, which lets combos go on longer. Dr. Mario has stronger hits and more guaranteed finishers; if either is stronger, it's marginal." },
         },
         {
           name: "Fireballs",
-          text: { en: "The author prefers them to Dr. Mario's pills: they contest campy opponents, help his own recovery and edgeguards, and are his only practical true jab reset." },
+          text: { en: "Compared with Dr. Mario's pills, they contest campy opponents, help his own recovery and edgeguards, and are his only practical true jab reset." },
         },
         {
           name: "Forward smash",
@@ -990,12 +990,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     falco: {
       source: { title: "EH | Saiblade's Comprehensive Guide to Falco", url: "https://smashboards.com/guides/eh-saiblades-comprehensive-guide-to-falco-wip.585/", by: "Saiblade (Smashboards)", written: "August 2015" },
       playstyle: {
-        en: "A fast character with a plethora of options, who is great at putting on pressure, restricting what the opponent can do, and walling out certain opponents. The guide is written for total beginners and starts from the techniques every new Falco needs: short hopping, fast falling, wavedashing and jump cancelling.",
+        en: "A fast character with a plethora of options, who is great at putting on pressure, restricting what the opponent can do, and walling out certain opponents. Every new Falco starts from the same techniques: short hopping, fast falling, wavedashing and jump cancelling.",
       },
       traits: [
         {
           name: "Laser",
-          text: { en: "The guide says it is arguably the best projectile in the game." },
+          text: { en: "Arguably the best projectile in the game." },
         },
         {
           name: "Shield pressure",
@@ -1020,12 +1020,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     "captain-falcon": {
       source: { title: "SSBM - The Falcon Talk", url: "https://smashboards.com/guides/ssbm-the-falcon-talk.1098/", by: "magicsixball (Smashboards)", written: "June 2017" },
       playstyle: {
-        en: "The fastest character on the ground, with some of the best mobility in the air, who has to win through movement and precision. The guide's first lesson is not to try to out-speed other characters' attacks, because their hitboxes are all faster than his: play around the opponent's options instead. It says Falcon requires discipline and precision, and has a lot of potential.",
+        en: "The fastest character on the ground, with some of the best mobility in the air, who has to win through movement and precision. The first lesson is not to try to out-speed other characters' attacks, because their hitboxes are all faster than his: play around the opponent's options instead. Falcon requires discipline and precision, and has a lot of potential.",
       },
       traits: [
         {
           name: "Grounded movement",
-          text: { en: "Most of the guide's notes are on this: dash dances of varied speed and range, short dashes, fox-trots, wavedashes, pivots and stopping his momentum by crouching." },
+          text: { en: "Dash dances of varied speed and range, short dashes, fox-trots, wavedashes, pivots and stopping his momentum by crouching." },
         },
         {
           name: "Spacing with jumps and drift",
@@ -1039,18 +1039,18 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       weaknesses: [
         { en: "A poor recovery." },
         { en: "Slow hitboxes, and no fast options on the ground." },
-        { en: "Weaknesses that opponents can exploit; the guide's advice is to accept them early and make them harder to exploit." },
+        { en: "Weaknesses that opponents can exploit; accept them early and make them harder to exploit." },
       ],
     },
     bowser: {
       source: { title: "Koopa King", url: "https://smashboards.com/guides/koopa-king.194/", by: "Sauron_The_Great (Smashboards)", written: "January 2015" },
       playstyle: {
-        en: "Heavy, slow and strong: a scary opponent at close range who is extremely hard to KO. The guide says he has few options, so he has to keep dominance on the ground, ideally on small stages, and lean on his strength: forward smash, Fire Breath for quick damage, and Koopa Klaw.",
+        en: "Heavy, slow and strong: a scary opponent at close range who is extremely hard to KO. He has few options, so he has to keep dominance on the ground, ideally on small stages, and lean on his strength: forward smash, Fire Breath for quick damage, and Koopa Klaw.",
       },
       traits: [
         {
           name: "Up special out of shield",
-          text: { en: "Shield an attack at close range, then use his up special. The guide's words: it hurts a lot." },
+          text: { en: "Shield an attack at close range, then use his up special. It hurts a lot." },
         },
         {
           name: "Fire Breath",
@@ -1076,7 +1076,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     "ice-climbers": {
       source: { title: "How to play Ice Climbers, without wobbling", url: "https://smashboards.com/guides/how-to-play-ice-climbers-without-wobbling-wip.1069/", by: "Nametaken121 (Smashboards)", written: "March 2017" },
       playstyle: {
-        en: "Look for a grab. The basics, in the guide's words, are to stand just outside the reach of the opponent's approach and answer it with a grab, which leads to chain grabs between the two climbers (or to wobbling, their infinite, which this guide deliberately plays without). Against opponents camping on platforms, their up air pokes them back down.",
+        en: "Look for a grab. The basics are to stand just outside the reach of the opponent's approach and answer it with a grab, which leads to chain grabs between the two climbers (or to wobbling, their infinite). Against opponents camping on platforms, their up air pokes them back down.",
       },
       traits: [
         {
@@ -1085,7 +1085,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Wobbling",
-          text: { en: "An infinite from a grab, in which the two climbers keep hitting the opponent so they can never act. The guide calls relying on it a crutch and teaches the rest of their game." },
+          text: { en: "An infinite from a grab, in which the two climbers keep hitting the opponent so they can never act. Relying on it is a crutch; the rest of their game is worth learning." },
         },
         {
           name: "Wavedash",
@@ -1099,13 +1099,13 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
       weaknesses: [
         { en: "Popo alone has the worst recovery." },
-        { en: "The guide's author believes top-tier characters have moves that beat out most of theirs." },
+        { en: "Top-tier characters have moves that beat out most of theirs." },
       ],
     },
     "mr-game-and-watch": {
       source: { title: "Flatten The Competition: A Game and Watch Guide", url: "https://smashboards.com/guides/flatten-the-competition-a-game-and-watch-guide.43/", by: "LiteralGrill (Smashboards)", written: "October 2014" },
       playstyle: {
-        en: "A light, rarely played character with serious combo potential. The guide says he takes work: his defense is bad, so players are told to master light shielding and wavedashing, and to avoid attacks rather than shield them. When he gets a hit or a grab, knowing the follow-up is where his strength lies.",
+        en: "A light, rarely played character with serious combo potential. He takes work: his defense is bad, so he needs light shielding and wavedashing, and should avoid attacks rather than shield them. When he gets a hit or a grab, knowing the follow-up is where his strength lies.",
       },
       traits: [
         {
@@ -1136,7 +1136,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     jigglypuff: {
       source: { title: "Become the next Sleepy Singer!", url: "https://smashboards.com/guides/become-the-next-sleepy-singer.689/", by: "tough9870 (Smashboards)", written: "November 2015" },
       playstyle: {
-        en: "An aerial character. The guide's author, who says they aren't a professional, describes a ground game that runs from decent to not so good and an air game that is spot on: fast attacks, the best maneuverability in the air, and Rest, a KO move that is ready at almost any time. The advice is to stay in the air and approach with forward, neutral and back airs, which are safe when spaced.",
+        en: "An aerial character. Her ground game runs from decent to not so good and her air game is spot on: fast attacks, the best maneuverability in the air, and Rest, a KO move that is ready at almost any time. Stay in the air and approach with forward, neutral and back airs, which are safe when spaced.",
       },
       traits: [
         {
@@ -1169,7 +1169,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     kirby: {
       source: { title: "Kirby: What I've discovered", url: "https://smashboards.com/guides/kirby-what-ive-discovered.1117/", by: "Dupe (Smashboards)", written: "October 2017" },
       playstyle: {
-        en: "The guide says Kirby's neutral is like Jigglypuff's, only worse at it, because he lacks her drift in the air. So he combines spaced back airs with his ground movement to build a wall: back air and forward air in the air, forward and up tilts on the ground. His movement is clunky at first but workable across small areas.",
+        en: "Kirby's neutral is like Jigglypuff's, only worse at it, because he lacks her drift in the air. So he combines spaced back airs with his ground movement to build a wall: back air and forward air in the air, forward and up tilts on the ground. His movement is clunky at first but workable across small areas.",
       },
       traits: [
         {
@@ -1194,7 +1194,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     luigi: {
       source: { title: "Luigi | A Guide to Mastery", url: "https://smashboards.com/guides/luigi-a-guide-to-mastery-by-dire-creeper-outdated-read-the-note.506/", by: "Dire Creeper (Smashboards)", written: "June 2015; its author marks it as outdated" },
       playstyle: {
-        en: "Odd in a new player's hands, powerful and agile in a smart player's. The guide says his ground movement is ridiculously fast and versatile because he has the longest wavedash in the game, and that his aerials are some of the best for their power, speed and low lag. He has the worst horizontal air speed, so he relies on that wavedash to move and approach. The guide calls him very difficult to master.",
+        en: "Odd in a new player's hands, powerful and agile in a smart player's. His ground movement is ridiculously fast and versatile because he has the longest wavedash in the game, and his aerials are some of the best for their power, speed and low lag. He has the worst horizontal air speed, so he relies on that wavedash to move and approach. He is very difficult to master.",
       },
       traits: [
         {
@@ -1224,12 +1224,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     marth: {
       source: { title: "It's All About the Spacing", url: "https://smashboards.com/guides/its-all-about-the-spacing.172/", by: "JUSTN (Smashboards)", written: "January 2015, updated March 2015" },
       playstyle: {
-        en: "A swordsman who wins on range and spacing. The guide, whose author says they are no expert, describes a sword that out-ranges opponents up close and quick attacks that interrupt them. Its title is the lesson: space attacks so the tip of the sword connects.",
+        en: "A swordsman who wins on range and spacing. His sword out-ranges opponents up close and his quick attacks interrupt them. It's all about the spacing: place attacks so the tip of the sword connects.",
       },
       traits: [
         {
           name: "The tipper",
-          text: { en: "His sword does much more damage and knockback at its tip. The guide calls it his bread and butter." },
+          text: { en: "His sword does much more damage and knockback at its tip. It is his bread and butter." },
         },
         {
           name: "Forward air",
@@ -1253,7 +1253,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     mewtwo: {
       source: { title: "The forgotten #150 pokemon", url: "https://smashboards.com/guides/the-forgotten-150-pokemon.757/", by: "ShadowKing (Smashboards)", written: "December 2015" },
       playstyle: {
-        en: "A short guide written to show Mewtwo is better than his reputation. It points to his tail as his best spacing tool, Shadow Ball as a very strong projectile, down tilt as a combo starter and up tilt as a juggle and KO move.",
+        en: "Better than his reputation. His tail is his best spacing tool, Shadow Ball is a very strong projectile, down tilt starts combos and up tilt juggles and KOs.",
       },
       traits: [
         {
@@ -1279,12 +1279,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     ness: {
       source: { title: "Ness", url: "https://smashboards.com/guides/ness.1057/", by: "Chief_ (Smashboards)", written: "February 2017" },
       playstyle: {
-        en: "The guide calls Ness a fundamental and complex character. His neutral is built on the double jump cancel, which lets him vary his movement on the ground, on platforms and when landing; he uses PK Fire to make space, dash dancing to bait, and spaced forward airs to gain ground and start pressure.",
+        en: "A fundamental and complex character. His neutral is built on the double jump cancel, which lets him vary his movement on the ground, on platforms and when landing; he uses PK Fire to make space, dash dancing to bait, and spaced forward airs to gain ground and start pressure.",
       },
       traits: [
         {
           name: "Double jump cancel",
-          text: { en: "A technique with his second jump (the guide writes DJC). It makes his aerials good for mix-ups, for hitting awkward angles and for poking through platforms." },
+          text: { en: "A technique with his second jump, often written DJC. It makes his aerials good for mix-ups, for hitting awkward angles and for poking through platforms." },
         },
         {
           name: "Punishes",
@@ -1305,7 +1305,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     peach: {
       source: { title: "Fieari's Newbie Peach Training Guide", url: "https://smashboards.com/guides/fiearis-newbie-peach-training-guide.1074/", by: "Fieari, reposted by ZexM (Smashboards)", written: "2004" },
       playstyle: {
-        en: "A beginner's guide from 2004. It describes Peach as a wicked brawler at close range whose ground game is mostly three things: down smash, dash attack and turnips. What sets her apart is her float, which she uses to hover at head height where most ground attacks miss her, and to attack on the way down.",
+        en: "A wicked brawler at close range whose ground game is mostly three things: down smash, dash attack and turnips. What sets her apart is her float, which she uses to hover at head height where most ground attacks miss her, and to attack on the way down.",
       },
       traits: [
         {
@@ -1314,7 +1314,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Float cancel",
-          text: { en: "An aerial started while floating has its landing lag cancelled when she drops, faster than L-cancelling. The guide's first combo from it is a float-cancelled aerial into down smash." },
+          text: { en: "An aerial started while floating has its landing lag cancelled when she drops, faster than L-cancelling. A first combo from it is a float-cancelled aerial into down smash." },
         },
         {
           name: "Turnips",
@@ -1330,7 +1330,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     pichu: {
       source: { title: "Pichu Power of The Mouse", url: "https://smashboards.com/guides/pichu-power-of-the-mouse.311/", by: "Ace Mcconnell (Smashboards)", written: "March 2015" },
       playstyle: {
-        en: "The guide's author, who doesn't claim to be a pro, opens by saying Pichu is fundamentally flawed and then explains how to play him anyway. The core idea is to keep self-damage down: use neutral air where forward air or down air would do, and save the electric moves for where they matter, such as Thunder Jolt for pressure and edgeguarding.",
+        en: "Pichu is fundamentally flawed, and can be played well anyway. The core idea is to keep self-damage down: use neutral air where forward air or down air would do, and save the electric moves for where they matter, such as Thunder Jolt for pressure and edgeguarding.",
       },
       traits: [
         {
@@ -1339,7 +1339,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Thunder Jolt",
-          text: { en: "His only projectile. The guide says to use it in the air where possible, and that its slow travel makes it an effective edgeguard." },
+          text: { en: "His only projectile. Use it in the air where possible; its slow travel makes it an effective edgeguard." },
         },
         {
           name: "Recovery",
@@ -1358,7 +1358,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     samus: {
       source: { title: "Samus: The Missile Maniac", url: "https://smashboards.com/guides/samus-the-missile-maniac.260/", by: "gamegod7 (Smashboards)", written: "February 2015" },
       playstyle: {
-        en: "An introduction for new Samus players. It describes a floaty, hard-to-KO character with solid projectiles that make space and can KO at high percent, who moves well on the ground through wavedashing. The guide recommends her to players who don't want to learn a huge amount of technique before being a threat.",
+        en: "A floaty, hard-to-KO character with solid projectiles that make space and can KO at high percent, who moves well on the ground through wavedashing. She suits players who don't want to learn a huge amount of technique before being a threat.",
       },
       traits: [
         {
@@ -1389,7 +1389,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     sheik: {
       source: { title: "Ocarina' is like Steins;Gate", url: "https://smashboards.com/guides/ocarina-is-like-steins-gate.244/", by: "dude it's raining (Smashboards)", written: "February 2015" },
       playstyle: {
-        en: "Sheik's general strategy, in the guide's words: rack up damage with needles and her strong grab game, then start a combo with her strong tilts that leads to a KO or an edgeguard. She also looks to gimp at early percents because of her offstage game. Early in a stock, when many of her moves can be crouch cancelled, the guide says her best punish is a grab.",
+        en: "Sheik's general strategy: rack up damage with needles and her strong grab game, then start a combo with her strong tilts that leads to a KO or an edgeguard. She also looks to gimp at early percents because of her offstage game. Early in a stock, when many of her moves can be crouch cancelled, her best punish is a grab.",
       },
       traits: [
         {
@@ -1409,7 +1409,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "Tech chasing." },
         { en: "Edgeguarding with back air and needles." },
         { en: "High ground speed, which gives her strong stage control." },
-        { en: "Fast, powerful attacks; the guide says technical skill matters less for her than for most." },
+        { en: "Fast, powerful attacks; technical skill matters less for her than for most." },
       ],
       weaknesses: [
         { en: "A very punishable recovery." },
@@ -1421,7 +1421,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     ganondorf: {
       source: { title: "The Power of The Triforce", url: "https://smashboards.com/guides/the-power-of-the-triforce.58/", by: "Sauron_The_Great (Smashboards)", written: "October 2014" },
       playstyle: {
-        en: "A short, casual guide. Its summary: his attacks are slow but strong, and he can be played as all-out attack or as rock-solid defense. It rates his aerials especially highly and says his grab combos are excellent when chained, particularly against Fox and Falco.",
+        en: "His attacks are slow but strong, and he can be played as all-out attack or as rock-solid defense. His aerials are especially good, and his grab combos are excellent when chained, particularly against Fox and Falco.",
       },
       traits: [
         {
@@ -1430,7 +1430,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Down air",
-          text: { en: "A meteor smash the guide rates among the best in the game." },
+          text: { en: "A meteor smash rated among the best in the game." },
         },
       ],
       strengths: [
@@ -1440,19 +1440,19 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "Heavy and hard to KO." },
       ],
       weaknesses: [
-        { en: "No projectile, which the guide calls his main weakness." },
+        { en: "No projectile, which is his main weakness." },
         { en: "Slow." },
       ],
     },
     roy: {
       source: { title: "How to utilize Roy and his (not so) great moves", url: "https://smashboards.com/guides/how-to-utilize-roy-and-his-not-so-great-moves-wip.1131/", by: "Zacory (Foxy) (Smashboards)", written: "December 2017" },
       playstyle: {
-        en: "A guide by a two-year Roy player on getting the most from each of his moves. It describes a fast character, because of his fall speed and an excellent wavedash that gives both distance and options, who struggles against projectiles.",
+        en: "A fast character, because of his fall speed and an excellent wavedash that gives both distance and options, who struggles against projectiles.",
       },
       traits: [
         {
           name: "Wavedash",
-          text: { en: "Excellent: good distance and good options out of it. His jump takes 5 frames to leave the ground, which the guide calls not terrible, just not the fastest." },
+          text: { en: "Excellent: good distance and good options out of it. His jump takes 5 frames to leave the ground, which is not terrible, just not the fastest." },
         },
         {
           name: "Forward tilt",
@@ -1476,7 +1476,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     bowser: {
       source: { title: "PM Bowser's Broken", url: "https://smashboards.com/guides/pm-bowsers-broken-a-guide-to-well-pm-bowser.16/", by: "WinterShorts (Smashboards)", written: "October 2014 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "A heavy tank whose game is more defensive than offensive, with offense mixed in. The guide's core habit is to shield an attack and answer with his up special, while warning that it becomes predictable. It says he is destructive when used properly, and that he should be kept fast with wavedashing, L-cancelling and dash dancing.",
+        en: "A heavy tank whose game is more defensive than offensive, with offense mixed in. His core habit is to shield an attack and answer with his up special, though it becomes predictable. He is destructive when used properly, and should be kept fast with wavedashing, L-cancelling and dash dancing.",
       },
       traits: [
         {
@@ -1499,7 +1499,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     charizard: {
       source: { title: "The Firey Dragon", url: "https://smashboards.com/guides/the-firey-dragon.664/", by: "ShadowKing (Smashboards)", written: "October 2015 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "A heavy character with strong throws and KO power. The guide builds his game on grabs: back throw into another grab to rack up damage, down throw to set up a read, up throw to KO. Being heavy lets him survive to high percent while his power takes stocks early.",
+        en: "A heavy character with strong throws and KO power. His game is built on grabs: back throw into another grab to rack up damage, down throw to set up a read, up throw to KO. Being heavy lets him survive to high percent while his power takes stocks early.",
       },
       traits: [
         {
@@ -1508,7 +1508,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Forward smash",
-          text: { en: "His best KO move by far, with a lot of end lag: the guide suggests it after a down throw or on a broken shield." },
+          text: { en: "His best KO move by far, with a lot of end lag: use it after a down throw or on a broken shield." },
         },
         {
           name: "Edgeguarding",
@@ -1527,7 +1527,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     "donkey-kong": {
       source: { title: "Basic DK", url: "https://smashboards.com/guides/basic-dk.33/", by: "Jake The Preacher (Smashboards)", written: "October 2014 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "The guide's number one rule for Donkey Kong is grabbing: without grabs, it says, he probably isn't winning. He has a huge grab range and is fast, so he spaces around it and mixes up how he goes for it. Once he has the grab, the forward throw puts the opponent on his back and he chooses the follow-up from there. Under pressure, the advice is to get out and reset.",
+        en: "The number one rule for Donkey Kong is grabbing: without grabs, he probably isn't winning. He has a huge grab range and is fast, so he spaces around it and mixes up how he goes for it. Once he has the grab, the forward throw puts the opponent on his back and he chooses the follow-up from there. Under pressure, he should get out and reset.",
       },
       traits: [
         {
@@ -1536,7 +1536,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Jump-cancelled grab",
-          text: { en: "Pressing jump and then grab while running gives him a standing grab with running momentum; the guide calls this the first thing to learn." },
+          text: { en: "Pressing jump and then grab while running gives him a standing grab with running momentum; it is the first thing to learn." },
         },
         {
           name: "Back air",
@@ -1557,7 +1557,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     "mr-game-and-watch": {
       source: { title: "Rockin it in 2D", url: "https://smashboards.com/guides/rockin-it-in-2d.73/", by: "CamGAM3S (Smashboards)", written: "November 2014 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "The guide calls him underrated, with aerials and a very versatile ground game. It teaches three things: pressure, with short-hop neutral specials and repeated back airs; a ground game of tilts and smash attacks that takes stocks quickly once his movement is under control; and a recovery it describes as insane.",
+        en: "Underrated, with aerials and a very versatile ground game. His game has three parts: pressure, with short-hop neutral specials and repeated back airs; a ground game of tilts and smash attacks that takes stocks quickly once his movement is under control; and an insane recovery.",
       },
       traits: [
         {
@@ -1570,7 +1570,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Dash dance",
-          text: { en: "He is small and turns back and forth faster than most, which the guide uses to bait." },
+          text: { en: "He is small and turns back and forth faster than most, which is useful for baiting." },
         },
       ],
       strengths: [
@@ -1583,7 +1583,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     ike: {
       source: { title: "Berserk: A Guide to Nintendo's Guts", url: "https://smashboards.com/guides/berserk.635/", by: "NWRL (Smashboards)", written: "September 2015 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "The guide calls Ike one of the most unique characters: Marth's range and disjoint, Ganondorf's power and sluggishness, and Captain Falcon's free-form combos and grab game. He is slow on the ground, floaty and medium weight, which makes him easy to combo, and covers for it with a very large sword and by jumping out of his side special. His goal is to keep the opponent at mid range, just outside their reach and well inside his.",
+        en: "One of the most unique characters: Marth's range and disjoint, Ganondorf's power and sluggishness, and Captain Falcon's free-form combos and grab game. He is slow on the ground, floaty and medium weight, which makes him easy to combo, and covers for it with a very large sword and by jumping out of his side special. His goal is to keep the opponent at mid range, just outside their reach and well inside his.",
       },
       traits: [
         {
@@ -1613,7 +1613,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     "king-dedede": {
       source: { title: "A Beginners Guide to King Dedede", url: "https://smashboards.com/guides/a-beginners-guide-to-king-dedede.109/", by: "Ridel (Smashboards)", written: "December 2014 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "The guide's word for him is passive-aggressive: keep the pressure on, but know when to step back and keep distance. Compared with Brawl he gave up some defense for offense and mobility, and relies more on getting in and racking up damage. He is extremely powerful, a threat at long and close range, but a very big target who has trouble approaching faster characters and those who can zone him out.",
+        en: "Passive-aggressive: keep the pressure on, but know when to step back and keep distance. Compared with Brawl he gave up some defense for offense and mobility, and relies more on getting in and racking up damage. He is extremely powerful, a threat at long and close range, but a very big target who has trouble approaching faster characters and those who can zone him out.",
       },
       traits: [
         {
@@ -1622,7 +1622,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Inhale",
-          text: { en: "The guide calls it his anti-approach option: its suction can stop some moves that rush at him." },
+          text: { en: "His anti-approach option: its suction can stop some moves that rush at him." },
         },
         {
           name: "Super Dedede Jump (up special)",
@@ -1642,12 +1642,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     lucas: {
       source: { title: "Lightning Fast: A Project M Lucas Guide", url: "https://smashboards.com/guides/lightning-fast-a-project-m-lucas-guide-wip.270/", by: "D e l t a (Smashboards)", written: "February 2015 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "A fast-paced, burst-momentum character whose approach is based on creating and exploiting openings in the opponent's defense. The guide compares his playstyle to Falco's and Sheik's. He has a strong dash dance for baiting, a short range and a very strong punish game, so the guide stresses spacing in neutral above all and never playing on autopilot.",
+        en: "A fast-paced, burst-momentum character whose approach is based on creating and exploiting openings in the opponent's defense. His playstyle is comparable to Falco's and Sheik's. He has a strong dash dance for baiting, a short range and a very strong punish game, so spacing in neutral matters above all, and he should never be played on autopilot.",
       },
       traits: [
         {
           name: "“The 4th spacie”",
-          text: { en: "A nickname he earned for resembling Fox, Falco and Wolf in pressure, combos and neutral. The guide notes that later nerfs made people question it." },
+          text: { en: "A nickname he earned for resembling Fox, Falco and Wolf in pressure, combos and neutral. Later nerfs made people question it." },
         },
         {
           name: "PK Fire",
@@ -1655,7 +1655,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Grabs",
-          text: { en: "The guide says to jump-cancel or pivot every grab rather than dash grab." },
+          text: { en: "Jump-cancel or pivot every grab rather than dash grab." },
         },
       ],
       strengths: [
@@ -1671,7 +1671,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     "meta-knight": {
       source: { title: "The Ultimate Meta Knight Collaborative Guide", url: "https://smashboards.com/guides/the-ultimate-meta-knight-collaboratve-guide-wip.121/", by: "leekslap (Smashboards)", written: "December 2014 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "A first draft by one author, who calls it probably opinionated. It describes a fast character with very quick attacks, deceptively long reach on his sword, versatile combos and mix-ups, and one of the best edgeguarding games. His forward tilt and down tilt are his spacing and combo tools.",
+        en: "A fast character with very quick attacks, deceptively long reach on his sword, versatile combos and mix-ups, and one of the best edgeguarding games. His forward tilt and down tilt are his spacing and combo tools.",
       },
       traits: [
         {
@@ -1702,12 +1702,12 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     mewtwo: {
       source: { title: "Guide for Mewtwo (3.5)", url: "https://smashboards.com/guides/guide-for-mewtwo-3-5.163/", by: "MysticSkarps (Smashboards)", written: "January 2015 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "Not an aggressive character all the time. The guide says Mewtwo must be played defensively to find an opening or make the opponent approach, then turn aggressive once he is in or has found a weakness in their approach.",
+        en: "Not an aggressive character all the time. Mewtwo must be played defensively to find an opening or make the opponent approach, then turn aggressive once he is in or has found a weakness in their approach.",
       },
       traits: [
         {
           name: "Teleport",
-          text: { en: "With his high jumps it gives him a recovery the guide calls broken: quick, hard to read and easy to land on the ledge with. He can still be read and punished." },
+          text: { en: "With his high jumps it gives him a broken recovery: quick, hard to read and easy to land on the ledge with. He can still be read and punished." },
         },
         {
           name: "Tail",
@@ -1732,7 +1732,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     roy: {
       source: { title: "Playing with Ph1r3 - Gold Version", url: "https://smashboards.com/guides/playing-with-ph1r3-gold-version.62/", by: "Sethlon (Smashboards)", written: "October 2014, updated January 2016 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "An aggressive character who has to get close. His real strength is the sweetspot on the middle and hilt of his blade, so although his range lets him control space, he needs to be in the opponent's face to hurt them. His movement is only average, so the guide's game plan is to advance steadily and carefully with dash dancing, crouch cancelling and long-reaching attacks, pin the opponent down, and set up down tilts and grabs. It says Smash fundamentals are the pillars that hold Roy up.",
+        en: "An aggressive character who has to get close. His real strength is the sweetspot on the middle and hilt of his blade, so although his range lets him control space, he needs to be in the opponent's face to hurt them. His movement is only average, so his game plan is to advance steadily and carefully with dash dancing, crouch cancelling and long-reaching attacks, pin the opponent down, and set up down tilts and grabs. Smash fundamentals are the pillars that hold Roy up.",
       },
       traits: [
         {
@@ -1741,7 +1741,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Crouch cancel",
-          text: { en: "The guide calls his crouch cancel game great, and at the same time one of his biggest weaknesses." },
+          text: { en: "His crouch cancel game is great, and at the same time one of his biggest weaknesses." },
         },
         {
           name: "Down tilt and grab",
@@ -1764,16 +1764,16 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     wolf: {
       source: { title: "A Wolf Guide: ‘Beep is your Destiny’ (unfinished)", url: "https://smashboards.com/guides/a-wolf-guide-%E2%80%98beep-is-your-destiny%E2%80%99-unfinished.339/", by: "TimeMuffinPhD (Smashboards)", written: "April 2015 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "An unfinished guide whose author says they stopped because they weren't yet skilled enough. It describes Wolf as versatile and well rounded, overall an aggressive character because of his long combo game, and a glass cannon: he hits extremely hard and can have the same done to him. His Blaster is one of his main tools in neutral for opening the opponent up.",
+        en: "Versatile and well rounded, overall an aggressive character because of his long combo game, and a glass cannon: he hits extremely hard and can have the same done to him. His Blaster is one of his main tools in neutral for opening the opponent up.",
       },
       traits: [
         {
           name: "Blaster",
-          text: { en: "A main neutral tool the guide says most Wolf players underuse. He can waveland out of it, which lets him keep pressure on behind a projectile." },
+          text: { en: "A main neutral tool that most Wolf players underuse. He can waveland out of it, which lets him keep pressure on behind a projectile." },
         },
         {
           name: "Combos",
-          text: { en: "The guide says he can start one from almost anything and extend the punish a long way." },
+          text: { en: "He can start one from almost anything and extend the punish a long way." },
         },
         {
           name: "Forward smash",
@@ -1793,7 +1793,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     zelda: {
       source: { title: "A Guide To The Powerful Princess Zelda", url: "https://smashboards.com/guides/a-guide-to-the-powerful-princess-zelda-3-5-updated.69/", by: "Captain Zack (Smashboards)", written: "November 2014 for Project M, the mod P+ is built on" },
       playstyle: {
-        en: "Not an aggressive character. The guide says Zelda mostly takes her time and waits for the opponent to make a wrong move: she isn't very good at approaching, but has a great long-range game, using Din's Fire as a wall that is hard to break through. When the opponent slips, she has plenty of ways to combo or finish the stock.",
+        en: "Not an aggressive character. Zelda mostly takes her time and waits for the opponent to make a wrong move: she isn't very good at approaching, but has a great long-range game, using Din's Fire as a wall that is hard to break through. When the opponent slips, she has plenty of ways to combo or finish the stock.",
       },
       traits: [
         {
@@ -1802,7 +1802,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
         {
           name: "Lightning Kick",
-          text: { en: "Her forward and back airs. The guide calls it pretty much her best move, able to KO heavy characters early when it lands cleanly." },
+          text: { en: "Her forward and back airs. Pretty much her best move, able to KO heavy characters early when it lands cleanly." },
         },
         {
           name: "Nayru's Love",
