@@ -20,7 +20,7 @@ export async function SeasonRanks({ keys, viewerId, className = "", empty }: { k
       {!empty && <span className="sr-only">{t("season.ranks.title")}</span>}
       {ranks.map((r) => (
         <Link key={r.seasonId} href={`/seasons/${r.seasonId}#${standingRowId(r.rowKey)}`} className="badge flex items-center gap-1 border border-line font-normal hover:bg-surface">
-          <Icon name="trophy" /> {t("season.ranks.line", { rank: r.rank, players: r.players, season: r.name })}
+          {t("season.ranks.line", { rank: r.rank, players: r.players, season: r.name })}
           {!r.current && <span className="text-muted"> · {t("season.ranks.ended")}</span>}
         </Link>
       ))}
@@ -55,7 +55,7 @@ export async function RegionSeasons({ region, label, className = "" }: { region:
   const t = await getT();
   return (
     <p className={`flex flex-wrap items-center gap-2 text-sm ${className}`}>
-      <span className="text-muted"><Icon name="trophy" /> {t("season.inRegion", { region: label })}</span>
+      <span className="text-muted">{t("season.inRegion", { region: label })}</span>
       {seasons.map((s) => (
         <Link key={s.id} href={`/seasons/${s.id}`} className="badge flex items-center gap-1 border border-line font-normal hover:bg-surface">
           <GameBadge game={s.game} /> {s.name}

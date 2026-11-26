@@ -26,10 +26,9 @@ export default function HostedEventsRow({ events, friends = {} }: { events: Host
           <div className="card flex flex-col gap-3 p-4">
             <p className="text-sm text-muted"><T k="hostsetup.row.empty" /></p>
             <p className="font-bold"><T k="hostsetup.row.pitchTitle" /></p>
-            <ul className="flex flex-col gap-2 text-sm">
+            <ul className="list-disc pl-5 marker:text-brand flex flex-col gap-2 text-sm">
               {PITCH.map((p) => (
-                <li key={p.text} className="flex items-start gap-2">
-                  <span className="mt-0.5 shrink-0 text-brand"><Icon name={p.icon} /></span>
+                <li key={p.text} >
                   <T k={p.text} />
                 </li>
               ))}

@@ -348,8 +348,8 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
       <header className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center gap-2 text-meta">
           <GameBadge game={event.game} />
-          <span className="badge border border-line font-normal">{event.online ? <><Icon name="globe" /> {t("event.online")}</> : <><Icon name="pin" /> {t("event.inPerson")}</>}</span>
-          {doubles && <span className="badge border border-line font-normal"><Icon name="users" /> {t("event.doubles")}</span>}
+          <span className="badge border border-line font-normal">{event.online ? <>{t("event.online")}</> : <>{t("event.inPerson")}</>}</span>
+          {doubles && <span className="badge border border-line font-normal">{t("event.doubles")}</span>}
           <span className={`badge font-normal ${event.status === "canceled" ? "border border-danger text-danger" : "border border-line"}`}>{STATUS_KEY[event.status] ? t(STATUS_KEY[event.status]) : event.status}</span>
         </div>
         <h1 className="text-2xl font-bold">{event.name}</h1>
@@ -407,7 +407,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
       {isHost && <PendingInTitle count={running.filter((s) => s.reported).length} />}
       {hostMessages.length > 0 && !finished && (
         <section className="card flex flex-col gap-1.5 border-brand/40 p-4" aria-labelledby="host-messages">
-          <h2 id="host-messages" className="font-bold"><Icon name="megaphone" /> {t("event.fromHost")}</h2>
+          <h2 id="host-messages" className="font-bold">{t("event.fromHost")}</h2>
           <ul className="flex flex-col gap-1.5">
             {hostMessages.map((m) => (
               <li key={m.at} className="text-sm">
@@ -425,7 +425,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
       )}
       {running.some((s) => s.reported) && (
         <section className="card flex flex-col gap-1 border-brand p-4" aria-labelledby="to-confirm">
-          <h2 id="to-confirm" className="font-bold"><Icon name="clipboard" /> {t("hostrun.confirm.title")}</h2>
+          <h2 id="to-confirm" className="font-bold">{t("hostrun.confirm.title")}</h2>
           <p className="text-meta text-muted">{t("hostrun.confirm.hint")}</p>
           {(() => {
             const agreedCount = running.filter((s) => finalsAgree(s.finals)).length;
@@ -854,7 +854,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
         <h2 id="entrants" className="font-bold">{doubles ? t("event.details.teams") : t("event.details.players")} ({entrants.length})</h2>
         {friends.length > 0 && (
           <p className="text-sm">
-            <Icon name="user" /> {t("event.friendsIn", { n: friends.length })}{" "}
+            {t("event.friendsIn", { n: friends.length })}{" "}
             <b>{friends.slice(0, 5).map((f) => f.tag).join(", ")}{friends.length > 5 ? t("event.andMore", { n: friends.length - 5 }) : ""}</b>
           </p>
         )}

@@ -5,7 +5,6 @@ import { keepValuesOnSubmit } from "@/lib/forms";
 import { signInWithAppleToken, signInWithEmail, verifyEmailCode, type CodeState, type FormState } from "./actions";
 import { appPlatform } from "@/lib/nativePush";
 import { SIGNIN_SENDER } from "@/lib/contact";
-import Icon from "@/components/ui/Icon";
 import { useT } from "@/lib/i18n/client";
 
 const field = "field";
@@ -20,7 +19,7 @@ export function EmailForm({ next = "" }: { next?: string }) {
   if (state.sentTo && dismissed !== state) {
     return (
       <div className="rounded-2xl bg-surface p-4 text-sm">
-        <p className="font-semibold"><Icon name="mail" /> {t("signin.checkEmail")}</p>
+        <p className="font-semibold">{t("signin.checkEmail")}</p>
         <p className="mt-1 text-muted">{t("signin.sentTo", { email: state.sentTo })}</p>
         <CodeForm email={state.sentTo} />
         <p className="mt-3 text-muted">

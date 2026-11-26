@@ -8,7 +8,6 @@ import { updateProfile, type EditState } from "./actions";
 import MainBadge from "@/components/MainBadge";
 import { costumeIcons } from "@/lib/mainBadge";
 import RegionSelect from "@/components/RegionSelect";
-import Icon from "@/components/ui/Icon";
 import { useT } from "@/lib/i18n/client";
 import { SOCIALS, type SocialColumn } from "@/lib/socials";
 
@@ -162,14 +161,14 @@ export default function EditProfileForm(props: {
       <label className="flex items-start gap-3 card p-3">
         <input type="checkbox" name="lfg_doubles" defaultChecked={props.lfgDoubles} className="mt-1" />
         <span className="flex flex-col gap-0.5">
-          <span className="font-semibold"><Icon name="users" /> {t("people.edit.lfg")}</span>
+          <span className="font-semibold">{t("people.edit.lfg")}</span>
           <span className="text-xs text-muted">{t("people.edit.lfgHelp")}</span>
         </span>
       </label>
       <label className="flex items-start gap-3 card p-3">
         <input type="checkbox" name="protected" defaultChecked={props.isProtected || props.isMinor} disabled={props.isMinor} className="mt-1" />
         <span className="flex flex-col gap-0.5">
-          <span className="font-semibold"><Icon name="lock" /> {t("people.edit.protect")}</span>
+          <span className="font-semibold">{t("people.edit.protect")}</span>
           <span className="text-xs text-muted">
             {t("people.edit.protectHelp")}
             {props.isMinor && ` ${t("people.edit.protectMinor")}`}

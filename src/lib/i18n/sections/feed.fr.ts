@@ -34,7 +34,7 @@ export const feedFr: Record<keyof typeof feedEn, string> = {
   "feed.starter.title": "Le fil ne fait que commencer",
   "feed.starter.signedIn": "Dis bonjour, demande qui va à un local cette semaine ou lance un sondage. Les premières publications sont vues par tout le monde.",
   "feed.starter.guest": "Rejoins Smashy pour publier, partager tes résultats et rencontrer les joueurs de ta scène.",
-  "feed.clips.title": "Les meilleurs clips du moment",
+  "feed.clips.title": "Meilleurs clips",
   "feed.clips.watch": "Voir les Reels →",
   "feed.clips.clip": "Clip",
   "feed.clipsWeek.title": "Clips de la semaine",

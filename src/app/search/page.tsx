@@ -341,7 +341,7 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
       <>
         <SearchBox q={q} t={t} />
         <section className="flex flex-col gap-2 p-4">
-          <h2 className="text-lg font-bold"><Icon name="users" /> {crew ? crew : t("people.edit.lfg")}</h2>
+          <h2 className="text-lg font-bold">{crew ? crew : t("people.edit.lfg")}</h2>
           {found.length ? <PeopleList people={found} t={t} /> : <p className="text-muted">{crew ? t("people.search.noCrew") : t("people.search.noLfg")}</p>}
         </section>
       </>

@@ -5,7 +5,6 @@
 import { Fragment, useState, useTransition, type ReactNode } from "react";
 import TitlePrefix from "./TitlePrefix";
 import { useT } from "@/lib/i18n/client";
-import Icon from "@/components/ui/Icon";
 import { confirmAgreedResults, reportFinalScore, reviewFinalScore, withdrawFinalScore } from "@/app/host/live-actions";
 import type { FinalReport, PlayerSlot } from "@/lib/liveSet";
 import { winsNeeded } from "@/lib/striking";
@@ -43,7 +42,7 @@ export function PlayerFinalReport({ setId, me, names, bestOf, mine, theirs }: { 
     const differs = theirs && (theirs.winner !== mine.winner || theirs.score.join() !== mine.score.join());
     return (
       <section className="card flex flex-col gap-2 p-4" aria-labelledby="final-report">
-        <h2 id="final-report" className="font-bold"><Icon name="clipboard" /> {t("setroom.final.reported")}</h2>
+        <h2 id="final-report" className="font-bold">{t("setroom.final.reported")}</h2>
         <p className="text-sm">{withNode(t("setroom.final.youReported", { result: MARK }), <b>{said(mine)}</b>)}</p>
         {theirs && !differs && <p className="text-sm text-muted">{t("setroom.final.same", { name: opp })}</p>}
         {differs && <p className="text-sm text-danger">{t("setroom.final.differs", { name: opp, result: said(theirs) })}</p>}
@@ -57,7 +56,7 @@ export function PlayerFinalReport({ setId, me, names, bestOf, mine, theirs }: { 
 
   return (
     <details className="card p-4" open={!!theirs}>
-      <summary className="cursor-pointer font-bold"><Icon name="clipboard" /> {t("setroom.final.summary")}</summary>
+      <summary className="cursor-pointer font-bold">{t("setroom.final.summary")}</summary>
       <div className="mt-2 flex flex-col gap-3">
         {theirs && <p className="text-sm">{withNode(t("setroom.final.theyReported", { name: opp, result: MARK }), <b>{said(theirs)}</b>)}</p>}
         <p className="text-meta text-muted">{t("setroom.final.checked")}</p>
@@ -150,7 +149,7 @@ export function TOFinalReview({ setId, names, finals }: { setId: string; names: 
 
   return (
     <section className="card flex flex-col gap-3 border-brand p-4" aria-labelledby="to-review">
-      <h2 id="to-review" className="font-bold"><Icon name="clipboard" /> {t("hostbracket.review.title")}</h2>
+      <h2 id="to-review" className="font-bold">{t("hostbracket.review.title")}</h2>
       {agree ? (
         <>
           <p className="text-sm">{withNode(t("hostbracket.review.agree", { result: MARK }), <b>{describe(a!, names, t)}</b>)}</p>

@@ -50,7 +50,7 @@ export default async function FeedStarter({
       {week.length > 0 && (
         <section aria-labelledby="starter-events" className="flex flex-col gap-2 px-4">
           <div className="flex items-baseline justify-between">
-            <h2 id="starter-events" className="font-bold"><Icon name="calendar" /> <T k="feed.starter.thisWeek" values={{ where }} /></h2>
+            <h2 id="starter-events" className="font-bold"><T k="feed.starter.thisWeek" values={{ where }} /></h2>
             <Link href="/events" className="text-sm font-semibold text-brand"><T k="feed.starter.allEvents" /></Link>
           </div>
           <ul className="divide-y divide-line card">

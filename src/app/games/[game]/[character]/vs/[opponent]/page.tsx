@@ -14,7 +14,6 @@ import { getMatchupHighlights } from "@/lib/highlights";
 import { getMatchupPosts } from "@/lib/posts";
 import { pageMeta } from "@/lib/siteMeta";
 import { getUserId } from "@/lib/supabase/server";
-import Icon from "@/components/ui/Icon";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import NewTab from "@/components/ui/NewTab";
@@ -114,7 +113,7 @@ async function Matchup({ params }: Pick<PageProps<"/games/[game]/[character]/vs/
 
       {discords.length > 0 && (
         <section className="card flex flex-col gap-2 p-4" aria-labelledby="discords">
-          <h2 id="discords" className="font-bold"><Icon name="chat" /> {t("media.mu.askCommunities")}</h2>
+          <h2 id="discords" className="font-bold">{t("media.mu.askCommunities")}</h2>
           <p className="text-sm text-muted">{t("media.mu.askBody")}</p>
           <div className="flex flex-wrap gap-2">
             {discords.map((d) => (

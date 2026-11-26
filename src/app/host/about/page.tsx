@@ -3,7 +3,6 @@
 // so it can be shared with a TO who has never seen Smashy.
 import type { Metadata } from "next";
 import Link from "next/link";
-import Icon, { type IconName } from "@/components/ui/Icon";
 import { T } from "@/lib/i18n/client";
 import type { MessageKey } from "@/lib/i18n/core";
 import { pageMeta } from "@/lib/siteMeta";
@@ -14,17 +13,17 @@ export const metadata: Metadata = pageMeta(
 );
 
 // The phrases are in src/lib/i18n/sections/hostsetup.*.ts.
-const FEATURES: { icon: IconName; title: MessageKey; text: MessageKey; href?: string }[] = [
-  { icon: "clipboard", title: "hostsetup.about.signups.title", text: "hostsetup.about.signups.text" },
-  { icon: "trophy", title: "hostsetup.about.brackets.title", text: "hostsetup.about.brackets.text" },
-  { icon: "phone", title: "hostsetup.about.phones.title", text: "hostsetup.about.phones.text" },
-  { icon: "video", title: "hostsetup.about.stream.title", text: "hostsetup.about.stream.text" },
-  { icon: "globe", title: "hostsetup.about.online.title", text: "hostsetup.about.online.text" },
-  { icon: "user", title: "hostsetup.about.help.title", text: "hostsetup.about.help.text" },
-  { icon: "megaphone", title: "hostsetup.about.over.title", text: "hostsetup.about.over.text" },
-  { icon: "repeat", title: "hostsetup.about.startgg.title", text: "hostsetup.about.startgg.text" },
-  { icon: "chart", title: "hostsetup.about.seasons.title", text: "hostsetup.about.seasons.text", href: "/seasons" },
-  { icon: "chat", title: "hostsetup.about.discord.title", text: "hostsetup.about.discord.text", href: "/host/discord" },
+const FEATURES: { title: MessageKey; text: MessageKey; href?: string }[] = [
+  { title: "hostsetup.about.signups.title", text: "hostsetup.about.signups.text" },
+  { title: "hostsetup.about.brackets.title", text: "hostsetup.about.brackets.text" },
+  { title: "hostsetup.about.phones.title", text: "hostsetup.about.phones.text" },
+  { title: "hostsetup.about.stream.title", text: "hostsetup.about.stream.text" },
+  { title: "hostsetup.about.online.title", text: "hostsetup.about.online.text" },
+  { title: "hostsetup.about.help.title", text: "hostsetup.about.help.text" },
+  { title: "hostsetup.about.over.title", text: "hostsetup.about.over.text" },
+  { title: "hostsetup.about.startgg.title", text: "hostsetup.about.startgg.text" },
+  { title: "hostsetup.about.seasons.title", text: "hostsetup.about.seasons.text", href: "/seasons" },
+  { title: "hostsetup.about.discord.title", text: "hostsetup.about.discord.text", href: "/host/discord" },
 ];
 
 const NIGHT: MessageKey[] = [
@@ -72,7 +71,6 @@ export default function HostAboutPage() {
               {(() => {
                 const inner = (
                   <>
-                    <Icon name={f.icon} className="mt-0.5 text-2xl text-brand" />
                     <span className="min-w-0">
                       <span className="block font-semibold"><T k={f.title} />{f.href ? " →" : ""}</span>
                       <span className="block text-sm text-muted"><T k={f.text} /></span>

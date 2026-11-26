@@ -34,7 +34,7 @@ export const feedEs: Record<keyof typeof feedEn, string> = {
   "feed.starter.title": "El feed apenas está empezando",
   "feed.starter.signedIn": "Saluda, pregunta quién va a un local esta semana o publica una encuesta. Las primeras publicaciones las ve todo el mundo.",
   "feed.starter.guest": "Únete para publicar, compartir resultados y conocer a los jugadores de tu escena.",
-  "feed.clips.title": "Los mejores clips ahora",
+  "feed.clips.title": "Mejores clips",
   "feed.clips.watch": "Ver Reels →",
   "feed.clips.clip": "Clip",
   "feed.clipsWeek.title": "Clips de la semana",

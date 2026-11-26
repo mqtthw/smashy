@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { Reel } from "@/lib/reels";
-import Icon from "@/components/ui/Icon";
 import { T } from "@/lib/i18n/client";
 
 /**
@@ -13,7 +12,7 @@ export default function ClipStrip({ reels, headingId, bleed = false, as: Heading
   return (
     <section aria-labelledby={headingId} className="flex flex-col gap-2">
       <div className={`flex items-baseline justify-between ${edge}`}>
-        <Heading id={headingId} className="font-bold"><Icon name="play" /> <T k="feed.clips.title" /></Heading>
+        <Heading id={headingId} className="font-bold"><T k="feed.clips.title" /></Heading>
         <Link href="/reels" className="text-sm font-semibold text-brand"><T k="feed.clips.watch" /></Link>
       </div>
       <ul className={`scroll-fade flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] ${bleed ? "-mx-4 px-4" : "px-4"}`}>

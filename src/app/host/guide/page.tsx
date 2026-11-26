@@ -5,7 +5,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import PrintButton from "@/components/host/PrintButton";
-import Icon, { type IconName } from "@/components/ui/Icon";
 import { T } from "@/lib/i18n/client";
 import type { MessageKey } from "@/lib/i18n/core";
 import { getT } from "@/lib/i18n/server";
@@ -17,9 +16,9 @@ export const metadata: Metadata = pageMeta(
 );
 
 // The phrases are in src/lib/i18n/sections/hostsetup.*.ts.
-const PHASES: { icon: IconName; title: MessageKey; steps: MessageKey[] }[] = [
+const PHASES: { title: MessageKey; steps: MessageKey[] }[] = [
   {
-    icon: "calendar",
+    
     title: "hostsetup.guide.before",
     steps: [
       "hostsetup.guide.before.1",
@@ -32,12 +31,12 @@ const PHASES: { icon: IconName; title: MessageKey; steps: MessageKey[] }[] = [
     ],
   },
   {
-    icon: "pin",
+    
     title: "hostsetup.guide.door",
     steps: ["hostsetup.guide.door.1", "hostsetup.guide.door.2", "hostsetup.guide.door.3", "hostsetup.guide.door.4", "hostsetup.guide.door.5"],
   },
   {
-    icon: "trophy",
+    
     title: "hostsetup.guide.during",
     steps: [
       "hostsetup.guide.during.1",
@@ -49,7 +48,7 @@ const PHASES: { icon: IconName; title: MessageKey; steps: MessageKey[] }[] = [
     ],
   },
   {
-    icon: "megaphone",
+    
     title: "hostsetup.guide.after",
     steps: ["hostsetup.guide.after.1", "hostsetup.guide.after.2", "hostsetup.guide.after.3", "hostsetup.guide.after.4", "hostsetup.guide.after.5"],
   },
@@ -84,10 +83,10 @@ export default function HostGuidePage() {
         <p className="text-muted"><T k="hostsetup.guide.intro" /></p>
       </header>
 
-      {PHASES.map((phase) => (
-        <section key={phase.title} aria-labelledby={`phase-${phase.icon}`} className="flex flex-col gap-2 break-inside-avoid">
-          <h2 id={`phase-${phase.icon}`} className="flex items-center gap-2 font-bold">
-            <Icon name={phase.icon} className="text-xl text-brand" /> <T k={phase.title} />
+      {PHASES.map((phase, i) => (
+        <section key={phase.title} aria-labelledby={`phase-${i}`} className="flex flex-col gap-2 break-inside-avoid">
+          <h2 id={`phase-${i}`} className="flex items-center gap-2 font-bold">
+            <T k={phase.title} />
           </h2>
           <ul className="flex flex-col gap-2">
             {phase.steps.map((step) => (

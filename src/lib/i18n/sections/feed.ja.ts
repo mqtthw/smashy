@@ -34,7 +34,7 @@ export const feedJa: Record<keyof typeof feedEn, string> = {
   "feed.starter.title": "フィードはまだ始まったばかりです",
   "feed.starter.signedIn": "あいさつしたり、今週の大会に誰が行くか聞いたり、アンケートを投稿したりしてみましょう。初期の投稿はみんなの目に留まります。",
   "feed.starter.guest": "参加して投稿や結果のシェアをし、地元シーンのプレイヤーとつながりましょう。",
-  "feed.clips.title": "今人気のクリップ",
+  "feed.clips.title": "人気クリップ",
   "feed.clips.watch": "リールを見る →",
   "feed.clips.clip": "クリップ",
   "feed.clipsWeek.title": "今週のクリップ",

@@ -20,7 +20,7 @@ export default function EmbedCode({ code, previewHref }: { code: string; preview
   return (
     <details>
       <summary className="cursor-pointer text-sm font-semibold">
-        <Icon name="globe" /> {t("hostbracket.embed.summary")}
+        {t("hostbracket.embed.summary")}
       </summary>
       <div className="mt-2 flex flex-col gap-2">
         <p className="text-meta text-muted">

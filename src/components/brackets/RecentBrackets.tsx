@@ -5,7 +5,6 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useStoredState } from "@/lib/useStoredState";
-import Icon from "@/components/ui/Icon";
 import { useT } from "@/lib/i18n/client";
 
 const KEY = "smashy.recentBrackets";
@@ -51,7 +50,7 @@ export function RecentBracketsList() {
   return (
     <section className="flex flex-col gap-2" aria-labelledby="recent-brackets">
       <div className="flex items-baseline justify-between">
-        <h2 id="recent-brackets" className="font-bold"><Icon name="clock" /> {t("browse.brackets.recent")}</h2>
+        <h2 id="recent-brackets" className="font-bold">{t("browse.brackets.recent")}</h2>
         <button type="button" onClick={() => setRaw("[]")} className="text-meta text-muted hover:text-foreground">
           {t("browse.brackets.clear")}
         </button>

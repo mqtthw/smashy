@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import Icon from "@/components/ui/Icon";
 import { GAMES, MAIN_GAME_KEYS, type GameKey } from "@/lib/games";
 import { useT } from "@/lib/i18n/client";
 import NewTab from "@/components/ui/NewTab";
@@ -26,7 +25,7 @@ export default function CalendarSubscribe({ region, regionLabel }: { region: str
   return (
     <details className="mx-4 rounded-xl border border-line px-3 py-2 text-sm">
       <summary className="cursor-pointer font-semibold">
-        <Icon name="calendar" /> {t("browse.cal.title")}
+        {t("browse.cal.title")}
       </summary>
       <div className="mt-2 flex flex-col gap-2">
         <p className="text-muted">{t("browse.cal.help", { region: regionLabel })}</p>

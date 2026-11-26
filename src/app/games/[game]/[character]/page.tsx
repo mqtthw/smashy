@@ -20,7 +20,6 @@ import { CardListSkeleton } from "@/components/ui/Skeleton";
 import CharacterIcon from "@/components/CharacterIcon";
 import { characterDiscord } from "@/lib/characterDiscords";
 import { CHARACTER_COURSES, CHARACTER_LIBRARIES, cookbookUrl, FRAME_DATA_SOURCE, frameDataLinks, libraryType, LIBRARY_SECTIONS, type CommunityLink } from "@/lib/essentials";
-import Icon from "@/components/ui/Icon";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import type { MessageKey, Values } from "@/lib/i18n/core";
@@ -112,7 +111,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
 
       {discord && (
         <section aria-labelledby="community-discord" className="card flex flex-col gap-2 p-4">
-          <h2 id="community-discord" className="font-bold"><Icon name="chat" /> {t("media.char.discord", { name })}</h2>
+          <h2 id="community-discord" className="font-bold">{t("media.char.discord", { name })}</h2>
           <p className="text-sm text-muted">
             {withBold(t("media.char.discordBody", { name }), "{server}", <b className="text-foreground">{discord.name}</b>)}
           </p>
@@ -125,7 +124,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
 
       {cookbook && (
         <section aria-labelledby="cookbook" className="card flex flex-col gap-2 p-4">
-          <h2 id="cookbook" className="font-bold"><Icon name="file" /> {t("media.char.cookbook", { name })}</h2>
+          <h2 id="cookbook" className="font-bold">{t("media.char.cookbook", { name })}</h2>
           <p className="text-sm text-muted">{t("media.char.cookbookBody", { name })}</p>
           <a href={cookbook} target="_blank" rel="noopener noreferrer" className="btn btn-md btn-primary self-start">
             {t("media.char.openCookbook", { name })}
@@ -154,7 +153,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
       {library && (
         <section aria-labelledby="library" className="card flex flex-col gap-3 p-4">
           <div>
-            <h2 id="library" className="font-bold"><Icon name="file" /> {t("media.char.library", { name })}</h2>
+            <h2 id="library" className="font-bold">{t("media.char.library", { name })}</h2>
             <p className="text-meta text-muted">{t("media.char.libraryCredit", { credit: library.credit })}</p>
           </div>
           <form action="/search" role="search" className="flex gap-2">
@@ -184,7 +183,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
 
       {frameData.length > 0 && (
         <section aria-labelledby="frame-data" className="card flex flex-col gap-2 p-4">
-          <h2 id="frame-data" className="font-bold"><Icon name="chart" /> {t("media.char.frameData", { name })}</h2>
+          <h2 id="frame-data" className="font-bold">{t("media.char.frameData", { name })}</h2>
           <p className="text-sm text-muted">{t("media.char.frameDataBody", { source: FRAME_DATA_SOURCE[game] ?? "" })}</p>
           <div className="flex flex-wrap gap-2">
             {frameData.map((f) => (

@@ -1,4 +1,4 @@
-// Ranking for "Top clips right now" (getTopClips in reels.ts). Plain logic, no database.
+// Ranking for "Top clips" (getTopClips in reels.ts). Plain logic, no database.
 
 /** The order for getTopClips (pure, so it can be tested): newer and more watched first, two per channel at most. */
 export function rankTopClips<T extends { platform: string; channel_login: string; view_count: number; like_count?: number; created_at: string; submitted_at?: string | null }>(rows: T[], now: number, limit: number): T[] {

@@ -3,7 +3,6 @@
 // Site admins read them on Admin → Suggestions.
 import Link from "next/link";
 import { Suspense } from "react";
-import Icon, { type IconName } from "@/components/ui/Icon";
 import { LangProvider, T } from "@/lib/i18n/client";
 import type { MessageKey } from "@/lib/i18n/core";
 import { getLang, getT } from "@/lib/i18n/server";
@@ -17,11 +16,11 @@ export const metadata = pageMeta(
   "Smashy is a work in progress. Share a character resource, a missing local, a history fix or feedback with Smashy's team.",
 );
 
-const CARDS: { kind: SuggestionKind; icon: IconName; title: MessageKey; body: MessageKey }[] = [
-  { kind: "resource", icon: "file", title: "ui.help.kind.resource", body: "ui.help.kind.resourceBody" },
-  { kind: "local", icon: "pin", title: "ui.help.kind.local", body: "ui.help.kind.localBody" },
-  { kind: "history", icon: "trophy", title: "ui.help.kind.history", body: "ui.help.kind.historyBody" },
-  { kind: "feedback", icon: "chat", title: "ui.help.kind.feedback", body: "ui.help.kind.feedbackBody" },
+const CARDS: { kind: SuggestionKind; title: MessageKey; body: MessageKey }[] = [
+  { kind: "resource", title: "ui.help.kind.resource", body: "ui.help.kind.resourceBody" },
+  { kind: "local", title: "ui.help.kind.local", body: "ui.help.kind.localBody" },
+  { kind: "history", title: "ui.help.kind.history", body: "ui.help.kind.historyBody" },
+  { kind: "feedback", title: "ui.help.kind.feedback", body: "ui.help.kind.feedbackBody" },
 ];
 
 async function Help({ searchParams }: { searchParams: PageProps<"/help">["searchParams"] }) {
@@ -33,7 +32,7 @@ async function Help({ searchParams }: { searchParams: PageProps<"/help">["search
       <ul className="grid gap-2 sm:grid-cols-2">
         {CARDS.map((c) => (
           <li key={c.kind} className="card flex flex-col gap-1 p-4">
-            <h2 className="flex items-center gap-2 font-bold"><Icon name={c.icon} /> {t(c.title)}</h2>
+            <h2 className="flex items-center gap-2 font-bold">{t(c.title)}</h2>
             <p className="text-sm text-muted">{t(c.body)}</p>
             <Link href={`/help?kind=${c.kind}#send`} scroll={false} className="text-sm font-semibold text-brand">{t("ui.help.tell")}</Link>
           </li>

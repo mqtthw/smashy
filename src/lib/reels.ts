@@ -510,7 +510,7 @@ function postToReel(p: Post): Reel {
 }
 
 /**
- * "Top clips right now" (the strip on the feed and the guest home page): the best clips of the last
+ * "Top clips" (the strip on the feed and the guest home page): the best clips of the last
  * few days, not of the month. Reels' own order (reels_page) lets a clip that went big weeks ago keep
  * its place, which suits an endless feed but made this strip look stuck. Here only clips from the
  * last 3 days count (7 when there are too few), views are softened (square root of views against the

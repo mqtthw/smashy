@@ -16,7 +16,6 @@ import { THREAD_SORTS, TOP_WINDOWS, type ThreadSort, type TopWindow } from "@/li
 import { getUserId } from "@/lib/supabase/server";
 import { getMyGames } from "@/lib/viewer";
 import { pageMeta } from "@/lib/siteMeta";
-import Icon from "@/components/ui/Icon";
 import { flairKey } from "@/components/feed/flairKey";
 import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
@@ -83,7 +82,7 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
           ))}
           {/* Threads nobody has answered yet: where experienced players can help newcomers. */}
           <Link href={href(f, { noReplies: !f.noReplies })} aria-current={f.noReplies ? "page" : undefined} className="chip">
-            <Icon name="chat" /> {t("feed.discuss.noReplies")}
+            {t("feed.discuss.noReplies")}
           </Link>
           {f.sort === "top" &&
             TOP_WINDOWS.map((w) => (

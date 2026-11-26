@@ -5,7 +5,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Scoreboard from "@/components/host/Scoreboard";
 import StageDiagram from "@/components/strike/StageDiagram";
-import Icon, { type IconName } from "@/components/ui/Icon";
 import { T } from "@/lib/i18n/client";
 import type { MessageKey } from "@/lib/i18n/core";
 import { pageMeta } from "@/lib/siteMeta";
@@ -17,26 +16,26 @@ export const metadata: Metadata = pageMeta(
   "A free home for people who play competitive Super Smash Bros.: find tournaments, follow brackets on your phone, strike stages, learn your character and meet your scene.",
 );
 
-type Card = { icon: IconName; key: string; href: string };
+type Card = { key: string; href: string };
 
 /** Open to anyone, no account. (Seven cards: the last one sits alone on a wide screen, which is fine.) Phrases: ui.about.c.<key>, <key>Text, <key>Go. */
 const TRY_NOW: Card[] = [
-  { icon: "calendar", key: "events", href: "/events" },
-  { icon: "phone", key: "strike", href: "/strike" },
-  { icon: "trophy", key: "demo", href: "/host/demo" },
-  { icon: "chart", key: "lookup", href: "/search?tab=players" },
-  { icon: "chat", key: "learn", href: "/games" },
-  { icon: "file", key: "rules", href: "/scenes" },
-  { icon: "play", key: "clips", href: "/reels" },
+  { key: "events", href: "/events" },
+  { key: "strike", href: "/strike" },
+  { key: "demo", href: "/host/demo" },
+  { key: "lookup", href: "/search?tab=players" },
+  { key: "learn", href: "/games" },
+  { key: "rules", href: "/scenes" },
+  { key: "clips", href: "/reels" },
 ];
 const cardKey = (c: Card, part: "" | "Text" | "Go") => `ui.about.c.${c.key}${part}` as MessageKey;
 
 /** What signing in adds. */
-const WITH_ACCOUNT: { icon: IconName; text: MessageKey }[] = [
-  { icon: "gamepad", text: "ui.about.w.signup" },
-  { icon: "bell", text: "ui.about.w.startgg" },
-  { icon: "user", text: "ui.about.w.profile" },
-  { icon: "users", text: "ui.about.w.social" },
+const WITH_ACCOUNT: { text: MessageKey }[] = [
+  { text: "ui.about.w.signup" },
+  { text: "ui.about.w.startgg" },
+  { text: "ui.about.w.profile" },
+  { text: "ui.about.w.social" },
 ];
 
 const SAMPLE_STAGES = ["Battlefield", "Final Destination", "Yoshi's Story"];
@@ -66,7 +65,6 @@ export default function AboutPage() {
           {TRY_NOW.map((c) => (
             <li key={c.key}>
               <Link href={c.href} className="card flex h-full gap-3 p-3 hover:bg-surface">
-                <Icon name={c.icon} className="mt-0.5 text-2xl text-brand" />
                 <span className="flex min-w-0 flex-col gap-1">
                   <span className="font-semibold"><T k={cardKey(c, "")} /></span>
                   <span className="text-sm text-muted"><T k={cardKey(c, "Text")} /></span>
@@ -108,7 +106,6 @@ export default function AboutPage() {
         <ul className="card divide-y divide-line">
           {WITH_ACCOUNT.map((w) => (
             <li key={w.text} className="flex gap-3 px-4 py-3 text-sm">
-              <Icon name={w.icon} className="mt-0.5 text-lg text-brand" />
               <span><T k={w.text} /></span>
             </li>
           ))}

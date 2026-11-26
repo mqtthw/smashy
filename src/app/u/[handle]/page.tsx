@@ -184,7 +184,7 @@ async function ProfileView({ params, searchParams }: Pick<PageProps<"/u/[handle]
             )}
             {profile.lfg_doubles && (
               <Link href="/search?doubles=1" className="badge bg-brand/10 font-semibold text-brand hover:bg-brand/20">
-                <Icon name="users" /> {t("people.edit.lfg")}
+                {t("people.edit.lfg")}
               </Link>
             )}
           </p>
@@ -211,7 +211,7 @@ async function ProfileView({ params, searchParams }: Pick<PageProps<"/u/[handle]
         </div>
         <div className="flex gap-4 text-sm">
           {profile.protected && !isMe ? (
-            <span className="text-muted"><Icon name="lock" /> {t("people.u.privateLists")}</span>
+            <span className="text-muted">{t("people.u.privateLists")}</span>
           ) : (
             <>
               <Link href={`/u/${profile.handle}/following`} className="hover:underline"><b>{counts.following}</b> <span className="text-muted">{t("people.u.following")}</span></Link>
@@ -282,7 +282,7 @@ async function ProfileView({ params, searchParams }: Pick<PageProps<"/u/[handle]
         <div className="divide-y divide-line">
           {pinned && (
             <div className="border-b border-line">
-              <p className="px-4 pt-2 text-meta font-semibold text-muted"><Icon name="pin" /> {t("people.u.pinned")}</p>
+              <p className="px-4 pt-2 text-meta font-semibold text-muted">{t("people.u.pinned")}</p>
               <PostCard post={pinned} now={now} viewerId={userId} />
             </div>
           )}

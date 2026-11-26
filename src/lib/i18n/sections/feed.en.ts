@@ -32,7 +32,7 @@ export const feedEn = {
   "feed.starter.title": "The feed is just getting started",
   "feed.starter.signedIn": "Say hi, ask who's going to a local this week, or post a poll. Early posts get seen by everyone.",
   "feed.starter.guest": "Join to post, share results and meet the players in your scene.",
-  "feed.clips.title": "Top clips right now",
+  "feed.clips.title": "Top clips",
   "feed.clips.watch": "Watch Reels →",
   "feed.clips.clip": "Clip",
   "feed.clipsWeek.title": "Clips of the week",

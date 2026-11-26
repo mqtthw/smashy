@@ -161,7 +161,7 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
       )}
 
       {results.length > 0 && (
-        <Fold id="home-results" heading={<h3 className="font-bold">{t("media.scene.results", { name: regionName(region) })}</h3>}>
+        <Fold id="home-results" heading={<h3 className="font-bold">{t("ui.guest.results")}</h3>}>
           <ul className="card flex flex-col divide-y divide-line">
             {results.map((ev) => (
               <li key={ev.id}>

@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import { getFollowList } from "@/lib/follows";
 import { createClient, getUserId } from "@/lib/supabase/server";
 import Avatar from "@/components/ui/Avatar";
-import Icon from "@/components/ui/Icon";
 import { getT } from "@/lib/i18n/server";
 
 /** Followers / Following list for a profile. Protected accounts' lists are only shown to the owner. */
@@ -33,7 +32,7 @@ export default async function FollowList({ handle, kind }: { handle: string; kin
         </nav>
       </header>
       {profile.protected && !isMe ? (
-        <p className="p-4 text-muted"><Icon name="lock" /> {t("feed.follow.private")}</p>
+        <p className="p-4 text-muted">{t("feed.follow.private")}</p>
       ) : people.length === 0 ? (
         <p className="p-4 text-muted">{kind === "followers" ? t("feed.follow.noFollowers") : t("feed.follow.notFollowing")}</p>
       ) : (

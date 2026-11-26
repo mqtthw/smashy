@@ -24,13 +24,12 @@ import { CardListSkeleton } from "@/components/ui/Skeleton";
 import { LangProvider, T } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import { signInPath } from "@/lib/returnTo";
-import Icon, { type IconName } from "@/components/ui/Icon";
 import type { MessageKey } from "@/lib/i18n/core";
 
-const GUEST_POINTS: { icon: IconName; text: MessageKey }[] = [
-  { icon: "gamepad", text: "play.guest.point1" },
-  { icon: "chat", text: "play.guest.point2" },
-  { icon: "chart", text: "play.guest.point3" },
+const GUEST_POINTS: { text: MessageKey }[] = [
+  { text: "play.guest.point1" },
+  { text: "play.guest.point2" },
+  { text: "play.guest.point3" },
 ];
 
 export const metadata: Metadata = { title: "Play Smash online: netplay lobbies and ladders", description: "Find Super Smash Bros. netplay lobbies, ranked online ladders and chat with the smash community." };
@@ -66,10 +65,9 @@ async function PlayContent({ searchParams }: { searchParams: PageProps<"/play">[
             {t("play.guestBody")}
           </p>
           {/* What members get here (round 829): the guest page was one small card over an empty screen. */}
-          <ul className="mt-4 flex flex-col gap-2 text-sm">
+          <ul className="list-disc pl-5 marker:text-brand mt-4 flex flex-col gap-2 text-sm">
             {GUEST_POINTS.map((p) => (
-              <li key={p.text} className="flex items-start gap-2">
-                <span className="mt-0.5 shrink-0 text-brand"><Icon name={p.icon} /></span>
+              <li key={p.text} >
                 {t(p.text)}
               </li>
             ))}
