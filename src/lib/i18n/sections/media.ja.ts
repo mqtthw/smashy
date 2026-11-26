@@ -168,12 +168,12 @@ export const mediaJa: Record<keyof typeof mediaEn, string> = {
   "media.hl.err.guideLength": "攻略は{n}文字までです。",
 
   // Resources: games and characters
-  "media.games.title": "攻略情報",
+  "media.games.title": "キャラ",
   "media.games.intro": "コミュニティによる攻略、コンボ動画、キャラ対メモ、テクニックを、ゲームとキャラ別にまとめています。無料で読めて、Discordの招待も不要です。",
   "media.games.characters": "1キャラ|{n}キャラ",
   "media.games.more": "その他のゲーム",
   "media.games.search": "すべてを検索 →",
-  "media.games.back": "← 攻略情報",
+  "media.games.back": "← キャラ",
   "media.game.essentials": "{game}の基本",
   "media.game.characters": "キャラ",
   "media.game.top": "{game}の人気の攻略情報",

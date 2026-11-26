@@ -26,6 +26,8 @@ import { GAMES, gamesFor } from "@/lib/games";
 import { getMyGames, getMyHomeCity, needsProfile } from "@/lib/viewer";
 import { FeedSkeleton } from "@/components/ui/Skeleton";
 import GuestWelcome from "@/components/GuestWelcome";
+import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
+import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 import FeedStarter from "@/components/feed/FeedStarter";
 import { detectedRegion, getViewerRegion } from "@/lib/viewerRegion";
 import { HOME_REGION } from "@/lib/regions";
@@ -271,6 +273,12 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
 
 // One address for the home feed, however it was reached ("show more" and "older posts" add their own
 // parameters): search engines treat them all as this page instead of endless separate ones.
+
+/** Every fourth Melee and Ultimate stock icon, for the Characters button to rotate through (fixed, so the page can be built ahead). */
+const HEADER_CHARACTER_ICONS = (["melee", "ultimate"] as const).flatMap((g) =>
+  [...(STOCK_ICON_KEYS[g] ?? [])].filter((_, i) => i % 4 === 0).map((k) => `/stock/${g}/${k}.webp`),
+);
+
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function FeedPage(props: PageProps<"/">) {
@@ -283,12 +291,14 @@ export default function FeedPage(props: PageProps<"/">) {
             <h1 className="text-2xl font-bold max-md:sr-only"><T k="nav.feed" /></h1>
           </div>
           <div className="flex items-center gap-2 text-sm">
-            {/* Search, Resources, then More on the far right (Matthew). */}
+            {/* Search, Characters (the guides; it was "Resources"), then More on the far right (Matthew). */}
             <TLink href="/search" labelKey="feed.search" titleKey="feed.search" className={headerBtn}>
               <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2}><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
             </TLink>
             <TLink href="/games" labelKey="feed.resources" titleKey="feed.resources" className={headerBtn}>
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2}><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5M8 7h7" /></svg>
+              {/* A character's stock icon, changing every couple of seconds (round 850, Matthew: "Resources" with a
+                  book icon read like documentation a first-time visitor would skip). */}
+              <RotatingCharacterIcon icons={HEADER_CHARACTER_ICONS} />
               <span className="max-sm:hidden"><T k="feed.resources" /></span>
             </TLink>
             <MoreMenu className={headerBtn} profile={<Suspense fallback={null}><DrawerProfile /></Suspense>} admin={<Suspense fallback={null}><DrawerAdmin /></Suspense>} />

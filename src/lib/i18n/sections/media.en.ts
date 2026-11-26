@@ -166,12 +166,12 @@ export const mediaEn = {
   "media.hl.err.guideLength": "Guides can be up to {n} characters.",
 
   // Resources: games and characters
-  "media.games.title": "Resources",
+  "media.games.title": "Characters",
   "media.games.intro": "Guides, combo videos, matchup notes, and tech from the community, organized by game and character. Free to read, no Discord invite needed.",
   "media.games.characters": "1 character|{n} characters",
   "media.games.more": "More games",
   "media.games.search": "Search everything →",
-  "media.games.back": "← Resources",
+  "media.games.back": "← Characters",
   "media.game.essentials": "{game} essentials",
   "media.game.characters": "Characters",
   "media.game.top": "Top {game} resources",

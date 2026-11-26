@@ -1,7 +1,7 @@
 // English phrases for one part of Smashy (see ../en.ts). Keys start with "feed.".
 export const feedEn = {
   // The home feed
-  "feed.resources": "Resources",
+  "feed.resources": "Characters",
   "feed.search": "Search",
   "feed.view": "Feed view",
   "feed.forYou": "For You",

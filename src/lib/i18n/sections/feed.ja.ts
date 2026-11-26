@@ -3,7 +3,7 @@ import type { feedEn } from "./feed.en";
 
 export const feedJa: Record<keyof typeof feedEn, string> = {
   // The home feed
-  "feed.resources": "お役立ち",
+  "feed.resources": "キャラ",
   "feed.search": "検索",
   "feed.view": "フィードの表示",
   "feed.forYou": "おすすめ",

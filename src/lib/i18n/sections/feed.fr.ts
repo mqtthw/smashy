@@ -3,7 +3,7 @@ import type { feedEn } from "./feed.en";
 
 export const feedFr: Record<keyof typeof feedEn, string> = {
   // The home feed
-  "feed.resources": "Ressources",
+  "feed.resources": "Persos",
   "feed.search": "Rechercher",
   "feed.view": "Vue du fil",
   "feed.forYou": "Pour toi",

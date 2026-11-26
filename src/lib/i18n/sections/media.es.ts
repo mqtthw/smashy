@@ -168,12 +168,12 @@ export const mediaEs: Record<keyof typeof mediaEn, string> = {
   "media.hl.err.guideLength": "Las guías pueden tener hasta {n} caracteres.",
 
   // Resources: games and characters
-  "media.games.title": "Recursos",
+  "media.games.title": "Personajes",
   "media.games.intro": "Guías, videos de combos, notas de matchups y tech de la comunidad, organizados por juego y personaje. Gratis, sin necesidad de invitación a Discord.",
   "media.games.characters": "1 personaje|{n} personajes",
   "media.games.more": "Más juegos",
   "media.games.search": "Buscar en todo →",
-  "media.games.back": "← Recursos",
+  "media.games.back": "← Personajes",
   "media.game.essentials": "Lo esencial de {game}",
   "media.game.characters": "Personajes",
   "media.game.top": "Mejores recursos de {game}",
