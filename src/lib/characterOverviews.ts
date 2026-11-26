@@ -127,6 +127,138 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         },
       ],
     },
+    // Round 918 batch (English first; other languages fall back to it until a translation pass).
+    "zero-suit-samus": {
+      source: {
+        title: "The Zero Suit Samus Compendium",
+        url: "https://docs.google.com/document/d/1LnIrS0Ei_OkZ5HQqcPcwLLaLOwG0pIkwnqFz6WhuePA/edit",
+        by: "Kapsyl, with Mabemo and Doorstop",
+      },
+      playstyle: {
+        en: "Aggressive, high-risk and high-reward. She is one of the most agile characters in the game: she holds center stage, pressures from the air, and conditions the opponent's reactions so she can punish them. Most of her strength is in her aerials, with shield-poking options that lead into big combos.",
+      },
+      traits: [
+        {
+          name: "Recovery",
+          text: { en: "Very versatile: Boost Kick from below the ledge, Flip Jump back to the stage or to the ledge, and a tether with her air grab or Plasma Whip (slow, so used with care). Flip Jump is only invincible briefly, so repeating it gets called out; she has to mix up angles, height and ledge options." },
+        },
+      ],
+      strengths: [
+        { en: "Incredible movement, with very versatile ways to get around." },
+        { en: "Aerials and shield pokes that lead into devastating combos." },
+        { en: "Can take control of the stage quickly and pressure from the air." },
+      ],
+      weaknesses: [
+        { en: "Tall, light and fast-falling, which makes her vulnerable to setups." },
+        { en: "Her grounded moves are lackluster, so she often has to commit to jumping." },
+        { en: "Limited defensive options: she relies on movement to get out of bad spots." },
+      ],
+    },
+    "king-dedede": {
+      source: {
+        title: "The Ultimate King Dedede Guide",
+        url: "https://docs.google.com/document/d/1Qzf9EhuehVjASSN8JXPQGUU3G_wF_YeRhSl-FeD-6OA/edit?usp=sharing",
+        by: "Soul Train",
+      },
+      playstyle: {
+        en: "A defensive heavyweight who excels at trapping and surviving. He uses his long hammer and Gordo to push opponents to the edge and take their stock early from there; the guide calls the opponent being offstage his one true advantage state. A patient Dedede always has a chance.",
+      },
+      traits: [
+        {
+          name: "Gordo",
+          text: { en: "A spiked ball he throws with side special. It can be thrown softly or hard and angled up, forward or down for exact spacing, and it's the center of his ledge traps and edgeguards: throw it at a recovering opponent and punish how they avoid it." },
+        },
+        {
+          name: "Survival",
+          text: { en: "An armored recovery, high gravity and heavy weight mean he regularly lives past 150%." },
+        },
+      ],
+      strengths: [
+        { en: "Lives a very long time." },
+        { en: "Ledge traps and edgeguards that can end stocks very early." },
+        { en: "Big damage from few hits: the guide lists combos doing 63% off two moves." },
+      ],
+      weaknesses: [
+        { en: "Large and fast-falling with high end lag on most moves: a lackluster neutral, and he can't approach easily, so patient keepaway is hard for him." },
+        { en: "No good out-of-shield options or safe close-range attacks, so smart rushdown is hard for him too." },
+        { en: "The worst air speed in the game: easily juggled, with a rough time in disadvantage." },
+      ],
+    },
+    "piranha-plant": {
+      source: {
+        title: "Piranha Plant Guide",
+        url: "https://docs.google.com/document/d/1MXjF4991FD7DApDSxKzlBjEX2t0KxaLJpKpW5RZ_LkA/edit",
+        by: "the Piranha Plant Discord (the guide's author isn't named)",
+      },
+      playstyle: {
+        en: "A keepaway character built around anti-airs. Plant pokes, zones with Ptooie, closes off space with Poison Breath, and catches people as they come down; the guide says most of its damage comes from anti-airs and ledge trapping, and that it isn't built to approach.",
+      },
+      traits: [
+        {
+          name: "Ptooie",
+          text: { en: "The spiked ball. Used to zone and to lock down an opponent's shield; the guide warns that spamming it is a common beginner mistake." },
+        },
+        {
+          name: "Poison Breath",
+          text: { en: "A cloud that denies an area of the stage. Turning it around in the air (a B-reverse) is also Plant's main movement trick." },
+        },
+      ],
+      strengths: [
+        { en: "Can rack up large damage from stray hits." },
+        { en: "Some of the better anti-airs in the cast." },
+        { en: "Very strong ledge trapping." },
+        { en: "Sets up areas the opponent can't safely enter." },
+      ],
+      weaknesses: [
+        { en: "A poor neutral that leans on laggy, short-ranged pokes." },
+        { en: "Very little movement to speak of." },
+        { en: "A dreadful disadvantage state." },
+      ],
+    },
+  },
+  melee: {
+    // Round 918 batch (English first).
+    pikachu: {
+      source: {
+        title: "Basic Pikachu Guide",
+        url: "https://docs.google.com/document/d/1k-ejRDbQU_N7CucdpwW5RmCxKttthJKFIHUvyr9xMu4/edit",
+        by: "Cornycows",
+      },
+      playstyle: {
+        en: "A small, quick character whose neutral is centered on running in with a short-hop neutral air, then mixing in grab, down smash and down tilt once the opponent starts dealing with it. He dodges well with dash dancing and platform movement. He isn't a very defensive character, though his tilts, up smash and up air all work defensively.",
+      },
+      traits: [
+        {
+          name: "Speed and jump",
+          text: { en: "Near the top in most speed attributes, with a 3-frame jumpsquat (tied for fastest in the game), and he keeps much of his momentum in the air after jumping." },
+        },
+        {
+          name: "Neutral air",
+          text: { en: "His main approach tool. It comes out on frame 3 and is used to deal damage, combo and edgeguard." },
+        },
+        {
+          name: "Up air",
+          text: { en: "Three timings that do different things: the first hit sends straight up (out of shield, combo starter), the middle hit, the “tailspike”, sends down and away (edgeguarding), and the last, the “tailflip”, flips the opponent over his head (extending combos)." },
+        },
+        {
+          name: "Up smash",
+          text: { en: "One of his best moves: its close and middle hits are the strongest up smash in the game. Used to tech chase, combo, KO, anti-air and out of shield; it has high end lag if it misses." },
+        },
+        {
+          name: "Thunder Jolt",
+          text: { en: "A projectile that bounces along the ground and around platforms, useful for approaching, defending and starting combos." },
+        },
+      ],
+      strengths: [
+        { en: "An incredibly strong out-of-shield game: a fast jumpsquat and three fast aerials." },
+        { en: "Small and quick, so he's good at avoiding hits with movement." },
+        { en: "Edgeguards Fox and Falco with down-angled forward tilt, down air and the tailspike." },
+      ],
+      weaknesses: [
+        { en: "The shortest grab range in the game, which also makes him less of a tech-chase character." },
+        { en: "Not a very defensive character." },
+      ],
+    },
   },
 };
 
