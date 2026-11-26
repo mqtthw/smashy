@@ -124,6 +124,7 @@ export const browseEn = {
   "browse.stream.streams": "Streams",
   "browse.stream.liveOnTwitch": "{name} live on Twitch",
   "browse.stream.playsHere": "The stream plays here once the tournament starts.",
+  "browse.stream.more": "1 more stream|{n} more streams",
   "browse.stream.close": "Close the stream",
 
   // Majors
@@ -138,6 +139,7 @@ export const browseEn = {
 
   // A start.gg tournament
   "browse.event.couldntReach": "We couldn't reach start.gg right now.",
+  "browse.event.savedOnly": "Brackets, sets and streams come from start.gg, which isn't answering right now; these are Smashy's saved results.",
   "browse.event.detailsFrom": "This event's details come from start.gg. Try again in a minute.",
   "browse.event.major": "Major",
   "browse.event.followLive": "Follow the bracket live",

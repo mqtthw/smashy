@@ -1,7 +1,7 @@
 // A character page's "In Smash history": the majors won by a player who played this character there, the
 // players who did it most, and the latest ones. From the records (src/lib/historyFirsts.ts characterWins): the
-// winner's characters from start.gg's sets, or SmashWiki's for results added by hand. Counts a win once per
-// character the winner played, so a Fox and Falco player's win shows on both pages. Facts only.
+// winner's characters from start.gg's sets, or SmashWiki's for results added by hand. A win counts only for the
+// character the winner played most there (round 874). Facts only.
 import Link from "next/link";
 import type { GameKey } from "@/lib/games";
 import { majorHref } from "@/lib/handMajors";

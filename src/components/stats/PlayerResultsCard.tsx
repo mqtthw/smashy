@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import GameBadge from "@/components/GameBadge";
 import LocalTime from "@/components/ui/LocalTime";
 import { GAMES, type GameKey } from "@/lib/games";
+import { bracketLabel } from "@/lib/bracketLabel";
 import { summarizeResults, type PlayerResult } from "@/lib/playerResults";
 import { useT } from "@/lib/i18n/client";
 
@@ -78,7 +79,7 @@ export default function PlayerResultsCard({ results, career = false, initial = 1
                 {r.tournament}
               </Link>
               <span className="block truncate text-meta text-muted">
-                {r.eventName} · {t(r.doubles ? "people.results.teams" : "people.results.entrants", { n: r.entrants })}
+                {r.game ? bracketLabel(r.eventName, r.game) : r.eventName} · {t(r.doubles ? "people.results.teams" : "people.results.entrants", { n: r.entrants })}
                 {r.startAt ? (
                   <>
                     {" · "}

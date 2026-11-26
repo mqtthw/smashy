@@ -219,7 +219,7 @@ async function Series({ params }: { params: PageProps<"/host/[id]/series">["para
 
 export default function SeriesPage(props: PageProps<"/host/[id]/series">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Link href="/events" className="text-sm text-muted hover:text-foreground"><T k="event.series.back" /></Link>
       <Suspense fallback={<PageSkeleton />}>
         <Series params={props.params} />

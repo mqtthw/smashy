@@ -9,7 +9,7 @@ import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/contact";
 
 const VISITS_KEY = "smashy-visits";
 const DISMISSED_KEY = "smashy-install-dismissed"; // when it was closed (ms); asks again after 30 days
-const SHOW_FROM_VISIT = 2;
+const SHOW_FROM_VISIT = 3; // round 887: from the 3rd visit (was 2nd); with the tab bar it covered a quarter of a phone screen
 /** Pages where it stays out of the way: signing in and setting up a profile. */
 export const SIGNING_UP = /^\/(signin|welcome)(\/|$)/;
 

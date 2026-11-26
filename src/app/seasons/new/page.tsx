@@ -67,7 +67,7 @@ async function NewSeasonForm({ searchParams }: { searchParams: PageProps<"/seaso
 
 export default function NewSeasonPage(props: PageProps<"/seasons/new">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header>
         <Link href="/seasons" className="text-sm text-muted hover:underline">← <T k="season.title" /></Link>
         <h1 className="text-2xl font-bold"><T k="season.start" /></h1>

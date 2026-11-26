@@ -140,7 +140,11 @@ export function twitchClipIdIn(text: string): string | null {
   return null;
 }
 
-/** The text with its links taken out (they read badly in a preview). */
+/**
+ * The text with its links taken out (they read badly in a preview). A short label that only introduced a link
+ * at the very end ("Full results:") goes too (round 884): left alone it read like a cut-off sentence.
+ */
 export function withoutLinks(text: string): string {
-  return text.replace(/https?:\/\/\S+/g, " ").replace(/\s+/g, " ").trim();
+  const out = text.replace(/https?:\/\/\S+/g, " ").replace(/\s+/g, " ").trim();
+  return /https?:\/\/\S+\s*$/.test(text.trim()) ? out.replace(/(^|[.!?]\s+)[^.!?:]{1,30}:$/, "$1").trim() : out;
 }

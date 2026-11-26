@@ -41,7 +41,7 @@ async function AddVod({ searchParams }: { searchParams: PageProps<"/history/vod"
 
 export default function AddVodPage(props: PageProps<"/history/vod">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Link href="/history" className="text-sm text-muted hover:text-foreground"><T k="history.major.back" /></Link>
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold"><T k="history.vod.title" /></h1>

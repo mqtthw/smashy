@@ -328,7 +328,7 @@ async function HostedSet({ params }: { params: PageProps<"/host/set/[id]">["para
 
 export default function HostedSetPage(props: PageProps<"/host/set/[id]">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Suspense fallback={<ScoreboardSkeleton />}>
         <HostedSet params={props.params} />
       </Suspense>

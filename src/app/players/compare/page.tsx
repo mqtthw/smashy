@@ -210,7 +210,7 @@ async function Compare({ searchParams }: { searchParams: PageProps<"/players/com
 
 export default function ComparePage(props: PageProps<"/players/compare">) {
   return (
-    <article className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <article className="flex flex-col gap-4 p-4">
       <Link href="/search?tab=players" className="text-meta text-muted hover:text-foreground"><T k="people.findPlayer" /></Link>
       <Suspense fallback={<CardListSkeleton count={3} label="Loading both players…" />}>
         <Compare searchParams={props.searchParams} />

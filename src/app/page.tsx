@@ -299,7 +299,9 @@ export default function FeedPage(props: PageProps<"/">) {
               {/* A character's stock icon, changing every couple of seconds (round 850, Matthew: "Resources" with a
                   book icon read like documentation a first-time visitor would skip). */}
               <RotatingCharacterIcon icons={HEADER_CHARACTER_ICONS} />
-              <span className="max-sm:hidden"><T k="feed.resources" /></span>
+              {/* The word shows on phones too (round 887): a character's face alone in a circle, top right, read
+                  like the visitor's own profile picture. */}
+              <span><T k="feed.resources" /></span>
             </TLink>
             <MoreMenu className={headerBtn} profile={<Suspense fallback={null}><DrawerProfile /></Suspense>} admin={<Suspense fallback={null}><DrawerAdmin /></Suspense>} />
             {/* Phones: Messages and Notifications live in More (Matthew); wider screens keep these buttons. */}

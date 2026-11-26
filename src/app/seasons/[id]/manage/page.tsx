@@ -315,7 +315,7 @@ async function Manage({ params, searchParams }: { params: PageProps<"/seasons/[i
 
 export default function ManageSeasonPage(props: PageProps<"/seasons/[id]/manage">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-6 p-4">
+    <section className="flex flex-col gap-6 p-4">
       <Suspense fallback={<CardListSkeleton count={4} />}>
         <Manage params={props.params} searchParams={props.searchParams} />
       </Suspense>

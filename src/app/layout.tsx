@@ -6,6 +6,14 @@ import SideAccounts from "@/components/accounts/SideAccounts";
 import { PageCounter } from "@/components/ui/BackLink";
 import { Suspense } from "react";
 import SideColumn from "@/components/SideColumn";
+import PhoneBrandBar, { PHONE_HEADER_BTN } from "@/components/PhoneBrandBar";
+import MoreMenu from "@/components/feed/MoreMenu";
+import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
+
+/** Every fourth Melee and Ultimate stock icon, for the phone bar's Characters button (as on the home page). */
+const HEADER_CHARACTER_ICONS = (["melee", "ultimate"] as const).flatMap((g) =>
+  [...(STOCK_ICON_KEYS[g] ?? [])].filter((_, i) => i % 4 === 0).map((k) => `/stock/${g}/${k}.webp`),
+);
 import StreamDock from "@/components/majors/StreamDock";
 import Toaster from "@/components/ui/Toaster";
 import InstallPrompt from "@/components/InstallPrompt";
@@ -60,7 +68,9 @@ export const viewport: Viewport = {
 };
 
 // Applies a saved Light/Dark choice before the page paints, so it never flashes the wrong theme.
-const themeScript = `try{var t=localStorage.getItem("smashy-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("smashy-hide-mains")==="1")document.documentElement.setAttribute("data-hide-mains","");if(localStorage.getItem("smashy-spoiler-mode")==="1")document.documentElement.setAttribute("data-spoiler-mode","")}catch(e){}
+// Its first line turns on the menu skin preview (round 908): ?skin=melee saves it, ?skin=off clears it.
+const themeScript = `try{var q=new URLSearchParams(location.search).get("skin");if(q==="melee")localStorage.setItem("smashy-skin","melee");else if(q)localStorage.removeItem("smashy-skin");if(localStorage.getItem("smashy-skin")==="melee")document.documentElement.setAttribute("data-skin","melee")}catch(e){}
+try{var t=localStorage.getItem("smashy-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("smashy-hide-mains")==="1")document.documentElement.setAttribute("data-hide-mains","");if(localStorage.getItem("smashy-spoiler-mode")==="1")document.documentElement.setAttribute("data-spoiler-mode","")}catch(e){}
 try{var m=document.cookie.match(/(?:^|; )lang=(en|es|ja|fr)(?:;|$)/),l=m?m[1]:"en";if(!m){var ls=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||"en"];for(var i=0;i<ls.length;i++){var c=String(ls[i]).slice(0,2).toLowerCase();if(c==="en"||c==="es"||c==="ja"||c==="fr"){l=c;break}}document.cookie="lang="+l+"; path=/; max-age=31536000; samesite=lax"}document.documentElement.lang=l}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -91,10 +101,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </Suspense>
         {/* The bottom padding leaves room for the floating tab bar on phones */}
         <main id="main" tabIndex={-1} className="min-h-screen outline-none w-full min-w-0 max-w-2xl pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:border-r md:border-line md:pb-0">
+          {/* Phones: the wordmark and search on inner pages (round 888). Suspense: it reads the path. */}
+          <Suspense fallback={null}>
+            <PhoneBrandBar
+              characterIcons={HEADER_CHARACTER_ICONS}
+              // The menu's links only: its profile and admin parts read the database, and this is on every page.
+              menu={<MoreMenu className={PHONE_HEADER_BTN} />}
+            />
+          </Suspense>
           {children}
         </main>
         {/* Wide screens: Live now, coming up and majors on the right (round 500). */}
-        <SideColumn />
+        {/* In Suspense: SideColumn reads the page's path (layout hooks need it, round 681). */}
+        <Suspense fallback={null}>
+          <SideColumn />
+        </Suspense>
         {/* The live stream that keeps playing while you move between pages (round 718). */}
         <StreamDock />
         <Toaster />

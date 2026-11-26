@@ -126,6 +126,7 @@ export const browseEs: Record<keyof typeof browseEn, string> = {
   "browse.stream.streams": "Streams",
   "browse.stream.liveOnTwitch": "{name} en vivo en Twitch",
   "browse.stream.playsHere": "El stream se verá aquí cuando empiece el torneo.",
+  "browse.stream.more": "1 stream más|{n} streams más",
   "browse.stream.close": "Cerrar la transmisión",
 
   // Majors
@@ -140,6 +141,7 @@ export const browseEs: Record<keyof typeof browseEn, string> = {
 
   // A start.gg tournament
   "browse.event.couldntReach": "No pudimos conectar con start.gg en este momento.",
+  "browse.event.savedOnly": "Los brackets, sets y streams vienen de start.gg, que no responde ahora; estos son los resultados que Smashy guardó.",
   "browse.event.detailsFrom": "Los detalles de este evento vienen de start.gg. Intenta de nuevo en un minuto.",
   "browse.event.major": "Major",
   "browse.event.followLive": "Seguir el bracket en vivo",

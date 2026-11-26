@@ -60,7 +60,7 @@ function TabList({ pathname }: { pathname: string | null }) {
               {/* The current tab's icon sits in a glossy red bubble (round 487). */}
               <span
                 className={`flex h-9 w-9 items-center justify-center rounded-full ${
-                  active ? "bg-[#e8301f] text-white" : ""
+                  active ? "bg-[#d4231a] text-white" : ""
                 }`}
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true" className={active ? "h-5 w-5 fill-current" : "h-6 w-6 fill-current"}>

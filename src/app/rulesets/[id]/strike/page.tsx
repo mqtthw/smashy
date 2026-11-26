@@ -43,7 +43,7 @@ async function Striker({ params }: { params: PageProps<"/rulesets/[id]/strike">[
 
 export default function StrikePage(props: PageProps<"/rulesets/[id]/strike">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Suspense fallback={<PageSkeleton />}>
         <Striker params={props.params} />
       </Suspense>

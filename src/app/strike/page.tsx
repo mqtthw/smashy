@@ -82,7 +82,7 @@ async function Picker({ searchParams }: { searchParams: PageProps<"/strike">["se
 
 export default function StrikePage(props: PageProps<"/strike">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Suspense fallback={<PageSkeleton />}>
         <Picker searchParams={props.searchParams} />
       </Suspense>

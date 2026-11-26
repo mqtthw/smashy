@@ -13,7 +13,7 @@ export default function CharacterStocks({ game, names, max = 3, size = 16 }: { g
         const src = stockIconUrl({ game, character: startggCharacterKey(name) });
         return src ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={name} src={src} alt={name} width={size} height={size} loading="lazy" style={{ width: size, height: size }} />
+          <img key={name} src={src} alt={name} width={size} height={size} style={{ width: size, height: size }} />
         ) : (
           <span key={name} className="text-meta text-muted">{name}</span>
         );

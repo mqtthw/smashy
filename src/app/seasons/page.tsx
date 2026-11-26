@@ -73,7 +73,7 @@ async function SeasonList({ searchParams }: { searchParams: PageProps<"/seasons"
 
 export default function SeasonsPage(props: PageProps<"/seasons">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold"><T k="season.title" /></h1>
         <p className="text-sm text-muted"><T k="season.intro" /></p>

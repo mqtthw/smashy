@@ -27,7 +27,7 @@ async function Content() {
 
 export default function DeleteAccountPage() {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-6">
+    <section className="flex flex-col gap-4 p-6">
       <header className="flex flex-col gap-1">
         <Link href="/profile" className="text-meta text-muted hover:text-foreground"><T k="people.delete.back" /></Link>
         <h1 className="text-2xl font-bold"><T k="people.delete.title" /></h1>

@@ -23,7 +23,7 @@ async function WithAccount() {
 
 export default function ReplaysPage() {
   return (
-    <article className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <article className="flex flex-col gap-4 p-4">
       <header>
         <h1 className="text-2xl font-bold"><T k="play.replays.title" /></h1>
         <p className="text-sm text-muted"><T k="play.replays.subtitle" /></p>

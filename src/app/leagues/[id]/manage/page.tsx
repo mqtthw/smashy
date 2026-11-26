@@ -66,7 +66,7 @@ async function Settle({ leagueId, bestOf, players }: { leagueId: string; bestOf:
 
 export default function ManageLeaguePage(props: PageProps<"/leagues/[id]/manage">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Suspense fallback={null}>
         <Manage params={props.params} />
       </Suspense>

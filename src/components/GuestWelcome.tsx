@@ -15,18 +15,16 @@ import { majorsFor, type Major } from "@/lib/majors";
 import { HOME_REGION, regionName } from "@/lib/regions";
 import { detectedRegion } from "@/lib/viewerRegion";
 import Fold from "@/components/ui/Fold";
-import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
 import OverflowRow from "@/components/ui/OverflowRow";
-import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 
 // The "start here" links at the top (round 654, for visitors from the Reddit posts): Smashy's
 // strongest parts, none of which need an account. A row of short links since round 845: as six cards
 // with a sales line each, the first screen read like a generic landing page (Reddit: "looks vibe coded").
 // No stock line icons on them or the headings below (round 848, Matthew: they give the site away as
-// template-made); only the character link keeps its real stock icon. Character pages come first (round 824, Matthew: more
+// template-made). Round 890: Characters left this row; the header's Characters button (with its rotating stock
+// icon and, since round 887, its word on phones) is the one way in, so it isn't said twice. Character pages come first (round 824, Matthew: more
 // people will be interested in them than in Smash history, which swapped places with them).
 const START: { title: MessageKey; href: string }[] = [
-  { title: "ui.guest.t.characters", href: "/games" },
   { title: "ui.guest.t.events", href: "/events" },
   { title: "ui.guest.t.history", href: "/history" },
   { title: "ui.guest.t.newPlayers", href: "/new" },
@@ -34,15 +32,14 @@ const START: { title: MessageKey; href: string }[] = [
   { title: "ui.guest.t.players", href: "/search?tab=players" },
 ];
 
-/** 20 random Melee and Ultimate stock icons for the Character pages button to rotate through. */
-function characterIcons(): string[] {
-  const all = (["melee", "ultimate"] as const).flatMap((g) => [...(STOCK_ICON_KEYS[g] ?? [])].map((k) => `/stock/${g}/${k}.webp`));
-  for (let i = all.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [all[i], all[j]] = [all[j], all[i]];
-  }
-  return all.slice(0, 20);
-}
+// The menu skin's first steps for someone new to Smash (round 908), in the order people take them.
+const STEPS: { title: MessageKey; text: MessageKey; href: string }[] = [
+  { title: "ui.guest.new.s.start", text: "ui.guest.new.s.startText", href: "/new" },
+  { title: "ui.guest.new.s.character", text: "ui.guest.new.s.characterText", href: "/games" },
+  { title: "ui.guest.new.s.local", text: "ui.guest.new.s.localText", href: "/events" },
+  { title: "ui.guest.new.s.watch", text: "ui.guest.new.s.watchText", href: "/reels" },
+  { title: "ui.guest.new.s.history", text: "ui.guest.new.s.historyText", href: "/history" },
+];
 
 // Further down: the parts that come alive with an account.
 const ALSO: { title: MessageKey; text: MessageKey; href: string }[] = [
@@ -72,16 +69,56 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
   const [events, inviteOnly] = await Promise.all([getRegionEvents(region).catch(() => null), isInviteOnly().catch(() => true)]);
   const upcoming = notOver(events?.tournaments ?? []).slice(0, 4);
   // The first one running right now gets the big glossy card at the top (round 492); the rest are rows.
-  const live = upcoming.find((ev) => isRunning(ev));
+  // Only a sizable one (16+ players) gets it (round 881): a 3-player weekly as the biggest thing on the
+  // page looked automatic rather than chosen. Smaller live ones are rows with the red date tile.
+  const big = (ev: (typeof upcoming)[number]) => Math.max(ev.numAttendees ?? 0, ...ev.events.map((e) => e.numEntrants ?? 0)) >= 16;
+  const live = upcoming.find((ev) => isRunning(ev) && big(ev));
   const rows = upcoming.filter((ev) => ev !== live);
   // The week's biggest finished tournaments (latest day first), with who won: real results from the scene, no account needed.
   const results = (events?.recent ?? []).slice(0, 3);
   const nextMajors = majorsFor(majors, []).slice(0, 6); // the main games' majors, soonest first
-  const icons = characterIcons();
 
   return (
     <section aria-labelledby="guest-welcome" className="flex flex-col gap-6 border-b border-line px-4 py-6">
-      <div className="flex flex-col gap-3">
+      {/* The menu skin's top part (round 908, a preview behind ?skin=melee): new players first. A numbered
+          menu of first steps, each with one line saying what's behind it; the people who already compete
+          get their links in a quiet row under it. */}
+      <div className="skin-new flex flex-col gap-4">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-3xl leading-none">{t("ui.guest.new.headline")}</h2>
+          <p className="text-muted">{t("ui.guest.new.pitch")}</p>
+        </div>
+        <ol className="flex flex-col gap-2">
+          {STEPS.map((s, i) => (
+            <li key={s.href}>
+              <Link href={s.href} className="menu-bar">
+                <span className="menu-bar-num" aria-hidden="true">{i + 1}</span>
+                <span className="min-w-0">
+                  <span className="block text-lg leading-tight font-black tracking-wide uppercase italic">{t(s.title)}</span>
+                  <span className="menu-bar-sub">{t(s.text)}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ol>
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+          <span className="font-bold text-muted uppercase italic">{t("ui.guest.new.already")}</span>
+          {START.filter((f) => f.href !== "/new" && f.href !== "/reels" && f.href !== "/history").map((f) => (
+            <Link key={f.href} href={f.href} className="link font-semibold">{t(f.title)}</Link>
+          ))}
+          <Link href="/brackets" className="link font-semibold">{t("browse.events.openAnyBracket")}</Link>
+        </p>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <Link href="/signin" className="btn btn-md btn-primary btn-hero">{t("ui.guest.join")}</Link>
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+            <Link href="/signin" className="font-semibold text-foreground hover:underline">{t("ui.guest.signIn")}</Link>
+            <Link href="/about" className="text-muted hover:text-foreground hover:underline">{t("ui.guest.whatIs")}</Link>
+          </span>
+        </div>
+        {inviteOnly && <p className="text-meta text-muted">{t("ui.guest.inviteOnly")}</p>}
+      </div>
+
+      <div className="skin-old flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <h2 id="guest-welcome" className="text-2xl leading-tight font-bold">{t("ui.guest.headline")}</h2>
           <p className="text-muted">{t("ui.guest.pitch")}</p>
@@ -90,21 +127,21 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
         <OverflowRow label={t("ui.guest.startHere")}>
           {START.map((f) => (
             <Link key={f.href} href={f.href} className="chip font-semibold hover:bg-surface">
-              {f.href === "/games" && <RotatingCharacterIcon icons={icons} />}
               {t(f.title)}
             </Link>
           ))}
         </OverflowRow>
-        <div className="flex flex-wrap items-center gap-2">
+        {/* One button; the rest are quiet links beside it (round 871: two buttons over a third row of links
+            read as a wall of equal-weight buttons). */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Link href="/signin" className="btn btn-md btn-primary btn-hero">{t("ui.guest.join")}</Link>
-          <Link href="/signin" className="btn btn-md btn-outline">{t("ui.guest.signIn")}</Link>
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+            <Link href="/signin" className="font-semibold text-foreground hover:underline">{t("ui.guest.signIn")}</Link>
+            <Link href="/about" className="text-muted hover:text-foreground hover:underline">{t("ui.guest.whatIs")}</Link>
+            <Link href="/help" className="text-muted hover:text-foreground hover:underline">{t("ui.guest.helpBuild")}</Link>
+          </span>
         </div>
-        <p className="text-meta text-muted">
-          {inviteOnly && <>{t("ui.guest.inviteOnly")}{" "}</>}
-          <Link href="/about" className="link">{t("ui.guest.whatIs")}</Link>
-          {" · "}
-          <Link href="/help" className="link">{t("ui.guest.helpBuild")}</Link>
-        </p>
+        {inviteOnly && <p className="text-meta text-muted">{t("ui.guest.inviteOnly")}</p>}
       </div>
 
       {nextMajors.length > 0 && (
@@ -122,12 +159,16 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
       {upcoming.length > 0 && (
         <Fold id="home-coming-up" heading={<h3 className="font-bold">{t("ui.guest.comingUp", { region: regionName(region) })}</h3>}>
           {live && (
-            <Link href={`/events/${live.slug}`} className="hero-card flex min-h-36 flex-col justify-between gap-3 p-4">
+            <Link href={`/events/${live.slug}`} className="hero-card flex flex-col gap-2 p-4">
               <span className="relative inline-flex w-fit items-center gap-1.5 rounded-full border border-white/35 bg-black/25 px-2.5 py-0.5 text-meta font-bold">
                 {whenLabel(live, undefined, lang)}{live.city ? ` · ${live.city}` : ""}
               </span>
-              <span className="relative text-2xl leading-tight font-bold [text-shadow:0_2px_6px_rgb(60_0_0/0.45)]">{live.name}</span>
-              <span className="relative flex gap-1 [&_.badge]:bg-white/90 [&_.badge]:text-[#2a0b0a]">{[...new Set(live.events.map((e) => e.game))].slice(0, 3).map((g) => <GameBadge key={g} game={g} />)}</span>
+              <span className="relative text-2xl leading-tight font-bold">{live.name}</span>
+              {/* With how many are playing (round 894): the card was a big red block with little in it. */}
+              <span className="relative flex flex-wrap items-center gap-2 text-sm [&_.badge]:bg-white/90 [&_.badge]:text-[#2a0b0a]">
+                {[...new Set(live.events.map((e) => e.game))].slice(0, 3).map((g) => <GameBadge key={g} game={g} />)}
+                <span className="text-white/85">{t("browse.players", { n: Math.max(live.numAttendees ?? 0, ...live.events.map((e) => e.numEntrants ?? 0)) })}</span>
+              </span>
             </Link>
           )}
           {rows.length > 0 && (

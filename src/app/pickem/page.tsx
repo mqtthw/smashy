@@ -91,7 +91,7 @@ async function MyPicks() {
 
 export default function PickemPage() {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header>
         <h1 className="text-2xl font-bold"><T k="play.pickem.title" /></h1>
         <p className="text-sm text-muted">

@@ -25,7 +25,7 @@ async function Picker() {
 
 export default function NewMessagePage() {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header className="flex flex-col gap-1">
         <Link href="/messages" className="text-meta text-muted hover:text-foreground"><T k="play.msg.backToMessages" /></Link>
         <h1 className="text-2xl font-bold"><T k="play.msg.new" /></h1>

@@ -24,7 +24,7 @@ export function LiveMajorsBanner({ majors }: { majors: Major[] }) {
       {majors.map((m) => (
         <div key={m.slug} className="flex items-center gap-3 rounded-2xl border border-brand/40 bg-brand/5 p-3">
           {m.imageUrl ? (
-            <Image src={m.imageUrl} alt="" width={44} height={44} className="shrink-0 rounded-xl border border-line" />
+            <Image src={m.imageUrl} alt="" width={44} height={44} loading="eager" className="shrink-0 rounded-xl border border-line bg-surface-2" />
           ) : (
             <span aria-hidden="true" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-surface-2 text-xl text-muted"><Icon name="trophy" /></span>
           )}
@@ -55,7 +55,7 @@ export function MajorCard({ m }: { m: Major }) {
     <Link href={`/events/${m.slug}`} className="card flex w-64 shrink-0 flex-col gap-2 p-3 hover:bg-surface">
       <div className="flex items-center gap-2">
         {m.imageUrl ? (
-          <Image src={m.imageUrl} alt="" width={40} height={40} className="shrink-0 rounded-lg border border-line" />
+          <Image src={m.imageUrl} alt="" width={40} height={40} loading="eager" className="shrink-0 rounded-lg border border-line bg-surface-2" />
         ) : (
           <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-lg text-muted"><Icon name="trophy" /></span>
         )}

@@ -126,6 +126,7 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
   "browse.stream.streams": "配信",
   "browse.stream.liveOnTwitch": "{name}がTwitchで配信中",
   "browse.stream.playsHere": "大会が始まるとここで配信が再生されます。",
+  "browse.stream.more": "ほかの配信 1件|ほかの配信 {n}件",
   "browse.stream.close": "配信を閉じる",
 
   // Majors
@@ -140,6 +141,7 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
 
   // A start.gg tournament
   "browse.event.couldntReach": "現在start.ggに接続できません。",
+  "browse.event.savedOnly": "ブラケット・試合・配信はstart.ggから読み込みますが、今は応答がありません。Smashyに保存済みの結果を表示しています。",
   "browse.event.detailsFrom": "この大会の詳細はstart.ggから取得しています。少し待ってからもう一度お試しください。",
   "browse.event.major": "メジャー",
   "browse.event.followLive": "トーナメント表をライブで追う",

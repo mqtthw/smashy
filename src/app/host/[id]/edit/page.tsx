@@ -40,7 +40,7 @@ async function Form({ params }: { params: PageProps<"/host/[id]/edit">["params"]
 
 export default function EditHostedEventPage(props: PageProps<"/host/[id]/edit">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Suspense fallback={<PageSkeleton />}>
         <Form params={props.params} />
       </Suspense>

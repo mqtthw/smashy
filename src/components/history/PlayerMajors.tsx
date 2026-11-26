@@ -8,6 +8,7 @@ import { getT } from "@/lib/i18n/server";
 import { bestPerMajor, getPlayerMajors } from "@/lib/majorEvents";
 import PlaceMark from "@/components/ui/PlaceMark";
 import { GAMES, type GameKey } from "@/lib/games";
+import { bracketLabel } from "@/lib/bracketLabel";
 import CharacterStocks from "@/components/history/CharacterStocks";
 import { handAddedPlacings, mostPlayedIn, playerMilestone, playerNameKeys, winBrackets, type Milestone } from "@/lib/historyFirsts";
 import { getMajorCharacters, tagOnly, type MajorCharacters } from "@/lib/majorSets";
@@ -67,10 +68,9 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
       {rows.length > 1 && (
         <p className="text-meta text-muted">
           {t("history.player.span", {
-            first: rows[rows.length - 1].majorName,
-            firstYear: new Date(rows[rows.length - 1].startAt).getUTCFullYear(),
-            last: rows[0].majorName,
-            lastYear: new Date(rows[0].startAt).getUTCFullYear(),
+            // The year only when the major's name doesn't say it (round 901: "Pound 2016 (2016)").
+            first: named(rows[rows.length - 1].majorName, rows[rows.length - 1].startAt),
+            last: named(rows[0].majorName, rows[0].startAt),
           })}
         </p>
       )}
@@ -78,7 +78,7 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
         <ul className="flex flex-col gap-1 text-sm" aria-label={t("history.name.played")}>
           {played.map(({ game, mains }) => (
             <li key={game} className="flex flex-wrap items-center gap-x-2">
-              <span className="font-semibold">{GAMES[game].short}</span>
+              {multiGame && <span className="font-semibold">{GAMES[game].short}</span>}
               <span className="text-muted">{t("history.name.played")}</span>
               <CharacterStocks game={game} names={mains} size={18} />
               <span>{mains.join(", ")}</span>
@@ -90,7 +90,7 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
         <ul className="flex flex-col gap-1 text-sm" aria-label={t("history.player.milestones")}>
           {milestones.map((m) => (
             <li key={m.game} className="flex flex-wrap items-baseline gap-x-2">
-              <span className="font-semibold">{GAMES[m.game].short}</span>
+              {multiGame && <span className="font-semibold">{GAMES[m.game].short}</span>}
               {m.first && (
                 <span>
                   {t("history.player.firstWin")} <Link href={majorHref(m.first.majorSlug)} className="hover:underline">{named(m.first.majorName, m.first.startAt)}</Link>
@@ -109,7 +109,7 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
         <ul className="flex flex-col gap-1 text-sm" aria-label={t("history.player.rankings")}>
           {ranked.map(({ game, places }) => (
             <li key={game} className="flex flex-wrap items-baseline gap-x-2">
-              <span className="font-semibold">{GAMES[game].short}</span>
+              {multiGame && <span className="font-semibold">{GAMES[game].short}</span>}
               <span className="text-muted">{t("history.player.yearEnd")}</span>
               {places
                 .filter((p) => p.ranking.kind !== "mid")
@@ -122,27 +122,42 @@ export default async function PlayerMajors({ playerId }: { playerId: string }) {
           ))}
         </ul>
       )}
-      <ul className="card divide-y divide-line">
-        {rows.slice(0, SHOWN).map((r) => (
+      {(() => {
+        const row = (r: (typeof rows)[number]) => (
           <li key={`${r.slug}|${r.game}`}>
             <Link href={majorHref(r.slug)} className="flex items-center gap-3 px-4 py-2 hover:bg-surface">
               <PlaceMark place={r.place} label={t(placeKey(r.place), { n: r.place })} />
-              {r.characters?.length ? <CharacterStocks game={r.game} names={r.characters} /> : null}
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-semibold">{r.majorName}</span>
                 <span className="block truncate text-meta text-muted">
-                  {new Date(r.startAt).getUTCFullYear()} · {r.eventName}
+                  {new Date(r.startAt).getUTCFullYear()} · {bracketLabel(r.eventName, r.game)}
                   {r.entrants ? ` · ${t("browse.entrants", { n: r.entrants })}` : ""}
                 </span>
               </span>
               {/* Only when this player's majors span more than one game (round 835): otherwise every row said the
                   same "Melee", already said above, and took room from the event name. */}
+              {/* Characters after the name (round 897): a fixed slot before it left a blank column on rows without them. */}
+              {r.characters?.length ? <CharacterStocks game={r.game} names={r.characters} /> : null}
               {multiGame && <GameBadge game={r.game} />}
             </Link>
           </li>
-        ))}
-      </ul>
-      {rows.length > SHOWN && <p className="text-meta text-muted">{t("history.player.more", { n: rows.length - SHOWN })}</p>}
+        );
+        return (
+          <>
+            <ul className="card divide-y divide-line">{rows.slice(0, SHOWN).map(row)}</ul>
+            {/* The older ones open in place (round 893): "…and 72 older ones" as plain text left most of a long
+                career out of reach. */}
+            {rows.length > SHOWN && (
+              <details className="group">
+                <summary className="cursor-pointer list-none text-sm font-semibold text-brand hover:underline [&::-webkit-details-marker]:hidden">
+                  {t("history.player.more", { n: rows.length - SHOWN })} <span aria-hidden="true" className="inline-block transition-transform group-open:rotate-180">▾</span>
+                </summary>
+                <ul className="card mt-2 divide-y divide-line">{rows.slice(SHOWN).map(row)}</ul>
+              </details>
+            )}
+          </>
+        );
+      })()}
       <p className="text-meta text-muted">
         {t("history.player.note")} <Link href="/history" className="link">{t("history.title")}</Link>
       </p>

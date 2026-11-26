@@ -10,7 +10,12 @@ import EventRulesets from "@/components/scenes/EventRulesets";
 import NearbyEvents from "@/components/events/NearbyEvents";
 import LiveStream from "@/components/majors/LiveStream";
 import { LiveDot } from "@/components/majors/MajorParts";
-import { getMajor } from "@/lib/majors";
+import { getMajor, type Major } from "@/lib/majors";
+import { getMajorEvents, type MajorEvent } from "@/lib/majorEvents";
+import { majorDates } from "@/lib/majorText";
+import PlaceMark from "@/components/ui/PlaceMark";
+import CharacterStocks from "@/components/history/CharacterStocks";
+import { bracketLabel } from "@/lib/bracketLabel";
 import { bracketPath } from "@/lib/brackets/types";
 import { seriesIdFor, seriesNameFor } from "@/lib/weeklies";
 import { currentBracket, formatEventDate, formatEventTime, isRunning, otherYear, unixNow } from "@/lib/format";
@@ -35,6 +40,57 @@ import FullStandings, { visibleStandings } from "@/components/history/FullStandi
 import { getMajorStandings, type StandingRow } from "@/lib/majorStandings";
 
 type Tr = (key: MessageKey, values?: Values) => string;
+
+/**
+ * A major's page from Smashy's own saved results, for when start.gg can't be reached (round 868): its name,
+ * dates and place, then each in-person bracket's top 8, biggest first. A short line says the live details
+ * (brackets, sets, streams) come back once start.gg answers.
+ */
+/** One bracket's top 8: place tiles, player links and the characters they played (when known). */
+function Top8Card({ e, tr }: { e: MajorEvent; tr: Tr }) {
+  return (
+    <section className="card p-4" aria-label={e.name}>
+      <h2 className="flex flex-wrap items-center gap-2 font-bold">
+        <GameBadge game={e.game} />
+        {bracketLabel(e.name, e.game)}
+        {e.entrants ? <span className="text-meta font-normal text-muted">{tr("browse.entrants", { n: e.entrants })}</span> : null}
+      </h2>
+      <ol className="mt-2 flex flex-col divide-y divide-line">
+        {e.top8.map((r, i) => (
+          <li key={`${r.place}-${i}`} className="flex items-center gap-3 py-1.5 text-sm">
+            <PlaceMark place={r.place} size="sm" />
+            {r.playerId ? <Link href={`/players/${r.playerId}`} className="font-semibold hover:underline">{r.name}</Link> : <span className="font-semibold">{r.name}</span>}
+            {r.characters?.length ? <CharacterStocks game={e.game} names={r.characters} /> : null}
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+/** A major's in-person brackets with a saved top 8, biggest first. */
+const mainBrackets = (events: MajorEvent[]) => events.filter((e) => !e.online && !e.teams && e.top8.length).sort((a, b) => (b.entrants ?? 0) - (a.entrants ?? 0));
+
+function SavedMajor({ major, events, slug, tr, lang }: { major: Major; events: MajorEvent[]; slug: string; tr: Tr; lang: string }) {
+  const brackets = mainBrackets(events);
+  return (
+    <div className="flex flex-col gap-4 p-4">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-bold leading-tight">{major.name}</h1>
+        <p className="text-sm text-muted">
+          {majorDates(major, lang)} {new Date(major.startAt).getUTCFullYear()}
+          {major.city ? ` · ${major.city}` : ""}
+          {major.entrants ? ` · ${tr("browse.entrants", { n: major.entrants })}` : ""}
+        </p>
+      </div>
+      {brackets.map((e) => <Top8Card key={e.eventId} e={e} tr={tr} />)}
+      <p className="text-meta text-muted">
+        {tr("browse.event.savedOnly")}{" "}
+        <Link href={`/events/${encodeURIComponent(slug)}`} className="link">{tr("browse.tryAgain")}</Link>
+      </p>
+    </div>
+  );
+}
 
 // Link previews (Discord, X, iMessage) use this title and description.
 export async function generateMetadata({ params }: PageProps<"/events/[slug]">): Promise<Metadata> {
@@ -88,6 +144,12 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
   // undefined = start.gg couldn't be reached (null = no such event).
   const [t, major, tr, lang] = await Promise.all([getTournament(slug).catch(() => undefined), getMajor(slug).catch(() => null), getT(), getLang()]);
   if (t === undefined) {
+    // A major in Smash history still shows what Smashy saved (round 868): clicking CEO from the History
+    // page and getting only "couldn't reach start.gg" was a dead end.
+    if (major) {
+      const saved = await getMajorEvents([slug]).then((m) => m.get(slug) ?? []).catch((): MajorEvent[] => []);
+      if (saved.length) return <SavedMajor major={major} events={saved} slug={slug} tr={tr} lang={lang} />;
+    }
     return (
       <div className="m-4 card p-5">
         <p className="font-semibold">{tr("browse.event.couldntReach")}</p>
@@ -119,10 +181,13 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
   // Majors in Smash history also get each bracket's saved standings (top 64, step H3), folded under its winner.
   // Who's going loads alongside the results (round 669; it used to finish first), and only before the
   // event is over: the "Going" button isn't shown after that (round 670).
-  const [going, results, standings] = await Promise.all([
+  const [going, results, standings, savedTop8] = await Promise.all([
     over ? null : getGoing("tournament", t.slug, userId),
     over ? getTournamentResults(t.slug).catch(() => null) : null,
     major && over ? getMajorStandings(t.slug).then(visibleStandings).catch(() => new Map<string, StandingRow[]>()) : new Map<string, StandingRow[]>(),
+    // Round 880: a finished major's top 8s go right under its name; the page is titled "results and top 8"
+    // and that's what a shared link is opened for.
+    major && over ? getMajorEvents([t.slug]).then((m) => mainBrackets(m.get(t.slug) ?? []).slice(0, 2)).catch((): MajorEvent[] => []) : ([] as MajorEvent[]),
   ]);
   const winners: Record<string, EventWinners> = results?.winners ?? {};
   // Over, but start.gg hasn't marked it finished: scores not reported yet (some organizers enter them later).
@@ -184,10 +249,33 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
             )}
             <h1 className="text-2xl font-bold leading-tight">{t.name}</h1>
             <p className="text-muted">
-              {formatEventDate(t.startAt, t.timezone, lang, { year: otherYear(t.startAt, nowSec) })} · {formatEventTime(t.startAt, t.timezone, lang)}
+              {/* A weekend's last day too (round 895): "Thu, Aug 6" alone for a Thursday-to-Sunday major. The year,
+                  when it isn't this one, only once, at the end. */}
+              {(() => {
+                const days = !!t.endAt && formatEventDate(t.endAt, t.timezone, lang) !== formatEventDate(t.startAt, t.timezone, lang);
+                const start = formatEventDate(t.startAt, t.timezone, lang, { year: !days && otherYear(t.startAt, nowSec) });
+                // The start time beside the start day (round 898): after the end date it read as the last day's time.
+                const time = formatEventTime(t.startAt, t.timezone, lang);
+                return days ? `${start}, ${time} – ${formatEventDate(t.endAt!, t.timezone, lang, { year: otherYear(t.endAt!, nowSec) })}` : `${start} · ${time}`;
+              })()}
             </p>
           </div>
         </div>
+
+        {savedTop8.length > 0 ? (
+          savedTop8.map((e) => <Top8Card key={e.eventId} e={e} tr={tr} />)
+        ) : over && Object.keys(winners).length > 0 ? (
+          <section className="card p-4" aria-label={tr("browse.results")}>
+            <ul className="flex flex-col gap-1 text-sm">
+              {bySize.filter((e) => winners[e.id]).slice(0, 4).map((e) => (
+                <li key={e.id} className="flex flex-wrap items-baseline gap-x-2">
+                  <span className="text-muted">{bracketName(e.name, e.game)}</span>
+                  <span><Icon name="trophy" className="text-[var(--gold)]" /> <span className="font-semibold">{winners[e.id].first}</span>{winners[e.id].second && <span className="text-muted"> · {tr("browse.winner.second", { name: winners[e.id].second! })}</span>}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         {t.streams.length > 0 && (
           <div id="watch" className="scroll-mt-4">
@@ -210,7 +298,7 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
           {t.isRegistrationOpen ? tr("browse.event.signUpStartgg") : tr("browse.event.viewStartgg")}
         <NewTab /></a>
 
-        <ShareButton path={`/events/${t.slug}`} title={t.name} label={tr("browse.event.share")} className="btn btn-sm btn-ghost -mt-2 self-center" />
+        <ShareButton path={`/events/${t.slug}`} title={t.name} label={tr("browse.event.share")} showLabel className="btn btn-sm btn-ghost -mt-2 self-center" />
         {/* Majors that are over: their Liquipedia page (Smash history; links only). */}
         {major && over && (
           <a href={liquipediaSearch(t.name)} target="_blank" rel="noopener noreferrer" className="-mt-2 self-center text-sm text-muted underline">
@@ -264,7 +352,7 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
                   <Link href={bracketPath("startgg", e.id)} className="btn btn-sm btn-outline">{(over || done(e)) && !pending.has(e.id) ? tr("browse.results") : tr("browse.bracket")}</Link>
                 </span>
                 </div>
-                {winners[e.id] && <EventWinner winners={winners[e.id]} t={tr} picture={`/brackets/startgg/${encodeURIComponent(e.id)}/top8.png${lang === "en" ? "" : `?lang=${lang}`}`} />}
+                {winners[e.id] && !savedTop8.length && <EventWinner winners={winners[e.id]} t={tr} picture={`/brackets/startgg/${encodeURIComponent(e.id)}/top8.png${lang === "en" ? "" : `?lang=${lang}`}`} />}
                 {over && pending.has(e.id) && <p className="text-meta text-muted">{tr("browse.event.pending")}</p>}
                 <FullStandings rows={standings.get(String(e.id))} entrants={e.numEntrants ?? null} t={tr} className="pl-[4.5rem]" />
               </li>
@@ -296,7 +384,7 @@ async function TournamentDetails({ params }: Pick<PageProps<"/events/[slug]">, "
                       <Link href={bracketPath("startgg", e.id)} className="btn btn-sm btn-outline">{(over || done(e)) && !pending.has(e.id) ? tr("browse.results") : tr("browse.bracket")}</Link>
                     </span>
                     </div>
-                    {winners[e.id] && <EventWinner winners={winners[e.id]} t={tr} picture={`/brackets/startgg/${encodeURIComponent(e.id)}/top8.png${lang === "en" ? "" : `?lang=${lang}`}`} />}
+                    {winners[e.id] && !savedTop8.length && <EventWinner winners={winners[e.id]} t={tr} picture={`/brackets/startgg/${encodeURIComponent(e.id)}/top8.png${lang === "en" ? "" : `?lang=${lang}`}`} />}
                 {over && pending.has(e.id) && <p className="text-meta text-muted">{tr("browse.event.pending")}</p>}
                   </li>
                 ))}

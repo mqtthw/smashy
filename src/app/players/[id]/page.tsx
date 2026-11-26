@@ -249,8 +249,14 @@ async function PlayerMainIcon({ playerId, tag, saved }: { playerId: string; tag:
   return (
     <span className="portrait-bubble relative h-32 w-32" title={icons.map((c) => c.name).join(", ") || undefined}>
       {main ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={main.src} alt={main.name} width={84} height={84} className="h-[84px] w-[84px]" style={{ imageRendering: pixelArtIcon(main.src, 84) ? "pixelated" : undefined }} />
+        // Pixel-art stock icons (Melee's are 24 px) at a clean 3x (72 px): at 84 px they looked stretched, at 48 px lost in the circle (round 876).
+        pixelArtIcon(main.src, 84) ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={main.src} alt={main.name} width={72} height={72} className="h-[72px] w-[72px]" style={{ imageRendering: "pixelated" }} />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={main.src} alt={main.name} width={84} height={84} className="h-[84px] w-[84px]" />
+        )
       ) : (
         <span className="text-5xl font-bold text-[#7a2a20]" aria-hidden>{[...tag][0]?.toUpperCase()}</span>
       )}

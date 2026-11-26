@@ -7,7 +7,7 @@ import { join } from "node:path";
 import type { CSSProperties } from "react";
 import { ImageResponse } from "next/og";
 
-export const TILE = "#0f1419"; // the background of link previews
+export const TILE = "#1a0606"; // the background of link previews: Smashy's night oxblood (round 877)
 /** The logo red (globals.css --logo, night value: it sits on the dark preview cards). */
 export const LOGO_RED = "#ff5440";
 /** The icon tile's red (globals.css --logo, day value: white reads best on it). */

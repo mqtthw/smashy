@@ -16,11 +16,11 @@ export { clip };
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_TYPE = "image/png";
 
-export const INK = "#e7e9ea";
-export const MUTED = "#8b9197";
+export const INK = "#fff1ee";
+export const MUTED = "#d9aaa2";
 export const BRAND = "#ff4b33";
-export const LINE = "#2f3336";
-export const SURFACE = "#16181c";
+export const LINE = "#5a2a24";
+export const SURFACE = "#2a0c0c";
 
 /** Dark-theme game colors (same as globals.css). */
 export const GAME_COLOR: Record<GameKey, string> = {
@@ -32,10 +32,17 @@ export const GAME_COLOR: Record<GameKey, string> = {
   smash4: "#f472b6",
 };
 
-const geist = readFile(join(process.cwd(), "assets/fonts/Geist-Regular.ttf"));
+// The site's own text face (round 877; the cards used Geist, a different font from the pages).
+const bodyRegular = readFile(join(process.cwd(), "assets/fonts/SourceSans3-Regular.woff"));
+const bodyBold = readFile(join(process.cwd(), "assets/fonts/SourceSans3-Bold.woff"));
+const bodyFonts = async () => [
+  { name: "Body", data: await bodyRegular, weight: 400 as const, style: "normal" as const },
+  { name: "Body", data: await bodyBold, weight: 700 as const, style: "normal" as const },
+  await wordmarkFont(),
+];
 
 /**
- * Roughly how wide a line of Geist is, in ems: wide letters (W, M) count for more than narrow ones
+ * Roughly how wide a line of the card text is (measured for Geist; Source Sans 3 is narrower, so it errs safe), in ems: wide letters (W, M) count for more than narrow ones
  * (i, l), and anything outside Latin (Japanese, emoji…) as a full em. A guess, not a measurement,
  * so `oneLine` still cuts off anything that runs past.
  */
@@ -134,7 +141,7 @@ export async function renderOg({ label, accent = BRAND, background, children, ca
           position: "relative",
           background: TILE,
           color: INK,
-          fontFamily: "Geist",
+          fontFamily: "Body",
           padding: "56px 72px 56px 88px",
         }}
       >
@@ -151,7 +158,7 @@ export async function renderOg({ label, accent = BRAND, background, children, ca
               width: 1200,
               height: 630,
               display: "flex",
-              backgroundImage: "linear-gradient(180deg, rgba(15,20,25,0.6) 0%, rgba(15,20,25,0.55) 35%, rgba(15,20,25,0.96) 100%)",
+              backgroundImage: "linear-gradient(180deg, rgba(20,4,5,0.6) 0%, rgba(20,4,5,0.55) 35%, rgba(20,4,5,0.96) 100%)",
             }}
           />
         )}
@@ -168,7 +175,7 @@ export async function renderOg({ label, accent = BRAND, background, children, ca
     ),
     {
       ...OG_SIZE,
-      fonts: [{ name: "Geist", data: await geist, weight: 400, style: "normal" }, await wordmarkFont()],
+      fonts: await bodyFonts(),
       headers: { "Cache-Control": cacheControl },
     },
   );
@@ -183,12 +190,16 @@ export async function siteCard(cacheControl = CARD_CACHE) {
   const games: [string, string][] = [["Melee", GAME_COLOR.melee], ["Ultimate", GAME_COLOR.ultimate], ["P+", GAME_COLOR.pplus]];
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: TILE, color: INK, fontFamily: "Geist" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: TILE, color: INK, fontFamily: "Body" }}>
         <div style={{ position: "absolute", left: 0, top: 0, width: 16, height: 630, display: "flex", background: BRAND }} />
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 30, padding: "0 0 0 88px", width: 1100 }}>
+        {/* The app icon's red S tile on the right (round 886: with text only, the right half was empty). */}
+        <div style={{ position: "absolute", right: 90, top: 165, width: 300, height: 300, borderRadius: 66, background: "#d4231a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ display: "flex", fontFamily: "Wordmark", fontWeight: 900, fontSize: 258, lineHeight: 1, color: "#ffffff", marginTop: -20 }}>S</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 30, padding: "0 0 0 88px", width: 760 }}>
           <Wordmark size={150} />
           <div style={{ display: "flex", fontSize: 52, lineHeight: 1.15, letterSpacing: -1, color: "#ffffff" }}>Smash brackets, results and history.</div>
-          <div style={{ display: "flex", fontSize: 32, color: MUTED, letterSpacing: -0.3 }}>Free, no ads · Locals · Brackets · Players · Majors since 2003</div>
+          <div style={{ display: "flex", fontSize: 30, color: MUTED, letterSpacing: -0.3 }}>Free, no ads · Locals · Players · Majors since 2003</div>
           <div style={{ display: "flex", gap: 12 }}>
             {games.map(([name, color]) => (
               <div key={name} style={{ display: "flex", padding: "8px 20px", borderRadius: 9999, border: `2px solid ${color}`, color, fontSize: 26 }}>{name}</div>
@@ -199,7 +210,7 @@ export async function siteCard(cacheControl = CARD_CACHE) {
     ),
     {
       ...OG_SIZE,
-      fonts: [{ name: "Geist", data: await geist, weight: 400, style: "normal" }, await wordmarkFont()],
+      fonts: await bodyFonts(),
       headers: { "Cache-Control": cacheControl },
     },
   );

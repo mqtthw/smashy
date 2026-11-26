@@ -35,7 +35,7 @@ export default async function Image({ params }: { params: Promise<{ clipId: stri
           {/* Play button */}
           <div style={{ display: "flex", width: 76, height: 76, borderRadius: 76, background: "rgba(255,255,255,0.92)", alignItems: "center", justifyContent: "center" }}>
             <svg width="32" height="36" viewBox="0 0 32 36" style={{ marginLeft: 6 }}>
-              <path d="M0 0 L32 18 L0 36 Z" fill="#0f1419" />
+              <path d="M0 0 L32 18 L0 36 Z" fill="#1a0606" />
             </svg>
           </div>
           <div style={{ display: "flex", fontSize: 30, color: "#d6d9dc" }}>{`${reel.channel_name ?? reel.channel_login} · ${views} views`}</div>

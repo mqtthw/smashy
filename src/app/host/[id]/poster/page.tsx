@@ -40,7 +40,7 @@ async function Poster({ params }: { params: PageProps<"/host/[id]/poster">["para
   ];
 
   return (
-    <div className="mx-auto flex max-w-xl flex-col gap-4 p-4 print:max-w-none print:p-0">
+    <div className="flex flex-col gap-4 p-4 print:max-w-none print:p-0">
       <div className="flex flex-wrap items-center justify-between gap-2 print:hidden">
         <Link href={`/host/${event.id}`} className="text-sm text-muted hover:text-foreground">← {event.name}</Link>
         <PrintButton />

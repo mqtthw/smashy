@@ -174,7 +174,7 @@ async function Pickem({ params, searchParams }: PageProps<"/pickem/[eventId]">) 
 
 export default function PickemEventPage(props: PageProps<"/pickem/[eventId]">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Link href="/pickem" className="text-sm text-muted hover:text-foreground"><T k="play.pickem.back" /></Link>
       <Suspense fallback={<PageSkeleton />}>
         <Pickem params={props.params} searchParams={props.searchParams} />

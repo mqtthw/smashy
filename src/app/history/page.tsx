@@ -168,11 +168,16 @@ async function Archive({ searchParams }: { searchParams: PageProps<"/history">["
 
 export default function HistoryPage(props: PageProps<"/history">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold"><T k="history.title" /></h1>
-        <Link href="/history/timeline" className="self-start text-sm font-semibold text-brand"><T k="history.timeline.link" /></Link>
-        <Link href="/history/records" className="self-start text-sm font-semibold text-brand"><T k="history.records.link" /></Link>
+        {/* History's three parts as one line of words, this one underlined (round 873: two bare links
+            stacked under the title looked unfinished). */}
+        <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+          <span aria-current="page" className="font-bold underline decoration-brand decoration-2 underline-offset-[6px]"><T k="ui.guest.majors" /></span>
+          <Link href="/history/timeline" className="text-muted hover:text-foreground"><T k="history.timeline.link" /></Link>
+          <Link href="/history/records" className="text-muted hover:text-foreground"><T k="history.records.link" /></Link>
+        </nav>
       </header>
       <Suspense fallback={<CardListSkeleton count={6} />}>
         <Archive searchParams={props.searchParams} />

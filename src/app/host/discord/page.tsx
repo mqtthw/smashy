@@ -81,7 +81,7 @@ async function Content() {
 
 export default function DiscordBotPage() {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header>
         <h1 className="text-2xl font-bold"><T k="hostrun.bot.title" /></h1>
         <p className="text-sm text-muted"><T k="hostrun.bot.intro" /></p>

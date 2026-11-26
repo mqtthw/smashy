@@ -50,8 +50,9 @@ async function RegionEvents({ searchParams }: { searchParams: PageProps<"/events
   });
   after(() => refreshRegionIfStale(region)); // keep this region's saved list fresh (at most every 3 hours)
   const heading = (
-    <div className="flex flex-wrap items-center justify-between gap-2 px-4 pt-4">
-      <h2 className="text-title font-bold">{regionName(region)}</h2>
+    <div className="flex flex-wrap items-center gap-2 px-4 pt-4">
+      {/* The picker shows the region already; a heading beside it said it twice (round 867). */}
+      <h2 className="sr-only">{regionName(region)}</h2>
       <RegionPicker current={region} path="/events" label={t("browse.events.showIn")} />
       <Suspense fallback={null}>
         <RegionSeasons region={region} label={regionName(region)} className="w-full" />
@@ -70,8 +71,9 @@ async function RegionEvents({ searchParams }: { searchParams: PageProps<"/events
   return (
     <>
       {heading}
-      <CalendarSubscribe region={region} regionLabel={regionName(region)} />
       <EventsBrowser key={region} rows={eventRows(events.tournaments, events.expected, unixNow())} region={region} regionLabel={regionName(region)} />
+      {/* A one-time setup, so it sits under the list rather than above it (round 867). */}
+      <CalendarSubscribe region={region} regionLabel={regionName(region)} />
       {events.recent.length > 0 && <RecentResults tournaments={events.recent.slice(0, 10)} />}
     </>
   );

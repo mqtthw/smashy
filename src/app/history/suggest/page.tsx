@@ -68,7 +68,7 @@ async function Suggest({ searchParams }: { searchParams: PageProps<"/history/sug
 
 export default function SuggestMajorPage(props: PageProps<"/history/suggest">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Link href="/history" className="text-sm text-muted hover:text-foreground"><T k="history.major.back" /></Link>
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold"><T k="history.suggest.title" /></h1>

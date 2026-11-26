@@ -54,7 +54,7 @@ import { getUserId } from "@/lib/supabase/server";
 import type { GuestLookup } from "@/lib/guestBudget";
 import { guestLookup } from "@/lib/guestLookup";
 import { searchSavedPlayers } from "@/lib/playerIndex";
-import { byMajors, cleanPlayerQuery, roughCount, mergePlayerHits, startggProfileSlug, type MajorSummary, type PlayerHit } from "@/lib/playerSearch";
+import { byMajors, cleanPlayerQuery, mergePlayerHits, startggProfileSlug, type MajorSummary, type PlayerHit } from "@/lib/playerSearch";
 import { getMajorSummaries } from "@/lib/majorEvents";
 import { playersHidingStats } from "@/lib/playerStats";
 import { regionName } from "@/lib/regions";
@@ -217,8 +217,14 @@ async function StartggPlayers({ q }: { q: string }) {
     <section className="flex flex-col gap-2 p-4" aria-labelledby="startgg-players">
       <h2 id="startgg-players" className="font-bold">{t("people.search.playersOnStartgg")}</h2>
       {hits.length > 0 ? (
-        <ul className="divide-y divide-line">
-          {hits.map((h) => (
+        (() => {
+          // Rows that say something about the player (major results, or where they last played) come first.
+          // Bare rows (common when start.gg is busy and only saved names answer) fold away when there are
+          // others, so "Zain" doesn't show as four identical lines (round 872).
+          const known = (h: (typeof hits)[number]) => majors.has(h.playerId) || !!h.seenAt;
+          const shown = hits.some(known) ? hits.filter(known) : hits;
+          const bare = hits.some(known) ? hits.filter((h) => !known(h)) : [];
+          const rowFor = (h: (typeof hits)[number]) => (
             <li key={h.playerId}>
               <Link href={`/players/${h.playerId}`} className="flex items-center gap-3 py-2 hover:bg-surface">
                 <Avatar name={h.tag} />
@@ -231,7 +237,9 @@ async function StartggPlayers({ q }: { q: string }) {
                     <span className="block truncate text-xs font-semibold text-brand">
                       {majors.get(h.playerId)!.games.map((g) => GAMES[g as GameKey]?.short ?? g).join(", ")}
                       {" · "}
-                      {t(majors.get(h.playerId)!.wins > 0 ? "people.search.majorsWins" : "people.search.majors", { n: roughCount(majors.get(h.playerId)!.top8s), wins: roughCount(majors.get(h.playerId)!.wins) })}
+                      {/* No counts here (round 900): the player's page also counts results added by hand, so "75+" here beside
+                          "80" there read as numbers that don't match. */}
+                      {t(majors.get(h.playerId)!.wins > 0 ? "people.search.majorsWins" : "people.search.majors")}
                     </span>
                   )}
                   {h.seenAt && (
@@ -242,8 +250,21 @@ async function StartggPlayers({ q }: { q: string }) {
                 </span>
               </Link>
             </li>
-          ))}
-        </ul>
+          );
+          return (
+            <>
+              <ul className="divide-y divide-line">{shown.map(rowFor)}</ul>
+              {bare.length > 0 && (
+                <details className="group">
+                  <summary className="cursor-pointer list-none text-sm text-muted hover:text-foreground [&::-webkit-details-marker]:hidden">
+                    {t("people.search.moreBare", { n: bare.length })} <span aria-hidden="true" className="inline-block transition-transform group-open:rotate-180">▾</span>
+                  </summary>
+                  <ul className="mt-1 divide-y divide-line">{bare.map(rowFor)}</ul>
+                </details>
+              )}
+            </>
+          );
+        })()
       ) : (
         <p className="text-muted">
           {gate !== "ok"
@@ -256,12 +277,13 @@ async function StartggPlayers({ q }: { q: string }) {
         </p>
       )}
       {gate !== "ok" && (
-        <p className="rounded-xl border border-line bg-surface px-3 py-2 text-sm">
+        <p className="text-meta text-muted">
           {withNode(t(gate === "busy" ? "people.search.limitBusy" : "people.search.limitMany", { link: "\u0001" }), <Link href={signIn} className="link">{t("people.search.signIn")}</Link>)}
         </p>
       )}
       {partial && <p className="text-meta text-muted">{t("people.search.partial")}</p>}
-      {how}
+      {/* The how-it-works note only when nothing was found (round 882): under real results it read like a developer note. */}
+      {hits.length === 0 && how}
     </section>
   );
 }
@@ -576,7 +598,17 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
           </section>
         )}
 
-        {nothing && <p className="px-4 text-muted">{t("people.search.noResults", { q })}</p>}
+        {/* No results isn't a dead end (round 907, checklist.design): the main places under it (the players search link is above). */}
+        {nothing && (
+          <div className="flex flex-col gap-2 px-4">
+            <p className="text-muted">{t("people.search.noResults", { q })}</p>
+            <span className="flex flex-wrap gap-2 text-sm">
+              <Link href="/games" className="chip">{t("ui.guest.t.characters")}</Link>
+              <Link href="/events" className="chip">{t("ui.guest.t.events")}</Link>
+              <Link href="/history" className="chip">{t("ui.guest.t.history")}</Link>
+            </span>
+          </div>
+        )}
         {tab === "events" && (
           <p className="px-4 text-sm text-muted">
             {withNode(t("people.search.eventsNote", { link: "\u0001" }), <Link href="/events" className="link">{t("nav.events")}</Link>)}

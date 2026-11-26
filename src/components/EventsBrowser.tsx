@@ -122,8 +122,9 @@ export default function EventsBrowser({
           </select>
         </label>
           {locating === "busy" && <span role="status" className="animate-pulse text-meta text-muted">{t("browse.list.locating")}</span>}
-          <button type="button" onClick={() => setCalendar(calendar === "on" ? "off" : "on")} aria-pressed={calendar === "on"} className="chip ml-auto shrink-0">
-            {t("browse.cal.toggle")}
+          {/* An ordinary button with an arrow (round 903): as a pressed chip it was a light button among dark ones. */}
+          <button type="button" onClick={() => setCalendar(calendar === "on" ? "off" : "on")} aria-expanded={calendar === "on"} className="btn btn-sm btn-outline ml-auto shrink-0">
+            {t("browse.cal.toggle")} <span aria-hidden="true" className={`inline-block transition-transform ${calendar === "on" ? "rotate-180" : ""}`}>▾</span>
           </button>
         </div>
       </div>

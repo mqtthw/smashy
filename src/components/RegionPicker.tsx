@@ -28,7 +28,7 @@ export default function RegionPicker({ current, path, label: labelProp }: { curr
             router.push(`${path}?region=${encodeURIComponent(next)}`);
           });
         }}
-        className="max-w-48 rounded-full border border-line bg-field px-3 py-1 text-sm font-semibold text-foreground"
+        className="field max-w-48 px-2 py-1 text-sm font-semibold"
         aria-label={label}
         aria-busy={pending}
       >

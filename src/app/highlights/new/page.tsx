@@ -37,7 +37,7 @@ async function Gate({ searchParams }: { searchParams: PageProps<"/highlights/new
 
 export default function NewHighlightPage(props: PageProps<"/highlights/new">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-6">
+    <section className="flex flex-col gap-4 p-6">
       <header>
         <h1 className="text-2xl font-bold"><T k="media.hl.addTitle" /></h1>
         <p className="text-muted"><T k="media.hl.addIntro" /></p>

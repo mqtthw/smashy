@@ -70,7 +70,7 @@ async function Form({ searchParams }: { searchParams: PageProps<"/host/new">["se
 
 export default function NewHostedEventPage(props: PageProps<"/host/new">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Suspense fallback={<PageSkeleton />}>
         <Form searchParams={props.searchParams} />
       </Suspense>

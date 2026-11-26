@@ -166,15 +166,16 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
       {essentials.length > 0 && (
         <Section id="start" title={t("people.new.start", { game: short })}>
           <p className="text-sm text-muted">{t("people.new.startBody", { game: short })}</p>
-          <ul className="flex flex-col gap-3">
+          {/* Rows between thin lines, the name as the link (round 891): a box per tool inside the section's box
+              read as boxes inside boxes. */}
+          <ul className="flex flex-col divide-y divide-line">
             {essentials.map((e) => (
-              <li key={e.url} className="flex flex-col gap-1 rounded-xl border border-line p-3">
-                <span className="font-semibold">{e.title}</span>
+              <li key={e.url} className="flex flex-col gap-1 py-3 first:pt-0 last:pb-0">
+                <a href={e.url} target="_blank" rel="noopener noreferrer" className="self-start font-semibold text-brand hover:underline" title={e.cta}>
+                  {e.title} ↗︎
+                <NewTab /></a>
                 <span className="text-sm text-muted">{e.why}</span>
                 {e.credit && <span className="text-meta text-muted">{e.credit}</span>}
-                <a href={e.url} target="_blank" rel="noopener noreferrer" className="text-sm text-brand">
-                  {e.cta} ↗︎
-                <NewTab /></a>
               </li>
             ))}
           </ul>
@@ -221,7 +222,7 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
 
 export default function NewPlayersPage(props: PageProps<"/new">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header>
         <h1 className="text-2xl font-bold"><T k="people.new.title" /></h1>
         <p className="text-sm text-muted">

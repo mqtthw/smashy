@@ -383,7 +383,10 @@ export async function characterWins(game: GameKey): Promise<{ wins: CharacterWin
   const wins: CharacterWin[] = [];
   for (const b of main) {
     const w = winner(b);
-    const characters = rowCharacters(b, b.top8[0], w.playerId, sets);
+    // Only the character the winner played most there (the lists are most-played first). Round 874: counting
+    // every character played gave Armada 12 Fox major wins and Ken a "first Fox win", which Melee players read
+    // as wrong stats.
+    const characters = rowCharacters(b, b.top8[0], w.playerId, sets).slice(0, 1);
     if (characters.length) wins.push({ majorSlug: b.majorSlug, majorName: b.majorName, startAt: b.startAt, ...w, characters });
   }
   return { wins, majors: main.length };

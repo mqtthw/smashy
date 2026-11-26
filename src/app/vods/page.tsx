@@ -88,7 +88,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/vods">["search
 
 export default function VodsPage(props: PageProps<"/vods">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header>
         <h1 className="text-2xl font-bold"><T k="media.vods.title" /></h1>
         <p className="text-sm text-muted">

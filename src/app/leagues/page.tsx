@@ -53,7 +53,7 @@ async function LeagueList({ searchParams }: { searchParams: PageProps<"/leagues"
 
 export default function LeaguesPage(props: PageProps<"/leagues">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold"><T k="league.title" /></h1>
         <p className="text-sm text-muted"><T k="league.intro" /></p>

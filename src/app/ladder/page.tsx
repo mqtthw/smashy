@@ -185,7 +185,7 @@ async function Content({ searchParams }: { searchParams: SP }) {
 
 export default function LadderPage(props: PageProps<"/ladder">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header>
         <h1 className="text-2xl font-bold"><T k="play.ladder.title" /></h1>
         <p className="text-sm text-muted"><T k="play.ladder.intro" /></p>

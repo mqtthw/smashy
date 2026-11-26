@@ -14,6 +14,11 @@ describe("post link previews (round 459)", () => {
     expect(withoutLinks("what a combo https://clips.twitch.tv/AbcDef123 !!")).toBe("what a combo !!");
     expect(withoutLinks("https://clips.twitch.tv/AbcDef123")).toBe("");
   });
+  it("drops a label left dangling where a link ended the text", () => {
+    expect(withoutLinks("Gotta love an upset. Full results: https://start.gg/x")).toBe("Gotta love an upset.");
+    expect(withoutLinks("Results: https://start.gg/x")).toBe("");
+    expect(withoutLinks("Note: this stays https://a.b/c and more")).toBe("Note: this stays and more");
+  });
 });
 
 describe("Also share to Reels: the clip link in a post (round 460)", () => {

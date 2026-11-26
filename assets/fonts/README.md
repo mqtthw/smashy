@@ -8,3 +8,6 @@ Geist is © Vercel, licensed under the SIL Open Font License 1.1.
 `@fontsource/source-sans-3` package. Draws the "Smashy" wordmark and the S icon in link previews and
 icons (`src/lib/iconArt.tsx`, round 861). Source Sans 3 is © Adobe, licensed under the SIL Open Font
 License 1.1.
+
+`SourceSans3-Regular.woff`, `SourceSans3-Bold.woff`: the same family at 400 and 700, for all text in link
+preview images since round 877 (they used Geist, a different face from the pages). Same source and license.

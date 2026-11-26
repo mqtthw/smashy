@@ -62,7 +62,7 @@ async function Share() {
 
 export default function ShareClipPage() {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-6">
+    <section className="flex flex-col gap-4 p-6">
       <header className="flex flex-col gap-1">
         <Link href="/reels" className="text-meta text-muted hover:text-foreground">← Reels</Link>
         <h1 className="text-2xl font-bold"><T k="media.share.title" /></h1>

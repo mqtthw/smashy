@@ -97,7 +97,7 @@ async function Content({ params }: { params: PageProps<"/ladder/match/[id]">["pa
 
 export default function LadderMatchPage(props: PageProps<"/ladder/match/[id]">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <h1 className="sr-only"><T k="play.match.title" /></h1>
       <Suspense fallback={<CardListSkeleton count={2} />}>
         <Content params={props.params} />

@@ -75,7 +75,7 @@ function PlayerRow({ p, waiting, done, highlight, otherScore = null, projected =
           where there is a score to show (some start.gg sets record a winner without one). */}
       <span
         className={`min-w-7 shrink-0 rounded-md px-1 text-center font-mono text-meta leading-5 tabular-nums [print-color-adjust:exact] ${
-          p.score === null ? "" : !done ? "font-semibold" : p.won ? "bg-[#e8301f] font-bold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.55)]" : "bg-surface-2 text-muted"
+          p.score === null ? "" : !done ? "font-semibold" : p.won ? "bg-[#d4231a] font-bold text-white" : "bg-surface-2 text-muted"
         }`}
       >
         {scoreText(p.score, otherScore)}

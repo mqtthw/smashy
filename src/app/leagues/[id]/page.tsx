@@ -222,7 +222,7 @@ function Schedule({ league, players, sets, t, lang, nowMs }: { league: { startsA
 
 export default function LeaguePage(props: PageProps<"/leagues/[id]">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Suspense fallback={<CardListSkeleton count={3} label="Loading league…" />}>
         <LeagueContent params={props.params} />
       </Suspense>

@@ -224,7 +224,7 @@ async function SeasonView({ params }: { params: PageProps<"/seasons/[id]">["para
 
 export default function SeasonPage(props: PageProps<"/seasons/[id]">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-5 p-4">
+    <section className="flex flex-col gap-5 p-4">
       <Suspense fallback={<CardListSkeleton count={5} />}>
         <SeasonView params={props.params} />
       </Suspense>

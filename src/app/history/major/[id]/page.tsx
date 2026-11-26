@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense, cache } from "react";
 import GameBadge from "@/components/GameBadge";
+import PlaceMark from "@/components/ui/PlaceMark";
 import { CardListSkeleton } from "@/components/ui/Skeleton";
 import NewTab from "@/components/ui/NewTab";
 import { GAMES } from "@/lib/games";
@@ -88,7 +89,7 @@ async function MajorView({ params }: { params: PageProps<"/history/major/[id]">[
           <h2 id={`ev-${e.eventId}`} className="font-bold">
             {e.name}
             <span className="font-normal text-muted">
-              {" · "}{GAMES[e.game].short}
+              {m.games.length > 1 && !e.name.toLowerCase().includes(GAMES[e.game].short.toLowerCase()) ? ` · ${GAMES[e.game].short}` : ""}
               {e.entrants ? ` · ${t("browse.entrants", { n: e.entrants })}` : ""}
             </span>
           </h2>
@@ -101,8 +102,8 @@ async function MajorView({ params }: { params: PageProps<"/history/major/[id]">[
           {e.top8.length ? (
             <ol className="mt-2 flex flex-col gap-1">
               {e.top8.map((r, i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="w-10 shrink-0 text-muted">{t(placeKey(r.place), { n: r.place })}</span>
+                <li key={i} className="flex items-center gap-3">
+                  <PlaceMark place={r.place} size="sm" label={t(placeKey(r.place), { n: r.place })} />
                   <span className={r.place === 1 ? "font-semibold" : undefined}>
                     {(() => {
                       const href = nameLink(e, r.name, placingId(r, links, e.game));
@@ -121,7 +122,6 @@ async function MajorView({ params }: { params: PageProps<"/history/major/[id]">[
       ))}
 
       <section className="flex flex-col gap-1 text-sm text-muted">
-        <p>{t("history.major.handAdded")}</p>
         {m.sourceUrl && host && (
           <a href={m.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-brand">
             {t("history.major.source", { host })} ↗︎<NewTab />
@@ -130,13 +130,15 @@ async function MajorView({ params }: { params: PageProps<"/history/major/[id]">[
         {/* Placings matched to start.gg players came from start.gg (round 526). */}
         {events.some((e) => e.top8.some((r) => r.playerId)) && <p>{t("history.major.alsoStartgg")}</p>}
         {chars.size > 0 && <p>{t("history.characters.credit")}</p>}
-        <a href={liquipediaSearch(m.name)} target="_blank" rel="noopener noreferrer" className="self-start text-brand">
-          {t("history.liquipedia")} ↗︎<NewTab />
-        </a>
+        {!host?.endsWith("liquipedia.net") && (
+          <a href={liquipediaSearch(m.name)} target="_blank" rel="noopener noreferrer" className="self-start text-brand">
+            {t("history.liquipedia")} ↗︎<NewTab />
+          </a>
+        )}
         {m.suggestedBy && <p>{t("history.major.suggestedBy", { handle: m.suggestedBy })}</p>}
         {m.addedBy && <p>{t("history.major.addedBy", { handle: m.addedBy })}</p>}
-        <Link href={`/history/vod?major=${encodeURIComponent(m.slug)}`} className="self-start underline">{t("history.vod.link.major")}</Link>
-        <Link href={`/history/report?major=${encodeURIComponent(m.slug)}`} className="self-start underline">{t("history.report.link.major")}</Link>
+        <Link href={`/history/vod?major=${encodeURIComponent(m.slug)}`} className="self-start text-brand hover:underline">{t("history.vod.link.major")}</Link>
+        <Link href={`/history/report?major=${encodeURIComponent(m.slug)}`} className="self-start text-brand hover:underline">{t("history.report.link.major")}</Link>
       </section>
     </>
   );
@@ -144,7 +146,7 @@ async function MajorView({ params }: { params: PageProps<"/history/major/[id]">[
 
 export default function HandMajorPage(props: PageProps<"/history/major/[id]">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Link href="/history" className="text-sm text-muted hover:text-foreground"><T k="history.major.back" /></Link>
       <Suspense fallback={<CardListSkeleton count={3} />}>
         <MajorView params={props.params} />

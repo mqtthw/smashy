@@ -19,7 +19,7 @@ describe("timedFetch", () => {
     await expect(timedFetch(30)("https://example.com")).rejects.toMatchObject({ name: "AbortError" });
   });
 
-  // Round 864: the Supabase library retried a timed-out read three times (39 s in all); an abort it doesn't retry.
+  // Round 865: the Supabase library retried a timed-out read three times (39 s in all); an abort it doesn't retry.
   it("isn't retried by the Supabase library", async () => {
     const f = hangingFetch();
     vi.stubGlobal("fetch", f);

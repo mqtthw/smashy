@@ -927,7 +927,7 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
 
 export default function HostedEventPage(props: PageProps<"/host/[id]">) {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <Link href="/events" className="text-sm text-muted hover:text-foreground"><T k="event.backToEvents" /></Link>
       <Suspense fallback={<PageSkeleton />}>
         <Event params={props.params} />

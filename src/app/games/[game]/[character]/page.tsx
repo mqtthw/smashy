@@ -193,6 +193,9 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
         </section>
       )}
 
+      {/* Round 882: with nothing voted up yet and the character's library shown above, "Top resources: No resources
+          yet. Be the first!" contradicted the full library on the same page; then the section waits until it has some. */}
+      {!(library && !activeType && highlightsOrNull !== null && highlights.length === 0) && (
       <section className="flex flex-col gap-3">
         <h2 className="font-bold">{t("media.char.top")}</h2>
         <TypeTabs basePath={base} active={activeType} filterLabel={t("media.type.filter")} />
@@ -209,6 +212,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           <p className="text-sm text-muted">{t(activeType ? "media.char.noneOfType" : "media.char.none")}</p>
         )}
       </section>
+      )}
 
       <Suspense fallback={null}>
         <CharacterHistory game={game} character={character} name={name} t={t} data={historyData} />

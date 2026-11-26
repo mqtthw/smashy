@@ -25,7 +25,7 @@ export const GAME_ESSENTIALS: Partial<Record<GameKey, Essential[]>> = {
     {
       title: "Netplay+",
       url: "https://eggs-ssbm.github.io/npp-releases/",
-      why: "A free companion app for Slippi on Windows: achievements and challenges as you play, an in-game overlay with quick chat, combo detection, and friends and avoid lists for matchmaking (skip high-ping or toxic players). Not made by Project Slippi.",
+      why: "A free companion app for Slippi on Windows: achievements and challenges as you play, an in-game overlay with quick chat, combo detection, and friends and avoid lists for matchmaking (skip high-ping or toxic players).",
       cta: "Get Netplay+",
     },
     {
@@ -54,7 +54,7 @@ export const GAME_ESSENTIALS: Partial<Record<GameKey, Essential[]>> = {
       // Added 2026-11-21 (Matthew), the day of its 1.0.
       title: "Melee Unlocked",
       url: "https://github.com/Hero88go/melee-unlocked",
-      why: "A free Windows version of Melee built from the game's decompiled code instead of an emulator, with Slippi online (it plays regular Slippi players), any frame rate, and a launcher with a lobby and friends list for starting matches. Needs your own copy of Melee (NTSC 1.02); it includes no game files. Not made by Project Slippi.",
+      why: "A free Windows version of Melee built from the game's decompiled code instead of an emulator, with Slippi online (it plays regular Slippi players), any frame rate, and a launcher with a lobby and friends list for starting matches. Needs your own copy of Melee (NTSC 1.02); it includes no game files.",
       cta: "Get Melee Unlocked",
       credit: "By Hero88go and contributors.",
       general: true,

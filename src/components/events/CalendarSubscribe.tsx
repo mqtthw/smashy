@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from "react";
 import { GAMES, MAIN_GAME_KEYS, type GameKey } from "@/lib/games";
 import { useT } from "@/lib/i18n/client";
 import NewTab from "@/components/ui/NewTab";
+import Icon from "@/components/ui/Icon";
 
 const noSubscribe = () => () => {};
 
@@ -23,9 +24,12 @@ export default function CalendarSubscribe({ region, regionLabel }: { region: str
   const google = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcal)}`;
 
   return (
-    <details className="mx-4 rounded-xl border border-line px-3 py-2 text-sm">
-      <summary className="cursor-pointer font-semibold">
-        {t("browse.cal.title")}
+    <details className="group mx-4 mb-4 rounded-md border border-line px-3 py-2 text-sm">
+      {/* A plain row with an icon and a turning arrow, not the browser's bare triangle (round 867). */}
+      <summary className="flex cursor-pointer list-none items-center gap-2 font-semibold [&::-webkit-details-marker]:hidden">
+        <Icon name="calendar" className="text-muted" />
+        <span className="flex-1">{t("browse.cal.title")}</span>
+        <span aria-hidden="true" className="text-muted transition-transform group-open:rotate-180">▾</span>
       </summary>
       <div className="mt-2 flex flex-col gap-2">
         <p className="text-muted">{t("browse.cal.help", { region: regionLabel })}</p>

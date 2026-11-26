@@ -26,7 +26,7 @@ async function Form() {
 
 export default function NewLeaguePage() {
   return (
-    <section className="mx-auto flex max-w-xl flex-col gap-4 p-4">
+    <section className="flex flex-col gap-4 p-4">
       <header>
         <Link href="/leagues" className="text-sm text-muted hover:underline">← <T k="league.title" /></Link>
         <h1 className="text-2xl font-bold"><T k="league.start" /></h1>
