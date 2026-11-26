@@ -11,8 +11,8 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: "/",
     display: "standalone",
     orientation: "any", // brackets and VODs are easier sideways
-    background_color: "#140405",
-    theme_color: "#140405",
+    background_color: "#0d0b2a",
+    theme_color: "#0d0b2a",
     categories: ["games", "social", "sports"],
     icons: [
       { src: "/app-icon/192.png", sizes: "192x192", type: "image/png", purpose: "any" },

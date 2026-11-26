@@ -806,11 +806,11 @@ body::before {
   }
 }
 
-/* ---------- The "menu" skin (round 908, a preview: not the default yet) ----------
+/* ---------- The "menu" skin (round 908; the default look since round 912) ----------
    Matthew, 2026-11-26: a design overhaul "heavily inspired by Melee's user interface", built whole
    before it goes live. Everything for it sits behind data-skin="melee" on <html>, which the layout's
-   first script sets when the browser has smashy-skin=melee saved (open any page with ?skin=melee to
-   turn it on, ?skin=off to turn it off). The idea of that menu, drawn with Smashy's own shapes and no
+   layout puts on every page (round 912; until then only with ?skin=melee). ?skin=off shows the old look
+   in that browser while it still exists. The idea of that menu, drawn with Smashy's own shapes and no
    Nintendo artwork: a deep indigo screen with a faint grid, dark panels with thin lavender edges, slanted
    bold-italic titles, red plates, and gold for whatever is selected. One dark look, day and night.
    docs/menu-skin-plan.md has the plan and what's left. */

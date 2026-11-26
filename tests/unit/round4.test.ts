@@ -64,8 +64,8 @@ describe("essentials", () => {
     expect(frameDataLinks("melee", "mr-game-and-watch", "Mr. Game & Watch")[0].url).toBe("https://www.ssbwiki.com/Mr._Game_%26_Watch_(SSBM)");
     expect(frameDataLinks("pplus", "fox", "Fox")).toEqual([]);
     // Must-haves stay numbered at the top (Slippi first); the rest sit under "General resources" at the bottom.
-    expect(GAME_ESSENTIALS.melee!.filter((e) => !e.general).map((e) => e.title)).toEqual(["Slippi", "UnclePunch Training Mode", "Netplay+"]);
-    expect(GAME_ESSENTIALS.melee!.filter((e) => e.general).map((e) => e.title)).toEqual(["IKneeData calculator", "Melee Fundamentals for Improvement", "Cookbook.gg", "Melee Unlocked", "4Stockfish"]);
+    expect(GAME_ESSENTIALS.melee!.filter((e) => !e.general).map((e) => e.title)).toEqual(["Slippi", "UnclePunch Training Mode"]);
+    expect(GAME_ESSENTIALS.melee!.filter((e) => e.general).map((e) => e.title)).toEqual(["Netplay+", "IKneeData calculator", "Melee Fundamentals for Improvement", "Cookbook.gg", "Melee Unlocked", "4Stockfish"]);
   });
 
   it("sorts library links into the same types as the resource tabs", async () => {

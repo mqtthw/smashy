@@ -27,6 +27,7 @@ export const GAME_ESSENTIALS: Partial<Record<GameKey, Essential[]>> = {
       url: "https://eggs-ssbm.github.io/npp-releases/",
       why: "A free companion app for Slippi on Windows: achievements and challenges as you play, an in-game overlay with quick chat, combo detection, and friends and avoid lists for matchmaking (skip high-ping or toxic players).",
       cta: "Get Netplay+",
+      general: true, // a nice extra, not a must-have (Matthew, round 913)
     },
     {
       title: "IKneeData calculator",

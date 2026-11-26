@@ -61,21 +61,19 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover", // installed app: draw under the phone's notch/home bar (the nav pads for it)
   // Browser/phone bar color follows the theme.
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#a9d8f9" },
-    { media: "(prefers-color-scheme: dark)", color: "#140405" },
-  ],
+  themeColor: "#0d0b2a", // the menu skin's indigo, day and night (round 912)
 };
 
 // Applies a saved Light/Dark choice before the page paints, so it never flashes the wrong theme.
-// Its first line turns on the menu skin preview (round 908): ?skin=melee saves it, ?skin=off clears it.
-const themeScript = `try{var q=new URLSearchParams(location.search).get("skin");if(q==="melee")localStorage.setItem("smashy-skin","melee");else if(q)localStorage.removeItem("smashy-skin");if(localStorage.getItem("smashy-skin")==="melee")document.documentElement.setAttribute("data-skin","melee")}catch(e){}
+// Its first line turns on the menu skin preview (round 908): the menu skin is the default since round 912
+// (data-skin on <html> below); ?skin=off shows the old look in that browser, ?skin=on brings the skin back.
+const themeScript = `try{var q=new URLSearchParams(location.search).get("skin");if(q==="off")localStorage.setItem("smashy-skin","off");else if(q)localStorage.removeItem("smashy-skin");if(localStorage.getItem("smashy-skin")==="off")document.documentElement.removeAttribute("data-skin")}catch(e){}
 try{var t=localStorage.getItem("smashy-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("smashy-hide-mains")==="1")document.documentElement.setAttribute("data-hide-mains","");if(localStorage.getItem("smashy-spoiler-mode")==="1")document.documentElement.setAttribute("data-spoiler-mode","")}catch(e){}
 try{var m=document.cookie.match(/(?:^|; )lang=(en|es|ja|fr)(?:;|$)/),l=m?m[1]:"en";if(!m){var ls=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||"en"];for(var i=0;i<ls.length;i++){var c=String(ls[i]).slice(0,2).toLowerCase();if(c==="en"||c==="es"||c==="ja"||c==="fr"){l=c;break}}document.cookie="lang="+l+"; path=/; max-age=31536000; samesite=lax"}document.documentElement.lang=l}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${bodyFont.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" data-skin="melee" className={`${bodyFont.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {/* Profile pictures, post photos and videos come from Supabase's address: connect to it while the

@@ -148,6 +148,21 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
         </section>
       )}
 
+      {/* Frame data sits above the library (round 913, Matthew): it is one button, and the library is long. */}
+      {frameData.length > 0 && (
+        <section aria-labelledby="frame-data" className="card flex flex-col gap-2 p-4">
+          <h2 id="frame-data" className="font-bold">{t("media.char.frameData", { name })}</h2>
+          <p className="text-sm text-muted">{t("media.char.frameDataBody", { source: FRAME_DATA_SOURCE[game] ?? "" })}</p>
+          <div className="flex flex-wrap gap-2">
+            {frameData.map((f) => (
+              <a key={f.url} href={f.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">
+                {frameData.length > 1 ? t("media.char.frameDataOf", { label: f.label }) : t("media.char.openFrameData")} ↗︎
+              <NewTab /></a>
+            ))}
+          </div>
+        </section>
+      )}
+
       {library && (
         <section aria-labelledby="library" className="card flex flex-col gap-3 p-4">
           <div>
@@ -176,20 +191,6 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
               <LibraryList links={libraryByType.get(s)!} t={t} />
             </div>
           ))}
-        </section>
-      )}
-
-      {frameData.length > 0 && (
-        <section aria-labelledby="frame-data" className="card flex flex-col gap-2 p-4">
-          <h2 id="frame-data" className="font-bold">{t("media.char.frameData", { name })}</h2>
-          <p className="text-sm text-muted">{t("media.char.frameDataBody", { source: FRAME_DATA_SOURCE[game] ?? "" })}</p>
-          <div className="flex flex-wrap gap-2">
-            {frameData.map((f) => (
-              <a key={f.url} href={f.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">
-                {frameData.length > 1 ? t("media.char.frameDataOf", { label: f.label }) : t("media.char.openFrameData")} ↗︎
-              <NewTab /></a>
-            ))}
-          </div>
         </section>
       )}
 
