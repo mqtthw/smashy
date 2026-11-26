@@ -59,7 +59,7 @@ export const uiFr: Record<keyof typeof uiEn, string> = {
   "ui.guest.pitch": "Gratuit, sans pub, et sans compte pour regarder.",
   "ui.guest.t.history": "Histoire de Smash",
   "ui.guest.t.events": "Événements près de toi",
-  "ui.guest.t.characters": "Pages des persos",
+  "ui.guest.t.characters": "Persos",
   "ui.guest.t.newPlayers": "Nouveau sur Smash ?",
   "ui.guest.t.reels": "Reels",
   "ui.guest.t.players": "Chercher un joueur",

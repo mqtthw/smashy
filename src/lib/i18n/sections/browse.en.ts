@@ -180,7 +180,7 @@ export const browseEn = {
   "browse.brackets.recent": "Your recent brackets",
   "browse.brackets.clear": "Clear",
   "browse.brackets.liveOnSmashy": "Live on Smashy now",
-  "browse.brackets.onlineToday": "Online brackets today",
+  "browse.brackets.onlineToday": "Online today",
   "browse.brackets.allOnline": "All online →",
 
   // One bracket

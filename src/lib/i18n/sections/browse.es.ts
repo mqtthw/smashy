@@ -182,7 +182,7 @@ export const browseEs: Record<keyof typeof browseEn, string> = {
   "browse.brackets.recent": "Tus brackets recientes",
   "browse.brackets.clear": "Borrar",
   "browse.brackets.liveOnSmashy": "En vivo en Smashy ahora",
-  "browse.brackets.onlineToday": "Brackets en línea de hoy",
+  "browse.brackets.onlineToday": "En línea hoy",
   "browse.brackets.allOnline": "Todos en línea →",
 
   // One bracket

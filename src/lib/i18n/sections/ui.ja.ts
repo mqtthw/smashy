@@ -59,7 +59,7 @@ export const uiJa: Record<keyof typeof uiEn, string> = {
   "ui.guest.pitch": "無料・広告なし。見るだけならアカウント不要です。",
   "ui.guest.t.history": "スマブラの歴史",
   "ui.guest.t.events": "近くの大会",
-  "ui.guest.t.characters": "キャラページ",
+  "ui.guest.t.characters": "キャラ",
   "ui.guest.t.newPlayers": "スマブラ初心者？",
   "ui.guest.t.reels": "リール",
   "ui.guest.t.players": "プレイヤーを検索",

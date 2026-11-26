@@ -108,7 +108,6 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
           {" · "}
           <Link href="/help" className="link">{t("ui.guest.helpBuild")}</Link>
         </p>
-        <GetTheApp />
       </div>
 
       {nextMajors.length > 0 && (
@@ -212,6 +211,9 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
           ))}
         </ul>
       </div>
+      {/* The store buttons sit at the end (round 851): at the top they made a fourth row of buttons under
+          Join and Sign in, and phones already get the "Get the Smashy app" banner. */}
+      <GetTheApp />
     </section>
   );
 }

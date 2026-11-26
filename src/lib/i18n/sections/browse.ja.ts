@@ -182,7 +182,7 @@ export const browseJa: Record<keyof typeof browseEn, string> = {
   "browse.brackets.recent": "最近見たトーナメント表",
   "browse.brackets.clear": "クリア",
   "browse.brackets.liveOnSmashy": "Smashyで開催中",
-  "browse.brackets.onlineToday": "今日のオンライン大会",
+  "browse.brackets.onlineToday": "今日のオンライン",
   "browse.brackets.allOnline": "すべてのオンライン大会 →",
 
   // One bracket

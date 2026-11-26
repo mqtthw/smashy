@@ -57,7 +57,7 @@ export const uiEn = {
   "ui.guest.pitch": "Free, no ads, and no account needed to look around.",
   "ui.guest.t.history": "Smash history",
   "ui.guest.t.events": "Events near you",
-  "ui.guest.t.characters": "Character pages",
+  "ui.guest.t.characters": "Characters",
   "ui.guest.t.newPlayers": "New to smash?",
   "ui.guest.t.reels": "Reels",
   "ui.guest.t.players": "Look up a player",
