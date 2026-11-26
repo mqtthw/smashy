@@ -884,4 +884,240 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "Un excellent wavedash.",
   "Struggles against projectiles.":
     "A du mal contre les projectiles.",
+  "October 2014 for Project M, the mod P+ is built on":
+    "octobre 2014 pour Project M, le mod sur lequel P+ est construit",
+  "A heavy tank whose game is more defensive than offensive, with offense mixed in. The guide's core habit is to shield an attack and answer with his up special, while warning that it becomes predictable. It says he is destructive when used properly, and that he should be kept fast with wavedashing, L-cancelling and dash dancing.":
+    "Un tank lourd dont le jeu est plus défensif qu’offensif, avec de l’offensif mêlé dedans. Le réflexe de base du guide est de prendre une attaque au bouclier et de répondre avec son spécial haut, tout en prévenant que ça devient prévisible. Il dit qu’il est destructeur quand il est bien utilisé, et qu’il faut le garder rapide avec le wavedash, le L-cancel et le dash dance.",
+  "His main defensive answer: shield, then up special.":
+    "Sa principale réponse défensive : bouclier, puis spécial haut.",
+  "A small flamethrower, used now and then as unexpected defense.":
+    "Un petit lance-flammes, utilisé de temps en temps comme défense inattendue.",
+  "Power and speed that earlier versions of Bowser lacked.":
+    "Une puissance et une vitesse qui manquaient aux versions précédentes de Bowser.",
+  "A long list of useful, powerful moves.":
+    "Une longue liste de coups utiles et puissants.",
+  "His shield-then-up-special habit is easy to predict.":
+    "Son habitude bouclier puis spécial haut est facile à prévoir.",
+  "October 2015 for Project M, the mod P+ is built on":
+    "octobre 2015 pour Project M, le mod sur lequel P+ est construit",
+  "A heavy character with strong throws and KO power. The guide builds his game on grabs: back throw into another grab to rack up damage, down throw to set up a read, up throw to KO. Being heavy lets him survive to high percent while his power takes stocks early.":
+    "Un personnage lourd avec des projections fortes et de la puissance de KO. Le guide construit son jeu sur les grabs : projection arrière vers un autre grab pour accumuler des dégâts, projection bas pour préparer un read, projection haut pour le KO. Son poids lui permet de survivre jusqu’à de hauts pourcentages pendant que sa puissance prend des vies tôt.",
+  "Back throw chains into another grab, forward throw can KO or lead to a dash attack or up smash, down throw sets up a smash attack on a read, and up throw is his best throw for KOs.":
+    "La projection arrière enchaîne sur un autre grab, la projection avant peut mettre KO ou mener à une dash attack ou à un smash haut, la projection bas prépare une attaque smash sur un read, et la projection haut est sa meilleure projection pour les KO.",
+  "His best KO move by far, with a lot of end lag: the guide suggests it after a down throw or on a broken shield.":
+    "De loin son meilleur coup de KO, avec beaucoup de lag de fin : le guide le suggère après une projection bas ou sur un bouclier brisé.",
+  "Back air is his best tool for it, with forward air, down air and neutral air also used.":
+    "L’aérien arrière est son meilleur outil pour ça, et l’aérien avant, l’aérien bas et l’aérien neutre servent aussi.",
+  "Heavy, so he survives at high percent.":
+    "Lourd, donc il survit à haut pourcentage.",
+  "KO power that takes stocks early.":
+    "Une puissance de KO qui prend des vies tôt.",
+  "A strong grab game.":
+    "Un jeu de grab fort.",
+  "His strongest move has a lot of end lag.":
+    "Son coup le plus puissant a beaucoup de lag de fin.",
+  "The guide's number one rule for Donkey Kong is grabbing: without grabs, it says, he probably isn't winning. He has a huge grab range and is fast, so he spaces around it and mixes up how he goes for it. Once he has the grab, the forward throw puts the opponent on his back and he chooses the follow-up from there. Under pressure, the advice is to get out and reset.":
+    "La règle numéro un du guide pour Donkey Kong, c’est le grab : sans grabs, dit-il, il n’est probablement pas en train de gagner. Il a une énorme portée de grab et il est rapide, donc il fait son spacing autour de ça et varie ses façons d’aller le chercher. Une fois le grab obtenu, la projection avant met l’adversaire sur son dos et il choisit la suite à partir de là. Sous pression, le conseil est de sortir et de repartir de zéro.",
+  "Forward throw lifts the opponent onto his back so he can carry them, then throw them up into up airs or forward into neutral or forward airs.":
+    "La projection avant soulève l’adversaire sur son dos pour qu’il puisse le porter, puis le lancer vers le haut dans des aériens haut ou vers l’avant dans des aériens neutres ou avant.",
+  "Pressing jump and then grab while running gives him a standing grab with running momentum; the guide calls this the first thing to learn.":
+    "Appuyer sur saut puis sur grab en courant lui donne un grab debout avec l’élan de la course ; le guide dit que c’est la première chose à apprendre.",
+  "His best spacing move because of how far it reaches.":
+    "Son meilleur coup de spacing grâce à son allonge.",
+  "A huge grab range, and many options from a grab.":
+    "Une énorme portée de grab, et beaucoup d’options depuis un grab.",
+  "Fast, with the size to space well.":
+    "Rapide, avec la taille qu’il faut pour bien faire son spacing.",
+  "One of the best horizontal recoveries, which lets him edgeguard offstage.":
+    "L’une des meilleures recoveries horizontales, ce qui lui permet d’edgeguard hors du terrain.",
+  "Huge, so he is a big combo target.":
+    "Énorme, donc c’est une grosse cible à combos.",
+  "Doesn't deal well with pressure.":
+    "Gère mal la pression.",
+  "Grabbing the ledge precisely with his recovery is hard.":
+    "Attraper le rebord avec précision avec sa recovery est difficile.",
+  "November 2014 for Project M, the mod P+ is built on":
+    "novembre 2014 pour Project M, le mod sur lequel P+ est construit",
+  "The guide calls him underrated, with aerials and a very versatile ground game. It teaches three things: pressure, with short-hop neutral specials and repeated back airs; a ground game of tilts and smash attacks that takes stocks quickly once his movement is under control; and a recovery it describes as insane.":
+    "Le guide le dit sous-estimé, avec des aériens et un jeu au sol très polyvalent. Il enseigne trois choses : la pression, avec des spéciaux neutres en short hop et des aériens arrière répétés ; un jeu au sol de tilts et d’attaques smash qui prend des vies vite une fois son déplacement maîtrisé ; et une recovery qu’il qualifie de folle.",
+  "Short hop, mash the button, repeat: food flies everywhere and makes the opponent back off.":
+    "Short hop, martèle le bouton, recommence : la nourriture vole partout et fait reculer l’adversaire.",
+  "Ridiculous vertical reach, and he can use his bucket in the air to gain horizontal distance.":
+    "Une portée verticale ridicule, et il peut utiliser son seau en l’air pour gagner de la distance horizontale.",
+  "He is small and turns back and forth faster than most, which the guide uses to bait.":
+    "Il est petit et se retourne d’un côté à l’autre plus vite que la plupart, ce dont le guide se sert pour bait.",
+  "Strong pressure with neutral special and back air.":
+    "Une forte pression avec le spécial neutre et l’aérien arrière.",
+  "A versatile ground game that takes stocks quickly.":
+    "Un jeu au sol polyvalent qui prend des vies vite.",
+  "An excellent recovery.":
+    "Une excellente recovery.",
+  "September 2015 for Project M, the mod P+ is built on":
+    "septembre 2015 pour Project M, le mod sur lequel P+ est construit",
+  "The guide calls Ike one of the most unique characters: Marth's range and disjoint, Ganondorf's power and sluggishness, and Captain Falcon's free-form combos and grab game. He is slow on the ground, floaty and medium weight, which makes him easy to combo, and covers for it with a very large sword and by jumping out of his side special. His goal is to keep the opponent at mid range, just outside their reach and well inside his.":
+    "Le guide dit qu’Ike est l’un des personnages les plus uniques : la portée et le disjoint de Marth, la puissance et la lenteur de Ganondorf, et les combos libres et le jeu de grab de Captain Falcon. Il est lent au sol, flottant et de poids moyen, ce qui le rend facile à comboter, et il compense avec une très grande épée et en sautant pour sortir de son spécial côté. Son but est de garder l’adversaire à moyenne distance, juste hors de la portée adverse et bien dans la sienne.",
+  "A dash he can jump out of. It is how he moves quickly and how he follows up his hits.":
+    "Un dash dont il peut sortir en sautant. C’est comme ça qu’il se déplace vite et qu’il enchaîne après ses coups.",
+  "His main recovery when coming from low; he can steer forward or back while spinning to land on the ledge or the stage.":
+    "Sa principale recovery quand il revient d’en bas ; il peut se diriger vers l’avant ou l’arrière pendant qu’il tourne pour atterrir sur le rebord ou sur le terrain.",
+  "Different parts of his arms and sword have different effects, so where a move connects changes what it does.":
+    "Les différentes parties de ses bras et de son épée ont des effets différents, donc l’endroit où un coup touche change ce qu’il fait.",
+  "An extremely large disjointed sword.":
+    "Une épée disjointe extrêmement grande.",
+  "Power.":
+    "La puissance.",
+  "Free-form combos and a strong grab game.":
+    "Des combos libres et un jeu de grab fort.",
+  "Quite susceptible to combos.":
+    "Assez vulnérable aux combos.",
+  "Awkward to play at first.":
+    "Déroutant à jouer au début.",
+  "December 2014 for Project M, the mod P+ is built on":
+    "décembre 2014 pour Project M, le mod sur lequel P+ est construit",
+  "The guide's word for him is passive-aggressive: keep the pressure on, but know when to step back and keep distance. Compared with Brawl he gave up some defense for offense and mobility, and relies more on getting in and racking up damage. He is extremely powerful, a threat at long and close range, but a very big target who has trouble approaching faster characters and those who can zone him out.":
+    "Le mot du guide pour lui est passif-agressif : maintenir la pression, mais savoir quand reculer et garder ses distances. Par rapport à Brawl, il a cédé un peu de défense contre de l’attaque et de la mobilité, et compte davantage sur le fait d’entrer et d’accumuler des dégâts. Il est extrêmement puissant, une menace de loin comme de près, mais c’est une très grosse cible qui a du mal à approcher les personnages plus rapides et ceux qui peuvent le tenir à distance par le zoning.",
+  "Among his best moves. Forward air has an enormous disjointed hitbox with power and speed, and is a deadly edgeguarding tool.":
+    "Parmi ses meilleurs coups. L’aérien avant a une énorme hitbox disjointe, avec puissance et vitesse, et c’est un outil d’edgeguard mortel.",
+  "The guide calls it his anti-approach option: its suction can stop some moves that rush at him.":
+    "Le guide l’appelle son option anti-approche : son aspiration peut arrêter certains coups qui foncent sur lui.",
+  "A recovery that rises a tremendous distance very quickly.":
+    "Une recovery qui monte très vite sur une distance énorme.",
+  "Some of the most powerful smash attacks.":
+    "Des attaques smash parmi les plus puissantes.",
+  "Very disjointed moves, dangerous at long and close range.":
+    "Des coups très disjoints, dangereux de loin comme de près.",
+  "More mobility than he had in Brawl.":
+    "Plus de mobilité qu’il n’en avait dans Brawl.",
+  "A very big target.":
+    "Une très grosse cible.",
+  "Has trouble approaching characters who are faster than him or can zone him out.":
+    "A du mal à approcher les personnages plus rapides que lui ou capables de le tenir à distance par le zoning.",
+  "February 2015 for Project M, the mod P+ is built on":
+    "février 2015 pour Project M, le mod sur lequel P+ est construit",
+  "A fast-paced, burst-momentum character whose approach is based on creating and exploiting openings in the opponent's defense. The guide compares his playstyle to Falco's and Sheik's. He has a strong dash dance for baiting, a short range and a very strong punish game, so the guide stresses spacing in neutral above all and never playing on autopilot.":
+    "Un personnage au rythme rapide, tout en accélérations brusques, dont l’approche repose sur le fait de créer et d’exploiter des ouvertures dans la défense de l’adversaire. Le guide compare son style de jeu à ceux de Falco et de Sheik. Il a un dash dance fort pour bait, une courte portée et un jeu de punition très fort, donc le guide insiste avant tout sur le spacing en neutral et sur le fait de ne jamais jouer en pilote automatique.",
+  "A nickname he earned for resembling Fox, Falco and Wolf in pressure, combos and neutral. The guide notes that later nerfs made people question it.":
+    "Un surnom qu’il a gagné parce qu’il ressemble à Fox, Falco et Wolf pour la pression, les combos et le neutral. Le guide note que des nerfs ultérieurs ont amené les gens à le remettre en question.",
+  "Looks like a good option all the time, but its startup and end lag mean it can be punished.":
+    "A l’air d’être une bonne option tout le temps, mais avec son démarrage et son lag de fin, ça peut se faire punir.",
+  "The guide says to jump-cancel or pivot every grab rather than dash grab.":
+    "Le guide dit de faire chaque grab en jump-cancel ou en pivot plutôt qu’en dash grab.",
+  "A strong dash dance game for baiting.":
+    "Un jeu de dash dance fort pour bait.",
+  "A very strong punish game.":
+    "Un jeu de punition très fort.",
+  "Fast, with bursts of momentum.":
+    "Rapide, avec des accélérations brusques.",
+  "Short range.":
+    "Courte portée.",
+  "Light.":
+    "Léger.",
+  "A first draft by one author, who calls it probably opinionated. It describes a fast character with very quick attacks, deceptively long reach on his sword, versatile combos and mix-ups, and one of the best edgeguarding games. His forward tilt and down tilt are his spacing and combo tools.":
+    "Un premier jet d’un seul auteur, qui le dit probablement subjectif. Il décrit un personnage rapide aux attaques très vives, avec une épée à l’allonge plus grande qu’elle n’en a l’air, des combos et des mix-ups polyvalents, et l’un des meilleurs jeux d’edgeguard. Son tilt côté et son tilt bas sont ses outils de spacing et de combo.",
+  "Three hits whose timing he controls; used for combos, spacing and sometimes shield pressure.":
+    "Trois coups dont il contrôle le timing ; sert aux combos, au spacing et parfois à la pression sur bouclier.",
+  "Pops opponents up for combos at close range and pushes them back at the tip; one of his best spacing moves, and good for edgeguarding from the stage.":
+    "Soulève l’adversaire pour des combos de près et le repousse à la pointe ; l’un de ses meilleurs coups de spacing, et bon pour edgeguard depuis le terrain.",
+  "Deceptively fast with a massive hitbox, for hard reads and punishing recoveries.":
+    "Plus rapide qu’il n’en a l’air, avec une hitbox massive, pour les gros reads et pour punir les recoveries.",
+  "One of the best edgeguarders.":
+    "L’un des meilleurs en edgeguard.",
+  "Deceptively great range on a disjointed sword.":
+    "Une épée disjointe à la portée bien plus grande qu’elle n’en a l’air.",
+  "Versatile combos and mix-ups.":
+    "Des combos et des mix-ups polyvalents.",
+  "Very fast attacks and run speed.":
+    "Des attaques et une vitesse de course très rapides.",
+  "An unpredictable recovery that covers a lot of horizontal distance.":
+    "Une recovery imprévisible qui couvre beaucoup de distance horizontale.",
+  "Very fragile: one of the lightest characters, with a fast fall speed and a slow tech roll.":
+    "Très fragile : l’un des personnages les plus légers, avec une chute rapide et un tech roll lent.",
+  "A relatively bad vertical recovery.":
+    "Une recovery verticale relativement mauvaise.",
+  "January 2015 for Project M, the mod P+ is built on":
+    "janvier 2015 pour Project M, le mod sur lequel P+ est construit",
+  "Not an aggressive character all the time. The guide says Mewtwo must be played defensively to find an opening or make the opponent approach, then turn aggressive once he is in or has found a weakness in their approach.":
+    "Pas un personnage agressif en permanence. Le guide dit que Mewtwo doit se jouer défensivement pour trouver une ouverture ou forcer l’adversaire à approcher, puis devenir agressif une fois qu’il est entré ou qu’il a trouvé une faiblesse dans son approche.",
+  "With his high jumps it gives him a recovery the guide calls broken: quick, hard to read and easy to land on the ledge with. He can still be read and punished.":
+    "Avec ses sauts hauts, ça lui donne une recovery que le guide qualifie de pétée : rapide, difficile à lire et facile à poser sur le rebord. Il peut quand même être lu et puni.",
+  "Gives him his mid range.":
+    "Lui donne sa moyenne distance.",
+  "Rated amazing, with a chain grab on heavy characters at low percent.":
+    "Jugé incroyable, avec un chaingrab sur les personnages lourds à bas pourcentage.",
+  "A very high jump and an amazing aerial game.":
+    "Un saut très haut et un jeu aérien incroyable.",
+  "Unmatched edgeguarding.":
+    "Un edgeguard sans égal.",
+  "An extremely strong recovery.":
+    "Une recovery extrêmement forte.",
+  "Very floaty.":
+    "Très flottant.",
+  "Only okay approach options and ground game.":
+    "Des options d’approche et un jeu au sol tout juste corrects.",
+  "Has to charge his projectile for it to be effective.":
+    "Doit charger son projectile pour qu’il soit efficace.",
+  "October 2014, updated January 2016 for Project M, the mod P+ is built on":
+    "octobre 2014, mis à jour en janvier 2016 pour Project M, le mod sur lequel P+ est construit",
+  "An aggressive character who has to get close. His real strength is the sweetspot on the middle and hilt of his blade, so although his range lets him control space, he needs to be in the opponent's face to hurt them. His movement is only average, so the guide's game plan is to advance steadily and carefully with dash dancing, crouch cancelling and long-reaching attacks, pin the opponent down, and set up down tilts and grabs. It says Smash fundamentals are the pillars that hold Roy up.":
+    "Un personnage agressif qui doit se rapprocher. Sa vraie force est le sweetspot au milieu et à la garde de sa lame, donc même si sa portée lui permet de contrôler l’espace, il doit être collé à l’adversaire pour lui faire mal. Son déplacement est tout juste moyen, donc le plan de jeu du guide est d’avancer régulièrement et prudemment avec le dash dance, le crouch cancel et des attaques à longue portée, de coincer l’adversaire, et de préparer des tilts bas et des grabs. Il dit que les fondamentaux de Smash sont les piliers qui tiennent Roy debout.",
+  "The middle and hilt of his sword hit hardest, the opposite of Marth's tip.":
+    "Le milieu et la garde de son épée frappent le plus fort, à l’inverse de la pointe de Marth.",
+  "The guide calls his crouch cancel game great, and at the same time one of his biggest weaknesses.":
+    "Le guide qualifie son jeu de crouch cancel d’excellent, et en même temps d’une de ses plus grandes faiblesses.",
+  "What his careful advance is meant to set up.":
+    "Ce que son avancée prudente sert à préparer.",
+  "Range to control space.":
+    "De la portée pour contrôler l’espace.",
+  "A great dash dance.":
+    "Un excellent dash dance.",
+  "Strong KO options.":
+    "De fortes options de KO.",
+  "Potentially great combos.":
+    "Des combos potentiellement excellents.",
+  "Has to get in fairly close for his better rewards.":
+    "Doit s’approcher d’assez près pour ses meilleures récompenses.",
+  "Middling overall movement speed.":
+    "Une vitesse de déplacement globale moyenne.",
+  "His combos often need a read on the opponent's DI.":
+    "Ses combos demandent souvent un read sur la DI de l’adversaire.",
+  "Fairly easy to KO.":
+    "Assez facile à mettre KO.",
+  "April 2015 for Project M, the mod P+ is built on":
+    "avril 2015 pour Project M, le mod sur lequel P+ est construit",
+  "An unfinished guide whose author says they stopped because they weren't yet skilled enough. It describes Wolf as versatile and well rounded, overall an aggressive character because of his long combo game, and a glass cannon: he hits extremely hard and can have the same done to him. His Blaster is one of his main tools in neutral for opening the opponent up.":
+    "Un guide inachevé dont l’auteur dit s’être arrêté parce qu’il n’avait pas encore le niveau. Il décrit Wolf comme polyvalent et complet, dans l’ensemble un personnage agressif grâce à son long jeu de combos, et un glass cannon : il frappe extrêmement fort et peut subir la même chose. Son Blaster est l’un de ses principaux outils en neutral pour ouvrir l’adversaire.",
+  "A main neutral tool the guide says most Wolf players underuse. He can waveland out of it, which lets him keep pressure on behind a projectile.":
+    "Un outil majeur du neutral que la plupart des joueurs de Wolf sous-utilisent, d’après le guide. Il peut en sortir en waveland, ce qui lui permet de maintenir la pression derrière un projectile.",
+  "The guide says he can start one from almost anything and extend the punish a long way.":
+    "Le guide dit qu’il peut en lancer un à partir de presque n’importe quoi et prolonger la punition très longtemps.",
+  "Long range for punishing laggy moves, with less knockback than people expect.":
+    "Longue portée pour punir les coups avec du lag, avec moins d’éjection qu’on ne s’y attend.",
+  "A long, flexible combo game.":
+    "Un jeu de combos long et flexible.",
+  "Well rounded, with a good spread of matchups.":
+    "Complet, avec un bon éventail de match-ups.",
+  "A projectile he can move out of.":
+    "Un projectile dont il peut sortir en bougeant.",
+  "A glass cannon: he takes as much as he gives.":
+    "Un glass cannon : il encaisse autant qu’il donne.",
+  "Has a rough time if his spacing and movement aren't on point.":
+    "Passe un mauvais moment si son spacing et son déplacement ne sont pas au point.",
+  "Not an aggressive character. The guide says Zelda mostly takes her time and waits for the opponent to make a wrong move: she isn't very good at approaching, but has a great long-range game, using Din's Fire as a wall that is hard to break through. When the opponent slips, she has plenty of ways to combo or finish the stock.":
+    "Pas un personnage agressif. Le guide dit que Zelda prend surtout son temps et attend que l’adversaire fasse un faux pas : elle n’est pas très bonne pour approcher, mais elle a un excellent jeu à longue distance, avec Din’s Fire comme un mur difficile à percer. Quand l’adversaire se trompe, elle a plein de façons de comboter ou de finir la vie.",
+  "Her wall: it keeps opponents out at long range.":
+    "Son mur : il tient les adversaires à l’écart à longue distance.",
+  "Her forward and back airs. The guide calls it pretty much her best move, able to KO heavy characters early when it lands cleanly.":
+    "Ses aériens avant et arrière. Le guide dit que c’est à peu près son meilleur coup, capable de mettre KO les personnages lourds tôt quand il touche proprement.",
+  "A spinning crystal that also reflects projectiles, useful in combos and when retreating.":
+    "Un cristal tournant qui renvoie aussi les projectiles, utile dans les combos et en reculant.",
+  "A great long-range game.":
+    "Un excellent jeu à longue distance.",
+  "Powerful finishers.":
+    "Des finishers puissants.",
+  "Many ways to punish a mistake.":
+    "Beaucoup de façons de punir une erreur.",
+  "Not very good at approaching.":
+    "Pas très bonne pour approcher.",
+  "Sitting in shield is not a safe option for her.":
+    "Rester dans son bouclier n’est pas une option sûre pour elle.",
 };

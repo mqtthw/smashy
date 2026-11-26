@@ -884,4 +884,240 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "絶空が優秀です。",
   "Struggles against projectiles.":
     "飛び道具に苦戦します。",
+  "October 2014 for Project M, the mod P+ is built on":
+    "2014年10月、Project M（P+の元になったMod）向け",
+  "A heavy tank whose game is more defensive than offensive, with offense mixed in. The guide's core habit is to shield an attack and answer with his up special, while warning that it becomes predictable. It says he is destructive when used properly, and that he should be kept fast with wavedashing, L-cancelling and dash dancing.":
+    "攻めよりも守りが中心で、そこに攻めを混ぜる重量級のタンクです。ガイドが基本の習慣としているのは、攻撃をシールドして上必殺ワザで返すことですが、それが読まれやすくなるとも注意しています。正しく使えば破壊的なキャラで、絶空、着地キャンセル、ステステですばやく動かし続けるべきだとしています。",
+  "His main defensive answer: shield, then up special.":
+    "守りの主な返し方は、シールドしてから上必殺ワザです。",
+  "A small flamethrower, used now and then as unexpected defense.":
+    "小さな火炎放射で、意表を突く守りとしてときどき使います。",
+  "Power and speed that earlier versions of Bowser lacked.":
+    "以前のバージョンのクッパにはなかったパワーとスピードがあります。",
+  "A long list of useful, powerful moves.":
+    "役に立つ強力なワザがたくさんあります。",
+  "His shield-then-up-special habit is easy to predict.":
+    "シールドから上必殺ワザという習慣は読まれやすいです。",
+  "October 2015 for Project M, the mod P+ is built on":
+    "2015年10月、Project M（P+の元になったMod）向け",
+  "A heavy character with strong throws and KO power. The guide builds his game on grabs: back throw into another grab to rack up damage, down throw to set up a read, up throw to KO. Being heavy lets him survive to high percent while his power takes stocks early.":
+    "投げと撃墜力が強い重量級キャラです。ガイドはつかみを軸に戦い方を組み立てています。後ろ投げからもう一度つかんでダメージを稼ぎ、下投げで読みの状況を作り、上投げで撃墜します。重いので高％まで生き残れ、パワーがあるので早くストックを奪えます。",
+  "Back throw chains into another grab, forward throw can KO or lead to a dash attack or up smash, down throw sets up a smash attack on a read, and up throw is his best throw for KOs.":
+    "後ろ投げはもう一度のつかみにつながり、前投げは撃墜できるほか、ダッシュ攻撃や上スマッシュにつながります。下投げは読みでスマッシュ攻撃を当てる状況を作り、上投げは撃墜に最も向いた投げです。",
+  "His best KO move by far, with a lot of end lag: the guide suggests it after a down throw or on a broken shield.":
+    "断然いちばんの撃墜ワザですが、後隙が大きいです。ガイドは、下投げのあとやシールドが割れた相手に使うことをすすめています。",
+  "Back air is his best tool for it, with forward air, down air and neutral air also used.":
+    "空後がそのための最も良いワザで、空前、空下、空Nも使います。",
+  "Heavy, so he survives at high percent.":
+    "重いので、高％でも生き残ります。",
+  "KO power that takes stocks early.":
+    "早くストックを奪える撃墜力があります。",
+  "A strong grab game.":
+    "つかみからの展開が強いです。",
+  "His strongest move has a lot of end lag.":
+    "最も強いワザは後隙が大きいです。",
+  "The guide's number one rule for Donkey Kong is grabbing: without grabs, it says, he probably isn't winning. He has a huge grab range and is fast, so he spaces around it and mixes up how he goes for it. Once he has the grab, the forward throw puts the opponent on his back and he chooses the follow-up from there. Under pressure, the advice is to get out and reset.":
+    "ガイドがドンキーコングの第一のルールとしているのは、つかむことです。つかみがなければ、おそらく勝てていないとしています。つかみの範囲が巨大で動きも速いので、それを軸に間合いを取り、つかみの狙い方に変化をつけます。つかんだら、前投げで相手を背中に担ぎ、そこから追撃を選びます。圧力をかけられたときは、抜け出して仕切り直すようすすめています。",
+  "Forward throw lifts the opponent onto his back so he can carry them, then throw them up into up airs or forward into neutral or forward airs.":
+    "前投げは相手を背中に担ぎ上げて運べます。そこから上に投げて空上に、または前に投げて空Nや空前につなげます。",
+  "Pressing jump and then grab while running gives him a standing grab with running momentum; the guide calls this the first thing to learn.":
+    "走りながらジャンプ、続けてつかみを押すと、走りの勢いを保ったまま立ちつかみが出せます。ガイドは、これを最初に覚えることだとしています。",
+  "His best spacing move because of how far it reaches.":
+    "遠くまで届くので、間合い管理に最も適したワザです。",
+  "A huge grab range, and many options from a grab.":
+    "つかみの範囲が巨大で、つかみからの選択肢も多いです。",
+  "Fast, with the size to space well.":
+    "速く、体の大きさを活かしてうまく間合いを取れます。",
+  "One of the best horizontal recoveries, which lets him edgeguard offstage.":
+    "横方向の復帰は最高クラスで、ステージの外まで復帰阻止に行けます。",
+  "Huge, so he is a big combo target.":
+    "体が巨大なので、コンボの大きな的になります。",
+  "Doesn't deal well with pressure.":
+    "圧力をかけられるのが苦手です。",
+  "Grabbing the ledge precisely with his recovery is hard.":
+    "復帰で崖を正確につかむのが難しいです。",
+  "November 2014 for Project M, the mod P+ is built on":
+    "2014年11月、Project M（P+の元になったMod）向け",
+  "The guide calls him underrated, with aerials and a very versatile ground game. It teaches three things: pressure, with short-hop neutral specials and repeated back airs; a ground game of tilts and smash attacks that takes stocks quickly once his movement is under control; and a recovery it describes as insane.":
+    "ガイドは、空中攻撃ととても多彩な地上戦を持つ、過小評価されているキャラだとしています。教えているのは3つです。小ジャンプ通常必殺ワザと空後の繰り返しによる圧力、動きを使いこなせばすばやくストックを奪える強攻撃とスマッシュ攻撃の地上戦、そしてガイドがとんでもないと表現する復帰です。",
+  "Short hop, mash the button, repeat: food flies everywhere and makes the opponent back off.":
+    "小ジャンプして、ボタンを連打して、繰り返します。食べ物があちこちに飛び、相手を下がらせます。",
+  "Ridiculous vertical reach, and he can use his bucket in the air to gain horizontal distance.":
+    "縦方向にとんでもなく伸び、空中でバケツを使って横方向の距離を稼ぐこともできます。",
+  "He is small and turns back and forth faster than most, which the guide uses to bait.":
+    "体が小さく、ほとんどのキャラより速く左右に振り向けます。ガイドはこれを相手を誘うのに使っています。",
+  "Strong pressure with neutral special and back air.":
+    "通常必殺ワザと空後による圧力が強いです。",
+  "A versatile ground game that takes stocks quickly.":
+    "多彩な地上戦で、すばやくストックを奪えます。",
+  "An excellent recovery.":
+    "復帰が優秀です。",
+  "September 2015 for Project M, the mod P+ is built on":
+    "2015年9月、Project M（P+の元になったMod）向け",
+  "The guide calls Ike one of the most unique characters: Marth's range and disjoint, Ganondorf's power and sluggishness, and Captain Falcon's free-form combos and grab game. He is slow on the ground, floaty and medium weight, which makes him easy to combo, and covers for it with a very large sword and by jumping out of his side special. His goal is to keep the opponent at mid range, just outside their reach and well inside his.":
+    "ガイドはアイクを最も個性的なキャラのひとりとしています。マルスのリーチと武器判定、ガノンドロフのパワーと鈍重さ、キャプテン・ファルコンの自由度の高いコンボとつかみからの展開を併せ持ちます。地上では遅く、ふわふわしていて中量級なのでコンボを受けやすいですが、とても大きな剣と、横必殺ワザをジャンプでキャンセルすることでそれを補います。目標は、相手を中距離、つまり相手のリーチのすぐ外で、自分のリーチには十分入る位置に置き続けることです。",
+  "A dash he can jump out of. It is how he moves quickly and how he follows up his hits.":
+    "ジャンプでキャンセルできる突進です。すばやく動く手段であり、攻撃を当てたあとの追撃の手段でもあります。",
+  "His main recovery when coming from low; he can steer forward or back while spinning to land on the ledge or the stage.":
+    "低い位置から戻るときの主な復帰ワザです。回転中に前後へ動かして、崖やステージに着地できます。",
+  "Different parts of his arms and sword have different effects, so where a move connects changes what it does.":
+    "腕と剣の部位によって効果が違うので、ワザがどこで当たるかによって結果が変わります。",
+  "An extremely large disjointed sword.":
+    "非常に大きな武器判定の剣があります。",
+  "Power.":
+    "パワーがあります。",
+  "Free-form combos and a strong grab game.":
+    "自由度の高いコンボと、強いつかみからの展開があります。",
+  "Quite susceptible to combos.":
+    "かなりコンボを受けやすいです。",
+  "Awkward to play at first.":
+    "最初は扱いにくいです。",
+  "December 2014 for Project M, the mod P+ is built on":
+    "2014年12月、Project M（P+の元になったMod）向け",
+  "The guide's word for him is passive-aggressive: keep the pressure on, but know when to step back and keep distance. Compared with Brawl he gave up some defense for offense and mobility, and relies more on getting in and racking up damage. He is extremely powerful, a threat at long and close range, but a very big target who has trouble approaching faster characters and those who can zone him out.":
+    "ガイドがこのキャラを表す言葉は、パッシブ・アグレッシブです。圧力をかけ続けつつ、引いて距離を保つべきときを見極めます。スマブラXと比べると、守りの一部と引き換えに攻めと機動力を得ていて、攻め込んでダメージを稼ぐことにより頼るようになりました。非常に強力で、遠距離でも近距離でも脅威ですが、とても大きな的で、自分より速いキャラや、牽制で寄せつけないキャラには近づくのに苦労します。",
+  "Among his best moves. Forward air has an enormous disjointed hitbox with power and speed, and is a deadly edgeguarding tool.":
+    "最高クラスのワザです。空前は巨大な武器判定の攻撃判定にパワーとスピードを備え、復帰阻止の恐ろしい手段です。",
+  "The guide calls it his anti-approach option: its suction can stop some moves that rush at him.":
+    "ガイドは接近への対抗手段としています。吸い込む力で、突進してくるワザの一部を止められます。",
+  "A recovery that rises a tremendous distance very quickly.":
+    "とてつもない距離をとてもすばやく上昇する復帰です。",
+  "Some of the most powerful smash attacks.":
+    "最も強力な部類のスマッシュ攻撃があります。",
+  "Very disjointed moves, dangerous at long and close range.":
+    "武器判定の強いワザがそろい、遠距離でも近距離でも危険です。",
+  "More mobility than he had in Brawl.":
+    "スマブラXのときより機動力があります。",
+  "A very big target.":
+    "とても大きな的です。",
+  "Has trouble approaching characters who are faster than him or can zone him out.":
+    "自分より速いキャラや、牽制で寄せつけないキャラには近づくのに苦労します。",
+  "February 2015 for Project M, the mod P+ is built on":
+    "2015年2月、Project M（P+の元になったMod）向け",
+  "A fast-paced, burst-momentum character whose approach is based on creating and exploiting openings in the opponent's defense. The guide compares his playstyle to Falco's and Sheik's. He has a strong dash dance for baiting, a short range and a very strong punish game, so the guide stresses spacing in neutral above all and never playing on autopilot.":
+    "テンポが速く、瞬間的な勢いで動くキャラです。相手の守りに隙を作り、そこを突くことが攻めの基本です。ガイドはプレイスタイルをファルコやシークにたとえています。相手を誘う強いステステ、短いリーチ、とても強い反撃の展開を持つので、ガイドは何よりも立ち回りでの間合い管理を重視し、決して惰性でプレイしないよう強調しています。",
+  "A nickname he earned for resembling Fox, Falco and Wolf in pressure, combos and neutral. The guide notes that later nerfs made people question it.":
+    "圧力、コンボ、立ち回りがフォックス、ファルコ、ウルフに似ていることからついたあだ名です。ガイドは、のちの弱体化でこの呼び名が疑問視されるようになったと書いています。",
+  "Looks like a good option all the time, but its startup and end lag mean it can be punished.":
+    "いつでも良い選択肢に見えますが、発生と後隙があるので反撃されることがあります。",
+  "The guide says to jump-cancel or pivot every grab rather than dash grab.":
+    "ガイドは、ダッシュつかみではなく、すべてのつかみをジャンプキャンセルかピボット（反転）で出すよう述べています。",
+  "A strong dash dance game for baiting.":
+    "相手を誘うステステが強いです。",
+  "A very strong punish game.":
+    "反撃の展開がとても強いです。",
+  "Fast, with bursts of momentum.":
+    "速く、瞬間的な勢いがあります。",
+  "Short range.":
+    "リーチが短いです。",
+  "Light.":
+    "軽いです。",
+  "A first draft by one author, who calls it probably opinionated. It describes a fast character with very quick attacks, deceptively long reach on his sword, versatile combos and mix-ups, and one of the best edgeguarding games. His forward tilt and down tilt are his spacing and combo tools.":
+    "1人の著者による最初の草稿で、本人はおそらく主観が入っているとしています。攻撃がとても速く、剣のリーチが見た目以上に長く、多彩なコンボと揺さぶりがあり、復帰阻止は最高クラスという、すばやいキャラとして描かれています。横強と下強が間合い管理とコンボのためのワザです。",
+  "Three hits whose timing he controls; used for combos, spacing and sometimes shield pressure.":
+    "タイミングを自分で決められる3段攻撃です。コンボ、間合い管理、ときにはシールドへの圧力に使います。",
+  "Pops opponents up for combos at close range and pushes them back at the tip; one of his best spacing moves, and good for edgeguarding from the stage.":
+    "近距離では相手を浮かせてコンボにつなげ、先端では相手を押し返します。間合い管理に最も適したワザのひとつで、ステージ上からの復帰阻止にも向いています。",
+  "Deceptively fast with a massive hitbox, for hard reads and punishing recoveries.":
+    "見た目以上に速く、攻撃判定が巨大です。強い読みや、復帰への反撃に使います。",
+  "One of the best edgeguarders.":
+    "復帰阻止が最も得意なキャラのひとりです。",
+  "Deceptively great range on a disjointed sword.":
+    "武器判定の剣は、見た目以上にリーチが優秀です。",
+  "Versatile combos and mix-ups.":
+    "多彩なコンボと揺さぶりがあります。",
+  "Very fast attacks and run speed.":
+    "攻撃も走る速さもとても速いです。",
+  "An unpredictable recovery that covers a lot of horizontal distance.":
+    "読まれにくく、横方向に長い距離を進める復帰があります。",
+  "Very fragile: one of the lightest characters, with a fast fall speed and a slow tech roll.":
+    "とても打たれ弱いです。最も軽いキャラのひとりで、落下が速く、転がり受け身が遅いです。",
+  "A relatively bad vertical recovery.":
+    "縦方向の復帰は比較的弱いです。",
+  "January 2015 for Project M, the mod P+ is built on":
+    "2015年1月、Project M（P+の元になったMod）向け",
+  "Not an aggressive character all the time. The guide says Mewtwo must be played defensively to find an opening or make the opponent approach, then turn aggressive once he is in or has found a weakness in their approach.":
+    "常に攻撃的なキャラではありません。ガイドによると、ミュウツーは守りながら戦って隙を見つけるか相手に近づかせ、懐に入ったとき、または相手の接近に弱点を見つけたときに攻めへ切り替える必要があります。",
+  "With his high jumps it gives him a recovery the guide calls broken: quick, hard to read and easy to land on the ledge with. He can still be read and punished.":
+    "高いジャンプと合わせると、ガイドが壊れていると呼ぶ復帰になります。速く、読まれにくく、崖に着きやすいです。それでも読まれて反撃されることはあります。",
+  "Gives him his mid range.":
+    "これで中距離を戦えます。",
+  "Rated amazing, with a chain grab on heavy characters at low percent.":
+    "すばらしいと評価されていて、重いキャラには低％で投げ連が入ります。",
+  "A very high jump and an amazing aerial game.":
+    "とても高いジャンプと、すばらしい空中戦があります。",
+  "Unmatched edgeguarding.":
+    "復帰阻止は並ぶものがありません。",
+  "An extremely strong recovery.":
+    "復帰が非常に強いです。",
+  "Very floaty.":
+    "とてもふわふわしています。",
+  "Only okay approach options and ground game.":
+    "接近手段と地上戦はまずまず程度です。",
+  "Has to charge his projectile for it to be effective.":
+    "飛び道具はためないと効果的になりません。",
+  "October 2014, updated January 2016 for Project M, the mod P+ is built on":
+    "2014年10月、2016年1月に更新、Project M（P+の元になったMod）向け",
+  "An aggressive character who has to get close. His real strength is the sweetspot on the middle and hilt of his blade, so although his range lets him control space, he needs to be in the opponent's face to hurt them. His movement is only average, so the guide's game plan is to advance steadily and carefully with dash dancing, crouch cancelling and long-reaching attacks, pin the opponent down, and set up down tilts and grabs. It says Smash fundamentals are the pillars that hold Roy up.":
+    "近づかなければならない攻撃的なキャラです。本当の強みは剣の中ほどと根元にあるスイートスポットなので、リーチで空間を支配できるものの、ダメージを与えるには相手の目の前まで寄る必要があります。動きは平均的でしかないため、ガイドのゲームプランは、ステステ、しゃがみキャンセル、リーチの長い攻撃で着実かつ慎重に前進し、相手を追い詰めて、下強とつかみの状況を作ることです。スマブラの基礎こそがロイを支える柱だとしています。",
+  "The middle and hilt of his sword hit hardest, the opposite of Marth's tip.":
+    "剣の中ほどと根元が最も強く当たり、先端が強いマルスとは逆です。",
+  "The guide calls his crouch cancel game great, and at the same time one of his biggest weaknesses.":
+    "ガイドは、しゃがみキャンセルからの展開がすばらしいと同時に、最大の弱点のひとつでもあるとしています。",
+  "What his careful advance is meant to set up.":
+    "慎重な前進は、これを狙うためのものです。",
+  "Range to control space.":
+    "空間を支配できるリーチがあります。",
+  "A great dash dance.":
+    "ステステが優秀です。",
+  "Strong KO options.":
+    "強い撃墜手段があります。",
+  "Potentially great combos.":
+    "コンボはすばらしいものになる可能性があります。",
+  "Has to get in fairly close for his better rewards.":
+    "より大きなリターンを得るには、かなり近づく必要があります。",
+  "Middling overall movement speed.":
+    "全体的な移動の速さは並です。",
+  "His combos often need a read on the opponent's DI.":
+    "コンボには、相手のベクトル変更の読みが必要なことが多いです。",
+  "Fairly easy to KO.":
+    "かなり撃墜されやすいです。",
+  "April 2015 for Project M, the mod P+ is built on":
+    "2015年4月、Project M（P+の元になったMod）向け",
+  "An unfinished guide whose author says they stopped because they weren't yet skilled enough. It describes Wolf as versatile and well rounded, overall an aggressive character because of his long combo game, and a glass cannon: he hits extremely hard and can have the same done to him. His Blaster is one of his main tools in neutral for opening the opponent up.":
+    "未完成のガイドで、著者はまだ十分な実力がなかったので書くのをやめたと述べています。ウルフを、多彩でバランスのとれたキャラ、長いコンボがあるため全体としては攻撃的なキャラ、そして火力は高いが打たれ弱いキャラとして描いています。非常に重い攻撃を当てられますが、同じことを自分もされます。ブラスターは、立ち回りで相手を崩すための主力のひとつです。",
+  "A main neutral tool the guide says most Wolf players underuse. He can waveland out of it, which lets him keep pressure on behind a projectile.":
+    "立ち回りの主力ですが、ガイドによると、ほとんどのウルフ使いは十分に使えていません。ここから着地絶空（ウェーブランド）に移れるので、飛び道具の後ろから圧力をかけ続けられます。",
+  "The guide says he can start one from almost anything and extend the punish a long way.":
+    "ガイドによると、ほぼどんな攻撃からでも始められ、反撃を長く伸ばせます。",
+  "Long range for punishing laggy moves, with less knockback than people expect.":
+    "リーチが長く、隙の大きいワザへの反撃に使えますが、ふっとばしは思われているより弱いです。",
+  "A long, flexible combo game.":
+    "長くて自由のきくコンボがあります。",
+  "Well rounded, with a good spread of matchups.":
+    "バランスがとれていて、キャラ相性も全体的に良好です。",
+  "A projectile he can move out of.":
+    "撃ったあとすぐ動ける飛び道具があります。",
+  "A glass cannon: he takes as much as he gives.":
+    "火力は高いが打たれ弱いキャラです。与えるのと同じだけ受けます。",
+  "Has a rough time if his spacing and movement aren't on point.":
+    "間合い管理と動きが正確でないと苦しくなります。",
+  "Not an aggressive character. The guide says Zelda mostly takes her time and waits for the opponent to make a wrong move: she isn't very good at approaching, but has a great long-range game, using Din's Fire as a wall that is hard to break through. When the opponent slips, she has plenty of ways to combo or finish the stock.":
+    "攻撃的なキャラではありません。ガイドによると、ゼルダは基本的にじっくり構えて、相手が間違った動きをするのを待ちます。接近はあまり得意ではありませんが、遠距離戦がすばらしく、ディンの炎を突破しにくい壁として使います。相手がミスをすれば、コンボやストックを奪う手段は豊富にあります。",
+  "Her wall: it keeps opponents out at long range.":
+    "ゼルダの壁です。遠距離で相手を寄せつけません。",
+  "Her forward and back airs. The guide calls it pretty much her best move, able to KO heavy characters early when it lands cleanly.":
+    "空前と空後です。ガイドはほぼ間違いなく最高のワザとしていて、きれいに当たれば重いキャラも早く撃墜できます。",
+  "A spinning crystal that also reflects projectiles, useful in combos and when retreating.":
+    "回転するクリスタルで、飛び道具も反射します。コンボや引くときに役立ちます。",
+  "A great long-range game.":
+    "遠距離戦がすばらしいです。",
+  "Powerful finishers.":
+    "強力な締めのワザがあります。",
+  "Many ways to punish a mistake.":
+    "相手のミスに反撃する手段が多いです。",
+  "Not very good at approaching.":
+    "接近はあまり得意ではありません。",
+  "Sitting in shield is not a safe option for her.":
+    "シールドを張り続けるのは、ゼルダにとって安全な選択肢ではありません。",
 };

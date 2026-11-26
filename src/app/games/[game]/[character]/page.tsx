@@ -20,7 +20,7 @@ import { CardListSkeleton } from "@/components/ui/Skeleton";
 import CharacterIcon from "@/components/CharacterIcon";
 import { characterDiscord } from "@/lib/characterDiscords";
 import { CHARACTER_COURSES, CHARACTER_LIBRARIES, cookbookUrl, FRAME_DATA_SOURCE, frameDataLinks, libraryType, LIBRARY_SECTIONS, type CommunityLink } from "@/lib/essentials";
-import { characterOverview, inLang } from "@/lib/characterOverviews";
+import { characterOverview, inLang, writtenIn } from "@/lib/characterOverviews";
 import { statLines } from "@/lib/characterStatLines";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
@@ -151,7 +151,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           </div>
           <p className="border-t border-line pt-3 text-meta text-muted">
             {t("media.char.ov.source", { title: overview.source.title, by: overview.source.by })}{" "}
-            {overview.source.written && <>{t("media.char.ov.written", { date: overview.source.written })}{" "}</>}
+            {overview.source.written && <>{t("media.char.ov.written", { date: writtenIn(overview.source.written, lang) })}{" "}</>}
             <a href={overview.source.url} target="_blank" rel="noopener noreferrer" className="link font-semibold">{t("media.char.ov.full")} ↗︎<NewTab /></a>
           </p>
         </section>

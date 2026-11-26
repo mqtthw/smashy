@@ -1444,7 +1444,364 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
   },
+  // Round 931: P+ pages. These guides were written for Project M (versions 3.5 and 3.6, 2014 to 2016), the mod
+  // Project+ is built on; P+ rebalanced many characters since. Matthew chose to show them labelled as such
+  // (2026-11-26), so each "written" says it is for Project M, and the overviews keep to how the character
+  // is meant to be played and leave out percentages and frame numbers.
+  pplus: {
+    bowser: {
+      source: { title: "PM Bowser's Broken", url: "https://smashboards.com/guides/pm-bowsers-broken-a-guide-to-well-pm-bowser.16/", by: "WinterShorts (Smashboards)", written: "October 2014 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "A heavy tank whose game is more defensive than offensive, with offense mixed in. The guide's core habit is to shield an attack and answer with his up special, while warning that it becomes predictable. It says he is destructive when used properly, and that he should be kept fast with wavedashing, L-cancelling and dash dancing.",
+      },
+      traits: [
+        {
+          name: "Up special out of shield",
+          text: { en: "His main defensive answer: shield, then up special." },
+        },
+        {
+          name: "Fire Breath",
+          text: { en: "A small flamethrower, used now and then as unexpected defense." },
+        },
+      ],
+      strengths: [
+        { en: "Power and speed that earlier versions of Bowser lacked." },
+        { en: "A long list of useful, powerful moves." },
+      ],
+      weaknesses: [
+        { en: "His shield-then-up-special habit is easy to predict." },
+      ],
+    },
+    charizard: {
+      source: { title: "The Firey Dragon", url: "https://smashboards.com/guides/the-firey-dragon.664/", by: "ShadowKing (Smashboards)", written: "October 2015 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "A heavy character with strong throws and KO power. The guide builds his game on grabs: back throw into another grab to rack up damage, down throw to set up a read, up throw to KO. Being heavy lets him survive to high percent while his power takes stocks early.",
+      },
+      traits: [
+        {
+          name: "Throws",
+          text: { en: "Back throw chains into another grab, forward throw can KO or lead to a dash attack or up smash, down throw sets up a smash attack on a read, and up throw is his best throw for KOs." },
+        },
+        {
+          name: "Forward smash",
+          text: { en: "His best KO move by far, with a lot of end lag: the guide suggests it after a down throw or on a broken shield." },
+        },
+        {
+          name: "Edgeguarding",
+          text: { en: "Back air is his best tool for it, with forward air, down air and neutral air also used." },
+        },
+      ],
+      strengths: [
+        { en: "Heavy, so he survives at high percent." },
+        { en: "KO power that takes stocks early." },
+        { en: "A strong grab game." },
+      ],
+      weaknesses: [
+        { en: "His strongest move has a lot of end lag." },
+      ],
+    },
+    "donkey-kong": {
+      source: { title: "Basic DK", url: "https://smashboards.com/guides/basic-dk.33/", by: "Jake The Preacher (Smashboards)", written: "October 2014 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "The guide's number one rule for Donkey Kong is grabbing: without grabs, it says, he probably isn't winning. He has a huge grab range and is fast, so he spaces around it and mixes up how he goes for it. Once he has the grab, the forward throw puts the opponent on his back and he chooses the follow-up from there. Under pressure, the advice is to get out and reset.",
+      },
+      traits: [
+        {
+          name: "Cargo throw",
+          text: { en: "Forward throw lifts the opponent onto his back so he can carry them, then throw them up into up airs or forward into neutral or forward airs." },
+        },
+        {
+          name: "Jump-cancelled grab",
+          text: { en: "Pressing jump and then grab while running gives him a standing grab with running momentum; the guide calls this the first thing to learn." },
+        },
+        {
+          name: "Back air",
+          text: { en: "His best spacing move because of how far it reaches." },
+        },
+      ],
+      strengths: [
+        { en: "A huge grab range, and many options from a grab." },
+        { en: "Fast, with the size to space well." },
+        { en: "One of the best horizontal recoveries, which lets him edgeguard offstage." },
+      ],
+      weaknesses: [
+        { en: "Huge, so he is a big combo target." },
+        { en: "Doesn't deal well with pressure." },
+        { en: "Grabbing the ledge precisely with his recovery is hard." },
+      ],
+    },
+    "mr-game-and-watch": {
+      source: { title: "Rockin it in 2D", url: "https://smashboards.com/guides/rockin-it-in-2d.73/", by: "CamGAM3S (Smashboards)", written: "November 2014 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "The guide calls him underrated, with aerials and a very versatile ground game. It teaches three things: pressure, with short-hop neutral specials and repeated back airs; a ground game of tilts and smash attacks that takes stocks quickly once his movement is under control; and a recovery it describes as insane.",
+      },
+      traits: [
+        {
+          name: "Chef (neutral special)",
+          text: { en: "Short hop, mash the button, repeat: food flies everywhere and makes the opponent back off." },
+        },
+        {
+          name: "Recovery",
+          text: { en: "Ridiculous vertical reach, and he can use his bucket in the air to gain horizontal distance." },
+        },
+        {
+          name: "Dash dance",
+          text: { en: "He is small and turns back and forth faster than most, which the guide uses to bait." },
+        },
+      ],
+      strengths: [
+        { en: "Strong pressure with neutral special and back air." },
+        { en: "A versatile ground game that takes stocks quickly." },
+        { en: "An excellent recovery." },
+      ],
+      weaknesses: [],
+    },
+    ike: {
+      source: { title: "Berserk: A Guide to Nintendo's Guts", url: "https://smashboards.com/guides/berserk.635/", by: "NWRL (Smashboards)", written: "September 2015 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "The guide calls Ike one of the most unique characters: Marth's range and disjoint, Ganondorf's power and sluggishness, and Captain Falcon's free-form combos and grab game. He is slow on the ground, floaty and medium weight, which makes him easy to combo, and covers for it with a very large sword and by jumping out of his side special. His goal is to keep the opponent at mid range, just outside their reach and well inside his.",
+      },
+      traits: [
+        {
+          name: "Quick Draw (side special)",
+          text: { en: "A dash he can jump out of. It is how he moves quickly and how he follows up his hits." },
+        },
+        {
+          name: "Aether (up special)",
+          text: { en: "His main recovery when coming from low; he can steer forward or back while spinning to land on the ledge or the stage." },
+        },
+        {
+          name: "Varied hits on one sword",
+          text: { en: "Different parts of his arms and sword have different effects, so where a move connects changes what it does." },
+        },
+      ],
+      strengths: [
+        { en: "An extremely large disjointed sword." },
+        { en: "Power." },
+        { en: "Free-form combos and a strong grab game." },
+      ],
+      weaknesses: [
+        { en: "Slow on the ground." },
+        { en: "Quite susceptible to combos." },
+        { en: "Awkward to play at first." },
+      ],
+    },
+    "king-dedede": {
+      source: { title: "A Beginners Guide to King Dedede", url: "https://smashboards.com/guides/a-beginners-guide-to-king-dedede.109/", by: "Ridel (Smashboards)", written: "December 2014 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "The guide's word for him is passive-aggressive: keep the pressure on, but know when to step back and keep distance. Compared with Brawl he gave up some defense for offense and mobility, and relies more on getting in and racking up damage. He is extremely powerful, a threat at long and close range, but a very big target who has trouble approaching faster characters and those who can zone him out.",
+      },
+      traits: [
+        {
+          name: "Aerials",
+          text: { en: "Among his best moves. Forward air has an enormous disjointed hitbox with power and speed, and is a deadly edgeguarding tool." },
+        },
+        {
+          name: "Inhale",
+          text: { en: "The guide calls it his anti-approach option: its suction can stop some moves that rush at him." },
+        },
+        {
+          name: "Super Dedede Jump (up special)",
+          text: { en: "A recovery that rises a tremendous distance very quickly." },
+        },
+      ],
+      strengths: [
+        { en: "Some of the most powerful smash attacks." },
+        { en: "Very disjointed moves, dangerous at long and close range." },
+        { en: "More mobility than he had in Brawl." },
+      ],
+      weaknesses: [
+        { en: "A very big target." },
+        { en: "Has trouble approaching characters who are faster than him or can zone him out." },
+      ],
+    },
+    lucas: {
+      source: { title: "Lightning Fast: A Project M Lucas Guide", url: "https://smashboards.com/guides/lightning-fast-a-project-m-lucas-guide-wip.270/", by: "D e l t a (Smashboards)", written: "February 2015 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "A fast-paced, burst-momentum character whose approach is based on creating and exploiting openings in the opponent's defense. The guide compares his playstyle to Falco's and Sheik's. He has a strong dash dance for baiting, a short range and a very strong punish game, so the guide stresses spacing in neutral above all and never playing on autopilot.",
+      },
+      traits: [
+        {
+          name: "“The 4th spacie”",
+          text: { en: "A nickname he earned for resembling Fox, Falco and Wolf in pressure, combos and neutral. The guide notes that later nerfs made people question it." },
+        },
+        {
+          name: "PK Fire",
+          text: { en: "Looks like a good option all the time, but its startup and end lag mean it can be punished." },
+        },
+        {
+          name: "Grabs",
+          text: { en: "The guide says to jump-cancel or pivot every grab rather than dash grab." },
+        },
+      ],
+      strengths: [
+        { en: "A strong dash dance game for baiting." },
+        { en: "A very strong punish game." },
+        { en: "Fast, with bursts of momentum." },
+      ],
+      weaknesses: [
+        { en: "Short range." },
+        { en: "Light." },
+      ],
+    },
+    "meta-knight": {
+      source: { title: "The Ultimate Meta Knight Collaborative Guide", url: "https://smashboards.com/guides/the-ultimate-meta-knight-collaboratve-guide-wip.121/", by: "leekslap (Smashboards)", written: "December 2014 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "A first draft by one author, who calls it probably opinionated. It describes a fast character with very quick attacks, deceptively long reach on his sword, versatile combos and mix-ups, and one of the best edgeguarding games. His forward tilt and down tilt are his spacing and combo tools.",
+      },
+      traits: [
+        {
+          name: "Forward tilt",
+          text: { en: "Three hits whose timing he controls; used for combos, spacing and sometimes shield pressure." },
+        },
+        {
+          name: "Down tilt",
+          text: { en: "Pops opponents up for combos at close range and pushes them back at the tip; one of his best spacing moves, and good for edgeguarding from the stage." },
+        },
+        {
+          name: "Forward smash",
+          text: { en: "Deceptively fast with a massive hitbox, for hard reads and punishing recoveries." },
+        },
+      ],
+      strengths: [
+        { en: "One of the best edgeguarders." },
+        { en: "Deceptively great range on a disjointed sword." },
+        { en: "Versatile combos and mix-ups." },
+        { en: "Very fast attacks and run speed." },
+        { en: "An unpredictable recovery that covers a lot of horizontal distance." },
+      ],
+      weaknesses: [
+        { en: "Very fragile: one of the lightest characters, with a fast fall speed and a slow tech roll." },
+        { en: "A relatively bad vertical recovery." },
+      ],
+    },
+    mewtwo: {
+      source: { title: "Guide for Mewtwo (3.5)", url: "https://smashboards.com/guides/guide-for-mewtwo-3-5.163/", by: "MysticSkarps (Smashboards)", written: "January 2015 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "Not an aggressive character all the time. The guide says Mewtwo must be played defensively to find an opening or make the opponent approach, then turn aggressive once he is in or has found a weakness in their approach.",
+      },
+      traits: [
+        {
+          name: "Teleport",
+          text: { en: "With his high jumps it gives him a recovery the guide calls broken: quick, hard to read and easy to land on the ledge with. He can still be read and punished." },
+        },
+        {
+          name: "Tail",
+          text: { en: "Gives him his mid range." },
+        },
+        {
+          name: "Grab game",
+          text: { en: "Rated amazing, with a chain grab on heavy characters at low percent." },
+        },
+      ],
+      strengths: [
+        { en: "A very high jump and an amazing aerial game." },
+        { en: "Unmatched edgeguarding." },
+        { en: "An extremely strong recovery." },
+      ],
+      weaknesses: [
+        { en: "Very floaty." },
+        { en: "Only okay approach options and ground game." },
+        { en: "Has to charge his projectile for it to be effective." },
+      ],
+    },
+    roy: {
+      source: { title: "Playing with Ph1r3 - Gold Version", url: "https://smashboards.com/guides/playing-with-ph1r3-gold-version.62/", by: "Sethlon (Smashboards)", written: "October 2014, updated January 2016 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "An aggressive character who has to get close. His real strength is the sweetspot on the middle and hilt of his blade, so although his range lets him control space, he needs to be in the opponent's face to hurt them. His movement is only average, so the guide's game plan is to advance steadily and carefully with dash dancing, crouch cancelling and long-reaching attacks, pin the opponent down, and set up down tilts and grabs. It says Smash fundamentals are the pillars that hold Roy up.",
+      },
+      traits: [
+        {
+          name: "Sweetspot",
+          text: { en: "The middle and hilt of his sword hit hardest, the opposite of Marth's tip." },
+        },
+        {
+          name: "Crouch cancel",
+          text: { en: "The guide calls his crouch cancel game great, and at the same time one of his biggest weaknesses." },
+        },
+        {
+          name: "Down tilt and grab",
+          text: { en: "What his careful advance is meant to set up." },
+        },
+      ],
+      strengths: [
+        { en: "Range to control space." },
+        { en: "A great dash dance." },
+        { en: "Strong KO options." },
+        { en: "Potentially great combos." },
+      ],
+      weaknesses: [
+        { en: "Has to get in fairly close for his better rewards." },
+        { en: "Middling overall movement speed." },
+        { en: "His combos often need a read on the opponent's DI." },
+        { en: "Fairly easy to KO." },
+      ],
+    },
+    wolf: {
+      source: { title: "A Wolf Guide: ‘Beep is your Destiny’ (unfinished)", url: "https://smashboards.com/guides/a-wolf-guide-%E2%80%98beep-is-your-destiny%E2%80%99-unfinished.339/", by: "TimeMuffinPhD (Smashboards)", written: "April 2015 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "An unfinished guide whose author says they stopped because they weren't yet skilled enough. It describes Wolf as versatile and well rounded, overall an aggressive character because of his long combo game, and a glass cannon: he hits extremely hard and can have the same done to him. His Blaster is one of his main tools in neutral for opening the opponent up.",
+      },
+      traits: [
+        {
+          name: "Blaster",
+          text: { en: "A main neutral tool the guide says most Wolf players underuse. He can waveland out of it, which lets him keep pressure on behind a projectile." },
+        },
+        {
+          name: "Combos",
+          text: { en: "The guide says he can start one from almost anything and extend the punish a long way." },
+        },
+        {
+          name: "Forward smash",
+          text: { en: "Long range for punishing laggy moves, with less knockback than people expect." },
+        },
+      ],
+      strengths: [
+        { en: "A long, flexible combo game." },
+        { en: "Well rounded, with a good spread of matchups." },
+        { en: "A projectile he can move out of." },
+      ],
+      weaknesses: [
+        { en: "A glass cannon: he takes as much as he gives." },
+        { en: "Has a rough time if his spacing and movement aren't on point." },
+      ],
+    },
+    zelda: {
+      source: { title: "A Guide To The Powerful Princess Zelda", url: "https://smashboards.com/guides/a-guide-to-the-powerful-princess-zelda-3-5-updated.69/", by: "Captain Zack (Smashboards)", written: "November 2014 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "Not an aggressive character. The guide says Zelda mostly takes her time and waits for the opponent to make a wrong move: she isn't very good at approaching, but has a great long-range game, using Din's Fire as a wall that is hard to break through. When the opponent slips, she has plenty of ways to combo or finish the stock.",
+      },
+      traits: [
+        {
+          name: "Din's Fire",
+          text: { en: "Her wall: it keeps opponents out at long range." },
+        },
+        {
+          name: "Lightning Kick",
+          text: { en: "Her forward and back airs. The guide calls it pretty much her best move, able to KO heavy characters early when it lands cleanly." },
+        },
+        {
+          name: "Nayru's Love",
+          text: { en: "A spinning crystal that also reflects projectiles, useful in combos and when retreating." },
+        },
+      ],
+      strengths: [
+        { en: "A great long-range game." },
+        { en: "Powerful finishers." },
+        { en: "Many ways to punish a mistake." },
+      ],
+      weaknesses: [
+        { en: "Not very good at approaching." },
+        { en: "Sitting in shield is not a safe option for her." },
+      ],
+    },
+  },
 };
+
+/** A guide's "written" date in the reader's language when the translation files have it, else as written. */
+export function writtenIn(written: string, lang: string): string {
+  return TRANSLATED[lang]?.[written] ?? written;
+}
 
 export function characterOverview(game: GameKey, character: string): CharacterOverview | null {
   return CHARACTER_OVERVIEWS[game]?.[character] ?? null;
