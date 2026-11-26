@@ -131,6 +131,8 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
               </p>
             )}
           </div>
+          {/* The short overviews made from a wiki page (round 938) have no traits list. */}
+          {overview.traits.length > 0 && (
           <div className="flex flex-col gap-2">
             <h3 className="text-sm font-bold">{t("media.char.ov.traits", { name })}</h3>
             <dl className="flex flex-col divide-y divide-line">
@@ -142,6 +144,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
               ))}
             </dl>
           </div>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             {/* A side the source says nothing about is left out, not filled in. */}
             {([["strengths", overview.strengths], ["weaknesses", overview.weaknesses]] as const).filter(([, list]) => list.length > 0).map(([kind, list]) => (

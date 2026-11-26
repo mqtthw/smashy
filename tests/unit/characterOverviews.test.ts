@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CHARACTER_OVERVIEWS, characterOverview, inLang } from "@/lib/characterOverviews";
-import { characterName } from "@/lib/characters";
+import { WIKI_OVERVIEWS } from "@/lib/characterOverviews.wiki";
+import { CHARACTERS, characterName } from "@/lib/characters";
 import type { GameKey } from "@/lib/games";
 import { OVERVIEW_NAMES, traitName } from "@/lib/overviewNames";
 import { OVERVIEW_TEXT as ES } from "@/lib/overviewText.es";
@@ -8,10 +9,12 @@ import { OVERVIEW_TEXT as FR } from "@/lib/overviewText.fr";
 import { OVERVIEW_TEXT as JA } from "@/lib/overviewText.ja";
 
 const FILES: Record<string, Record<string, string>> = { es: ES, fr: FR, ja: JA };
+// Both kinds: the ones from a community guide, and the short ones from SmashWiki that fill the gaps.
+const BOTH = [CHARACTER_OVERVIEWS, WIKI_OVERVIEWS];
 
 describe("character overviews", () => {
   it("every overview is for a real character and names a linked source and its authors", () => {
-    for (const [game, list] of Object.entries(CHARACTER_OVERVIEWS)) {
+    for (const all of BOTH) for (const [game, list] of Object.entries(all)) {
       for (const [character, o] of Object.entries(list ?? {})) {
         expect(characterName(game as GameKey, character), `${game}/${character}`).toBeTruthy();
         expect(o.source.url).toMatch(/^https:\/\//);
@@ -25,7 +28,7 @@ describe("character overviews", () => {
 
   it("every English line has a Spanish, French and Japanese translation", () => {
     const lines: { en: string; es?: string }[] = [];
-    for (const list of Object.values(CHARACTER_OVERVIEWS)) {
+    for (const all of BOTH) for (const list of Object.values(all)) {
       for (const o of Object.values(list ?? {})) lines.push(o.playstyle, ...o.traits.map((t) => t.text), ...o.strengths, ...o.weaknesses);
     }
     expect(lines.length).toBeGreaterThan(400);
@@ -34,6 +37,22 @@ describe("character overviews", () => {
       const missing = lines.filter((l) => !(lang in l) && !(l.en in FILES[lang])).map((l) => l.en.slice(0, 50));
       expect(missing, lang).toEqual([]);
     }
+  });
+
+  it("every character of every game has an overview, and SmashWiki's are credited with their licence", () => {
+    const missing: string[] = [];
+    for (const [game, list] of Object.entries(CHARACTERS)) {
+      for (const c of list) if (!characterOverview(game as GameKey, c.key)) missing.push(`${game}/${c.key}`);
+    }
+    expect(missing).toEqual([]);
+    for (const list of Object.values(WIKI_OVERVIEWS)) {
+      for (const o of Object.values(list ?? {})) {
+        expect(o.source.url).toMatch(/^https:\/\/www\.ssbwiki\.com\//);
+        expect(o.source.by).toContain("CC BY-SA 4.0");
+      }
+    }
+    // A community guide's overview wins over SmashWiki's.
+    expect(characterOverview("ultimate", "king-k-rool")?.source.url).not.toContain("ssbwiki");
   });
 
   it("trait headings: every translated heading is one that's in use, and a move's own name stays as it is", () => {

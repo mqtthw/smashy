@@ -11,6 +11,7 @@
 // Text is per language. King K. Rool's is written beside the English; the others' translations are in
 // overviewText.<lang>.ts, looked up by the English line. A line with no translation shows in English.
 import type { GameKey } from "./games";
+import { WIKI_OVERVIEWS } from "./characterOverviews.wiki";
 import { OVERVIEW_TEXT as OVERVIEW_ES } from "./overviewText.es";
 import { OVERVIEW_TEXT as OVERVIEW_FR } from "./overviewText.fr";
 import { OVERVIEW_TEXT as OVERVIEW_JA } from "./overviewText.ja";
@@ -1930,8 +1931,9 @@ export function writtenIn(written: string, lang: string): string {
   return TRANSLATED[lang]?.[written] ?? written;
 }
 
+/** A character's overview: the one from a community guide when there is one, else the short one from SmashWiki. */
 export function characterOverview(game: GameKey, character: string): CharacterOverview | null {
-  return CHARACTER_OVERVIEWS[game]?.[character] ?? null;
+  return CHARACTER_OVERVIEWS[game]?.[character] ?? WIKI_OVERVIEWS[game]?.[character] ?? null;
 }
 
 // Translations kept beside the English, one file per language, looked up by the English line (round 930).
