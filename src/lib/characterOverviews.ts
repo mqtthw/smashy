@@ -396,10 +396,9 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     // Round 922 batch: guides from Smashboards that Matthew copied out by hand (the site blocks automated
-    // readers). They date from the game's first months, so each shows when it was written. The copies came
-    // without their addresses, so the link goes to Smashboards' guides section until Matthew sends each one.
+    // readers). They date from the game's first months, so each shows when it was written.
     samus: {
-      source: { title: "Samus/Dark Samus Competitive Guide", url: "https://smashboards.com/guides/", by: "Dr. Jay (Smashboards)", written: "December 2018" },
+      source: { title: "Samus/Dark Samus Competitive Guide", url: "https://smashboards.com/guides/samus-dark-samus-competitive-guide.1175/", by: "Dr. Jay (Smashboards)", written: "December 2018" },
       playstyle: {
         en: "Patient and defensive: the guide calls her “the chess player's character”. She waits across the stage charging her Charge Shot and stopping bad approaches with missiles, then punishes a single mistake hard. She is slow, so her game is about clean, precise moves, reads and reactions rather than fast inputs.",
       },
@@ -428,7 +427,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     yoshi: {
-      source: { title: "Competitive Guide to Playing as and Against Yoshi", url: "https://smashboards.com/guides/", by: "Dr. Jay (Smashboards)", written: "December 2018" },
+      source: { title: "Competitive Guide to Playing as and Against Yoshi", url: "https://smashboards.com/guides/competitive-guide-to-playing-as-and-against-yoshi-in-smash-ultimate.1168/", by: "Dr. Jay (Smashboards)", written: "December 2018" },
       playstyle: {
         en: "A mobile, rushdown-style character. With the best air speed in the game and a solid dash, Yoshi weaves in and out of range (the guide's phrase is a “guerrilla warfare dinosaur”) and fights mostly with fast aerials that lead into combos and KO confirms. His eggs are a good projectile, but he is more of a rushdown character than a zoner.",
       },
@@ -457,7 +456,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     jigglypuff: {
-      source: { title: "Jigglypuff Beginner's Guide", url: "https://smashboards.com/guides/", by: "Zarxrax (Smashboards)", written: "March 2019" },
+      source: { title: "Jigglypuff Beginner's Guide", url: "https://smashboards.com/guides/jigglypuff-beginners-guide.1215/", by: "Zarxrax (Smashboards)", written: "March 2019" },
       playstyle: {
         en: "An air fighter through and through. Jigglypuff floats just outside the opponent's range throwing out long-lasting aerials, then weaves in when there's an opening. She is fast in the air and slow on the ground, so the guide says to spend little time grounded and to avoid shielding where possible.",
       },
@@ -487,7 +486,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     ganondorf: {
-      source: { title: "Hail to the Demon King: A Ganondorf Guide", url: "https://smashboards.com/guides/", by: "King9999 (Smashboards)", written: "January 2019, updated through patch 11.0.0" },
+      source: { title: "Hail to the Demon King: A Ganondorf Guide", url: "https://smashboards.com/guides/hail-to-the-demon-king-a-ganondorf-guide-ver-1-7-0.1178/", by: "King9999 (Smashboards)", written: "January 2019, updated through patch 11.0.0" },
       playstyle: {
         en: "Slow and enormously powerful. He hits harder than almost anyone and his sword smash attacks reach a long way, but he moves slowly and his recovery is poor, so opponents who can keep him out have the advantage. Against them the guide advises patience and picking moves carefully.",
       },
@@ -519,7 +518,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     },
     // Round 923 batch: more Smashboards guides from Matthew's document (see the round 922 note above).
     "dr-mario": {
-      source: { title: "The Complete Ultimate Dr. Mario Guide", url: "https://smashboards.com/guides/", by: "ASAP_Smash (Smashboards)", written: "February 2019" },
+      source: { title: "The Complete Ultimate Dr. Mario Guide", url: "https://smashboards.com/guides/the-complete-ultimate-dr-mario-guide.1207/", by: "ASAP_Smash (Smashboards)", written: "February 2019" },
       playstyle: {
         en: "A slow, hard-hitting version of Mario that the guide calls a high-risk, high-reward glass cannon and a “methodical set-up” character. Because approaching and recovering are bad for him, he stays on the ground, zones with pills to make people jump, and punishes from shield. The guide's word for what he needs is patience.",
       },
@@ -548,7 +547,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     mewtwo: {
-      source: { title: "Mewtwo Guide", url: "https://smashboards.com/guides/", by: "Macchus (Smashboards)", written: "January 2019" },
+      source: { title: "Mewtwo Guide", url: "https://smashboards.com/guides/mewtwo-guide.1179/", by: "Macchus (Smashboards)", written: "January 2019" },
       playstyle: {
         en: "A glass cannon. Mewtwo puts out high damage and strong combo strings and has smash attacks that KO at low percent, but his body is huge and he is light and floaty, so he gets comboed and KO'd just as easily. For neutral the guide points to Shadow Ball, down tilt, forward tilt, neutral air, forward air and jab as his reliable tools.",
       },
@@ -580,7 +579,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     chrom: {
-      source: { title: "A Comprehensive Competitive Guide to Chrom", url: "https://smashboards.com/guides/", by: "TheDMatch (Smashboards)", written: "January 2019" },
+      source: { title: "A Comprehensive Competitive Guide to Chrom", url: "https://smashboards.com/guides/a-comprehensive-competitive-guide-to-chrom-ultimates-melee-character.1191/", by: "TheDMatch (Smashboards)", written: "January 2019" },
       playstyle: {
         en: "A fast sword character who rushes down, hits with several low-lag aerials and finishes with plenty of kill confirms. The guide compares him to Melee's Marth for his quick movement, combos and flow. His neutral and his best moves revolve around his aerials, and he is a threat on the ground too.",
       },
@@ -609,7 +608,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     sonic: {
-      source: { title: "Art of Sonic Guide for Ultimate", url: "https://smashboards.com/guides/", by: "Sonic Meaper (Smashboards)", written: "January 2019" },
+      source: { title: "Art of Sonic Guide for Ultimate", url: "https://smashboards.com/guides/art-of-sonic-guide-for-ultimate-completed-more-updates-in-the-future.1192/", by: "Sonic Meaper (Smashboards)", written: "January 2019" },
       playstyle: {
         en: "The guide describes Smash 4's Sonic as a heavy bait-and-punish character built around Spin Dash, and Ultimate's Sonic as one who uses many tools instead, because Spin Dash was weakened (an uncharged one stops at a shield). It says he does better than before in both advantage and disadvantage.",
       },
@@ -640,7 +639,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     rob: {
-      source: { title: "Robotic Operating Basics", url: "https://smashboards.com/guides/", by: "Jams. (Smashboards)", written: "January 2019" },
+      source: { title: "Robotic Operating Basics", url: "https://smashboards.com/guides/robotic-operating-basics.1185/", by: "Jams. (Smashboards)", written: "January 2019" },
       playstyle: {
         en: "R.O.B. generally wants to make the opponent come to him, using his two projectiles, the laser and the Gyro. When he has to approach, neutral air is his strong tool against characters with mediocre range, and forward air against long-range characters like swordfighters. He is very strong at the ledge and offstage.",
       },
@@ -673,7 +672,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
     },
     greninja: {
-      source: { title: "Greninjuts-Two: A Beginner to Intermediate Guide to Greninja", url: "https://smashboards.com/guides/", by: "Ludi (Ludiloco on Smashboards)", written: "February 2019" },
+      source: { title: "Greninjuts-Two: A Beginner to Intermediate Guide to Greninja", url: "https://smashboards.com/guides/greninjuts-two.1202/", by: "Ludi (Ludiloco on Smashboards)", written: "February 2019" },
       playstyle: {
         en: "Bait and punish. Greninja has some of the best mobility in the game, but his moves are fairly committal and his approaches fairly linear, so the guide has him use that speed to feint, draw a response and punish it rather than rush in. Water Shuriken, his long-range projectile, makes opponents come to him. The guide warns he can't be played recklessly.",
       },
