@@ -569,8 +569,8 @@ async function ResultsBody({ params, t }: { params: Awaited<PageProps<"/search">
         {posts.length > 0 && (
           <section className="flex flex-col">
             {tab === "top" && <h2 className="px-4 font-bold">{t("people.search.tab.posts")}</h2>}
-            <div className="flex flex-col gap-3 px-3 py-3">
-              {posts.map((p) => <div key={p.id} className="card"><PostCard post={p} now={now} viewerId={userId} /></div>)}
+            <div className="flex flex-col divide-y divide-line">
+              {posts.map((p) => <div key={p.id}><PostCard post={p} now={now} viewerId={userId} /></div>)}
             </div>
             {tab === "top" && <Link href={`/search?q=${encodeURIComponent(q)}&tab=posts`} className="px-4 text-sm text-brand">{t("people.search.morePosts")}</Link>}
           </section>

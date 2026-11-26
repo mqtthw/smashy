@@ -59,7 +59,7 @@ async function Saved() {
           </ul>
         </section>
       )}
-      {posts.length > 0 && <div className="flex flex-col gap-3 px-3 py-3">{posts.map((p) => <div key={p.id} className="card"><PostCard post={p} now={now} viewerId={userId} /></div>)}</div>}
+      {posts.length > 0 && <div className="flex flex-col divide-y divide-line">{posts.map((p) => <div key={p.id}><PostCard post={p} now={now} viewerId={userId} /></div>)}</div>}
     </LangProvider>
   );
 }

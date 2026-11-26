@@ -183,9 +183,9 @@ async function FromTheFeed({ userId, now }: { userId: string | null; now: number
         <h2 id="from-the-feed" className="font-bold"><T k="feed.discuss.fromFeed" /></h2>
         <Link href="/" className="link shrink-0 text-sm"><T k="feed.discuss.seeFeed" /></Link>
       </div>
-      <div className="flex flex-col gap-3 px-3 py-3">
+      <div className="flex flex-col divide-y divide-line">
         {entries.slice(0, 8).map((e) => (
-          <div key={e.key} className="card">
+          <div key={e.key}>
             <PostCard post={e.post} repostedBy={e.repostedBy} now={now} viewerId={userId} />
           </div>
         ))}

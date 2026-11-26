@@ -139,8 +139,8 @@ async function RulesetDetails({ params, searchParams }: Pick<PageProps<"/ruleset
           {discussion.length === 0 ? (
             <p className="px-4 py-3 text-sm text-muted">{t("browse.ruleset.noDiscussion")}</p>
           ) : (
-            <div className="flex flex-col gap-3 px-3 py-3">
-              {discussion.map((p) => <div key={p.id} className="card"><PostCard post={p} now={now} viewerId={userId} /></div>)}
+            <div className="flex flex-col divide-y divide-line">
+              {discussion.map((p) => <div key={p.id}><PostCard post={p} now={now} viewerId={userId} /></div>)}
             </div>
           )}
         </div>

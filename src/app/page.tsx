@@ -161,10 +161,10 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
           )}
         </>
       ) : (
-        // Each post is its own glass card (round 496), not a row between lines.
-        <div className="flex flex-col gap-3 px-3 py-3">
+        // Posts are rows between thin lines (round 847; they were separate glass cards from round 496).
+        <div className="flex flex-col divide-y divide-line">
           {d.entries.map((e) => (
-            <div key={e.key} className="card">
+            <div key={e.key}>
               <PostCard post={e.post} repostedBy={e.repostedBy} why={e.why} now={now} viewerId={userId} />
             </div>
           ))}

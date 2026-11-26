@@ -845,8 +845,8 @@ async function Event({ params }: { params: PageProps<"/host/[id]">["params"] }) 
       {eventPosts.length > 0 && (
         <section className="flex flex-col gap-2" aria-labelledby="event-posts">
           <h2 id="event-posts" className="font-bold">{t("event.posts")}</h2>
-          <div className="flex flex-col gap-3">
-            {eventPosts.map((p) => <div key={p.id} className="card"><PostCard post={p} now={Math.floor(nowMs / 1000)} viewerId={userId} hideEventCard /></div>)}
+          <div className="card flex flex-col divide-y divide-line">
+            {eventPosts.map((p) => <div key={p.id}><PostCard post={p} now={Math.floor(nowMs / 1000)} viewerId={userId} hideEventCard /></div>)}
           </div>
         </section>
       )}

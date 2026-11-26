@@ -112,8 +112,8 @@ async function ClipContent(props: PageProps<"/reels/[clipId]">) {
         {comments.length === 0 ? (
           <p className="p-4 text-muted">{t("media.clip.noComments")}</p>
         ) : (
-          <div className="flex flex-col gap-3 px-3 py-3">
-            {comments.map((p) => <div key={p.id} className="card"><PostCard post={p} now={now} viewerId={userId} /></div>)}
+          <div className="flex flex-col divide-y divide-line">
+            {comments.map((p) => <div key={p.id}><PostCard post={p} now={now} viewerId={userId} /></div>)}
           </div>
         )}
       </section>
@@ -121,8 +121,8 @@ async function ClipContent(props: PageProps<"/reels/[clipId]">) {
       {quotes.length > 0 && (
         <section aria-labelledby="shared" className="border-t border-line">
           <h2 id="shared" className="px-4 pt-4 font-bold">{t("media.clip.sharedOnFeeds")}</h2>
-          <div className="flex flex-col gap-3 px-3 py-3">
-            {quotes.map((p) => <div key={p.id} className="card"><PostCard post={p} now={now} viewerId={userId} /></div>)}
+          <div className="flex flex-col divide-y divide-line">
+            {quotes.map((p) => <div key={p.id}><PostCard post={p} now={now} viewerId={userId} /></div>)}
           </div>
         </section>
       )}

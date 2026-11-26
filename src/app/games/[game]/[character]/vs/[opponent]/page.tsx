@@ -106,8 +106,8 @@ async function Matchup({ params }: Pick<PageProps<"/games/[game]/[character]/vs/
         {posts.length === 0 ? (
           <p className="text-sm text-muted">{t("media.mu.noDiscussions")}</p>
         ) : (
-          <div className="flex flex-col gap-3">
-            {posts.map((p) => <div key={p.id} className="card"><PostCard post={p} now={now} viewerId={userId} /></div>)}
+          <div className="card flex flex-col divide-y divide-line">
+            {posts.map((p) => <div key={p.id}><PostCard post={p} now={now} viewerId={userId} /></div>)}
           </div>
         )}
       </section>
