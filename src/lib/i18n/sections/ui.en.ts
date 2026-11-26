@@ -69,6 +69,7 @@ export const uiEn = {
   "ui.guest.inviteOnly": "Smashy is invite-only during the beta. Ask a friend on Smashy for an invite link.",
   "ui.guest.whatIs": "New here? What is Smashy?",
   "ui.guest.results": "Results",
+  "ui.guest.startHere": "Start here",
   "ui.guest.majors": "Majors",
   "ui.guest.allEvents": "All events →",
   "ui.guest.comingUp": "{region}",

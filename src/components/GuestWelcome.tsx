@@ -17,6 +17,7 @@ import { HOME_REGION, regionName } from "@/lib/regions";
 import { detectedRegion } from "@/lib/viewerRegion";
 import Fold from "@/components/ui/Fold";
 import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
+import OverflowRow from "@/components/ui/OverflowRow";
 import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
 
 // The "start here" links at the top (round 654, for visitors from the Reddit posts): Smashy's
@@ -88,16 +89,15 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
           <h2 id="guest-welcome" className="text-2xl leading-tight font-bold">{t("ui.guest.headline")}</h2>
           <p className="text-muted">{t("ui.guest.pitch")}</p>
         </div>
-        <ul className="flex flex-wrap gap-2">
+        {/* One line; what doesn't fit goes under More (round 852). */}
+        <OverflowRow label={t("ui.guest.startHere")}>
           {START.map((f) => (
-            <li key={f.href}>
-              <Link href={f.href} className="chip font-semibold hover:bg-surface">
-                {f.href === "/games" && <RotatingCharacterIcon icons={icons} />}
-                {t(f.title)}
-              </Link>
-            </li>
+            <Link key={f.href} href={f.href} className="chip font-semibold hover:bg-surface">
+              {f.href === "/games" && <RotatingCharacterIcon icons={icons} />}
+              {t(f.title)}
+            </Link>
           ))}
-        </ul>
+        </OverflowRow>
         <div className="flex flex-wrap items-center gap-2">
           <Link href="/signin" className="btn btn-md btn-primary btn-hero">{t("ui.guest.join")}</Link>
           <Link href="/signin" className="btn btn-md btn-outline">{t("ui.guest.signIn")}</Link>

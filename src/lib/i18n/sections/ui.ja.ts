@@ -71,6 +71,7 @@ export const uiJa: Record<keyof typeof uiEn, string> = {
   "ui.guest.inviteOnly": "ベータ期間中の Smashy は招待制です。Smashy を使っている友だちに招待リンクをもらってください。",
   "ui.guest.whatIs": "はじめての方へ: Smashy とは？",
   "ui.guest.results": "結果",
+  "ui.guest.startHere": "はじめに",
   "ui.guest.majors": "大型大会",
   "ui.guest.allEvents": "すべての大会 →",
   "ui.guest.comingUp": "{region}",

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { RegionSeasons } from "@/components/seasons/SeasonParts";
-import SwipeRow from "@/components/ui/SwipeRow";
+import OverflowRow from "@/components/ui/OverflowRow";
 import Link from "next/link";
 import { after, connection } from "next/server";
 import { Suspense } from "react";
@@ -301,7 +301,7 @@ export default function EventsPage(props: PageProps<"/events">) {
         <h1 className="text-2xl font-bold"><T k="nav.events" /></h1>
         {/* Side doors, kept quiet: the page's red is for events that are live and for actions. */}
         <span id="events-more" className="sr-only"><T k="browse.events.moreNav" /></span>
-        <SwipeRow labelledBy="events-more" className="mt-2 text-meta">
+        <OverflowRow labelledBy="events-more" className="mt-2 text-meta">
           <Link href="/brackets" className="chip py-1"><T k="browse.events.openAnyBracket" /></Link>
           <Link href="/my-sets" className="chip py-1"><T k="browse.events.mySets" /></Link>
           {/* Leagues, Seasons and Smash history up front (Matthew, round 536): the Feed's More menu no longer lists them. */}
@@ -311,7 +311,7 @@ export default function EventsPage(props: PageProps<"/events">) {
           <Link href="/events/past" className="chip py-1"><T k="browse.past.navLink" /></Link>
           <Link href="/scenes" className="chip py-1"><T k="browse.events.scenesRulesets" /></Link>
           <Link href="/strike" className="chip py-1"><T k="browse.events.strikeStages" /></Link>
-        </SwipeRow>
+        </OverflowRow>
       </header>
       <Suspense fallback={<CardListSkeleton count={5} label="Loading events…" className="p-4" />}>
         <EventsTabs searchParams={props.searchParams} />

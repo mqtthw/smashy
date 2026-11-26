@@ -71,6 +71,7 @@ export const uiEs: Record<keyof typeof uiEn, string> = {
   "ui.guest.inviteOnly": "Durante la beta, Smashy es solo con invitación. Pídele un enlace de invitación a un amigo que esté en Smashy.",
   "ui.guest.whatIs": "¿Eres nuevo? ¿Qué es Smashy?",
   "ui.guest.results": "Resultados",
+  "ui.guest.startHere": "Empieza aquí",
   "ui.guest.majors": "Majors",
   "ui.guest.allEvents": "Todos los eventos →",
   "ui.guest.comingUp": "{region}",
