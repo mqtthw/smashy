@@ -22,6 +22,8 @@ export type CharacterOverview = {
    *  the credit, because games get patched and an old guide's details may no longer hold (Matthew, round 922:
    *  "do not treat these as gospel because some may be outdated"). */
   source: { title: string; url: string; by: string; written?: string };
+  /** True when Matthew has changed or added to the summary himself: the page then says so beside the credit. */
+  edited?: boolean;
   /** Plain numbers the source gives (shown as small tags). */
   stats?: { weight?: number; fallSpeed?: number };
   playstyle: Text;
@@ -931,21 +933,43 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     // when it was written. Tier placements in the guides are left out.
     fox: {
       source: { title: "Guide to Ace Arwing Pilot Fox McCloud", url: "https://smashboards.com/guides/guide-to-ace-arwing-pilot-fox-mccloud-updated-for-2015.100/", by: "CunningKitsune (Smashboards)", written: "2004, updated through February 2015" },
+      // Matthew's own edits (round 933): the playstyle wording, and what Shine and Laser say. The two move
+      // facts (Shine on frame 1 and invincible; Laser's end lag cancelled by landing) are his, not the guide's,
+      // so the page credits the guide "with Smashy's own edits".
+      edited: true,
       playstyle: {
-        en: "Very fast and very technical. The guide describes lightning-quick moves, fast and effective finishers, versatile play and a projectile he can fire constantly, and says he is second to none in the hands of an experienced, technically sound player. It warns that excelling with him takes a lot of time and consistent practice, and that new players often run or Illusion themselves off the stage.",
+        en: "Very fast and very technical. Lightning-quick moves, fast and effective finishers, versatile play and a projectile he can fire constantly, and he is second to none in the hands of an experienced, technically sound player. Excelling with him takes a lot of time and consistent practice.",
+        es: "Muy rápido y muy técnico. Movimientos fulgurantes, remates rápidos y eficaces, un juego versátil y un proyectil que puede disparar sin parar, y no tiene rival en manos de un jugador con experiencia y buena técnica. Destacar con él exige mucho tiempo y práctica constante.",
+        fr: "Très rapide et très technique. Des coups fulgurants, des finishers rapides et efficaces, un jeu polyvalent et un projectile qu’il peut tirer sans arrêt : il n’a pas d’égal entre les mains d’un joueur expérimenté et solide techniquement. Exceller avec lui demande beaucoup de temps et un entraînement régulier.",
+        ja: "とても速く、とてもテクニカルなキャラです。電光石火のワザ、速くて効果的な締めのワザ、多彩な戦い方、絶え間なく撃てる飛び道具を持ち、経験があり技術のしっかりしたプレイヤーが使えば右に出るものはいません。フォックスで上達するには多くの時間と継続的な練習が必要です。",
       },
       traits: [
         {
-          name: "The shine",
-          text: { en: "His Reflector, listed among his main strengths." },
+          name: "Shine",
+          text: {
+            en: "His Reflector, frame 1 and invincible.",
+            es: "Su Reflector: sale en el frame 1 y es invencible.",
+            fr: "Son Réflecteur : frame 1 et invincible.",
+            ja: "リフレクターのこと。発生1フレームで無敵です。",
+          },
         },
         {
-          name: "Blaster",
-          text: { en: "A projectile he can spam without equal, though it doesn't stun as it did in the first game." },
+          name: "Laser",
+          text: {
+            en: "A projectile he can spam, with end lag being canceled by landing.",
+            es: "Un proyectil que puede disparar sin parar; el lag final se cancela al aterrizar.",
+            fr: "Un projectile qu’il peut tirer en boucle ; le lag de fin est annulé à l’atterrissage.",
+            ja: "連発できる飛び道具です。着地すると後隙がキャンセルされます。",
+          },
         },
         {
           name: "Fast-faller",
-          text: { en: "The guide lists this as both a strength and a weakness." },
+          text: {
+            en: "Both a strength and a weakness.",
+            es: "Una ventaja y un inconveniente a la vez.",
+            fr: "À la fois une force et une faiblesse.",
+            ja: "強みでもあり、弱みでもあります。",
+          },
         },
       ],
       strengths: [

@@ -221,6 +221,8 @@ export const mediaFr: Record<keyof typeof mediaEn, string> = {
   "media.char.st.rank": "N° {n} sur {total}",
   "media.char.st.source": "Mesuré en jeu. Chaque classement va du plus élevé au plus bas. Données de",
   "media.char.ov.written": "Rédigé : {date}. Le jeu a été patché depuis, certains détails ont pu changer.",
+  "media.char.ov.sourceEdited": "D’après {title}, par {by}, avec des modifications de Smashy.",
+  "media.char.ov.writtenPlain": "Rédigé : {date}.",
   "media.char.ov.weight": "Poids {n}",
   "media.char.ov.fall": "Vitesse de chute {n}",
   "media.char.frameDataBody": "La vitesse de démarrage de chaque coup, sa durée et sa sécurité sur bouclier, d'après {source}.",

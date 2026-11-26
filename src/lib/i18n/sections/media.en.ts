@@ -219,6 +219,8 @@ export const mediaEn = {
   "media.char.st.rank": "No. {n} of {total}",
   "media.char.st.source": "Measured in the game. Highest first in each ranking. From",
   "media.char.ov.written": "Written {date}; the game has been patched since, so details may have changed.",
+  "media.char.ov.sourceEdited": "Based on {title}, by {by}, with Smashy's own edits.",
+  "media.char.ov.writtenPlain": "Written {date}.",
   "media.char.ov.weight": "Weight {n}",
   "media.char.ov.fall": "Fall speed {n}",
   "media.char.frameDataBody": "How fast every move starts, how long it lasts, and how safe it is on shield, from {source}.",

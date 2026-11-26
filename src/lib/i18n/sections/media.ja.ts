@@ -221,6 +221,8 @@ export const mediaJa: Record<keyof typeof mediaEn, string> = {
   "media.char.st.rank": "{total}体中 {n}位",
   "media.char.st.source": "ゲーム内の実測値。順位はいずれも数値の高い順です。出典：",
   "media.char.ov.written": "執筆時期：{date}。その後アップデートがあったため、内容が変わっている場合があります。",
+  "media.char.ov.sourceEdited": "{by} による「{title}」をもとに、Smashyが手を加えています。",
+  "media.char.ov.writtenPlain": "執筆時期：{date}。",
   "media.char.ov.weight": "重さ {n}",
   "media.char.ov.fall": "落下速度 {n}",
   "media.char.frameDataBody": "各技の発生、持続、ガード時の安全さ。出典: {source}。",

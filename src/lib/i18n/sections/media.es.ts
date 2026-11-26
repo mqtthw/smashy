@@ -221,6 +221,8 @@ export const mediaEs: Record<keyof typeof mediaEn, string> = {
   "media.char.st.rank": "N.º {n} de {total}",
   "media.char.st.source": "Medido en el juego. Cada clasificación va de mayor a menor. Datos de",
   "media.char.ov.written": "Escrita en: {date}. El juego ha recibido parches desde entonces, así que algunos detalles pueden haber cambiado.",
+  "media.char.ov.sourceEdited": "Basado en {title}, de {by}, con cambios propios de Smashy.",
+  "media.char.ov.writtenPlain": "Escrita en: {date}.",
   "media.char.ov.weight": "Peso {n}",
   "media.char.ov.fall": "Velocidad de caída {n}",
   "media.char.frameDataBody": "Qué tan rápido sale cada movimiento, cuánto dura y qué tan seguro es en escudo, de {source}.",

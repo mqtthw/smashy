@@ -150,8 +150,10 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
             ))}
           </div>
           <p className="border-t border-line pt-3 text-meta text-muted">
-            {t("media.char.ov.source", { title: overview.source.title, by: overview.source.by })}{" "}
-            {overview.source.written && <>{t("media.char.ov.written", { date: writtenIn(overview.source.written, lang) })}{" "}</>}
+            {t(overview.edited ? "media.char.ov.sourceEdited" : "media.char.ov.source", { title: overview.source.title, by: overview.source.by })}{" "}
+            {/* Melee hasn't been patched (Matthew, round 933), so its guides get the date alone, without the
+                "patched since" warning the other games' guides carry. */}
+            {overview.source.written && <>{t(game === "melee" ? "media.char.ov.writtenPlain" : "media.char.ov.written", { date: writtenIn(overview.source.written, lang) })}{" "}</>}
             <a href={overview.source.url} target="_blank" rel="noopener noreferrer" className="link font-semibold">{t("media.char.ov.full")} ↗︎<NewTab /></a>
           </p>
         </section>
