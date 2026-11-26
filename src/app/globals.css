@@ -1208,3 +1208,36 @@ body::before {
     --muted: #b6b8de;
   }
 }
+
+/* "You're up" under the skin (round 916): gold with dark text and a red edge, the colour for what needs you
+   now (it was a flat red block). Used by the Feed's bar, the My sets page and the small "You're up" tag. */
+:root[data-skin="melee"] .banner-up {
+  background: var(--jelly-select);
+  color: #1a1200;
+  border: 1px solid #fff0b0;
+  border-left: 6px solid #d4231a;
+  border-radius: 2px;
+}
+/* The Feed's bar: a slanted end, a halo that breathes, and an arrow that nudges forward. */
+:root[data-skin="melee"] .teaser-up {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+}
+:root[data-skin="melee"] .teaser-glow {
+  animation: skin-halo 1.6s ease-in-out infinite;
+}
+:root[data-skin="melee"] .teaser-up .teaser-arrow {
+  animation: skin-nudge 0.7s ease-in-out infinite;
+}
+@keyframes skin-halo {
+  0%, 100% { filter: drop-shadow(0 0 2px rgb(255 212 71 / 0.25)); }
+  50% { filter: drop-shadow(0 0 12px rgb(255 212 71 / 0.7)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-skin="melee"] :is(.teaser-glow, .teaser-arrow) {
+    animation: none !important;
+  }
+}
+/* Gold fills take dark text under the skin: "bg-brand text-white" was written for the red brand colour. */
+:root[data-skin="melee"] .bg-brand.text-white {
+  color: #1a1200;
+}

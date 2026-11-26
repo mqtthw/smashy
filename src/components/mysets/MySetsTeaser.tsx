@@ -3,12 +3,14 @@ import { getMySets } from "@/lib/brackets/startgg";
 import { playerName } from "@/lib/brackets/types";
 import { createClient } from "@/lib/supabase/server";
 import { getMyActiveHostedSets } from "@/lib/hostedEvents";
-import Icon from "@/components/ui/Icon";
+import DismissableTeaser from "./DismissableTeaser";
 import { getT } from "@/lib/i18n/server";
 
 /**
  * Top-of-feed card while you're in a live event (on Smashy or start.gg): "You're up!" or your next opponent.
- * Shows nothing for guests, unlinked accounts, or when you have no live event.
+ * Shows nothing for guests, unlinked accounts, or when you have no live event. Round 916: "You're up" is a
+ * gold bar with a red edge that glows (gold is the skin's colour for what needs you), and either bar can be
+ * closed for that set (DismissableTeaser).
  */
 export default async function MySetsTeaser({ userId }: { userId: string | null }) {
   if (!userId) return null;
@@ -18,21 +20,22 @@ export default async function MySetsTeaser({ userId }: { userId: string | null }
   if (hosted) {
     const up = hosted.state !== "waiting";
     return (
+      <DismissableTeaser id={`h:${hosted.id}:${hosted.state}`} label={t("ui.dismiss")} glow={up}>
       <Link
         href={up ? `/host/set/${hosted.id}` : `/host/${hosted.eventId}`}
-        className={`mx-4 mt-3 flex items-center gap-3 rounded-2xl p-3 ${up ? "banner-up" : "border border-line hover:bg-surface"}`}
+        className={`flex items-center gap-3 py-2.5 pr-12 pl-4 ${up ? "banner-up teaser-up" : "card hover:bg-surface"}`}
       >
-        <Icon name="gamepad" className={`text-2xl ${up ? "" : "text-brand"}`} />
         <span className="min-w-0 flex-1">
-          <span className="block font-bold">
+          <span className={`block font-bold ${up ? "text-lg leading-tight font-black tracking-wide uppercase italic" : ""}`}>
             {hosted.state === "live" ? t("entering.mysets.playingNow") : up ? t("play.teaser.strike") : t("play.teaser.next", { name: hosted.opponent ?? t("entering.mysets.tbd") })}
           </span>
-          <span className={`block truncate text-meta ${up ? "text-[#ffe1dc]" : "text-muted"}`}>
+          <span className={`block truncate text-meta ${up ? "font-semibold opacity-80" : "text-muted"}`}>
             {up ? `${t("play.teaser.vs", { name: hosted.opponent ?? t("entering.mysets.tbd") })}${hosted.identifier ? ` · ${t("entering.mysets.setId", { id: hosted.identifier })}` : ""}` : hosted.eventName}
           </span>
         </span>
-        <span aria-hidden="true">→</span>
+        <span aria-hidden="true" className="teaser-arrow">→</span>
       </Link>
+      </DismissableTeaser>
     );
   }
   const supabase = await createClient();
@@ -47,18 +50,19 @@ export default async function MySetsTeaser({ userId }: { userId: string | null }
   const vs = them ? playerName(them) : set.waitingOn[set.me === 0 ? 1 : 0] ?? t("entering.mysets.tbd");
   const up = ev.status.kind === "up";
   return (
+    <DismissableTeaser id={`s:${set.id}:${ev.status.kind}${set.called ? ":called" : ""}`} label={t("ui.dismiss")} glow={up}>
     <Link
       href="/my-sets"
-      className={`mx-4 mt-3 flex items-center gap-3 rounded-2xl p-3 ${up ? "banner-up" : "border border-line hover:bg-surface"}`}
+      className={`flex items-center gap-3 py-2.5 pr-12 pl-4 ${up ? "banner-up teaser-up" : "card hover:bg-surface"}`}
     >
-      <Icon name="gamepad" className={`text-2xl ${up ? "" : "text-muted"}`} />
       <span className="min-w-0 flex-1">
-        <span className="block font-bold">{up ? (set.called ? t("entering.mysets.calledNow") : t("entering.mysets.playingNow")) : t("play.teaser.next", { name: vs })}</span>
-        <span className={`block truncate text-meta ${up ? "text-[#ffe1dc]" : "text-muted"}`}>
+        <span className={`block font-bold ${up ? "text-lg leading-tight font-black tracking-wide uppercase italic" : ""}`}>{up ? (set.called ? t("entering.mysets.calledNow") : t("entering.mysets.playingNow")) : t("play.teaser.next", { name: vs })}</span>
+        <span className={`block truncate text-meta ${up ? "font-semibold opacity-80" : "text-muted"}`}>
           {up ? `${t("play.teaser.vs", { name: vs })}${set.station ? ` · ${t("entering.mysets.station", { station: set.station })}` : ""}` : `${set.roundLabel} · ${ev.tournamentName}`}
         </span>
       </span>
-      <span aria-hidden="true">→</span>
+      <span aria-hidden="true" className="teaser-arrow">→</span>
     </Link>
+    </DismissableTeaser>
   );
 }
