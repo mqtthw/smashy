@@ -1112,4 +1112,72 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "Pas un personnage agressif. Zelda prend surtout son temps et attend que l’adversaire fasse un faux pas : elle n’est pas très bonne pour approcher, mais elle a un excellent jeu à longue distance, avec Din’s Fire comme un mur difficile à percer. Quand l’adversaire se trompe, elle a plein de façons de comboter ou de finir la vie.",
   "Her forward and back airs. Pretty much her best move, able to KO heavy characters early when it lands cleanly.":
     "Ses aériens avant et arrière. À peu près son meilleur coup, capable de mettre KO les personnages lourds tôt quand il touche proprement.",
+  "October 2020":
+    "octobre 2020",
+  "An unusual character: she jumps oddly, stalls in the air with her side special, and heals with yoga. Her edge play is where she shines, with a spike on her side special that catches even skilled players. Switch between aggressive and passive play, go for combos rather than relying on healing, and look for spikes.":
+    "Un personnage inhabituel : elle saute bizarrement, temporise en l’air avec son spécial côté et se soigne avec du yoga. C’est dans son jeu au rebord qu’elle brille, avec un spike sur son spécial côté qui attrape même les joueurs expérimentés. Alterne entre jeu agressif et jeu passif, cherche les combos plutôt que de compter sur le soin, et guette les spikes.",
+  "A buff. Timed well, its strongest level makes her smash attacks as strong as Bowser's or Ganondorf's.":
+    "Un buff. Bien timé, son niveau le plus fort rend ses attaques smash aussi puissantes que celles de Bowser ou de Ganondorf.",
+  "Her spike, and it works even with the ball out. She can also cancel the ball to throw the opponent off, use the ball to extend the reach of her attacks, and stall in the air with it to get past edgeguards.":
+    "Son spike, et il marche même quand le ballon est sorti. Elle peut aussi annuler le ballon pour dérouter l’adversaire, se servir du ballon pour allonger la portée de ses attaques, et temporiser en l’air avec pour passer les edgeguards.",
+  "Her neutral special. Better as a last resort, an escape in the air or a combo finisher than as a way to heal: missing it leaves her open.":
+    "Son spécial neutre. Meilleur en dernier recours, pour s’échapper en l’air ou pour finir un combo que pour se soigner : le rater la laisse vulnérable.",
+  "Her three-hit jab can bury the opponent, which sets up a down smash, or gives her time to use Deep Breathing.":
+    "Son jab en trois coups peut enterrer l’adversaire, ce qui prépare un smash bas, ou lui donne le temps d’utiliser Deep Breathing.",
+  "Edge play, with a spike that works on skilled players too.":
+    "Le jeu au rebord, avec un spike qui marche aussi sur les joueurs expérimentés.",
+  "A down smash that dodges high attacks and hits opponents lying down or rolling.":
+    "Un smash bas qui esquive les attaques hautes et touche les adversaires couchés ou en roulade.",
+  "Smash attacks that become very strong with Deep Breathing.":
+    "Des attaques smash qui deviennent très puissantes avec Deep Breathing.",
+  "Relying on healing leaves her open to punishes.":
+    "Compter sur le soin la laisse exposée aux punitions.",
+  "Her odd jumps and hitboxes take getting used to.":
+    "Il faut du temps pour s’habituer à ses sauts et à ses hitbox bizarres.",
+  "May 2015":
+    "mai 2015",
+  "A heavy, very technical character who plays around his tools: bombs, boomerang, arrows and his grappling hook. He is hard to KO but easy to catch in combos. Neutral air is his spacing, approach and cut-off move, and the boomerang is the tool to use most.":
+    "Un personnage lourd et très technique qui joue autour de ses outils : les bombes, le boomerang, les flèches et son grappin. Il est difficile à mettre KO mais facile à attraper dans des combos. L’aérien neutre est son coup de spacing, d’approche et d’interception, et le boomerang est l’outil à utiliser le plus.",
+  "Up to four can be out before one explodes. They can be caught in the air and explode on contact; they pressure shields, help him space, and set up a neutral air, forward tilt or jab.":
+    "Il peut y en avoir jusqu’à quatre de sorties avant qu’une n’explose. Elles peuvent être attrapées en l’air et explosent au contact ; elles mettent la pression sur les boucliers, l’aident pour son spacing, et préparent un aérien neutre, un tilt côté ou un jab.",
+  "It can hit on the way out and on the way back, and can be thrown in any forward direction. Safer than neutral air; used for damage and to cut off the opponent's moves and grabs.":
+    "Il peut toucher à l’aller et au retour, et peut être lancé dans n’importe quelle direction vers l’avant. Plus sûr que l’aérien neutre ; sert à faire des dégâts et à couper les coups et les grabs de l’adversaire.",
+  "Rarely used because of the charge time. They are only for cutting off an attack that is about to follow up.":
+    "Rarement utilisées à cause du temps de charge. Elles ne servent qu’à couper une attaque qui est sur le point de suivre.",
+  "A very long grab, used for cut-offs, mix-ups and recovery. If it misses, he is left open.":
+    "Un grab très long, utilisé pour les interceptions, les mix-ups et la recovery. S’il rate, il se retrouve vulnérable.",
+  "Heavy, so he isn't KO'd easily.":
+    "Lourd, donc il n’est pas facile à mettre KO.",
+  "Several projectiles that set up his attacks.":
+    "Plusieurs projectiles qui préparent ses attaques.",
+  "A long grab.":
+    "Un long grab.",
+  "Easy to catch in combos.":
+    "Facile à attraper dans des combos.",
+  "Very technical to play.":
+    "Très technique à jouer.",
+  "A missed grappling hook leaves him open.":
+    "Un grappin raté le laisse vulnérable.",
+  "A fast character who creates combos easily. In the air he strings his aerials together and finishes with an up smash; on the ground his dash attack starts combos and his fireballs keep people away and build damage. His long wavedash sets up a grab or a smash attack.":
+    "Un personnage rapide qui crée facilement des combos. En l’air, il enchaîne ses aériens et finit par un smash haut ; au sol, sa dash attack lance des combos et ses boules de feu tiennent les gens à distance et accumulent des dégâts. Son long wavedash prépare un grab ou une attaque smash.",
+  "Down throw and up throw start combos into up air and up smash; down throw can chain grab at low percent. Forward throw leads to a dash attack, and back throw sends opponents off the stage.":
+    "La projection bas et la projection haut lancent des combos vers l’aérien haut et le smash haut ; la projection bas peut faire un chaingrab à bas pourcentage. La projection avant mène à une dash attack, et la projection arrière envoie l’adversaire hors du terrain.",
+  "Turns an opponent around as they use their up special to recover, sending them the wrong way. It also stalls him in the air, and keeps people off him when they get close.":
+    "Retourne un adversaire pendant qu’il utilise son spécial haut pour revenir, ce qui l’envoie dans le mauvais sens. Elle lui permet aussi de temporiser en l’air, et tient les gens à l’écart quand ils s’approchent.",
+  "Keep people away and build damage. They disappear after a short time.":
+    "Tiennent les gens à distance et accumulent des dégâts. Elles disparaissent au bout d’un court moment.",
+  "Pretty long, and a good way to set up a grab, a down smash or a forward smash.":
+    "Assez long, et un bon moyen de préparer un grab, un smash bas ou un smash côté.",
+  "Creates combos easily.":
+    "Crée facilement des combos.",
+  "A great recovery.":
+    "Une excellente recovery.",
+  "A small body.":
+    "Un petit corps.",
+  "Easy to combo.":
+    "Facile à comboter.",
+  "His up special leaves him helpless in the air afterwards.":
+    "Son spécial haut le laisse ensuite sans défense en l’air.",
+  "Forward air is slow to hit and has some landing lag.":
+    "L’aérien avant est lent à toucher et a un peu de lag d’atterrissage.",
 };

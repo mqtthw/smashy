@@ -850,6 +850,40 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       ],
       weaknesses: [],
     },
+    // Round 937: from guides set aside earlier as thin, re-read for what they do say about how the character plays.
+    "wii-fit-trainer": {
+      source: { title: "An Advancing Beginners' Guide to Get Fit", url: "https://smashboards.com/guides/", by: "StarPetal (Smashboards)", written: "October 2020" },
+      playstyle: {
+        en: "An unusual character: she jumps oddly, stalls in the air with her side special, and heals with yoga. Her edge play is where she shines, with a spike on her side special that catches even skilled players. Switch between aggressive and passive play, go for combos rather than relying on healing, and look for spikes.",
+      },
+      traits: [
+        {
+          name: "Deep Breathing",
+          text: { en: "A buff. Timed well, its strongest level makes her smash attacks as strong as Bowser's or Ganondorf's." },
+        },
+        {
+          name: "Header (side special)",
+          text: { en: "Her spike, and it works even with the ball out. She can also cancel the ball to throw the opponent off, use the ball to extend the reach of her attacks, and stall in the air with it to get past edgeguards." },
+        },
+        {
+          name: "Sun Salutation",
+          text: { en: "Her neutral special. Better as a last resort, an escape in the air or a combo finisher than as a way to heal: missing it leaves her open." },
+        },
+        {
+          name: "Jab",
+          text: { en: "Her three-hit jab can bury the opponent, which sets up a down smash, or gives her time to use Deep Breathing." },
+        },
+      ],
+      strengths: [
+        { en: "Edge play, with a spike that works on skilled players too." },
+        { en: "A down smash that dodges high attacks and hits opponents lying down or rolling." },
+        { en: "Smash attacks that become very strong with Deep Breathing." },
+      ],
+      weaknesses: [
+        { en: "Relying on healing leaves her open to punishes." },
+        { en: "Her odd jumps and hitboxes take getting used to." },
+      ],
+    },
   },
   melee: {
     // Round 918 batch (English first).
@@ -1467,6 +1501,40 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "Struggles against projectiles." },
       ],
     },
+    link: {
+      source: { title: "The Power of Peace: a Link Guide", url: "https://smashboards.com/guides/the-power-of-peace-a-link-guide.411/", by: "MugenZeta (Smashboards)", written: "May 2015" },
+      playstyle: {
+        en: "A heavy, very technical character who plays around his tools: bombs, boomerang, arrows and his grappling hook. He is hard to KO but easy to catch in combos. Neutral air is his spacing, approach and cut-off move, and the boomerang is the tool to use most.",
+      },
+      traits: [
+        {
+          name: "Bombs",
+          text: { en: "Up to four can be out before one explodes. They can be caught in the air and explode on contact; they pressure shields, help him space, and set up a neutral air, forward tilt or jab." },
+        },
+        {
+          name: "Boomerang",
+          text: { en: "It can hit on the way out and on the way back, and can be thrown in any forward direction. Safer than neutral air; used for damage and to cut off the opponent's moves and grabs." },
+        },
+        {
+          name: "Arrows",
+          text: { en: "Rarely used because of the charge time. They are only for cutting off an attack that is about to follow up." },
+        },
+        {
+          name: "Grappling hook",
+          text: { en: "A very long grab, used for cut-offs, mix-ups and recovery. If it misses, he is left open." },
+        },
+      ],
+      strengths: [
+        { en: "Heavy, so he isn't KO'd easily." },
+        { en: "Several projectiles that set up his attacks." },
+        { en: "A long grab." },
+      ],
+      weaknesses: [
+        { en: "Easy to catch in combos." },
+        { en: "Very technical to play." },
+        { en: "A missed grappling hook leaves him open." },
+      ],
+    },
   },
   // Round 931: P+ pages. These guides were written for Project M (versions 3.5 and 3.6, 2014 to 2016), the mod
   // Project+ is built on; P+ rebalanced many characters since. Matthew chose to show them labelled as such
@@ -1817,6 +1885,41 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       weaknesses: [
         { en: "Not very good at approaching." },
         { en: "Sitting in shield is not a safe option for her." },
+      ],
+    },
+    mario: {
+      source: { title: "A Guide to Mario In PM", url: "https://smashboards.com/guides/a-guide-to-mario-in-pm.152/", by: "wadebarrett89101 (Smashboards)", written: "December 2014 for Project M, the mod P+ is built on" },
+      playstyle: {
+        en: "A fast character who creates combos easily. In the air he strings his aerials together and finishes with an up smash; on the ground his dash attack starts combos and his fireballs keep people away and build damage. His long wavedash sets up a grab or a smash attack.",
+      },
+      traits: [
+        {
+          name: "Throws",
+          text: { en: "Down throw and up throw start combos into up air and up smash; down throw can chain grab at low percent. Forward throw leads to a dash attack, and back throw sends opponents off the stage." },
+        },
+        {
+          name: "Cape",
+          text: { en: "Turns an opponent around as they use their up special to recover, sending them the wrong way. It also stalls him in the air, and keeps people off him when they get close." },
+        },
+        {
+          name: "Fireballs",
+          text: { en: "Keep people away and build damage. They disappear after a short time." },
+        },
+        {
+          name: "Wavedash",
+          text: { en: "Pretty long, and a good way to set up a grab, a down smash or a forward smash." },
+        },
+      ],
+      strengths: [
+        { en: "Fast." },
+        { en: "Creates combos easily." },
+        { en: "A great recovery." },
+        { en: "A small body." },
+      ],
+      weaknesses: [
+        { en: "Easy to combo." },
+        { en: "His up special leaves him helpless in the air afterwards." },
+        { en: "Forward air is slow to hit and has some landing lag." },
       ],
     },
   },

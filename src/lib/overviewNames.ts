@@ -86,6 +86,15 @@ export const OVERVIEW_NAMES: Record<string, Names> = {
   "“The 4th spacie”": { es: "“El cuarto spacie”", fr: "« Le 4e spacie »", ja: "「4人目のスペースアニマル」" },
   Sweetspot: { es: "Sweetspot", fr: "Sweetspot", ja: "スイートスポット" },
   "Crouch cancel": { es: "Crouch cancel", fr: "Crouch cancel", ja: "しゃがみキャンセル" },
+  "Deep Breathing": { es: "Deep Breathing", fr: "Deep Breathing", ja: "腹式呼吸" },
+  "Sun Salutation": { es: "Sun Salutation", fr: "Sun Salutation", ja: "太陽礼拝" },
+  "Header (side special)": { es: "Header (especial lateral)", fr: "Header (spécial côté)", ja: "ヘディング（横必殺ワザ）" },
+  Jab: { es: "Jab", fr: "Jab", ja: "弱攻撃" },
+  Bombs: { es: "Bombas", fr: "Bombes", ja: "バクダン" },
+  Boomerang: { es: "Bumerán", fr: "Boomerang", ja: "ブーメラン" },
+  Arrows: { es: "Flechas", fr: "Flèches", ja: "弓矢" },
+  "Grappling hook": { es: "Gancho", fr: "Grappin", ja: "フックショット" },
+  Cape: { es: "Capa", fr: "Cape", ja: "スーパーマント" },
   "Down tilt and grab": { es: "Tilt hacia abajo y agarre", fr: "Tilt bas et grab", ja: "下強とつかみ" },
 };
 

@@ -1112,4 +1112,72 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "攻撃的なキャラではありません。ゼルダは基本的にじっくり構えて、相手が間違った動きをするのを待ちます。接近はあまり得意ではありませんが、遠距離戦がすばらしく、ディンの炎を突破しにくい壁として使います。相手がミスをすれば、コンボやストックを奪う手段は豊富にあります。",
   "Her forward and back airs. Pretty much her best move, able to KO heavy characters early when it lands cleanly.":
     "空前と空後です。ほぼ間違いなく最高のワザで、きれいに当たれば重いキャラも早く撃墜できます。",
+  "October 2020":
+    "2020年10月",
+  "An unusual character: she jumps oddly, stalls in the air with her side special, and heals with yoga. Her edge play is where she shines, with a spike on her side special that catches even skilled players. Switch between aggressive and passive play, go for combos rather than relying on healing, and look for spikes.":
+    "一風変わったキャラです。ジャンプが独特で、横必殺ワザで空中にとどまり、ヨガで回復します。本領を発揮するのは崖での攻防で、横必殺ワザのメテオは上手なプレイヤーにも当たります。攻めと待ちを切り替え、回復に頼るのではなくコンボを狙い、メテオのチャンスを探しましょう。",
+  "A buff. Timed well, its strongest level makes her smash attacks as strong as Bowser's or Ganondorf's.":
+    "自己強化のワザです。タイミングよく決めると、最も強い段階ではスマッシュ攻撃がクッパやガノンドロフ並みの強さになります。",
+  "Her spike, and it works even with the ball out. She can also cancel the ball to throw the opponent off, use the ball to extend the reach of her attacks, and stall in the air with it to get past edgeguards.":
+    "Wii Fit トレーナーのメテオで、ボールが出ている間でも使えます。ボールをキャンセルして相手を惑わせたり、ボールで攻撃のリーチを伸ばしたり、これで空中にとどまって復帰阻止をかわしたりもできます。",
+  "Her neutral special. Better as a last resort, an escape in the air or a combo finisher than as a way to heal: missing it leaves her open.":
+    "通常必殺ワザです。回復の手段としてよりも、最後の手段、空中での脱出、コンボの締めとして使うほうがよいです。外すと隙ができます。",
+  "Her three-hit jab can bury the opponent, which sets up a down smash, or gives her time to use Deep Breathing.":
+    "3段の弱攻撃は相手を埋めることがあり、下スマッシュにつなげたり、腹式呼吸を使う時間を作ったりできます。",
+  "Edge play, with a spike that works on skilled players too.":
+    "崖での攻防が強く、上手なプレイヤーにも通用するメテオがあります。",
+  "A down smash that dodges high attacks and hits opponents lying down or rolling.":
+    "下スマッシュは高い位置の攻撃をかわし、ダウン中や転がっている相手に当たります。",
+  "Smash attacks that become very strong with Deep Breathing.":
+    "スマッシュ攻撃は腹式呼吸でとても強くなります。",
+  "Relying on healing leaves her open to punishes.":
+    "回復に頼ると隙ができ、反撃されます。",
+  "Her odd jumps and hitboxes take getting used to.":
+    "独特のジャンプと攻撃判定には慣れが必要です。",
+  "May 2015":
+    "2015年5月",
+  "A heavy, very technical character who plays around his tools: bombs, boomerang, arrows and his grappling hook. He is hard to KO but easy to catch in combos. Neutral air is his spacing, approach and cut-off move, and the boomerang is the tool to use most.":
+    "重く、とても技術のいるキャラで、バクダン、ブーメラン、弓矢、フックショットという道具を軸に戦います。撃墜されにくいですが、コンボを受けやすいです。空Nは間合い管理、接近、相手の行動を止めるためのワザで、ブーメランは最もよく使うべき道具です。",
+  "Up to four can be out before one explodes. They can be caught in the air and explode on contact; they pressure shields, help him space, and set up a neutral air, forward tilt or jab.":
+    "1つが爆発するまでに最大4つまで出しておけます。空中でキャッチでき、当たると爆発します。シールドに圧力をかけ、間合い管理を助け、空N、横強、弱攻撃につなげる状況を作ります。",
+  "It can hit on the way out and on the way back, and can be thrown in any forward direction. Safer than neutral air; used for damage and to cut off the opponent's moves and grabs.":
+    "行きと戻りの両方で当たることがあり、前方のどの方向にも投げられます。空Nより安全で、ダメージを与えるためと、相手のワザやつかみを止めるために使います。",
+  "Rarely used because of the charge time. They are only for cutting off an attack that is about to follow up.":
+    "ためる時間が必要なので、めったに使いません。追撃してこようとする攻撃を止めるためだけに使います。",
+  "A very long grab, used for cut-offs, mix-ups and recovery. If it misses, he is left open.":
+    "とても長いつかみで、相手の行動を止めること、揺さぶり、復帰に使います。外すと隙ができます。",
+  "Heavy, so he isn't KO'd easily.":
+    "重いので、簡単には撃墜されません。",
+  "Several projectiles that set up his attacks.":
+    "攻撃につなげる状況を作る飛び道具が複数あります。",
+  "A long grab.":
+    "つかみが長いです。",
+  "Easy to catch in combos.":
+    "コンボを受けやすいです。",
+  "Very technical to play.":
+    "使うのにとても技術がいります。",
+  "A missed grappling hook leaves him open.":
+    "フックショットを外すと隙ができます。",
+  "A fast character who creates combos easily. In the air he strings his aerials together and finishes with an up smash; on the ground his dash attack starts combos and his fireballs keep people away and build damage. His long wavedash sets up a grab or a smash attack.":
+    "コンボを作りやすい、すばやいキャラです。空中では空中攻撃をつなげて上スマッシュで締め、地上ではダッシュ攻撃がコンボの始動になり、ファイアボールで相手を寄せつけずダメージを稼ぎます。長い絶空から、つかみやスマッシュ攻撃を狙えます。",
+  "Down throw and up throw start combos into up air and up smash; down throw can chain grab at low percent. Forward throw leads to a dash attack, and back throw sends opponents off the stage.":
+    "下投げと上投げは、空上と上スマッシュへのコンボの始動になります。下投げは低％で投げ連ができます。前投げはダッシュ攻撃につながり、後ろ投げは相手をステージの外へ飛ばします。",
+  "Turns an opponent around as they use their up special to recover, sending them the wrong way. It also stalls him in the air, and keeps people off him when they get close.":
+    "上必殺ワザで復帰しようとしている相手の向きを反転させ、逆方向へ進ませます。マリオ自身が空中にとどまるのにも使え、近づいてきた相手を追い払うこともできます。",
+  "Keep people away and build damage. They disappear after a short time.":
+    "相手を寄せつけず、ダメージを稼ぎます。少し時間がたつと消えます。",
+  "Pretty long, and a good way to set up a grab, a down smash or a forward smash.":
+    "かなり長く、つかみ、下スマッシュ、横スマッシュを狙う良い手段です。",
+  "Creates combos easily.":
+    "コンボを作りやすいです。",
+  "A great recovery.":
+    "復帰がすばらしいです。",
+  "A small body.":
+    "体が小さいです。",
+  "Easy to combo.":
+    "コンボを受けやすいです。",
+  "His up special leaves him helpless in the air afterwards.":
+    "上必殺ワザのあとは、空中で行動できなくなります。",
+  "Forward air is slow to hit and has some landing lag.":
+    "空前は当たるまでが遅く、着地隙も少しあります。",
 };
