@@ -211,6 +211,7 @@ export const mediaJa: Record<keyof typeof mediaEn, string> = {
   "media.char.ov.weaknesses": "弱み",
   "media.char.ov.source": "{by} による「{title}」の要約です。Smashy独自の内容は加えていません。",
   "media.char.ov.full": "ガイド全文を読む",
+  "media.char.ov.written": "執筆時期：{date}。その後アップデートがあったため、内容が変わっている場合があります。",
   "media.char.ov.weight": "重さ {n}",
   "media.char.ov.fall": "落下速度 {n}",
   "media.char.frameDataBody": "各技の発生、持続、ガード時の安全さ。出典: {source}。",

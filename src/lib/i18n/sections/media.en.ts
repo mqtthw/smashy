@@ -209,6 +209,7 @@ export const mediaEn = {
   "media.char.ov.weaknesses": "Weaknesses",
   "media.char.ov.source": "Summarised from {title}, by {by}. Smashy adds nothing of its own.",
   "media.char.ov.full": "Read the full guide",
+  "media.char.ov.written": "Written {date}; the game has been patched since, so details may have changed.",
   "media.char.ov.weight": "Weight {n}",
   "media.char.ov.fall": "Fall speed {n}",
   "media.char.frameDataBody": "How fast every move starts, how long it lasts, and how safe it is on shield, from {source}.",

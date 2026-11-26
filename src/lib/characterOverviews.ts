@@ -14,7 +14,10 @@ import type { GameKey } from "./games";
 type Text = { en: string; es?: string; fr?: string; ja?: string };
 
 export type CharacterOverview = {
-  source: { title: string; url: string; by: string };
+  /** `written`: when the source was written or last updated, as it says itself ("December 2018"). Shown beside
+   *  the credit, because games get patched and an old guide's details may no longer hold (Matthew, round 922:
+   *  "do not treat these as gospel because some may be outdated"). */
+  source: { title: string; url: string; by: string; written?: string };
   /** Plain numbers the source gives (shown as small tags). */
   stats?: { weight?: number; fallSpeed?: number };
   playstyle: Text;
@@ -289,6 +292,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         title: "An In-Depth Guide to Ridley",
         url: "https://docs.google.com/document/d/1GTCGcJzEWrv4REbv3PfwiWmceZU8NbZhoJCgmb-JAs8/edit?usp=sharing",
         by: "Plague von Karma, with 2x Jump and the Ridley Discord",
+        written: "April 2020",
       },
       stats: { weight: 107 },
       playstyle: {
@@ -389,6 +393,128 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "Can be gimped, especially by characters with easy ways to do it." },
         { en: "No projectiles to camp with, or easy answers to someone camping him with projectiles." },
         { en: "Short characters make it hard to space his short-hop and landing aerials." },
+      ],
+    },
+    // Round 922 batch: guides from Smashboards that Matthew copied out by hand (the site blocks automated
+    // readers). They date from the game's first months, so each shows when it was written. The copies came
+    // without their addresses, so the link goes to Smashboards' guides section until Matthew sends each one.
+    samus: {
+      source: { title: "Samus/Dark Samus Competitive Guide", url: "https://smashboards.com/guides/", by: "Dr. Jay (Smashboards)", written: "December 2018" },
+      playstyle: {
+        en: "Patient and defensive: the guide calls her “the chess player's character”. She waits across the stage charging her Charge Shot and stopping bad approaches with missiles, then punishes a single mistake hard. She is slow, so her game is about clean, precise moves, reads and reactions rather than fast inputs.",
+      },
+      traits: [
+        {
+          name: "Charge Shot",
+          text: { en: "The guide says Samus “lives and dies” by it: charge it after every KO and whenever there's a spare second, because the threat of a full charge matters far more than an uncharged shot. It also does heavy damage to shields." },
+        },
+        {
+          name: "Missiles",
+          text: { en: "A tilted (homing) missile moves slowly, stays out a while and covers jumping opponents; a smash missile pauses in front of her, then flies fast with more knockback. Both can be followed in behind, and they're also used to cover get-ups, to edgeguard and to stall while charging." },
+        },
+        {
+          name: "Samus or Dark Samus",
+          text: { en: "They play the same. The main difference the guide gives is that Dark Samus's projectiles travel lower to the ground, which helps against short characters, while Samus's forward smash reaches slightly further." },
+        },
+      ],
+      strengths: [
+        { en: "Heavy, with a good recovery: she can afford trades and survives to high percent." },
+        { en: "Hits very hard, so one caught mistake is punished heavily." },
+        { en: "Strong projectiles, and several ways to break a shield." },
+      ],
+      weaknesses: [
+        { en: "Lacks mobility and speed." },
+        { en: "Floaty, and can't easily get out of being juggled." },
+      ],
+    },
+    yoshi: {
+      source: { title: "Competitive Guide to Playing as and Against Yoshi", url: "https://smashboards.com/guides/", by: "Dr. Jay (Smashboards)", written: "December 2018" },
+      playstyle: {
+        en: "A mobile, rushdown-style character. With the best air speed in the game and a solid dash, Yoshi weaves in and out of range (the guide's phrase is a “guerrilla warfare dinosaur”) and fights mostly with fast aerials that lead into combos and KO confirms. His eggs are a good projectile, but he is more of a rushdown character than a zoner.",
+      },
+      traits: [
+        {
+          name: "Double jump armor",
+          text: { en: "His midair jump (and Egg Lay and the standing Ground Pound) has armor: he takes the damage but not the knockback. It wins trades and makes recovering much easier. The guide's advice against Yoshi is to watch for the double jump and punish it; one heavy hit goes through the armor." },
+        },
+        {
+          name: "Recovery",
+          text: { en: "His up special barely lifts him, so he recovers with his high double jump, air speed and armor instead: throw eggs to get closer, come back above the ledge where possible, and vary it every time." },
+        },
+        {
+          name: "Egg Toss and Ground Pound",
+          text: { en: "Eggs can be angled to cover many directions and bounce. Ground Pound is used to recover, edgeguard and KO, and helps him avoid being juggled. The guide says his side special is best avoided." },
+        },
+      ],
+      strengths: [
+        { en: "Mobility: the best air speed in the game." },
+        { en: "Fast aerials that combo and KO, with a simple, fast-paced combo game." },
+        { en: "Strong tech chasing." },
+      ],
+      weaknesses: [
+        { en: "His double jump can be watched for and punished." },
+        { en: "Can be outranged while he's in the air doing short-hop aerials." },
+      ],
+    },
+    jigglypuff: {
+      source: { title: "Jigglypuff Beginner's Guide", url: "https://smashboards.com/guides/", by: "Zarxrax (Smashboards)", written: "March 2019" },
+      playstyle: {
+        en: "An air fighter through and through. Jigglypuff floats just outside the opponent's range throwing out long-lasting aerials, then weaves in when there's an opening. She is fast in the air and slow on the ground, so the guide says to spend little time grounded and to avoid shielding where possible.",
+      },
+      traits: [
+        {
+          name: "Rest",
+          text: { en: "Her signature move and one of the strongest in the game, usually landed from a combo. If it misses, she is completely vulnerable for several seconds." },
+        },
+        {
+          name: "Six jumps",
+          text: { en: "One from the ground and five in the air. The guide suggests counting them so she never ends up offstage without enough to get back." },
+        },
+        {
+          name: "Shield break",
+          text: { en: "If her shield breaks, she loses the stock immediately." },
+        },
+      ],
+      strengths: [
+        { en: "Fast air speed and powerful aerials with long-lasting hits." },
+        { en: "One of the best edgeguarders in the game." },
+        { en: "Rest can end a stock from a combo at mid percent." },
+      ],
+      weaknesses: [
+        { en: "The lightest character in the game, so she is KO'd very easily." },
+        { en: "Slow on the ground." },
+        { en: "Can struggle against sword characters' large disjointed hits, and against projectiles that travel up into the air." },
+      ],
+    },
+    ganondorf: {
+      source: { title: "Hail to the Demon King: A Ganondorf Guide", url: "https://smashboards.com/guides/", by: "King9999 (Smashboards)", written: "January 2019, updated through patch 11.0.0" },
+      playstyle: {
+        en: "Slow and enormously powerful. He hits harder than almost anyone and his sword smash attacks reach a long way, but he moves slowly and his recovery is poor, so opponents who can keep him out have the advantage. Against them the guide advises patience and picking moves carefully.",
+      },
+      traits: [
+        {
+          name: "Sword smash attacks",
+          text: { en: "All three smash attacks use a greatsword in Ultimate, giving them more range and making them disjointed. His up smash and forward smash reach through platforms." },
+        },
+        {
+          name: "Flame Choke and Dark Dive",
+          text: { en: "The guide calls Flame Choke one of his best moves: it grabs the opponent and sets up tech chases. Dark Dive can't be blocked, so it catches opponents who shield expecting a smash attack." },
+        },
+        {
+          name: "Wizard's Foot",
+          text: { en: "Can go through some projectiles, but not all." },
+        },
+      ],
+      strengths: [
+        { en: "Huge power: few of his moves do under 10% damage." },
+        { en: "Much less end lag on his moves than in earlier games." },
+        { en: "Long, disjointed smash attacks." },
+        { en: "Stages with platforms suit him." },
+      ],
+      weaknesses: [
+        { en: "Low movement speed." },
+        { en: "A poor recovery." },
+        { en: "Characters who can keep him away have the advantage." },
       ],
     },
   },

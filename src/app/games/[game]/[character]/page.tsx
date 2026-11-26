@@ -148,6 +148,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           </div>
           <p className="border-t border-line pt-3 text-meta text-muted">
             {t("media.char.ov.source", { title: overview.source.title, by: overview.source.by })}{" "}
+            {overview.source.written && <>{t("media.char.ov.written", { date: overview.source.written })}{" "}</>}
             <a href={overview.source.url} target="_blank" rel="noopener noreferrer" className="link font-semibold">{t("media.char.ov.full")} ↗︎<NewTab /></a>
           </p>
         </section>

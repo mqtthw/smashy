@@ -211,6 +211,7 @@ export const mediaFr: Record<keyof typeof mediaEn, string> = {
   "media.char.ov.weaknesses": "Points faibles",
   "media.char.ov.source": "Résumé de {title}, par {by}. Smashy n’ajoute rien de son cru.",
   "media.char.ov.full": "Lire le guide complet",
+  "media.char.ov.written": "Rédigé : {date}. Le jeu a été patché depuis, certains détails ont pu changer.",
   "media.char.ov.weight": "Poids {n}",
   "media.char.ov.fall": "Vitesse de chute {n}",
   "media.char.frameDataBody": "La vitesse de démarrage de chaque coup, sa durée et sa sécurité sur bouclier, d'après {source}.",
