@@ -3,7 +3,7 @@
 // in characterStats.ts, made from KuroganeHammer's tables.
 import { ULTIMATE_STATS, type CharacterStats } from "./characterStats";
 
-export const STAT_FIELDS = ["weight", "fallSpeed", "runSpeed", "walkSpeed", "airSpeed", "dashSpeed"] as const satisfies readonly (keyof CharacterStats)[];
+export const STAT_FIELDS = ["weight", "fallSpeed", "gravity", "runSpeed", "walkSpeed", "airSpeed", "dashSpeed"] as const satisfies readonly (keyof CharacterStats)[];
 export type StatLine = { field: (typeof STAT_FIELDS)[number]; value: number; rank: number; total: number; share: number };
 
 /** Up to three decimals, without trailing zeros: 1.397792 -> 1.398, 133 -> 133. */

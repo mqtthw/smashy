@@ -212,6 +212,7 @@ export const mediaEn = {
   "media.char.st.title": "By the numbers",
   "media.char.st.weight": "Weight",
   "media.char.st.fallSpeed": "Fall speed",
+  "media.char.st.gravity": "Gravity",
   "media.char.st.runSpeed": "Run speed",
   "media.char.st.walkSpeed": "Walk speed",
   "media.char.st.airSpeed": "Air speed",

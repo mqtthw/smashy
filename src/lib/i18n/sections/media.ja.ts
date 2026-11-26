@@ -214,6 +214,7 @@ export const mediaJa: Record<keyof typeof mediaEn, string> = {
   "media.char.st.title": "数値で見る",
   "media.char.st.weight": "重さ",
   "media.char.st.fallSpeed": "落下速度",
+  "media.char.st.gravity": "重力",
   "media.char.st.runSpeed": "走行速度",
   "media.char.st.walkSpeed": "歩行速度",
   "media.char.st.airSpeed": "空中横移動速度",

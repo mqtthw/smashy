@@ -81,7 +81,8 @@ fs.writeFileSync(
   "src/lib/characterStats.ts",
   `// MADE BY tools/kuroganehammer/build.mjs: don't edit by hand. Ultimate characters' measured attributes from
 // KuroganeHammer.com's tables (https://kuroganehammer.com/Ultimate/Attributes), shown with credit.
-export type CharacterStats = { ${order.map((f) => `${f}?: number`).join("; ")} };
+// gravity: Melee only (tools/ikneedata/build.mjs).
+export type CharacterStats = { ${order.map((f) => `${f}?: number`).join("; ")}; gravity?: number };
 
 export const ULTIMATE_STATS: Record<string, CharacterStats> = {
 ${lines.join("\n")}

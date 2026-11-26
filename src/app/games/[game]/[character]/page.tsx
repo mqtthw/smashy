@@ -23,6 +23,7 @@ import { CHARACTER_COURSES, CHARACTER_LIBRARIES, cookbookUrl, FRAME_DATA_SOURCE,
 import { characterOverview, inLang, writtenIn } from "@/lib/characterOverviews";
 import { traitName } from "@/lib/overviewNames";
 import { statLines } from "@/lib/characterStatLines";
+import { MELEE_STATS } from "@/lib/characterStats.melee";
 import { LangProvider } from "@/lib/i18n/client";
 import { getLang, getT } from "@/lib/i18n/server";
 import type { MessageKey, Values } from "@/lib/i18n/core";
@@ -87,7 +88,9 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
   const discord = characterDiscord(game, character);
   const frameData = frameDataLinks(game, character, name);
   const overview = characterOverview(game, character);
-  const stats = game === "ultimate" ? statLines(character) : [];
+  // Ultimate's numbers are KuroganeHammer's; Melee's are IKneeData's (round 936).
+  const stats = game === "ultimate" ? statLines(character) : game === "melee" ? statLines(character, MELEE_STATS) : [];
+  const statsFrom = game === "melee" ? { name: "IKneeData", url: "https://ikneedata.com/calculator" } : { name: "KuroganeHammer", url: "https://kuroganehammer.com/Ultimate/Attributes" };
   const cookbook = cookbookUrl(game, character);
   const courses = CHARACTER_COURSES[game]?.[character] ?? [];
   const library = CHARACTER_LIBRARIES[game]?.[character] ?? null;
@@ -183,7 +186,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
           </dl>
           <p className="text-meta text-muted">
             {t("media.char.st.source")}{" "}
-            <a href="https://kuroganehammer.com/Ultimate/Attributes" target="_blank" rel="noopener noreferrer" className="link font-semibold">KuroganeHammer ↗︎<NewTab /></a>
+            <a href={statsFrom.url} target="_blank" rel="noopener noreferrer" className="link font-semibold">{statsFrom.name} ↗︎<NewTab /></a>
           </p>
         </section>
       )}

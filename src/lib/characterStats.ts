@@ -1,6 +1,7 @@
 // MADE BY tools/kuroganehammer/build.mjs: don't edit by hand. Ultimate characters' measured attributes from
 // KuroganeHammer.com's tables (https://kuroganehammer.com/Ultimate/Attributes), shown with credit.
-export type CharacterStats = { weight?: number; fallSpeed?: number; runSpeed?: number; walkSpeed?: number; airSpeed?: number; dashSpeed?: number };
+// gravity: Melee only (tools/ikneedata/build.mjs).
+export type CharacterStats = { weight?: number; fallSpeed?: number; runSpeed?: number; walkSpeed?: number; airSpeed?: number; dashSpeed?: number; gravity?: number };
 
 export const ULTIMATE_STATS: Record<string, CharacterStats> = {
   "banjo-and-kazooie": { weight: 106, runSpeed: 2.18 },

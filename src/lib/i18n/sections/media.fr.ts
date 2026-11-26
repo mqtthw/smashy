@@ -214,6 +214,7 @@ export const mediaFr: Record<keyof typeof mediaEn, string> = {
   "media.char.st.title": "En chiffres",
   "media.char.st.weight": "Poids",
   "media.char.st.fallSpeed": "Vitesse de chute",
+  "media.char.st.gravity": "Gravité",
   "media.char.st.runSpeed": "Vitesse de course",
   "media.char.st.walkSpeed": "Vitesse de marche",
   "media.char.st.airSpeed": "Vitesse aérienne",
