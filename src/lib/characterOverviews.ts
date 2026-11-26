@@ -8,8 +8,12 @@
 // the character's Discord instead). When adding one: read the source itself, keep only what it says,
 // keep it much shorter than the source, and credit the people who wrote it.
 //
-// Text is per language; a language that's missing falls back to English.
+// Text is per language. King K. Rool's is written beside the English; the others' translations are in
+// overviewText.<lang>.ts, looked up by the English line. A line with no translation shows in English.
 import type { GameKey } from "./games";
+import { OVERVIEW_TEXT as OVERVIEW_ES } from "./overviewText.es";
+import { OVERVIEW_TEXT as OVERVIEW_FR } from "./overviewText.fr";
+import { OVERVIEW_TEXT as OVERVIEW_JA } from "./overviewText.ja";
 
 type Text = { en: string; es?: string; fr?: string; ja?: string };
 
@@ -1082,7 +1086,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       traits: [
         {
           name: "Judge",
-          text: { en: "His hammer shows a random number from 1 to 9 with a different effect each time. A 9 does 32%% and can KO at single-digit percents; an 8 freezes the opponent." },
+          text: { en: "His hammer shows a random number from 1 to 9 with a different effect each time. A 9 does 32% and can KO at single-digit percents; an 8 freezes the opponent." },
         },
         {
           name: "Oil Panic",
@@ -1146,7 +1150,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
       traits: [
         {
           name: "Movement",
-          text: { en: "18th in dash speed and 17th in wavedash length, with a 4-frame jumpsquat, the same as Fox's." },
+          text: { en: "18th in dash speed and 17th in wavedash length." },
         },
         {
           name: "Recovery",
@@ -1446,7 +1450,10 @@ export function characterOverview(game: GameKey, character: string): CharacterOv
   return CHARACTER_OVERVIEWS[game]?.[character] ?? null;
 }
 
-/** The text in the reader's language, or in English when that language isn't written yet. */
+// Translations kept beside the English, one file per language, looked up by the English line (round 930).
+const TRANSLATED: Record<string, Record<string, string>> = { es: OVERVIEW_ES, fr: OVERVIEW_FR, ja: OVERVIEW_JA };
+
+/** The text in the reader's language: written beside the English, or from that language's file; English when neither has it. */
 export function inLang(text: Text, lang: string): string {
-  return (text as Record<string, string | undefined>)[lang] ?? text.en;
+  return (text as Record<string, string | undefined>)[lang] ?? TRANSLATED[lang]?.[text.en] ?? text.en;
 }
