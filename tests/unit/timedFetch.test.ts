@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { PostgrestClient } from "@supabase/postgrest-js";
 import { timedFetch } from "@/lib/supabase/timedFetch";
 
 // A fetch that never answers on its own: it only settles when its signal aborts.
@@ -13,9 +14,21 @@ function hangingFetch() {
 describe("timedFetch", () => {
   afterEach(() => vi.unstubAllGlobals());
 
-  it("gives up after the time limit", async () => {
+  it("gives up after the time limit, as an abort", async () => {
     vi.stubGlobal("fetch", hangingFetch());
-    await expect(timedFetch(30)("https://example.com")).rejects.toMatchObject({ name: "TimeoutError" });
+    await expect(timedFetch(30)("https://example.com")).rejects.toMatchObject({ name: "AbortError" });
+  });
+
+  // Round 864: the Supabase library retried a timed-out read three times (39 s in all); an abort it doesn't retry.
+  it("isn't retried by the Supabase library", async () => {
+    const f = hangingFetch();
+    vi.stubGlobal("fetch", f);
+    const db = new PostgrestClient("https://example.com/rest/v1", { fetch: timedFetch(30) });
+    const started = Date.now();
+    const { error } = await db.from("posts").select("id");
+    expect(error).not.toBeNull();
+    expect(f).toHaveBeenCalledTimes(1);
+    expect(Date.now() - started).toBeLessThan(900);
   });
 
   it("still stops when the caller aborts first", async () => {

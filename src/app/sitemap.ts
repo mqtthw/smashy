@@ -3,6 +3,7 @@
 // for all servers.
 import type { MetadataRoute } from "next";
 import { cacheLife } from "next/cache";
+import { connection } from "next/server";
 import { CHARACTERS } from "@/lib/characters";
 import { GAME_KEYS } from "@/lib/games";
 import { majorHref } from "@/lib/handMajors";
@@ -129,5 +130,9 @@ async function upcomingTournamentSlugs(): Promise<{ slugs: string[]; failed: boo
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Made on the first request after a deploy, not while building (round 864): reading every region's
+  // saved events took longer than the build allows and failed two deploys in a row. The shared cache
+  // above still keeps it to once every few hours.
+  await connection();
   return entries();
 }
