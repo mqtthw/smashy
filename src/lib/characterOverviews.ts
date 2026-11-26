@@ -215,6 +215,150 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
         { en: "A dreadful disadvantage state." },
       ],
     },
+    // Round 919 batch (English first).
+    robin: {
+      source: {
+        title: "Robin in Smash Ultimate",
+        url: "https://docs.google.com/document/d/1IGgIUrPu0G3xiiN1TUszJATxcuS_Tx-XuEJR8KvJD-w/",
+        by: "Issun, with thanks to the Robin Discord",
+      },
+      playstyle: {
+        en: "Versatile, adaptive and territorial. Robin controls space with ranged spells and with the long, hard-hitting Levin Sword, and changes the game plan by matchup and by which resources are left. The guide says Robin excels when in control, and can be frustratingly complicated for beginners.",
+      },
+      traits: [
+        {
+          name: "Limited resources",
+          text: { en: "The Levin Sword and each spell tome run out and come back after a while, so Robin regularly loses some of the best options and has to adapt. With the Levin Sword gone (about 10 seconds), the guide advises playing more passively." },
+        },
+        {
+          name: "Levin Sword",
+          text: { en: "A disjointed sword with overwhelming reach and heavy knockback: the base of Robin's spacing." },
+        },
+        {
+          name: "Thunder, Arcfire, Elwind, Nosferatu",
+          text: { en: "Thunder is the main zoning spell (the neutral is much weaker without it), Arcfire sets traps and combos, Elwind is the recovery (losing it at the wrong moment costs a stock), and Nosferatu can help with landing." },
+        },
+      ],
+      strengths: [
+        { en: "Controls space with both projectiles and a long disjointed sword." },
+        { en: "Does well at mid-close range against projectile zoners, while close-combat characters struggle to break through the zone." },
+        { en: "Lower landing lag and better movement than in Smash 4 make Robin feel more fluid." },
+      ],
+      weaknesses: [
+        { en: "Tends to lose trades up close because the attacks start slowly, so keeping a safe distance matters." },
+        { en: "Regularly loses access to key tools as resources run out." },
+        { en: "Complicated to learn." },
+      ],
+    },
+    "ice-climbers": {
+      source: {
+        title: "Ice Climbers Discord Mega-Guide",
+        url: "https://docs.google.com/document/d/1fs1J6xsBlsRGqCxJsfyANRR8W8ZA87oZ8kS9ppGeNi4/edit?usp=sharing",
+        by: "Spectrum, Natedawg, Marshi, Danilio8 and CptRemex",
+      },
+      playstyle: {
+        en: "Bait and punish. The guide recommends neither pure rushdown nor camping: make the opponent miss, then counterattack with a high-damage punish. That can lean aggressive (pressing the opponent into hasty choices) or defensive (giving up a little space and punishing the approach).",
+      },
+      traits: [
+        {
+          name: "Two climbers",
+          text: { en: "Nana, the second climber, adds a lot of coverage to their moves. Playing with both together (“synced”) is not the same as playing Popo alone." },
+        },
+        {
+          name: "Desync",
+          text: { en: "Making the two climbers act separately. The guide says it essentially doubles their coverage and opens up a huge range of combos, punishes and early KO setups, and it teaches the desync techniques in order." },
+        },
+        {
+          name: "Grab, Blizzard, up air",
+          text: { en: "Their strongest KO confirms and combos come from grabbing, from freezing the opponent with Blizzard, or from up air while synced, so the guide suggests asking how each combo leads to one of those." },
+        },
+      ],
+      strengths: [
+        { en: "Huge damage or a KO from a single opening." },
+        { en: "Fairly good frame data." },
+        { en: "A lot of coverage on their moves thanks to Nana, and more again when desynced." },
+      ],
+      weaknesses: [
+        { en: "Slow: the 14th slowest run speed in the game." },
+        { en: "Fairly small hammers, and a weak projectile in Ice Block." },
+        { en: "Light, so opponents close out their stocks more easily." },
+      ],
+    },
+    ridley: {
+      source: {
+        title: "An In-Depth Guide to Ridley",
+        url: "https://docs.google.com/document/d/1GTCGcJzEWrv4REbv3PfwiWmceZU8NbZhoJCgmb-JAs8/edit?usp=sharing",
+        by: "Plague von Karma, with 2x Jump and the Ridley Discord",
+      },
+      stats: { weight: 107 },
+      playstyle: {
+        en: "A big character with a sword-like tail and tools for defensive, balanced or offensive play. The guide describes a patient neutral built on being unpredictable: wait, threaten with position and huge hitboxes, punish the opponent's mistake, then keep the advantage for as long as possible.",
+      },
+      traits: [
+        {
+          name: "Neutral air",
+          text: { en: "The centerpiece of his moves: disjointed, long-lasting, and the usual way into advantage. The guide warns it is easy to lean on too much and become predictable." },
+        },
+        {
+          name: "The tail",
+          text: { en: "The metal part of his tail is a disjoint, like a sword, which is why his range is so large that he outranges characters like Marth and Ike." },
+        },
+        {
+          name: "Multiple midair jumps",
+          text: { en: "Used to fake a landing, bait a miss and punish, and to get out of juggles." },
+        },
+        {
+          name: "Plasma Breath",
+          text: { en: "Fireballs for when the opponent is far away or won't approach, charged about half to three quarters." },
+        },
+      ],
+      strengths: [
+        { en: "Builds a formidable advantage from stray hits, and can keep it for a long time." },
+        { en: "Huge hitboxes and range, which also make punishing a miss easy." },
+        { en: "A stronger combo game than expected: usually at least three hits from his regular starters." },
+      ],
+      weaknesses: [
+        { en: "Gigantic, so he gets juggled as soon as he's launched; landing is a chore." },
+        { en: "His moves vary a lot in quality: some have blind spots, and some are too strict to use." },
+        { en: "A horrendous disadvantage, with very few defensive options." },
+      ],
+    },
+    "pokemon-trainer": {
+      source: {
+        title: "The Pokemon Trainer Field Guide",
+        url: "https://docs.google.com/document/d/1nJqRZ79uBtwuD_YcupDm7Y9ZLIAToP4mrIxdgnnAh2s/edit?usp=sharing",
+        by: "Contrary and the Pokemon Trainer community",
+      },
+      playstyle: {
+        en: "Three Pokémon with three movesets and three playstyles that cover for each other. The guide calls Pokémon Trainer one of the most complicated characters in the game, and the one with the most tools for the rest of the roster: Squirtle for low percents, then a switch to Ivysaur or Charizard, who take stocks more easily.",
+      },
+      traits: [
+        {
+          name: "Squirtle",
+          text: { en: "The smallest and most evasive: bait-and-punish and rushdown, with great frame data and solid speed. He is KO'd fairly early and has trouble taking stocks without a hard read." },
+        },
+        {
+          name: "Ivysaur",
+          text: { en: "The most versatile, and the guide's leader of the trio: zoning, mid-percent confirms and edgeguarding, with a low body and very disjointed hitboxes. Her mobility and frame data are mediocre." },
+        },
+        {
+          name: "Charizard",
+          text: { en: "Recovery and high-percent KOs: huge hitboxes, great kill power, strong ledge trapping and edgeguarding. His attacks aren't safe and his body is huge." },
+        },
+        {
+          name: "Pokémon Change",
+          text: { en: "Down special switches Pokémon. It also works as a way out of combos, and the guide suggests switching after winning an exchange, so the next Pokémon comes in from a good position." },
+        },
+      ],
+      strengths: [
+        { en: "The most tools of any character for dealing with the roster." },
+        { en: "Each Pokémon covers what the others lack." },
+      ],
+      weaknesses: [
+        { en: "One of the most complicated characters to play: three movesets to learn." },
+        { en: "Each Pokémon has a clear flaw on its own." },
+      ],
+    },
   },
   melee: {
     // Round 918 batch (English first).
