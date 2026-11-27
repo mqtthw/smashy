@@ -94,10 +94,11 @@ const PLAYER: Game = { href: "/arcade/player", title: "history.arcade.player.tit
 const HL: Game = { href: "/arcade/higher-lower", title: "history.arcade.hl.title", line: "history.arcade.hl.line", color: "#5ad1ff", art: ART.hl };
 const SETS: Game = { href: "/arcade/sets", title: "history.arcade.sets.title", line: "history.arcade.sets.line", color: "#7dff9a", art: ART.sets };
 const DI: Game = { href: "/arcade/di", title: "history.arcade.di.title", line: "history.arcade.di.line", color: "#c58bff", art: ART.di };
+// Left to right (Matthew's order): Does it kill?, Guess the move, Which is faster?
 const QUIZZES: (Game & { best: string })[] = [
-  { href: "/arcade/frames", title: "history.arcade.fq.frames.title", line: "history.arcade.fq.frames.line", color: "#6aa7ff", art: ART.frames, best: "arcade.fq.frames.best" },
-  { href: "/arcade/move", title: "history.arcade.fq.move.title", line: "history.arcade.fq.move.line", color: "#ff9ad5", art: ART.move, best: "arcade.fq.move.best" },
   { href: "/arcade/kill", title: "history.arcade.fq.kill.title", line: "history.arcade.fq.kill.line", color: "#9dff6a", art: ART.kill, best: "arcade.fq.kill.best" },
+  { href: "/arcade/move", title: "history.arcade.fq.move.title", line: "history.arcade.fq.move.line", color: "#ff9ad5", art: ART.move, best: "arcade.fq.move.best" },
+  { href: "/arcade/frames", title: "history.arcade.fq.frames.title", line: "history.arcade.fq.frames.line", color: "#6aa7ff", art: ART.frames, best: "arcade.fq.frames.best" },
 ];
 const TECH: Game = { href: "/arcade/tech-chase", title: "history.arcade.tech.title", line: "history.arcade.tech.line", color: "#ffa040", art: ART.tech };
 
@@ -181,8 +182,8 @@ export default function ArcadeHub({ day }: { day: number }) {
       <section aria-labelledby="arcade-anytime" className="flex flex-col gap-3">
         <h2 id="arcade-anytime" className="font-bold">{t("history.arcade.sec.anytime")}</h2>
         <ul className="grid gap-3 sm:grid-cols-2">
-          <GameCard game={HL} i={2} chip={bestChip(Number(hlBest), t("history.arcade.hl.best", { n: Number(hlBest) }))} />
-          <GameCard game={SETS} i={3} chip={bestChip(Number(setsBest), t("history.arcade.sets.best", { n: Number(setsBest), total: SETS_PER_ROUND }))} />
+          <GameCard game={SETS} i={2} chip={bestChip(Number(setsBest), t("history.arcade.sets.best", { n: Number(setsBest), total: SETS_PER_ROUND }))} />
+          <GameCard game={HL} i={3} chip={bestChip(Number(hlBest), t("history.arcade.hl.best", { n: Number(hlBest) }))} />
         </ul>
       </section>
 
@@ -196,8 +197,8 @@ export default function ArcadeHub({ day }: { day: number }) {
       <section aria-labelledby="arcade-trainers" className="flex flex-col gap-3">
         <h2 id="arcade-trainers" className="font-bold">{t("history.arcade.sec.trainers")}</h2>
         <ul className="grid gap-3 sm:grid-cols-2">
-          <GameCard game={TECH} i={4} chip={bestChip(Number(techBest), t("history.arcade.hl.best", { n: Number(techBest) }))} />
-          <GameCard game={DI} i={5} chip={bestChip(Number(diBest), t("history.arcade.hl.best", { n: Number(diBest) }))} />
+          <GameCard game={DI} i={4} chip={bestChip(Number(diBest), t("history.arcade.hl.best", { n: Number(diBest) }))} />
+          <GameCard game={TECH} i={5} chip={bestChip(Number(techBest), t("history.arcade.hl.best", { n: Number(techBest) }))} />
         </ul>
       </section>
     </div>
