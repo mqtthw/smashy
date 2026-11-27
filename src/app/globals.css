@@ -1963,8 +1963,8 @@ body::before {
 .arcade-toggle,
 .arcade-seg > button,
 .arcade-promo-btn,
-.arcade-play-area button:not(.touch-none),
-.arcade-play-area [data-stick] {
+.arcade-play-area,
+.arcade-play-area *:not(.touch-none) {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }

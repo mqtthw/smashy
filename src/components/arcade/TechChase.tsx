@@ -464,6 +464,7 @@ export default function TechChase() {
         <span className="text-muted">{t("history.arcade.hl.best", { n: best })}</span>
       </div>
       <div ref={playArea} className="arcade-play-area flex flex-col gap-3">
+      <p className="touch-only text-meta text-muted">{t("history.arcade.tech.touch", { move: hitName })}</p>
       <div className="card relative overflow-hidden">
         <canvas ref={canvas} width={W} height={H} onPointerDown={tapScreen} className="block h-auto w-full touch-none select-none" />
         <div className="pointer-events-none absolute inset-x-0 top-3 flex justify-center px-3" role="status">
@@ -499,7 +500,6 @@ export default function TechChase() {
       </div>
       </div>
       <p className="keys-only text-meta text-muted">{t("history.arcade.tech.keys", { move: hitName })}</p>
-      <p className="touch-only text-meta text-muted">{t("history.arcade.tech.touch", { move: hitName })}</p>
       <details className="arcade-start-how">
         <summary>{t("history.arcade.fq.howTo")}</summary>
         <ul className="mt-2 flex flex-col gap-1.5 text-sm">

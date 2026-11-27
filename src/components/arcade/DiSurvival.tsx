@@ -51,7 +51,7 @@ const ZONE: Record<"top" | "side" | "bottom", MessageKey> = { top: "history.arca
 type Solved = ReturnType<typeof resolveHit>;
 /** The stick as the game hears it: a touch stick inside the deadzone is no stick at all. */
 const heard = (g: Pick<Game, "stick" | "analog">) => (g.analog ? touchStick(g.stick) : g.stick);
-type Game = { phase: "idle" | "windup" | "freeze" | "flight" | "result" | "over"; hit: DiHit | null; scene: HitScene | null; at: number; solved: Solved | null; stick: Stick; analog: boolean; lives: number; survived: number; victim: Victim; stage: Stage };
+type Game = { phase: "idle" | "windup" | "freeze" | "flight" | "result" | "over"; hit: DiHit | null; scene: HitScene | null; at: number; solved: Solved | null; stick: Stick; analog: boolean; used: Stick; lives: number; survived: number; victim: Victim; stage: Stage };
 // The characters' outlines, by who (loaded as they're needed).
 const figs: Record<string, Outlines | null> = {};
 const need = (who: string) => {
@@ -215,7 +215,7 @@ export default function DiSurvival() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [victim, setVictim] = useState<Victim>("fox");
   const [stage, setStage] = useState<StageKey>("fd");
-  const game = useRef<Game>({ phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: { x: 0, y: 0 }, analog: false, lives: LIVES, survived: 0, victim: "fox", stage: STAGES.fd });
+  const game = useRef<Game>({ phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: { x: 0, y: 0 }, analog: false, used: { x: 0, y: 0 }, lives: LIVES, survived: 0, victim: "fox", stage: STAGES.fd });
   useEffect(() => need(victim), [victim]);
   const held = useRef(new Set<string>());
   const [bestStored, setBest] = useStoredState("arcade.di.best", "0");
@@ -250,7 +250,7 @@ export default function DiSurvival() {
   const start = useCallback(() => {
     // On a phone, the picture and the pad in view together (round 980).
     playArea.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    game.current = { phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: game.current.stick, analog: game.current.analog, lives: LIVES, survived: 0, victim, stage: STAGES[stage] };
+    game.current = { phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: game.current.stick, analog: game.current.analog, used: { x: 0, y: 0 }, lives: LIVES, survived: 0, victim, stage: STAGES[stage] };
     setHud({ phase: "freeze", lives: LIVES, survived: 0, hit: null, note: null, newBest: false });
     nextHit(performance.now());
   }, [nextHit, stage, victim]);
@@ -269,6 +269,8 @@ export default function DiSurvival() {
       } else if (g.phase === "freeze" && g.hit && f >= FREEZE_FRAMES) {
         // The stick is read as the freeze ends, as the game reads it on the last frame of hitlag.
         g.solved = resolveHit(g.hit.move, g.hit.percent, g.victim, g.hit.x0, g.hit.facing, g.stick, g.stage, g.analog);
+        // What was held then is what the result names (round 987: letting go during the flight showed "·").
+        g.used = heard(g);
         g.phase = "flight";
         g.at = now;
         setHud((h) => ({ ...h, phase: "flight" }));
@@ -279,8 +281,8 @@ export default function DiSurvival() {
         if (s.mine.ko) g.lives--;
         else g.survived++;
         const note: NonNullable<Hud["note"]> = s.mine.ko
-          ? { key: "history.arcade.di.r.died", values: { zone: s.mine.ko, arrow: arrow(s.best.stick), you: arrow(heard(g)) }, good: false }
-          : { key: passedTopAlive(s.mine, g.stage) ? "history.arcade.di.r.livedTop" : "history.arcade.di.r.lived", values: { deg: Math.abs(Math.round(s.turned)), you: arrow(heard(g)) }, good: true };
+          ? { key: "history.arcade.di.r.died", values: { zone: s.mine.ko, arrow: arrow(s.best.stick), you: arrow(g.used) }, good: false }
+          : { key: passedTopAlive(s.mine, g.stage) ? "history.arcade.di.r.livedTop" : "history.arcade.di.r.lived", values: { deg: Math.abs(Math.round(s.turned)), you: arrow(g.used) }, good: true };
         setHud((h) => ({ ...h, phase: "result", lives: g.lives, survived: g.survived, note }));
       } else if (g.phase === "result" && now - g.at > RESULT_MS) {
         if (g.lives > 0) nextHit(now);
@@ -382,6 +384,7 @@ export default function DiSurvival() {
         <span className="text-muted">{t("history.arcade.hl.best", { n: best })}</span>
       </div>
       <div ref={playArea} className="arcade-play-area flex flex-col gap-3">
+      <p className="touch-only text-meta text-muted">{t("history.arcade.di.touch")}</p>
       <div className="card relative overflow-hidden">
         <canvas ref={canvas} width={W} height={H} className="block h-auto w-full" />
         <div className="pointer-events-none absolute inset-x-0 top-3 flex flex-col items-center gap-2 px-3 text-center" role="status">
@@ -431,7 +434,6 @@ export default function DiSurvival() {
       </div>
       </div>
       <p className="keys-only text-meta text-muted">{t("history.arcade.di.keys")}</p>
-      <p className="touch-only text-meta text-muted">{t("history.arcade.di.touch")}</p>
       <details className="arcade-start-how">
         <summary>{t("history.arcade.fq.howTo")}</summary>
         <ul className="mt-2 flex flex-col gap-1.5 text-sm">
