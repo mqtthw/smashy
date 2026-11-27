@@ -45,8 +45,12 @@ type Game = {
   lives: number;
   victim: TechVictim;
   player: Chaser; // who chases (round 974)
+  foxX: number; // where the opponent is drawn, for taps on him (round 985)
+  pending: { since: number; at: number } | null; // a tap on him that may become a double tap
 };
-const fresh = (speed: number, victim: TechVictim = "fox", player: Chaser = "marth"): Game => ({ victim, player, phase: "idle", script: null, landAt: 0, speed, slot: 0, px: slotX(0), action: null, done: 0, frozen: 0, resultAt: 0, outcome: null, whiff: null, points: 0, punishes: 0, lives: START_LIVES });
+/** How long a second tap has to make a double tap (ms). */
+const DOUBLE_MS = 220;
+const fresh = (speed: number, victim: TechVictim = "fox", player: Chaser = "marth"): Game => ({ victim, player, phase: "idle", script: null, landAt: 0, speed, slot: 0, px: slotX(0), action: null, done: 0, frozen: 0, resultAt: 0, outcome: null, whiff: null, points: 0, punishes: 0, lives: START_LIVES, foxX: slotX(0), pending: null });
 // The characters' outlines (round 973, Matthew: "the outline has to be accurate to the animation because the point
 // is to help players recognize the visual cues of each characters tech animations"): lib/outlines.ts since round 976.
 const figure = (o: Outlines | null | undefined, who: string, state: string, frame: number) => outlinePath(o, who, state, frame, FIG);
@@ -154,6 +158,7 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number, figs: Figures
       figLift = 40;
     }
   }
+  g.foxX = dx;
   const fig = figure(figs.victim, figs.who, state, sf);
   ctx.save();
   ctx.translate(dx, GROUND - (fig ? figLift : lift));
@@ -283,7 +288,7 @@ export default function TechChase() {
 
   const nextRound = useCallback((now: number) => {
     const g = game.current;
-    Object.assign(g, { phase: "round", script: newScript(Math.random, g.victim), landAt: now + (FALL_FRAMES * 1000) / FPS / g.speed, slot: 0, action: null, done: 0, outcome: null, whiff: null });
+    Object.assign(g, { phase: "round", script: newScript(Math.random, g.victim), landAt: now + (FALL_FRAMES * 1000) / FPS / g.speed, slot: 0, action: null, done: 0, outcome: null, whiff: null, pending: null });
     setHud((h) => ({ ...h, note: null }));
   }, []);
 
@@ -314,7 +319,7 @@ export default function TechChase() {
       }
       if (g.phase !== "round") return;
       const f = framesAt(performance.now() - g.landAt, g.speed) + 1;
-      if (busy(g.action, f)) return; // mid-move: Marth can't do anything else yet
+      if (g.pending || busy(g.action, f)) return; // mid-move: Marth can't do anything else yet
       if (what === "left") g.slot = moveSlot(g.slot, -1);
       else if (what === "right") g.slot = moveSlot(g.slot, 1);
       else if (what === "centre") g.slot = 0;
@@ -329,9 +334,15 @@ export default function TechChase() {
     let id = requestAnimationFrame(function frame(now) {
       const g = game.current;
       g.px += (slotX(g.slot) - g.px) * 0.4;
+      // A tap on him with no second tap: a grab, from the frame of the tap.
+      if (g.pending && now - g.pending.at > DOUBLE_MS) {
+        g.action = { move: "grab", since: g.pending.since, by: g.player };
+        g.pending = null;
+      }
       if (g.phase === "round" && g.script) {
         // Judge every game frame since the last screen frame, so a slow screen can't skip the two frames a grab is out.
-        const f = framesAt(now - g.landAt, g.speed) + 1;
+        // While a tap waits to see if it's a double tap, judging waits at the tap's frame and catches up after.
+        const f = g.pending ? g.pending.since - 1 : framesAt(now - g.landAt, g.speed) + 1;
         for (let k = Math.max(1, g.done + 1); k <= f && g.phase === "round"; k++) {
           g.done = k;
           const { outcome, whiff } = judgeFrame(g.script, k, g.slot, g.action);
@@ -393,6 +404,31 @@ export default function TechChase() {
       showToast(t("ui.shareFailed"));
     }
   };
+  // Tapping the picture (round 985, Matthew: "tap to position for the tech chase and tap the opponent to grab/jab"):
+  // the floor runs you to the nearest spot; the opponent grabs when you're at his spot (a double tap: your hit, from
+  // the first tap) and runs you to him when you're not.
+  const tapScreen = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const g = game.current;
+    if (g.phase !== "round") return;
+    e.preventDefault();
+    const r = e.currentTarget.getBoundingClientRect();
+    const px = ((e.clientX - r.left) / r.width) * W;
+    const py = ((e.clientY - r.top) / r.height) * H;
+    const x = narrow ? px / NARROW.k + NARROW.x : px;
+    const y = narrow ? py / NARROW.k + NARROW.y : py;
+    const now = performance.now();
+    const f = framesAt(now - g.landAt, g.speed) + 1;
+    const onHim = Math.abs(x - g.foxX) < 42 && y > GROUND - 120 && y < GROUND + 4;
+    if (onHim && g.pending) {
+      g.action = { move: "tilt", since: g.pending.since, by: g.player };
+      g.pending = null;
+      return;
+    }
+    if (g.pending || busy(g.action, f)) return;
+    const nearest = (at: number) => ([-1, 0, 1] as Slot[]).reduce((a, b) => (Math.abs(at - slotX(b)) < Math.abs(at - slotX(a)) ? b : a));
+    if (onHim && nearest(g.foxX) === g.slot) g.pending = { since: f, at: now };
+    else g.slot = nearest(onHim ? g.foxX : x);
+  };
   const pad = (what: Parameters<typeof act>[0], label: string, text: string, key: string, strong = false) => (
     <button type="button" aria-label={label} onPointerDown={(e) => { e.preventDefault(); act(what); }} className={`btn btn-md ${strong ? "btn-inverse" : "btn-outline"} h-14 min-w-0 touch-none select-none whitespace-normal px-1 leading-tight sm:h-auto`}>
       {text}
@@ -429,7 +465,7 @@ export default function TechChase() {
       </div>
       <div ref={playArea} className="arcade-play-area flex flex-col gap-3">
       <div className="card relative overflow-hidden">
-        <canvas ref={canvas} width={W} height={H} className="block h-auto w-full" />
+        <canvas ref={canvas} width={W} height={H} onPointerDown={tapScreen} className="block h-auto w-full touch-none select-none" />
         <div className="pointer-events-none absolute inset-x-0 top-3 flex justify-center px-3" role="status">
           {hud.phase === "round" && hud.note && (
             <p key={`${hud.note.key}-${hud.points}-${hud.lives}`} className={`arcade-pop badge border bg-overlay px-3 py-1 text-center text-sm ${hud.note.good ? "border-success text-success" : "border-danger"}`}>{noteText(hud.note)}</p>

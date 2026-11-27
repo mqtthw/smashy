@@ -161,3 +161,34 @@ describe("the top blast line", () => {
     expect(passedTopAlive(fly(60, 70, "jigglypuff", 0, STAGES.yoshis), STAGES.yoshis)).toBe(false); // never got there
   });
 });
+
+import { touchStick } from "@/lib/diSurvival";
+
+describe("the touch stick (round 985)", () => {
+  it("reads like a controller: clamped to the circle, cut to steps of 80, deadzone at 22 steps", () => {
+    expect(touchStick({ x: 0, y: 0 })).toEqual({ x: 0, y: 0 });
+    expect(touchStick({ x: 0.2, y: 0.1 })).toEqual({ x: 0, y: 0 }); // both axes in the deadzone
+    expect(touchStick({ x: 2, y: 0 })).toEqual({ x: 1, y: 0 }); // past the rim is the rim
+    expect(touchStick({ x: 1, y: 1 })).toEqual({ x: 56 / 80, y: 56 / 80 }); // a full diagonal, as the game reads it
+    expect(touchStick({ x: 0.9, y: 0.25 })).toEqual({ x: 72 / 80, y: 0 }); // y at 20 steps: dropped
+    expect(touchStick({ x: -0.5, y: 0.5 })).toEqual({ x: -40 / 80, y: 40 / 80 });
+  });
+  it("turns a launch exactly as a keyboard does for the same full directions", () => {
+    const m = DI_MOVES[0];
+    for (const s of [{ x: 1, y: 0 }, { x: 0, y: -1 }, { x: 1, y: 1 }, { x: -1, y: 1 }]) {
+      const key = resolveHit(m, 120, "fox", 0, 1, s, STAGE);
+      const touch = resolveHit(m, 120, "fox", 0, 1, s, STAGE, true);
+      expect(touch.turned).toBeCloseTo(key.turned, 6);
+      expect(touch.mine.ko).toBe(key.mine.ko);
+    }
+  });
+  it("finds a best DI at least as good as the keyboard's eight directions", () => {
+    for (const m of DI_MOVES.slice(0, 6)) {
+      for (const pct of [60, 110, 160]) {
+        const key = resolveHit(m, pct, "marth", 30, -1, { x: 0, y: 0 }, STAGE);
+        const touch = resolveHit(m, pct, "marth", 30, -1, { x: 0, y: 0 }, STAGE, true);
+        expect(margin(touch.best.flight, STAGE)).toBeGreaterThanOrEqual(margin(key.best.flight, STAGE) - 1e-9);
+      }
+    }
+  });
+});

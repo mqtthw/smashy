@@ -145,18 +145,28 @@ export function margin(flight: Flight, stage: Stage = STAGE): number {
   return Math.min(...flight.points.map(([x, y]) => Math.min(stage.right - x, x - stage.left, y - stage.bottom, stage.top - y > 0 ? stage.top - y : 0.01)));
 }
 
-/** One hit, worked out: the knockback, the flight with no DI, with the player's DI, and the best the keyboard allows. */
-export function resolveHit(move: Pick<DiMove, "damage" | "angle" | "base" | "growth">, percentBefore: number, victim: Victim, x0: number, facing: 1 | -1, stick: Stick, stage: Stage = STAGE) {
+/**
+ * One hit, worked out: the knockback, the flight with no DI, with the player's DI, and the best the player's input
+ * allows. `analog` (round 985): the stick is a touch stick (x and y anywhere in the circle), read as the game reads a
+ * controller (`touchStick`), and the best is the best any stick angle gives; otherwise it's a keyboard's eight.
+ */
+export function resolveHit(move: Pick<DiMove, "damage" | "angle" | "base" | "growth">, percentBefore: number, victim: Victim, x0: number, facing: 1 | -1, stick: Stick, stage: Stage = STAGE, analog = false) {
   const kb = knockback(move, percentBefore, MELEE_STATS[victim].weight ?? 100);
   const angle = launchAngle(move, facing);
   const at = (s: Stick) => fly(kb, diAngle(angle, s), victim, x0, stage);
-  const mine = at(stick);
+  const turned = analog ? stickTurn(angle, touchStick(stick)) : diAngle(angle, stick) - angle;
+  const mine = analog ? fly(kb, angle + turned, victim, x0, stage) : at(stick);
   let best = { stick: NO_STICK, flight: at(NO_STICK) };
-  for (const s of STICKS) {
-    const flight = at(s);
-    if (margin(flight, stage) > margin(best.flight, stage)) best = { stick: s, flight };
+  if (analog) {
+    const b = bestAnalogDi(kb, angle, victim, x0, stage);
+    if (b.stickAngle !== null) best = { stick: { x: Math.cos(rad(b.stickAngle)), y: Math.sin(rad(b.stickAngle)) }, flight: b.flight };
+  } else {
+    for (const s of STICKS) {
+      const flight = at(s);
+      if (margin(flight, stage) > margin(best.flight, stage)) best = { stick: s, flight };
+    }
   }
-  return { kb, angle, turned: diAngle(angle, stick) - angle, none: at(NO_STICK), mine, best, hitstun: hitstun(kb) };
+  return { kb, angle, turned, none: at(NO_STICK), mine, best, hitstun: hitstun(kb) };
 }
 
 export type DiRound = { move: DiMove; x0: number; facing: 1 | -1 };
@@ -212,6 +222,21 @@ export function analogStick(deg: number): Stick {
     return Math.abs(steps) <= 22 ? 0 : steps / 80;
   };
   return { x: axis(Math.cos(rad(deg))), y: axis(Math.sin(rad(deg))) };
+}
+
+/**
+ * A touch stick as the game would read it (round 985): x and y from the thumb's place in the stick's circle (any
+ * length; past the rim counts as the rim), clamped to the circle, cut to whole steps of 80 and each axis at or under
+ * the deadzone (22 steps) read as 0, as `analogStick` does for a stick held all the way out.
+ */
+export function touchStick(s: Stick): Stick {
+  const length = Math.hypot(s.x, s.y);
+  const k = length > 1 ? 1 / length : 1;
+  const axis = (v: number) => {
+    const steps = Math.trunc(80 * v * k);
+    return Math.abs(steps) <= 22 ? 0 : steps / 80;
+  };
+  return { x: axis(s.x), y: axis(s.y) };
 }
 
 /** How far a stick position turns a launch, in degrees (positive: anticlockwise), by the game's rule. */

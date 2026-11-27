@@ -15,7 +15,7 @@ import { Confetti, Picker } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { characterName } from "@/lib/characters";
 import { stockIconUrl } from "@/lib/mainBadge";
-import { DI_VICTIMS, STAGES, STAGE_KEYS, dealHit, launchAngle, passedTopAlive, resolveHit, type DiHit, type Stage, type StageKey, type Stick, type Victim } from "@/lib/diSurvival";
+import { DI_VICTIMS, STAGES, STAGE_KEYS, dealHit, launchAngle, passedTopAlive, resolveHit, touchStick, type DiHit, type Stage, type StageKey, type Stick, type Victim } from "@/lib/diSurvival";
 import { hitScene, type HitScene } from "@/lib/diVisuals";
 import { loadOutlines, outlinePath, type Outlines } from "@/lib/outlines";
 import type { MessageKey } from "@/lib/i18n/base";
@@ -40,11 +40,18 @@ const RESULT_MS = 2200;
 const LIVES = 3;
 // Each arrow ends in U+FE0E so iPhones draw it as text, not as a blue emoji tile (round 984).
 const ARROWS: Record<string, string> = { "0,0": "·", "1,0": "→︎", "-1,0": "←︎", "0,1": "↑︎", "0,-1": "↓︎", "1,1": "↗︎", "-1,1": "↖︎", "1,-1": "↘︎", "-1,-1": "↙︎" };
-const arrow = (s: Stick) => ARROWS[`${s.x},${s.y}`];
+/** The arrow for a stick: a keyboard's own, or the nearest of the eight to a touch stick's angle (round 985). */
+const arrow = (s: Stick) => {
+  if (!s.x && !s.y) return ARROWS["0,0"];
+  const a = (Math.round(Math.atan2(s.y, s.x) / (Math.PI / 4)) * Math.PI) / 4;
+  return ARROWS[`${Math.round(Math.cos(a)) || 0},${Math.round(Math.sin(a)) || 0}`];
+};
 const ZONE: Record<"top" | "side" | "bottom", MessageKey> = { top: "history.arcade.di.zone.top", side: "history.arcade.di.zone.side", bottom: "history.arcade.di.zone.bottom" };
 
 type Solved = ReturnType<typeof resolveHit>;
-type Game = { phase: "idle" | "windup" | "freeze" | "flight" | "result" | "over"; hit: DiHit | null; scene: HitScene | null; at: number; solved: Solved | null; stick: Stick; lives: number; survived: number; victim: Victim; stage: Stage };
+/** The stick as the game hears it: a touch stick inside the deadzone is no stick at all. */
+const heard = (g: Pick<Game, "stick" | "analog">) => (g.analog ? touchStick(g.stick) : g.stick);
+type Game = { phase: "idle" | "windup" | "freeze" | "flight" | "result" | "over"; hit: DiHit | null; scene: HitScene | null; at: number; solved: Solved | null; stick: Stick; analog: boolean; lives: number; survived: number; victim: Victim; stage: Stage };
 // The characters' outlines, by who (loaded as they're needed).
 const figs: Record<string, Outlines | null> = {};
 const need = (who: string) => {
@@ -208,7 +215,7 @@ export default function DiSurvival() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [victim, setVictim] = useState<Victim>("fox");
   const [stage, setStage] = useState<StageKey>("fd");
-  const game = useRef<Game>({ phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: { x: 0, y: 0 }, lives: LIVES, survived: 0, victim: "fox", stage: STAGES.fd });
+  const game = useRef<Game>({ phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: { x: 0, y: 0 }, analog: false, lives: LIVES, survived: 0, victim: "fox", stage: STAGES.fd });
   useEffect(() => need(victim), [victim]);
   const held = useRef(new Set<string>());
   const [bestStored, setBest] = useStoredState("arcade.di.best", "0");
@@ -224,6 +231,7 @@ export default function DiSurvival() {
     const k = held.current;
     const stick = { x: (k.has("right") ? 1 : 0) - (k.has("left") ? 1 : 0), y: (k.has("up") ? 1 : 0) - (k.has("down") ? 1 : 0) };
     game.current.stick = stick;
+    game.current.analog = false;
     setHolding(arrow(stick));
   }, []);
 
@@ -242,7 +250,7 @@ export default function DiSurvival() {
   const start = useCallback(() => {
     // On a phone, the picture and the pad in view together (round 980).
     playArea.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    game.current = { phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: game.current.stick, lives: LIVES, survived: 0, victim, stage: STAGES[stage] };
+    game.current = { phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: game.current.stick, analog: game.current.analog, lives: LIVES, survived: 0, victim, stage: STAGES[stage] };
     setHud({ phase: "freeze", lives: LIVES, survived: 0, hit: null, note: null, newBest: false });
     nextHit(performance.now());
   }, [nextHit, stage, victim]);
@@ -260,7 +268,7 @@ export default function DiSurvival() {
         setHud((h) => ({ ...h, phase: "freeze" }));
       } else if (g.phase === "freeze" && g.hit && f >= FREEZE_FRAMES) {
         // The stick is read as the freeze ends, as the game reads it on the last frame of hitlag.
-        g.solved = resolveHit(g.hit.move, g.hit.percent, g.victim, g.hit.x0, g.hit.facing, g.stick, g.stage);
+        g.solved = resolveHit(g.hit.move, g.hit.percent, g.victim, g.hit.x0, g.hit.facing, g.stick, g.stage, g.analog);
         g.phase = "flight";
         g.at = now;
         setHud((h) => ({ ...h, phase: "flight" }));
@@ -271,8 +279,8 @@ export default function DiSurvival() {
         if (s.mine.ko) g.lives--;
         else g.survived++;
         const note: NonNullable<Hud["note"]> = s.mine.ko
-          ? { key: "history.arcade.di.r.died", values: { zone: s.mine.ko, arrow: arrow(s.best.stick), you: arrow(g.stick) }, good: false }
-          : { key: passedTopAlive(s.mine, g.stage) ? "history.arcade.di.r.livedTop" : "history.arcade.di.r.lived", values: { deg: Math.abs(Math.round(s.turned)), you: arrow(g.stick) }, good: true };
+          ? { key: "history.arcade.di.r.died", values: { zone: s.mine.ko, arrow: arrow(s.best.stick), you: arrow(heard(g)) }, good: false }
+          : { key: passedTopAlive(s.mine, g.stage) ? "history.arcade.di.r.livedTop" : "history.arcade.di.r.lived", values: { deg: Math.abs(Math.round(s.turned)), you: arrow(heard(g)) }, good: true };
         setHud((h) => ({ ...h, phase: "result", lives: g.lives, survived: g.survived, note }));
       } else if (g.phase === "result" && now - g.at > RESULT_MS) {
         if (g.lives > 0) nextHit(now);
@@ -329,24 +337,28 @@ export default function DiSurvival() {
       showToast(t("ui.shareFailed"));
     }
   };
-  // The on-screen stick, for phones: a direction is held while its button is pressed.
-  // The on-screen stick, for phones (round 980): one pad that follows the thumb, so sliding from one direction to
-  // the next changes the hold; letting go holds nothing.
-  const PAD: Stick[] = [{ x: -1, y: 1 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: -1, y: -1 }, { x: 0, y: -1 }, { x: 1, y: -1 }];
-  const holdAt = (e: React.PointerEvent) => {
-    const el = document.elementFromPoint(e.clientX, e.clientY)?.closest<HTMLElement>("[data-stick]");
-    held.current.clear();
-    if (el) {
-      const [x, y] = el.dataset.stick!.split(",").map(Number);
-      if (x) held.current.add(x > 0 ? "right" : "left");
-      if (y) held.current.add(y > 0 ? "up" : "down");
+  // The on-screen stick, for touch screens (round 985, Matthew: "a DI joystick", any angle): drag the knob; where the
+  // thumb is in the stick's circle is the stick, read as the game reads a controller; letting go holds nothing.
+  const knob = useRef<HTMLSpanElement>(null);
+  const setStick = (stick: Stick, kx: number, ky: number) => {
+    game.current.stick = stick;
+    game.current.analog = true;
+    setHolding(arrow(touchStick(stick)));
+    if (knob.current) knob.current.style.transform = `translate(${kx}px, ${ky}px)`;
+  };
+  const stickAt = (e: React.PointerEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const reach = r.width * 0.3; // how far the knob travels to the rim
+    let dx = e.clientX - (r.left + r.width / 2);
+    let dy = e.clientY - (r.top + r.height / 2);
+    const d = Math.hypot(dx, dy);
+    if (d > reach) {
+      dx = (dx / d) * reach;
+      dy = (dy / d) * reach;
     }
-    readStick();
+    setStick({ x: dx / reach, y: -dy / reach }, dx, dy);
   };
-  const letGo = () => {
-    held.current.clear();
-    readStick();
-  };
+  const letGo = () => setStick({ x: 0, y: 0 }, 0, 0);
   const noteText = (n: NonNullable<Hud["note"]>) => t(n.key, "zone" in n.values ? { ...n.values, zone: t(ZONE[n.values.zone as "top" | "side" | "bottom"]) } : n.values);
   const idle = hud.phase === "idle" || hud.phase === "over";
 
@@ -398,27 +410,24 @@ export default function DiSurvival() {
         )}
       </div>
       <div
-        className="grid w-max touch-none select-none grid-cols-3 gap-1.5 self-center sm:hidden"
+        aria-hidden="true"
+        className={`arcade-stick touch-none select-none self-center sm:hidden ${holding !== "·" ? "arcade-stick-on" : ""}`}
         onPointerDown={(e) => {
           e.preventDefault();
           try {
-            (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+            e.currentTarget.setPointerCapture(e.pointerId);
           } catch {
             // not every pointer can be captured; the press still counts
           }
-          holdAt(e);
+          stickAt(e);
         }}
         onPointerMove={(e) => {
-          if (e.buttons || e.pointerType === "touch") holdAt(e);
+          if (e.buttons || e.pointerType === "touch") stickAt(e);
         }}
         onPointerUp={letGo}
         onPointerCancel={letGo}
       >
-        {PAD.map((p) => (
-          <span key={`${p.x},${p.y}`} data-stick={`${p.x},${p.y}`} aria-hidden="true" className={`btn btn-outline flex h-16 w-16 items-center justify-center p-0 text-xl ${holding === arrow(p) && (p.x || p.y) ? "border-brand bg-[rgb(255_212_71/0.18)] text-brand" : ""}`}>
-            {arrow(p)}
-          </span>
-        ))}
+        <span ref={knob} className="arcade-stick-knob">{holding !== "·" ? holding : ""}</span>
       </div>
       </div>
       <p className="keys-only text-meta text-muted">{t("history.arcade.di.keys")}</p>
@@ -431,6 +440,7 @@ export default function DiSurvival() {
           <li className="text-meta text-muted">{t("history.arcade.di.maths")}</li>
           <li className="text-meta text-muted">{t("history.arcade.di.outlines")}</li>
           <li className="text-meta text-muted">{t("history.arcade.di.note")}</li>
+          <li className="text-meta text-muted">{t("history.arcade.di.stickNote")}</li>
         </ul>
       </details>
     </div>

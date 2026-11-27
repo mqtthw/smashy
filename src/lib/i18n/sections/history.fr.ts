@@ -487,6 +487,7 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.arcade.tech.player": "Vous jouez :",
   "history.arcade.mv.shine": "shine",
   "history.arcade.di.outlines": "Les combattants sont les silhouettes du jeu lui-même (NTSC 1.02) : le coup se joue frame par frame jusqu’à la frame où il touche, l’attaquant placé pour que sa vraie hitbox atteigne tout juste une de vos vraies hurtbox, et vous êtes montré dans la pose de coup que le jeu choisit pour cette hurtbox et cette éjection. L’endroit où se tient l’attaquant est un choix de Smashy, et la vibration pendant le gel sert seulement à montrer qu’il est figé.",
-  "history.arcade.tech.touch": "Touchez ◀︎ ● ▶︎ pour poursuivre entre les trois positions, {move} pour frapper et Saisir pour saisir (Saisir lance aussi la partie).",
-  "history.arcade.di.touch": "Maintenez une direction sur le pad jusqu’à la fin du gel. Glissez le pouce pour la changer ; relâchez pour ne rien tenir.",
+  "history.arcade.tech.touch": "Touchez le sol pour courir à une position, touchez l’adversaire pour saisir, ou touchez-le deux fois pour {move} (cela part de votre premier toucher). Le toucher depuis une autre position vous y fait courir. Les boutons en dessous marchent aussi ; Saisir lance aussi la partie.",
+  "history.arcade.di.touch": "Faites glisser le stick et maintenez-le jusqu’à la fin du gel. Tout angle compte, lu comme le jeu lit le stick d’une manette ; relâchez pour ne rien tenir.",
+  "history.arcade.di.stickNote": "Le stick tactile est lu comme le jeu lit une manette (d’après son code : limité à un cercle, découpé en 80 crans de chaque côté, et un axe à 22 crans ou moins compte pour 0), donc son meilleur DI peut être un peu meilleur que les huit directions du clavier. Après un KO, la flèche affichée est la plus proche des huit du meilleur angle.",
 };
