@@ -85,11 +85,6 @@
   0%, 100% { translate: 0 0; }
   50% { translate: 0 -3px; }
 }
-.ah-intro {
-  max-width: 28rem;
-  font-size: 0.9rem;
-  opacity: 0.92;
-}
 .ah-start {
   display: inline-flex;
   align-items: center;
@@ -120,9 +115,12 @@
 @keyframes ah-blink {
   50% { opacity: 0; }
 }
-/* The scoreboard: three glowing readouts behind glass. */
+/* The scoreboard: three glowing readouts behind glass, in the top right corner (round 999, Matthew's sketch: no
+   description, the scoreboard moved up). */
 .ah-board {
   position: relative;
+  align-self: start;
+  justify-self: end;
   display: grid;
   grid-template-columns: repeat(3, auto);
   gap: 0.2rem 1.3rem;

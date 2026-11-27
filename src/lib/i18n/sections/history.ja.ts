@@ -491,4 +491,7 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.di.touch": "画面のどこかに触れると、指の下にスティックが現れます。停止が終わるまでドラッグして倒し続けてください。どの角度でも入力され、ゲームがコントローラーのスティックを読むのと同じように読み取ります。離すと何も入力しません。",
   "history.arcade.di.stickNote": "タッチのスティックは、ゲームがコントローラーを読むのと同じ方法で読み取ります（ゲームのコードどおり：円の中に収め、片側80段階に区切り、22段階以下の軸は0とみなす）。そのため、キーボードの8方向より少し良いDIができることがあります。撃墜後に表示される矢印は、最適な角度に最も近い8方向のものです。",
   "history.arcade.other.ssf2": "McLeodGamingが作った、スマブラ風の無料ファンメイド対戦アクションゲーム。",
+  "history.arcade.other.pplus": "コミュニティが作るProject Mの続編。Meleeに近い操作感にするBrawlのMODです。",
+  "history.arcade.other.remix": "ニンテンドウ64版スマブラに新しいファイターとステージを加えるファンMOD。",
+  "history.arcade.other.hdr": "HewDraw Remix：ファンが作ったスマブラSPの対戦向けゲームプレイMOD。",
 };

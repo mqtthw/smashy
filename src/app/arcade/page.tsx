@@ -27,6 +27,10 @@ async function Tiles() {
 const OTHER_GAMES = [
   { name: "Smashdle", href: "https://smashdle.net/", icon: "/community/smashdle.png", line: "history.arcade.other.smashdle", color: "#c58bff", plate: false },
   { name: "Super Smash Flash 2", href: "https://www.supersmashflash.com/", icon: "/community/ssf2.png", line: "history.arcade.other.ssf2", color: "#ff5a4f", plate: true },
+  // Fan mods (round 998): each links to its own official home.
+  { name: "Project+", href: "https://projectplusgame.com/", icon: "/community/pplus.png", line: "history.arcade.other.pplus", color: "#3ddc97", plate: false },
+  { name: "Smash Remix", href: "https://smashremix.net/", icon: "/community/smashremix.png", line: "history.arcade.other.remix", color: "#ffd447", plate: false },
+  { name: "HewDraw Remix (HDR)", href: "https://hdr-development.github.io/", icon: "/community/hdr.png", line: "history.arcade.other.hdr", color: "#5ad16b", plate: false },
 ] as const;
 
 export default function ArcadePage() {

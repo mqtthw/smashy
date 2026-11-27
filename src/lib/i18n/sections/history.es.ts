@@ -491,4 +491,7 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.di.touch": "Toca cualquier parte de la imagen: aparece una palanca bajo tu pulgar. Arrastra y mantén hasta que termine la pausa; cualquier ángulo cuenta, leído como el juego lee la palanca de un mando. Suelta para no mantener nada.",
   "history.arcade.di.stickNote": "La palanca táctil se lee como el juego lee un mando (según su código: limitada a un círculo, cortada en 80 pasos por lado, y un eje de 22 pasos o menos cuenta como 0), así que su mejor DI puede ser algo mejor que las ocho direcciones del teclado. Tras un KO, la flecha mostrada es la más cercana de las ocho al mejor ángulo.",
   "history.arcade.other.ssf2": "Un juego de lucha de plataformas gratuito hecho por fans al estilo de Smash, creado por McLeodGaming.",
+  "history.arcade.other.pplus": "Una continuación de Project M hecha por la comunidad, el mod de Brawl que se juega más parecido a Melee.",
+  "history.arcade.other.remix": "Un mod hecho por fans del Super Smash Bros. de Nintendo 64 que añade luchadores y escenarios nuevos.",
+  "history.arcade.other.hdr": "HewDraw Remix: un mod competitivo de jugabilidad hecho por fans para Super Smash Bros. Ultimate.",
 };

@@ -490,4 +490,7 @@ export const historyEn = {
   "history.arcade.di.touch": "Touch anywhere on the picture: a stick appears under your thumb. Drag and hold until the freeze ends; any angle counts, read the way the game reads a controller's stick. Let go to hold nothing.",
   "history.arcade.di.stickNote": "The touch stick is read as the game reads a controller (from its code: clamped to a circle, cut into 80 steps each way, and an axis at 22 steps or fewer counts as 0), so its best DI can be a little better than the keyboard's eight directions. After a KO, the arrow shown is the nearest of the eight to the best angle.",
   "history.arcade.other.ssf2": "A free fan-made platform fighter in the style of Smash, made by McLeodGaming.",
+  "history.arcade.other.pplus": "A community-made continuation of Project M, the Brawl mod that plays closer to Melee.",
+  "history.arcade.other.remix": "A fan mod of the Nintendo 64 Super Smash Bros. that adds new fighters and stages.",
+  "history.arcade.other.hdr": "HewDraw Remix: a fan-made competitive gameplay mod for Super Smash Bros. Ultimate.",
 };

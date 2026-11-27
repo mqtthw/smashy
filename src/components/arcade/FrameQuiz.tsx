@@ -14,6 +14,7 @@
 // the game and Play, and the how-to and the notes on the numbers folded away.
 // Round 958 (Matthew: no "which does more damage" in a game about speed; Guess the move "could use more data" and
 // hid the gap between a move's hits; Does it kill? was "boring without any visuals").
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { QUIZ_LOOK } from "@/components/arcade/ArcadeArt";
 import { Confetti, Pips, Reveal } from "@/components/arcade/ArcadeBits";
@@ -30,6 +31,10 @@ import type { MoveChar, MoveData, MoveKey } from "@/lib/meleeMoves.data";
 import type { ShieldDuel, UltMoveData } from "@/lib/ultimateFrames";
 import type { KillView } from "@/lib/ultimateKill";
 import { useStoredState } from "@/lib/useStoredState";
+
+// Melee's Does it kill? picture (round 1000): the real stage, moves and hit poses, loaded with its data only when a
+// Melee question is shown.
+const KillScene = dynamic(() => import("@/components/arcade/KillScene"), { ssr: false, loading: () => <div className="card w-full" style={{ aspectRatio: "640 / 340" }} /> });
 
 export type QuizKind = "frames" | "move" | "kill" | "shield";
 type Question = { kind: "frames"; q: Duel; game: GameKey } | { kind: "move"; q: MoveGuess; game: GameKey } | { kind: "kill"; q: KillView } | { kind: "shield"; q: ShieldDuel };
@@ -313,7 +318,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   } else {
     const { q } = question;
     prompt = t(q.hard ? "history.arcade.fq.kill.qHard" : "history.arcade.fq.kill.q", { hit: named(q.attacker, q.move, q.game), victim: who(q.victim, q.game), n: q.percent });
-    extra = <KillStage q={q} answered={picked !== null} dialLabel={t("history.arcade.fq.kill.bestDi")} />;
+    extra = q.game === "melee" && q.stageKey ? <KillScene q={q} answered={picked !== null} dialLabel={t("history.arcade.fq.kill.bestDi")} /> : <KillStage q={q} answered={picked !== null} dialLabel={t("history.arcade.fq.kill.bestDi")} />;
     options = [{ key: "yes", label: t("history.arcade.fq.kill.yes") }, { key: "no", label: t("history.arcade.fq.kill.no") }];
     answer = q.kills ? "yes" : "no";
     // On hard: when it kills whatever is held there is no direction to name; when they live, the one that saved them.

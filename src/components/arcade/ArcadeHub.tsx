@@ -119,7 +119,6 @@ export default function ArcadeHub({ day }: { day: number }) {
         <div className="ah-hero-main">
           <p className="ah-eyebrow">{t("history.arcade.card.tag")}</p>
           <p className="ah-logo">{t("history.arcade.title")}</p>
-          <p className="ah-intro">{t("history.arcade.intro")}</p>
           <Link href={next.href} className="ah-start">
             <span aria-hidden="true" className="ah-blink">▶</span>
             {t(done.length < daily.length ? "history.arcade.hero.cta" : "history.arcade.hero.keep")}

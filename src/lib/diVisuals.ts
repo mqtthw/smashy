@@ -5,7 +5,7 @@
 // (diVisuals.data.ts, made by tools/melee-disc/build-di.mjs); where the attacker stands is Smashy's choice (the
 // attacker stands as far back as they can with the hitbox still touching a hurtbox, as a spaced hit lands; an
 // aerial is done at the height of the middle of the victim's body, with all of the attacker above the floor).
-import { HIT_POSE_RULES, HURTBOXES, MOVE_LOOKS, type Hurtbox } from "./diVisuals.data";
+import { HIT_POSE_RULES, HURTBOXES, MOVE_LOOKS, type DiMoveLook, type Hurtbox } from "./diVisuals.data";
 
 /** A hit as shown: who attacks with which of the game's states, where they stand, and the frames it takes. */
 export type HitScene = {
@@ -76,7 +76,11 @@ export const SHOT_FLIGHT = 16;
  */
 export function hitScene(moveKey: string, victim: string, x0: number, facing: 1 | -1, launchDeg: number, percent: number, rand: () => number): HitScene | null {
   const m = MOVE_LOOKS[moveKey];
-  if (!m) return null;
+  return m ? sceneFromLook(m, victim, x0, facing, launchDeg, percent, rand) : null;
+}
+
+/** The same for any move's look (Does it kill?'s moves, round 1000: killVisuals.data.ts). */
+export function sceneFromLook(m: DiMoveLook, victim: string, x0: number, facing: 1 | -1, launchDeg: number, percent: number, rand: () => number): HitScene | null {
   const boxes = hurtboxesAt(victim, x0, (-facing) as 1 | -1);
   if (!boxes.length) return null;
   // The middle of the victim's body: the average of their hurtboxes' middles.
