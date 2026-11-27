@@ -404,4 +404,6 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.ps.frames": "フレームはDXのもの（1秒60F）です：飛び道具はシールドの最初の2Fで反射、シールド解除は15F、ファルコのレーザーは23F目に発射。出典：SmashWiki、Melee Cookbook。",
   "history.arcade.ps.note": "ゲームと異なる点：レーザーが届くまでの速さ（公開値がないため12～30Fのランダム）と、発射の間隔。ブラウザとキーボードにもわずかな遅延があります。",
   "history.arcade.ps.shareText": "ジャストガード：レーザー{n}回反射",
+  "history.arcade.player.from": "出身：{where}",
+  "history.arcade.player.regionLegend": "出身：✓ 同じ地域 · ≈ 同じ国 · ✗ 別の国。出身地はSmashWikiのページの記載です（CC BY-SA 4.0）。記載のないプレイヤーもいます。",
 };

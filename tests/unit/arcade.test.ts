@@ -92,7 +92,7 @@ describe("the Arcade's player games", () => {
 
   it("compares a guess with the answer, and says nothing about mains it doesn't know", () => {
     const answer = player({ slug: "9", wins: 5, top8s: 20, firstYear: 2010, lastYear: 2019, main: "marth" });
-    expect(playerHint(player({}), answer)).toEqual({ right: false, wins: "higher", top8s: "higher", firstYear: "lower", lastYear: "same", main: false });
+    expect(playerHint(player({}), answer)).toEqual({ right: false, wins: "higher", top8s: "higher", firstYear: "lower", lastYear: "same", main: false, region: null });
     expect(playerHint(player({ main: null }), answer).main).toBeNull();
     expect(playerHint(answer, answer).right).toBe(true);
   });
@@ -139,5 +139,28 @@ describe("the Arcade's streaks and scores", () => {
 
   it("greets a score out of ten", () => {
     expect([10, 8, 5, 4].map((n) => setsRank(n, 10))).toEqual(["perfect", "top8", "pools", "out"]);
+  });
+});
+
+import { regionHint } from "@/lib/arcade";
+import { PLAYER_REGIONS } from "@/lib/arcadeRegions";
+
+describe("Guess the player's region hint", () => {
+  it("says same region, same country or another country, and nothing when one isn't known", () => {
+    const ca = { country: "United States", place: "California" };
+    expect(regionHint(ca, { country: "United States", place: "california " })).toBe("place");
+    expect(regionHint(ca, { country: "United States", place: "NY" })).toBe("country");
+    expect(regionHint(ca, { country: "United States", place: null })).toBe("country");
+    expect(regionHint(ca, { country: "Japan", place: "Kantō" })).toBe("other");
+    expect(regionHint(ca, { country: null })).toBeNull();
+    expect(playerHint(player({ ...ca }), player({ slug: "2", ...ca })).region).toBe("place");
+  });
+
+  it("has SmashWiki's regions with one spelling per country, each for at least one game", () => {
+    const all = Object.values(PLAYER_REGIONS);
+    expect(all.length).toBeGreaterThan(500);
+    expect(all.every((r) => r.country && r.games.length > 0)).toBe(true);
+    expect(all.some((r) => /^(usa|united states of america|the netherlands)$/i.test(r.country) || r.country === "united states")).toBe(false);
+    expect(PLAYER_REGIONS.mang0).toMatchObject({ country: "United States", place: "California" });
   });
 });

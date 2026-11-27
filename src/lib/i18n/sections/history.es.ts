@@ -404,4 +404,6 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.ps.frames": "Los frames son los de Melee (60 por segundo): un proyectil se refleja en los 2 primeros frames del escudo, bajar el escudo lleva 15 frames y el láser de Falco sale en el frame 23. De SmashWiki y Melee Cookbook.",
   "history.arcade.ps.note": "No es del juego: la velocidad a la que el láser cruza el hueco (no hay velocidad publicada, así que cada disparo tarda entre 12 y 30 frames al azar) y la espera entre disparos. Un navegador y un teclado añaden su propio retraso.",
   "history.arcade.ps.shareText": "Powershield: {n} láseres reflejados",
+  "history.arcade.player.from": "De: {where}",
+  "history.arcade.player.regionLegend": "De: ✓ misma región · ≈ mismo país · ✗ otro país. El origen de los jugadores es el que indican las páginas de SmashWiki (CC BY-SA 4.0); no todos tienen una.",
 };

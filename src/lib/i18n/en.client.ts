@@ -2623,6 +2623,8 @@ export const en = {
   "history.arcade.ps.frames": "The frames are Melee's (60 a second): a projectile is reflected in the shield's first 2 frames, dropping the shield takes 15 frames, and Falco's laser leaves his gun on frame 23. From SmashWiki and the Melee Cookbook.",
   "history.arcade.ps.note": "Not the game's: how fast the laser crosses the gap (no travel speed is published, so each shot takes a random 12 to 30 frames), and the wait between shots. A browser and a keyboard add a little delay of their own.",
   "history.arcade.ps.shareText": "Powershield: {n} lasers reflected",
+  "history.arcade.player.from": "From: {where}",
+  "history.arcade.player.regionLegend": "From: ✓ same region · ≈ same country · ✗ another country. Where players are from is as SmashWiki's pages say (CC BY-SA 4.0); not every player has one.",
   "playnow.title": "Play now",
   "playnow.req.incoming": "{who} wants to play {game} now",
   "playnow.req.outgoing": "Waiting for {who} to answer ({game})",

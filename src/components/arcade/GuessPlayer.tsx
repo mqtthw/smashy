@@ -52,6 +52,7 @@ export default function GuessPlayer({ day, gameLabel, answer, answerHref, option
           <h2 className="font-bold">{t("history.arcade.player.prompt", { game: gameLabel })}</h2>
         </div>
         <p className="text-meta text-muted">{t("history.arcade.player.legend")}</p>
+        <p className="text-meta text-muted">{t("history.arcade.player.regionLegend")}</p>
       </div>
 
       {guesses.length > 0 && (
@@ -68,8 +69,13 @@ export default function GuessPlayer({ day, gameLabel, answer, answerHref, option
                     <span className={tone(hint.top8s === "same")} style={at(2)}>{t("history.arcade.player.top8s", { n: g.top8s })} {ARROW[hint.top8s]}</span>
                     <span className={tone(hint.firstYear === "same")} style={at(3)}>{t("history.arcade.player.first", { n: g.firstYear })} {ARROW[hint.firstYear]}</span>
                     <span className={tone(hint.lastYear === "same")} style={at(4)}>{t("history.arcade.player.last", { n: g.lastYear })} {ARROW[hint.lastYear]}</span>
+                    {hint.region && g.country && (
+                      <span className={`arcade-flip badge border font-normal ${hint.region === "place" ? "border-success text-success" : hint.region === "country" ? "border-warning text-warning" : "border-line"}`} style={at(5)}>
+                        {t("history.arcade.player.from", { where: g.place ? `${g.country} · ${g.place}` : g.country })} {hint.region === "place" ? "✓" : hint.region === "country" ? "≈" : "✗"}
+                      </span>
+                    )}
                     {hint.main !== null && g.mainName && (
-                      <span className={`${tone(hint.main)} inline-flex items-center gap-1`} style={at(5)}>
+                      <span className={`${tone(hint.main)} inline-flex items-center gap-1`} style={at(6)}>
                         {/* eslint-disable-next-line @next/next/no-img-element -- a 16px stock icon */}
                         {g.mainIcon && <img src={g.mainIcon} alt="" width={16} height={16} className="h-4 w-4 object-contain" />}
                         {t("history.arcade.player.main", { name: g.mainName })} {hint.main ? "✓" : "✗"}

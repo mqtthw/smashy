@@ -115,7 +115,7 @@ export function savedGuesses(stored: string, day: number): string[] {
 
 export const PLAYER_TRIES = 6;
 /** A player as a choice: `slug` is their key (start.gg player id, or "name:<key>" without one). */
-export type PlayerOption = { slug: string; name: string; wins: number; top8s: number; firstYear: number; lastYear: number; main: string | null; mainName: string | null; mainIcon?: string | null };
+export type PlayerOption = { slug: string; name: string; wins: number; top8s: number; firstYear: number; lastYear: number; main: string | null; mainName: string | null; mainIcon?: string | null; country?: string | null; place?: string | null };
 
 /** Players who can be the day's answer: a major win, or at least six top 8s. In a fixed order. */
 export const playerPuzzlePool = (players: PlayerOption[]) => players.filter((p) => p.wins >= 1 || p.top8s >= 6).sort((a, b) => a.slug.localeCompare(b.slug));
@@ -133,7 +133,21 @@ export function playerHint(guess: PlayerOption, answer: PlayerOption) {
     firstYear: compare(guess.firstYear, answer.firstYear),
     lastYear: compare(guess.lastYear, answer.lastYear),
     main: guess.main && answer.main ? guess.main === answer.main : null,
+    region: regionHint(guess, answer),
   };
+}
+
+/**
+ * Where a guess is from, against the answer: the same place (state, prefecture, ...), the same country only, or
+ * another country. Null when either's country isn't known. Places are compared as written, so two spellings of
+ * one place ("NY", "New York") only count as the same country: it never says "different" wrongly.
+ */
+export type RegionHint = "place" | "country" | "other" | null;
+export function regionHint(guess: Pick<PlayerOption, "country" | "place">, answer: Pick<PlayerOption, "country" | "place">): RegionHint {
+  if (!guess.country || !answer.country) return null;
+  if (guess.country !== answer.country) return "other";
+  const same = (a?: string | null, b?: string | null) => !!a && !!b && a.trim().toLowerCase() === b.trim().toLowerCase();
+  return same(guess.place, answer.place) ? "place" : "country";
 }
 
 // ---------- Who won this set? ----------

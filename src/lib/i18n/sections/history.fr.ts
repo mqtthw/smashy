@@ -404,4 +404,6 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.arcade.ps.frames": "Les frames sont celles de Melee (60 par seconde) : un projectile est renvoyé dans les 2 premières frames du bouclier, baisser le bouclier prend 15 frames, et le laser de Falco part à la frame 23. D’après SmashWiki et le Melee Cookbook.",
   "history.arcade.ps.note": "Pas du jeu : la vitesse à laquelle le laser traverse l’écart (aucune vitesse n’est publiée, chaque tir met donc 12 à 30 frames au hasard) et l’attente entre les tirs. Un navigateur et un clavier ajoutent un petit délai.",
   "history.arcade.ps.shareText": "Powershield : {n} lasers renvoyés",
+  "history.arcade.player.from": "De : {where}",
+  "history.arcade.player.regionLegend": "De : ✓ même région · ≈ même pays · ✗ autre pays. L’origine des joueurs est celle indiquée par les pages de SmashWiki (CC BY-SA 4.0) ; tous n’en ont pas.",
 };
