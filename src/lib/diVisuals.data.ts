@@ -16,7 +16,7 @@ export const MOVE_LOOKS: Record<string, DiMoveLook> = {
   "puff-rest": {who: "jigglypuff", state: "SpecialLwR", frames: 250, hit: 1, aerial: false, boxes: [[1, 0.13, 5.26, 1.84, -0.33]], shot: null},
   "sheik-fair": {who: "sheik", state: "AttackAirF", frames: 34, hit: 5, aerial: true, boxes: [[5, 3.61, 10.54, 7.66, 1.69], [6, 8.76, 5.53, 7.66, 0.86], [7, 7.61, 4.22, 7.66, 1.07]], shot: null},
   "ganon-fair": {who: "ganondorf", state: "AttackAirF", frames: 45, hit: 14, aerial: true, boxes: [[14, -0.41, 16.14, 5.48, -4.65], [15, 6.51, 15.13, 5.48, -3.96], [16, 8.97, 8.15, 5.48, -3.91], [17, 8.13, 5.4, 5.48, -3.65], [18, 7.56, 4.49, 5.48, -2.58], [19, 5.56, 3.63, 5.48, -1.61]], shot: null},
-  "samus-charge": {who: "samus", state: "SpecialN", frames: 30, hit: 1, aerial: false, boxes: [], shot: {from: [0.71, 7.91], speed: 3, radius: 3.52}},
+  "samus-charge": {who: "samus", state: "SpecialN", frames: 30, hit: 1, aerial: false, boxes: [], shot: {from: [0.71, 7.91], speed: 3, radius: 4.69}},
 };
 
 export const HURTBOXES: Record<string, Hurtbox[]> = {

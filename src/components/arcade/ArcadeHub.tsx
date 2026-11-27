@@ -62,7 +62,8 @@ export default function ArcadeHub({ day }: { day: number }) {
   const [setsBest] = useStoredState("arcade.sets.best", "0");
   const [techBest] = useStoredState("arcade.tech.best", "0");
   const [diBest] = useStoredState("arcade.di.best", "0");
-  const daily = [{ game: MAJOR, stats: readStats(majorStored) }, { game: PLAYER, stats: readStats(playerStored) }];
+  // Guess the player first, on the left (Matthew); the hero's button also goes to the first unsolved one in this order.
+  const daily = [{ game: PLAYER, stats: readStats(playerStored) }, { game: MAJOR, stats: readStats(majorStored) }];
   const done = daily.filter((d) => d.stats.last === day);
   const streak = Math.max(...daily.map((d) => liveStreak(d.stats, day)));
   const next = daily.find((d) => d.stats.last !== day)?.game ?? HL;

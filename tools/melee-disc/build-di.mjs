@@ -16,8 +16,10 @@
 // - The hurtboxes: Pl??.dat ftData +0x30 (ftData_x30: count, then 0x28-byte ftHurtboxInit: bone, height 0 low /
 //   1 middle / 2 high, grabbable, two end points, radius), placed on the standing pose ("Wait", frame 1).
 // - Samus's full Charge Shot is a projectile: it comes out on the first frame of "SpecialN" from her joint 50 moved 4
-//   units along its Z (ftsamusspecialn.c), travels 3 units a frame at full charge, and its hitbox at full charge is
-//   900/256 units (PlSs.dat's charge-shot item: attributes +0xC speed, its last state's hitbox; itsamuschargeshot.c).
+//   units along its Z (ftsamusspecialn.c), travels 3 units a frame at full charge (the item's attributes +0xC), and
+//   its hitbox is the one of the item state for its charge level plus one (itsamuschargeshot.c, it_802B5CBC), so at
+//   full charge (Samus's attributes +0x18: 7) state 8: 25% at angle 361, growth 72, base 50 (the trainer's numbers)
+//   and 1200/256 units. Round 978: round 977 read state 7 (one level short: 21%, 900/256).
 import fs from "node:fs";
 import { actions, openDisc } from "./disc.mjs";
 import { allTracks, valueAt } from "./figatree.mjs";
@@ -84,8 +86,11 @@ for (const [key, [who, state, damage]] of Object.entries(MOVES)) {
     const art = d.u32(items + 4);
     const speed = d.f32(d.u32(art + 4) + 0xc);
     const states = d.u32(art + 12);
-    const last = d.u32(states + 7 * 0x10 + 12);
-    const radius = (d.u32(last + 4) >>> 16) / 256;
+    const fullCharge = Math.round(d.f32(d.u32(root + 4) + 0x18));
+    const script = d.u32(states + (fullCharge + 1) * 0x10 + 12);
+    const radius = (d.u32(script + 4) >>> 16) / 256;
+    const damage = d.u32(script) & 0x3ff;
+    if (damage !== 25) throw new Error(`full Charge Shot: ${damage}%, the trainer uses 25%`);
     moves[key] = { who, state, frames, hit: 1, aerial: false, boxes: [], shot: { from: spawn, speed: r2(speed), radius: r2(radius) } };
     continue;
   }

@@ -14,7 +14,8 @@ describe("the DI trainer's hit visuals (round 977)", () => {
     expect(MOVE_LOOKS["fox-usmash"]).toMatchObject({ state: "AttackHi4", hit: 7, aerial: false });
     expect(MOVE_LOOKS["marth-fsmash"]).toMatchObject({ state: "AttackS4", hit: 10 });
     expect(MOVE_LOOKS["puff-rest"].hit).toBe(1);
-    expect(MOVE_LOOKS["samus-charge"].shot).toMatchObject({ speed: 3, radius: 3.52 });
+    // Full charge: the item's state 8, radius 1200/256 (round 978; 3.52 was the state below).
+    expect(MOVE_LOOKS["samus-charge"].shot).toMatchObject({ speed: 3, radius: 4.69 });
     expect(HIT_POSE_RULES).toEqual({ topFrom: 70, topTo: 110, rollFrom: 100, rollChance: 0.3 });
   });
 
