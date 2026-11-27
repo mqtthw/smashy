@@ -44,4 +44,13 @@ describe("Ultimate's move frames (round 968)", () => {
       expect(win.data.shield! - lose.data.shield!).toBeGreaterThanOrEqual(SHIELD_GAP);
     }
   });
+
+  it("gives on-shield numbers only for fighters whose data lists the hits' shield-stun multipliers", () => {
+    // Mega Man's down air came out -9 with no multiplier to see; ultimateframedata.com has it at +1 (round 992).
+    expect(Object.values(ULT_MOVES["mega-man"]).every((m) => m!.shield === null)).toBe(true);
+    const fighters = new Set(shieldMoves().map((m) => m.char));
+    expect(fighters.size).toBeLessThanOrEqual(20);
+    expect(fighters.has("mario") && fighters.has("fox")).toBe(true);
+    expect(shieldMoves().length).toBeGreaterThan(100); // still plenty for ten questions
+  });
 });

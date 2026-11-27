@@ -26,8 +26,9 @@
 //   Checked on 2026-11-27 against ultimateframedata.com for Mario, Fox, Pikachu, Falco, Ganondorf and Bowser: every
 //   number is the same or one frame apart (some hits have their own shield-stun multiplier this data can't see).
 //   A hit's own multiplier is only listed in the fuller move files (Data/<fighter>/data.json), which 20 fighters
-//   have; among normal moves only dash attacks and one forward smash (Corrin's) have one. So for the other fighters
-//   a dash attack gets no on-shield number rather than a guessed one.
+//   have; among their normal moves only dash attacks and one forward smash (Corrin's) have one. Other fighters'
+//   moves can have one too (Mega Man's down air: -9 by the formula, +1 on ultimateframedata.com), so since round 992
+//   only those 20 fighters' moves get an on-shield number.
 import fs from "node:fs";
 
 const dir = process.argv[2];
@@ -117,7 +118,9 @@ display.forEach((name, i) => {
     const fades = hits.every((h, j) => j === 0 || h.damage <= hits[j - 1].damage);
     const top = hits.reduce((a, b) => (b.damage > a.damage ? b : a));
     let shield = null;
-    const mult = mults[id] ?? (known || id !== "dashAttack" ? 1 : null);
+    // Only fighters whose fuller file lists the multipliers (round 992): Mega Man's down air was given -9 with no
+    // multiplier to see, where ultimateframedata.com says +1. Others get no on-shield number, not a guessed one.
+    const mult = known ? (mults[id] ?? 1) : null;
     if (oneSwing && id !== "jab" && mult !== null && (kind === "aerial" || fades)) {
       const hit = kind === "aerial" ? top : hits[0];
       const stun = shieldStun(hit.damage, mult, kind);
