@@ -5,6 +5,7 @@
 import type { MessageKey } from "@/lib/i18n/base";
 import { T } from "@/lib/i18n/client";
 import DiArt from "./DiArt";
+import KillArt from "./KillArt";
 import TechChaseArt from "./TechChaseArt";
 
 const ink = "#12102e";
@@ -98,14 +99,20 @@ export const ART = {
       <text x={128} y={30} fontSize="26" fontWeight="900" fontStyle="italic" fill={ink}>-12</text>
     </svg>
   ),
+  // Since round 1001 a real Melee kill, moving (KillArt: Captain Falcon's knee on Fox on Battlefield); this plain
+  // picture shows until the outlines load, or where they aren't served.
   kill: (
-    <svg viewBox="0 0 200 110" aria-hidden="true">
-      <rect x={10} y={8} width={180} height={94} fill="none" stroke={ink} strokeWidth={3} strokeDasharray="8 6" />
-      <rect x={70} y={78} width={60} height={5} fill={ink} />
-      <path d="M100 76C108 46 132 22 176 12" fill="none" stroke={ink} strokeWidth={5} />
-      <circle cx={100} cy={72} r={7} fill={ink} />
-      <text x={150} y={70} fontSize="30" fontWeight="900" fontStyle="italic" fill="#fff">?</text>
-    </svg>
+    <KillArt
+      fallback={
+        <svg viewBox="0 0 200 110" aria-hidden="true">
+          <rect x={10} y={8} width={180} height={94} fill="none" stroke={ink} strokeWidth={3} strokeDasharray="8 6" />
+          <rect x={70} y={78} width={60} height={5} fill={ink} />
+          <path d="M100 76C108 46 132 22 176 12" fill="none" stroke={ink} strokeWidth={5} />
+          <circle cx={100} cy={72} r={7} fill={ink} />
+          <text x={150} y={70} fontSize="30" fontWeight="900" fontStyle="italic" fill="#fff">?</text>
+        </svg>
+      }
+    />
   ),
 };
 

@@ -2708,6 +2708,7 @@ export const ja = {
   "history.arcade.other.pplus": "コミュニティが作るProject Mの続編。Meleeに近い操作感にするBrawlのMODです。",
   "history.arcade.other.remix": "ニンテンドウ64版スマブラに新しいファイターとステージを加えるファンMOD。",
   "history.arcade.other.hdr": "HewDraw Remix：ファンが作ったスマブラSPの対戦向けゲームプレイMOD。",
+  "history.arcade.other.akaneia": "Team Akaneiaによる、新しいファイター・ステージ・モードを加えるMeleeのMOD。Slippiでも遊べます。",
   "playnow.title": "今すぐ対戦",
   "playnow.req.incoming": "{who}さんが今すぐ{game}で対戦したがっています",
   "playnow.req.outgoing": "{who}さんの返事を待っています（{game}）",

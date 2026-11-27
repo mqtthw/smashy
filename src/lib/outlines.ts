@@ -6,10 +6,12 @@
 export type Outlines = { unit: number; states: Record<string, number[][][]>; marks?: { shine?: [number, number, number] } };
 
 const files = new Map<string, Promise<Outlines | null>>();
-/** A character's outlines (fetched once a page), or null when they aren't there. */
-export function loadOutlines(who: string): Promise<Outlines | null> {
-  if (!files.has(who)) files.set(who, fetch(`/outlines/melee/${who}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null));
-  return files.get(who)!;
+/** A character's outlines (fetched once a page), or null when they aren't there. `set` "kill": Does it kill?'s own
+ *  files (round 1001: each character's kill moves, standing, and hit poses; tools/melee-disc/build-kill.mjs). */
+export function loadOutlines(who: string, set: "trainers" | "kill" = "trainers"): Promise<Outlines | null> {
+  const url = set === "kill" ? `/outlines/melee/kill/${who}.json` : `/outlines/melee/${who}.json`;
+  if (!files.has(url)) files.set(url, fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+  return files.get(url)!;
 }
 
 const paths = new Map<string, Path2D>();

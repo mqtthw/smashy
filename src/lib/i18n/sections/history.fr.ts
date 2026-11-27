@@ -494,4 +494,5 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.arcade.other.pplus": "Une suite de Project M faite par la communauté, le mod de Brawl qui se joue plus comme Melee.",
   "history.arcade.other.remix": "Un mod de fans du Super Smash Bros. de la Nintendo 64 qui ajoute de nouveaux combattants et stages.",
   "history.arcade.other.hdr": "HewDraw Remix : un mod de gameplay compétitif fait par des fans pour Super Smash Bros. Ultimate.",
+  "history.arcade.other.akaneia": "Un mod de Melee par la Team Akaneia qui ajoute de nouveaux combattants, stages et modes, et marche avec Slippi.",
 };
