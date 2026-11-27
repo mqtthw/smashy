@@ -1,30 +1,29 @@
 "use client";
-// The Arcade's four Melee knowledge quizzes on one screen (round 955; the questions are made in
+// The Arcade's three Melee knowledge quizzes on one screen (round 955; the questions are made in
 // lib/frameGames.ts from numbers read from the game). Ten questions a round, one at a time: pick an answer, see
 // why, move on; a score out of ten at the end, greeted like Who won this set?, and the best kept in the browser.
 // - frames: Which is faster? (two moves)     - move: Guess the move (a frame strip, four choices)
-// - punish: Punish it (four of your moves)   - kill: Does it kill? (yes or no, then the flight is drawn)
+// - kill: Does it kill? (yes or no, then the flight is drawn)
 import { useState } from "react";
 import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type SetsRank } from "@/lib/arcade";
 import { characterName } from "@/lib/characters";
 import { STAGES } from "@/lib/diSurvival";
-import { QUIZ_LENGTH, newDuel, newKillQuestion, newMoveGuess, newPunish, type Duel, type KillQuestion, type MoveGuess, type Punish } from "@/lib/frameGames";
+import { QUIZ_LENGTH, newDuel, newKillQuestion, newMoveGuess, type Duel, type KillQuestion, type MoveGuess } from "@/lib/frameGames";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
-import { MELEE_MOVES, type MoveChar, type MoveData, type MoveKey } from "@/lib/meleeMoves.data";
+import type { MoveChar, MoveData, MoveKey } from "@/lib/meleeMoves.data";
 import { useStoredState } from "@/lib/useStoredState";
 
-export type QuizKind = "frames" | "move" | "punish" | "kill";
-type Question = { kind: "frames"; q: Duel } | { kind: "move"; q: MoveGuess } | { kind: "punish"; q: Punish } | { kind: "kill"; q: KillQuestion };
+export type QuizKind = "frames" | "move" | "kill";
+type Question = { kind: "frames"; q: Duel } | { kind: "move"; q: MoveGuess } | { kind: "kill"; q: KillQuestion };
 const MAKE: Record<QuizKind, () => Question> = {
   frames: () => ({ kind: "frames", q: newDuel(Math.random) }),
   move: () => ({ kind: "move", q: newMoveGuess(Math.random) }),
-  punish: () => ({ kind: "punish", q: newPunish(Math.random) }),
   kill: () => ({ kind: "kill", q: newKillQuestion(Math.random) }),
 };
-const PATH: Record<QuizKind, string> = { frames: "frames", move: "move", punish: "punish", kill: "kill" };
+const PATH: Record<QuizKind, string> = { frames: "frames", move: "move", kill: "kill" };
 const RANK: Record<SetsRank, MessageKey> = { perfect: "history.arcade.fq.rank.perfect", top8: "history.arcade.sets.rank.top8", pools: "history.arcade.sets.rank.pools", out: "history.arcade.sets.rank.out" };
 const MOVE: Record<MoveKey, MessageKey> = {
   jab: "history.arcade.mv.jab", dashAttack: "history.arcade.mv.dashAttack", ftilt: "history.arcade.mv.ftilt", utilt: "history.arcade.mv.utilt", dtilt: "history.arcade.mv.dtilt",
@@ -144,15 +143,6 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     options = q.options.map((m) => ({ key: m, label: mv(m) }));
     answer = q.answer;
     explain = t("history.arcade.fq.move.why", { move: mv(q.answer), a: q.data.start, b: q.data.end, n: q.data.total });
-  } else if (question.kind === "punish") {
-    const { q } = question;
-    prompt = t("history.arcade.fq.punish.q", { them: named(q.whiff.char, q.whiff.move), me: who(q.me), n: q.window });
-    options = q.options.map((m) => {
-      const d = MELEE_MOVES[q.me][m]!;
-      return { key: m, label: mv(m), sub: t("history.arcade.fq.punish.sub", { f: d.start, d: d.damage }) };
-    });
-    answer = q.answer;
-    explain = t("history.arcade.fq.punish.why", { n: q.window });
   } else {
     const { q } = question;
     prompt = t("history.arcade.fq.kill.q", { hit: named(q.attacker, q.move), victim: who(q.victim), n: q.percent, stage: STAGES[q.stage].name });

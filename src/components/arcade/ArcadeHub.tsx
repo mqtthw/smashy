@@ -78,17 +78,6 @@ const ART = {
       <text x={170} y={30} fontSize="28" fontWeight="900" fontStyle="italic" fill={ink}>?</text>
     </svg>
   ),
-  punish: (
-    <svg viewBox="0 0 200 110" aria-hidden="true">
-      <rect x={14} y={88} width={172} height={6} fill={ink} />
-      <path d="M40 88l4-36h20l6 36z" fill={ink} />
-      <circle cx={56} cy={42} r={10} fill={ink} />
-      <path d="M72 60l44 -6-4 14z" fill="#fff" />
-      <path d="M132 88l3-30h18l5 30z" fill="#fff" opacity={0.85} />
-      <circle cx={146} cy={48} r={9} fill="#fff" opacity={0.85} />
-      <text x={160} y={38} fontSize="22" fontWeight="900" fontStyle="italic" fill={ink}>!</text>
-    </svg>
-  ),
   kill: (
     <svg viewBox="0 0 200 110" aria-hidden="true">
       <rect x={10} y={8} width={180} height={94} fill="none" stroke={ink} strokeWidth={3} strokeDasharray="8 6" />
@@ -108,7 +97,6 @@ const DI: Game = { href: "/arcade/di", title: "history.arcade.di.title", line: "
 const QUIZZES: (Game & { best: string })[] = [
   { href: "/arcade/frames", title: "history.arcade.fq.frames.title", line: "history.arcade.fq.frames.line", color: "#6aa7ff", art: ART.frames, best: "arcade.fq.frames.best" },
   { href: "/arcade/move", title: "history.arcade.fq.move.title", line: "history.arcade.fq.move.line", color: "#ff9ad5", art: ART.move, best: "arcade.fq.move.best" },
-  { href: "/arcade/punish", title: "history.arcade.fq.punish.title", line: "history.arcade.fq.punish.line", color: "#ff7a5e", art: ART.punish, best: "arcade.fq.punish.best" },
   { href: "/arcade/kill", title: "history.arcade.fq.kill.title", line: "history.arcade.fq.kill.line", color: "#9dff6a", art: ART.kill, best: "arcade.fq.kill.best" },
 ];
 const TECH: Game = { href: "/arcade/tech-chase", title: "history.arcade.tech.title", line: "history.arcade.tech.line", color: "#ffa040", art: ART.tech };
@@ -200,7 +188,7 @@ export default function ArcadeHub({ day }: { day: number }) {
 
       <section aria-labelledby="arcade-knowledge" className="flex flex-col gap-3">
         <h2 id="arcade-knowledge" className="font-bold">{t("history.arcade.sec.knowledge")}</h2>
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid gap-3 sm:grid-cols-3">
           {QUIZZES.map((quiz, i) => <QuizCard key={quiz.href} quiz={quiz} i={4 + i} />)}
         </ul>
       </section>

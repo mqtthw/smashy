@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PUNISH_MOVES, allMoves, killPercent, lagAfter, newDuel, newKillQuestion, newMoveGuess, newPunish, shuffled } from "@/lib/frameGames";
+import { allMoves, killPercent, newDuel, newKillQuestion, newMoveGuess, shuffled } from "@/lib/frameGames";
 import { MELEE_MOVES } from "@/lib/meleeMoves.data";
 
 // A repeatable stream of 0..1 numbers.
@@ -42,20 +42,6 @@ describe("the Arcade's Melee knowledge games", () => {
         return o.start === g.data.start && o.end === g.data.end && o.total === g.data.total;
       });
       expect(same).toEqual([]);
-    }
-  });
-
-  it("Punish it: the answer comes out in time and nothing that also does hits harder; something offered is too slow", () => {
-    const rand = stream(3);
-    expect(lagAfter({ start: 10, end: 13, total: 47, damage: 20, kill: null })).toBe(34);
-    for (let i = 0; i < 100; i++) {
-      const p = newPunish(rand);
-      const mine = (m: (typeof PUNISH_MOVES)[number]) => MELEE_MOVES[p.me][m]!;
-      expect(p.window).toBe(lagAfter(p.whiff.data));
-      expect(mine(p.answer).start).toBeLessThanOrEqual(p.window);
-      const inTime = p.options.filter((m) => mine(m).start <= p.window);
-      expect(inTime.every((m) => m === p.answer || mine(m).damage < mine(p.answer).damage)).toBe(true);
-      expect(inTime.length).toBeLessThan(p.options.length);
     }
   });
 

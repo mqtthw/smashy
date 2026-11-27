@@ -1,11 +1,10 @@
-// The Arcade's Melee knowledge games (round 955, Matthew: "all of those knowledge games sound good"): four
-// quizzes asked from the game's own numbers (meleeMoves.data.ts, read from the disc), with no reflexes needed.
+// The Arcade's Melee knowledge games (round 955, Matthew: "all of those knowledge games sound good"): three
+// quizzes (a fourth, Punish it, was taken out in round 957: Matthew found it wordy, and ranking punishes by
+// damage and frames alone "could teach unoptimal gameplay") asked from the game's own numbers (meleeMoves.data.ts, read from the disc), with no reflexes needed.
 // The questions are made here, as plain data; the screen (FrameQuiz.tsx) words them.
 //
 // - Which is faster?: two moves; which comes out sooner, or which does more damage.
 // - Guess the move: a move's frames as a strip (startup, active, recovery); which of four moves is it.
-// - Punish it: an opponent's move misses; they are stuck for a number of frames after it stops hitting. Which of
-//   your moves is the strongest that still comes out in time. It only compares frames: no range, spacing, shields.
 // - Does it kill?: a move, a victim, a percent and a stage; flown with the DI trainer's maths (diSurvival.ts) with
 //   no DI. Yes or no.
 import { MELEE_STATS } from "./characterStats.melee";
@@ -61,32 +60,6 @@ export function newMoveGuess(rand: () => number): MoveGuess {
     return { char, answer, data, options: shuffled([answer, ...others], rand) };
   }
   throw new Error("no move guess could be made");
-}
-
-// ---------- Punish it ----------
-
-/** The moves offered as punishes: ground attacks from standing (a grab's reward is its throw, so it isn't ranked here). */
-export const PUNISH_MOVES: MoveKey[] = ["jab", "ftilt", "utilt", "dtilt", "fsmash", "usmash", "dsmash"];
-/** The frames an opponent is still stuck for after their move stops hitting. */
-export const lagAfter = (d: MoveData) => d.total - d.end;
-export type Punish = { whiff: MoveRef; window: number; me: MoveChar; options: MoveKey[]; answer: MoveKey };
-/**
- * A missed move with enough lag that something lands, and four of the player's moves: the answer is the one that
- * does the most damage among those that come out within the window; at least one of the others is too slow.
- */
-export function newPunish(rand: () => number): Punish {
-  for (let i = 0; i < 400; i++) {
-    const whiff = pick(allMoves().filter((m) => !isGrab(m.move) && !/air$/.test(m.move)), rand);
-    const window = lagAfter(whiff.data);
-    const me = pick(MOVE_CHARS, rand);
-    const mine = PUNISH_MOVES.filter((m) => MELEE_MOVES[me][m]);
-    const options = shuffled(mine, rand).slice(0, 4);
-    const lands = options.filter((m) => MELEE_MOVES[me][m]!.start <= window).sort((x, y) => MELEE_MOVES[me][y]!.damage - MELEE_MOVES[me][x]!.damage);
-    if (options.length < 4 || !lands.length || lands.length === options.length) continue;
-    if (lands[1] && MELEE_MOVES[me][lands[1]]!.damage === MELEE_MOVES[me][lands[0]]!.damage) continue; // a tie for strongest
-    return { whiff, window, me, options, answer: lands[0] };
-  }
-  throw new Error("no punish could be made");
 }
 
 // ---------- Does it kill? ----------
