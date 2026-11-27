@@ -4,7 +4,7 @@
 // streak of solved days are kept in this browser only. Moves like Guess the major (round 945).
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Confetti, NextPuzzle, Pips } from "@/components/arcade/ArcadeBits";
+import { Confetti, NextPuzzle, Pips, useLift } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { PLAYER_TRIES, addResult, matchOptions, playerHint, readStats, savedGuesses, shareSquares, type Compare, type PlayerOption } from "@/lib/arcade";
 import { useT } from "@/lib/i18n/client";
@@ -25,6 +25,7 @@ export default function GuessPlayer({ day, gameLabel, answer, answerHref, option
   const done = won || guesses.length >= PLAYER_TRIES;
   const stats = readStats(statsStored);
   const matches = matchOptions(options, typed, guesses);
+  const lift = useLift();
   const guess = (slug: string) => {
     const next = [...guesses, slug];
     setStored(JSON.stringify({ day, guesses: next }));
@@ -108,20 +109,41 @@ export default function GuessPlayer({ day, gameLabel, answer, answerHref, option
         <div className="flex flex-col gap-2">
           <label className="flex flex-col gap-1">
             <span className="text-meta text-muted">{t("history.arcade.major.triesLeft", { n: PLAYER_TRIES - guesses.length })}</span>
-            <input value={typed} onChange={(e) => setTyped(e.target.value)} maxLength={40} autoComplete="off" placeholder={t("history.arcade.player.placeholder")} className="field" />
+            <input
+              value={typed}
+              onChange={(e) => setTyped(e.target.value)}
+              onFocus={lift.onFocus}
+              onBlur={lift.onBlur}
+              // The keyboard's Go guesses the top suggestion (round 981).
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && matches.length) {
+                  e.preventDefault();
+                  guess(matches[0].slug);
+                }
+              }}
+              enterKeyHint="go"
+              maxLength={40}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              placeholder={t("history.arcade.player.placeholder")}
+              className="field arcade-reveal text-base"
+            />
           </label>
           {typed.trim() !== "" &&
             (matches.length ? (
               <ul className="arcade-pop card flex flex-col divide-y divide-line overflow-hidden">
                 {matches.map((o) => (
                   <li key={o.slug}>
-                    <button type="button" onClick={() => guess(o.slug)} className="w-full px-3 py-2 text-left text-sm hover:bg-surface">{o.name}</button>
+                    <button type="button" onClick={() => guess(o.slug)} className="w-full px-3 py-3 text-left text-base hover:bg-surface sm:py-2 sm:text-sm">{o.name}</button>
                   </li>
                 ))}
               </ul>
             ) : (
               <p className="text-sm text-muted">{t("history.arcade.player.none")}</p>
             ))}
+          {lift.room}
         </div>
       )}
     </div>

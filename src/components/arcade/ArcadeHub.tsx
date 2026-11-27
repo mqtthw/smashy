@@ -41,11 +41,11 @@ function GameCard({ game, chip, big = false, i }: { game: Game; chip: React.Reac
     <li className="arcade-pop" style={{ animationDelay: `${i * 70}ms` }}>
       <Link href={game.href} className={`arcade-game ${big ? "arcade-game-big" : ""}`} style={{ "--tile": game.color } as React.CSSProperties}>
         <span className="arcade-game-art">{game.art}</span>
-        <span className="flex flex-1 flex-col gap-1.5 p-4">
+        <span className="flex flex-1 flex-col gap-1.5 p-3 sm:p-4">
           <span className="arcade-game-title">{t(game.title)}</span>
-          <span className="text-sm text-muted">{t(game.line)}</span>
-          <span className="mt-auto flex items-center justify-between gap-2 pt-2">
-            <span className="text-sm font-semibold">{chip}</span>
+          <span className="text-meta text-muted sm:text-sm">{t(game.line)}</span>
+          <span className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-2">
+            <span className="text-meta font-semibold sm:text-sm">{chip}</span>
             <span className="arcade-game-play">{t("history.arcade.play")} →</span>
           </span>
         </span>
@@ -108,7 +108,7 @@ export default function ArcadeHub({ day }: { day: number }) {
 
       <section aria-labelledby="arcade-anytime" className="flex flex-col gap-3">
         <h2 id="arcade-anytime" className="font-bold">{t("history.arcade.sec.anytime")}</h2>
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid grid-cols-2 gap-2 sm:gap-3">
           <GameCard game={SETS} i={2} chip={bestChip(Number(setsBest), t("history.arcade.sets.best", { n: Number(setsBest), total: SETS_PER_ROUND }))} />
           <GameCard game={HL} i={3} chip={bestChip(Number(hlBest), t("history.arcade.hl.best", { n: Number(hlBest) }))} />
         </ul>
@@ -116,14 +116,14 @@ export default function ArcadeHub({ day }: { day: number }) {
 
       <section aria-labelledby="arcade-knowledge" className="flex flex-col gap-3">
         <h2 id="arcade-knowledge" className="font-bold">{t("history.arcade.sec.knowledge")}</h2>
-        <ul className="grid gap-3 sm:grid-cols-3">
+        <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
           {QUIZZES.map((quiz, i) => <QuizCard key={quiz.href} quiz={quiz} i={4 + i} />)}
         </ul>
       </section>
 
       <section aria-labelledby="arcade-trainers" className="flex flex-col gap-3">
         <h2 id="arcade-trainers" className="font-bold">{t("history.arcade.sec.trainers")}</h2>
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid grid-cols-2 gap-2 sm:gap-3">
           <GameCard game={DI} i={4} chip={bestChip(Number(diBest), t("history.arcade.hl.best", { n: Number(diBest) }))} />
           <GameCard game={TECH} i={5} chip={bestChip(Number(techBest), t("history.arcade.hl.best", { n: Number(techBest) }))} />
         </ul>

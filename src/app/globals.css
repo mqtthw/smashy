@@ -1926,3 +1926,14 @@ body::before {
     display: none;
   }
 }
+
+/* The Arcade page on a phone (round 981): small cards two to a row, with shorter pictures and titles; the daily
+   puzzles' big cards keep their size. */
+@media (max-width: 639px) {
+  .arcade-game:not(.arcade-game-big) .arcade-game-art {
+    height: 5rem;
+  }
+  .arcade-game:not(.arcade-game-big) .arcade-game-title {
+    font-size: 0.95rem;
+  }
+}

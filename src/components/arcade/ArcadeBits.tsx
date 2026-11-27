@@ -111,3 +111,22 @@ export function Reveal({ className = "", role, children }: { className?: string;
     </div>
   );
 }
+
+/**
+ * When a guess box is tapped on a phone, move it to the top of the screen once the keyboard is up (round 981), so the
+ * suggestions under it show in the space above the keyboard instead of behind it. `room` is a spacer to put under
+ * the suggestions while typing, so the page is long enough to scroll the box that far.
+ */
+export function useLift() {
+  const [typing, setTyping] = useState(false);
+  const onFocus = (e: React.FocusEvent<HTMLElement>) => {
+    const el = e.currentTarget;
+    if (!window.matchMedia("(max-width: 639px)").matches) return;
+    setTyping(true);
+    window.setTimeout(() => el.scrollIntoView({ block: "start", behavior: "smooth" }), 300);
+  };
+  // Tapping a suggestion blurs the box first: keep the room until the tap has landed.
+  const onBlur = () => window.setTimeout(() => setTyping(false), 250);
+  const room = typing ? <div aria-hidden="true" className="h-[60vh] sm:hidden" /> : null;
+  return { onFocus, onBlur, room };
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ARCADE_FIRST_DAY, dayNumber, hlAnswer, hlPool, hlRound, majorHint, majorOptions, majorPuzzlePool, matchOptions, pickDaily, shareSquares, type ArcadeMajor } from "@/lib/arcade";
+import { ARCADE_FIRST_DAY, dayNumber, HL_STATS, HL_TOPIC_LEN, hlIsHigher, hlMajorCards, hlNext, hlStart, hlStats, hlTopic, hlValue, majorHint, majorOptions, majorPuzzlePool, matchOptions, pickDaily, shareSquares, type ArcadeMajor, type HlCard, type HlStat } from "@/lib/arcade";
 
 const major = (over: Partial<ArcadeMajor>): ArcadeMajor => ({ slug: "tournament/a", name: "A", game: "melee", date: "2016-01-15T00:00:00Z", entrants: 100, top8: ["1", "2", "3", "4", "5", "6", "7", "8"], ...over });
 const list = [
@@ -54,23 +54,62 @@ describe("the Arcade", () => {
     expect(shareSquares([false, false, false, false, false], 5)).toBe("🟥🟥🟥🟥🟥 X/5");
   });
 
-  it("makes Higher or lower rounds from two majors of one game, never a tie", () => {
-    const pool = hlPool(list);
-    expect(pool).toHaveLength(4); // the one without a size is left out
+  describe("Higher or lower (the chain)", () => {
+    const player = (n: number, wins: number, top8s: number): HlCard => ({ id: `p:melee:${n}`, name: `P${n}`, game: "melee", year: null, wins, top8s });
+    const major = (n: number, entrants: number): HlCard => ({ id: `m:melee:${n}`, name: `M${n}`, game: "melee", year: 2010 + n, entrants });
+    const pool = [...[1, 2, 3, 4, 5, 6, 7, 8].map((n) => player(n, n % 4, n * 3)), ...[1, 2, 3, 4, 5, 6, 7].map((n) => major(n, n * 100))];
     let i = 0;
-    const rand = () => ((i++ * 0.37) % 1);
-    for (let n = 0; n < 50; n++) {
-      const r = hlRound(pool, rand);
-      if (!r) continue;
-      expect(r.a.game).toBe(r.b.game);
-      expect(r.a).not.toBe(r.b);
-      if (r.question === "entrants") expect(r.a.entrants).not.toBe(r.b.entrants);
-      else expect(r.a.date).not.toBe(r.b.date);
-    }
-    expect(hlRound([], Math.random)).toBeNull();
-    const [g3, tbh] = pool;
-    expect(hlAnswer({ question: "entrants", a: tbh, b: g3 })).toBe("b");
-    expect(hlAnswer({ question: "first", a: tbh, b: g3 })).toBe("b");
+    const rand = () => (i++ * 0.37) % 1;
+
+    it("keeps the bigger half of each game's majors", () => {
+      const cards = hlMajorCards(list);
+      expect(cards.every((c) => c.entrants !== undefined && c.year !== null)).toBe(true);
+      expect(cards.length).toBeLessThan(list.length); // the one without a size and the smaller ones are left out
+    });
+
+    it("plays only the topics with enough cards", () => {
+      expect(hlStats(pool)).toEqual(["entrants", "wins", "top8s"]);
+      expect(hlStats(pool.filter((c) => c.year === null))).toEqual(["wins", "top8s"]);
+      expect(hlStart([], rand)).toBeNull();
+    });
+
+    it("never deals a tie, a repeat or a card without the topic's number", () => {
+      for (let n = 0; n < 60; n++) {
+        const shown = pool[n % pool.length];
+        const stat: HlStat = shown.year === null ? (n % 2 ? "wins" : "top8s") : "entrants";
+        const used = new Set([pool[(n + 3) % pool.length].id]);
+        const next = hlNext(pool, stat, shown, used, n % 20, rand);
+        if (!next) continue;
+        expect(next.id).not.toBe(shown.id);
+        expect(used.has(next.id)).toBe(false);
+        expect(hlValue(next, stat)).toBeDefined();
+        expect(hlValue(next, stat)).not.toBe(hlValue(shown, stat));
+      }
+    });
+
+    it("deals closer numbers as the streak grows", () => {
+      const majors = Array.from({ length: 30 }, (_, n) => major(n + 1, (n + 1) * 50));
+      const shown = majors[14]; // 750
+      const gap = (streak: number) => {
+        let sum = 0;
+        for (let n = 0; n < 40; n++) sum += Math.abs(hlValue(hlNext(majors, "entrants", shown, new Set(), streak, () => n / 40)!, "entrants")! - 750);
+        return sum / 40;
+      };
+      expect(gap(15)).toBeLessThan(gap(0) / 2);
+    });
+
+    it("changes the topic every five right answers", () => {
+      expect(hlTopic(HL_STATS, "wins", 3, rand)).toBe("wins");
+      expect(hlTopic(HL_STATS, "wins", 0, rand)).toBe("wins");
+      expect(hlTopic(HL_STATS, "wins", HL_TOPIC_LEN, rand)).not.toBe("wins");
+      expect(hlTopic(["wins"], "wins", HL_TOPIC_LEN, rand)).toBe("wins");
+    });
+
+    it("says whether higher is right", () => {
+      expect(hlIsHigher(major(1, 100), major(2, 200), "entrants")).toBe(true);
+      expect(hlIsHigher(player(1, 3, 9), player(2, 1, 12), "wins")).toBe(false);
+      expect(hlIsHigher(player(1, 3, 9), player(2, 1, 12), "top8s")).toBe(true);
+    });
   });
 });
 

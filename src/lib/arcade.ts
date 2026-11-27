@@ -74,32 +74,73 @@ export function shareSquares(guessesRight: boolean[], tries: number): string {
 
 // ---------- Higher or lower ----------
 
-export type HlMajor = { name: string; game: GameKey; year: number; date: string; entrants: number };
-export type HlQuestion = "entrants" | "first";
-export type HlRound = { question: HlQuestion; a: HlMajor; b: HlMajor };
+// A chain (round 981, Matthew: "needs to be relooked to be more interesting"): one card stays on screen with its
+// number showing, the next card's number is hidden, and the player says higher or lower. A right answer slides
+// the new card over and deals another. The topic (a major's entrants, a player's major wins or top 8s) changes
+// every HL_TOPIC_LEN right answers, and the pairs get closer as the streak grows.
 
-/** Majors with a known size, for Higher or lower. */
-export const hlPool = (majors: ArcadeMajor[]): HlMajor[] =>
-  majors.flatMap((m) => (m.entrants ? [{ name: m.name, game: m.game, year: yearOf(m.date), date: m.date, entrants: m.entrants }] : []));
+/** What the cards are compared on. Majors have entrants; players have major wins and top 8s. */
+export type HlStat = "entrants" | "wins" | "top8s";
+export const HL_STATS: readonly HlStat[] = ["entrants", "wins", "top8s"];
+/** A card: a major (`year` set, `entrants`) or a player (`wins`, `top8s`). `id` is unique in the pool. */
+export type HlCard = { id: string; name: string; game: GameKey; year: number | null; entrants?: number; wins?: number; top8s?: number };
+export const HL_TOPIC_LEN = 5;
 
-/**
- * A round: two majors of one game and a question whose answer isn't a tie. `rand` gives 0..1 numbers
- * (Math.random in the browser, a fixed list in tests). Null when the pool can't make one.
- */
-export function hlRound(pool: HlMajor[], rand: () => number): HlRound | null {
-  for (let i = 0; i < 40; i++) {
-    const a = pool[Math.floor(rand() * pool.length)];
-    const same = pool.filter((m) => m.game === a?.game && m !== a);
-    const b = same[Math.floor(rand() * same.length)];
-    if (!a || !b) continue;
-    const question: HlQuestion = rand() < 0.5 ? "entrants" : "first";
-    if (question === "entrants" ? a.entrants !== b.entrants : a.date !== b.date && a.name !== b.name) return { question, a, b };
+export const hlValue = (card: HlCard, stat: HlStat): number | undefined => card[stat];
+
+/** The bigger half of each game's majors (by entrants), so the names are ones people know. */
+export function hlMajorCards(majors: ArcadeMajor[]): HlCard[] {
+  const out: HlCard[] = [];
+  const games = [...new Set(majors.map((m) => m.game))];
+  for (const game of games) {
+    const list = majors.filter((m): m is ArcadeMajor & { entrants: number } => m.game === game && !!m.entrants);
+    const sizes = list.map((m) => m.entrants).sort((a, b) => a - b);
+    const median = sizes[Math.floor(sizes.length / 2)] ?? 0;
+    for (const m of list) if (m.entrants >= median) out.push({ id: `m:${game}:${m.slug}`, name: m.name, game, year: yearOf(m.date), entrants: m.entrants });
   }
-  return null;
+  return out;
 }
 
-/** Which side is right: more entrants, or the earlier date. */
-export const hlAnswer = (r: HlRound): "a" | "b" => (r.question === "entrants" ? (r.a.entrants > r.b.entrants ? "a" : "b") : r.a.date < r.b.date ? "a" : "b");
+/** The topics this pool can play: those with at least six cards. */
+export const hlStats = (pool: HlCard[]): HlStat[] => HL_STATS.filter((s) => pool.filter((c) => hlValue(c, s) !== undefined).length >= 6);
+
+const pickOne = <T>(items: readonly T[], rand: () => number): T | null => (items.length ? items[Math.min(items.length - 1, Math.floor(rand() * items.length))] : null);
+
+/**
+ * The next card to compare against `current` on `stat`: never the same number (no ties), never one in `used`.
+ * The longer the streak, the closer its number is to the current one (nearest share of the cards, from all of
+ * them at 0 down to the nearest sixth). With no `current`, any card with that number. Null when none is left.
+ */
+export function hlNext(pool: HlCard[], stat: HlStat, current: HlCard | null, used: ReadonlySet<string>, streak: number, rand: () => number): HlCard | null {
+  const cv = current ? hlValue(current, stat) : undefined;
+  const fits = pool.filter((c) => {
+    const v = hlValue(c, stat);
+    return v !== undefined && !used.has(c.id) && c.id !== current?.id && v !== cv;
+  });
+  if (cv === undefined) return pickOne(fits, rand);
+  const far = (c: HlCard) => Math.abs(Math.log1p(hlValue(c, stat)!) - Math.log1p(cv));
+  const near = [...fits].sort((a, b) => far(a) - far(b) || a.id.localeCompare(b.id));
+  const share = Math.max(1 / 6, 1 - streak / 15);
+  return pickOne(near.slice(0, Math.max(Math.min(near.length, 4), Math.ceil(near.length * share))), rand);
+}
+
+/** The topic after `streak` right answers: a different one every HL_TOPIC_LEN, else the same. */
+export function hlTopic(stats: readonly HlStat[], current: HlStat, streak: number, rand: () => number): HlStat {
+  if (streak === 0 || streak % HL_TOPIC_LEN !== 0) return current;
+  return pickOne(stats.filter((s) => s !== current), rand) ?? current;
+}
+
+/** A fresh start: a random topic and its first two cards. Null when the pool can't make one. */
+export function hlStart(pool: HlCard[], rand: () => number): { stat: HlStat; left: HlCard; right: HlCard } | null {
+  const stat = pickOne(hlStats(pool), rand);
+  if (!stat) return null;
+  const left = hlNext(pool, stat, null, new Set(), 0, rand);
+  const right = left && hlNext(pool, stat, left, new Set(), 0, rand);
+  return left && right ? { stat, left, right } : null;
+}
+
+/** Whether "higher" is the right call for `next` against `shown`. */
+export const hlIsHigher = (shown: HlCard, next: HlCard, stat: HlStat) => (hlValue(next, stat) ?? 0) > (hlValue(shown, stat) ?? 0);
 
 /** The guesses saved in the browser for a day's puzzle (none when they're another day's, or unreadable). */
 export function savedGuesses(stored: string, day: number): string[] {
