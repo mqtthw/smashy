@@ -161,7 +161,7 @@ async function CharacterHub({ params, searchParams }: Pick<PageProps<"/games/[ga
             {/* Melee hasn't been patched (Matthew, round 933), so its guides get the date alone, without the
                 "patched since" warning the other games' guides carry. */}
             {overview.source.written && <>{t(game === "melee" ? "media.char.ov.writtenPlain" : "media.char.ov.written", { date: writtenIn(overview.source.written, lang) })}{" "}</>}
-            <a href={overview.source.url} target="_blank" rel="noopener noreferrer" className="link font-semibold">{t("media.char.ov.full")} ↗︎<NewTab /></a>
+            <a href={overview.source.url} target="_blank" rel="noopener noreferrer" className="link font-semibold">{t(overview.source.url.startsWith("https://www.ssbwiki.com/") ? "media.char.ov.fullWiki" : "media.char.ov.full")} ↗︎<NewTab /></a>
           </p>
         </section>
       )}

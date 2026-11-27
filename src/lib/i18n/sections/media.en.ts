@@ -209,6 +209,7 @@ export const mediaEn = {
   "media.char.ov.weaknesses": "Weaknesses",
   "media.char.ov.source": "Summarised from {title}, by {by}. Smashy adds nothing of its own.",
   "media.char.ov.full": "Read the full guide",
+  "media.char.ov.fullWiki": "Read the full page on SmashWiki",
   "media.char.st.title": "By the numbers",
   "media.char.st.weight": "Weight",
   "media.char.st.fallSpeed": "Fall speed",
