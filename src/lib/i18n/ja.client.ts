@@ -1143,6 +1143,7 @@ export const ja = {
   "feed.flair.question": "質問",
   "feed.flair.help": "ヘルプ",
   "feed.flair.newplayer": "初心者",
+  "feed.flair.smash6": "スマブラ6",
   "feed.flair.analysis": "分析",
   "feed.flair.news": "ニュース",
   "feed.flair.meme": "ネタ",

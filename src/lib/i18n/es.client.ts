@@ -1143,6 +1143,7 @@ export const es = {
   "feed.flair.question": "Pregunta",
   "feed.flair.help": "Ayuda",
   "feed.flair.newplayer": "Nuevo jugador",
+  "feed.flair.smash6": "Smash 6",
   "feed.flair.analysis": "Análisis",
   "feed.flair.news": "Noticias",
   "feed.flair.meme": "Meme",

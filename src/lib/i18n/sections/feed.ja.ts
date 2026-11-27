@@ -271,6 +271,8 @@ export const feedJa: Record<keyof typeof feedEn, string> = {
   "feed.flair.question": "質問",
   "feed.flair.help": "ヘルプ",
   "feed.flair.newplayer": "初心者",
+  "feed.flair.smash6": "スマブラ6",
+  "feed.discuss.smash6Intro": "スマブラ6の予想：うわさ、参戦してほしいファイター、復活してほしい要素など。出典が書かれていないものは未確認の情報です。",
   "feed.flair.analysis": "分析",
   "feed.flair.news": "ニュース",
   "feed.flair.meme": "ネタ",

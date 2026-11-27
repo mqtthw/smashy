@@ -21,6 +21,8 @@ export const FLAIRS = [
   { key: "news", label: "News" },
   { key: "meme", label: "Meme" },
   { key: "art", label: "Art" },
+  // Round 1006 (Matthew: "share smash 6 speculation"): General threads with this topic make Discuss's Smash 6 tab.
+  { key: "smash6", label: "Smash 6" },
 ] as const;
 export type Flair = (typeof FLAIRS)[number]["key"];
 export const isFlair = (v: unknown): v is Flair => FLAIRS.some((f) => f.key === v);

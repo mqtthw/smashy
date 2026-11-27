@@ -271,6 +271,8 @@ export const feedEs: Record<keyof typeof feedEn, string> = {
   "feed.flair.question": "Pregunta",
   "feed.flair.help": "Ayuda",
   "feed.flair.newplayer": "Nuevo jugador",
+  "feed.flair.smash6": "Smash 6",
+  "feed.discuss.smash6Intro": "Especulación sobre Smash 6: rumores, listas de deseos para el plantel y lo que quieres que vuelva. Nada aquí está confirmado salvo que diga de dónde viene.",
   "feed.flair.analysis": "Análisis",
   "feed.flair.news": "Noticias",
   "feed.flair.meme": "Meme",

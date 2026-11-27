@@ -24,6 +24,7 @@ async function Composer({ searchParams }: { searchParams: PageProps<"/discuss/ne
   const character = valid(sp.character);
   const vs = character ? valid(sp.vs) : "";
   const newPlayer = sp.flair === "newplayer";
+  const smash6 = sp.flair === "smash6"; // round 1006: from Discuss's Smash 6 tab
   const [t, lang] = await Promise.all([getT(), getLang()]);
   return (
     <LangProvider lang={lang}>
@@ -37,7 +38,7 @@ async function Composer({ searchParams }: { searchParams: PageProps<"/discuss/ne
       {/* The key starts the form afresh when the link's choices change (round 810). The app reuses this
           page when only the address's "?..." part changes, so coming from "Ask a question about Melee"
           after an earlier visit kept the old flair and game instead of New player and Melee. */}
-      <ThreadComposer key={`${game}|${character}|${vs}|${newPlayer}`} defaultGame={game} defaultCharacter={character} defaultVs={vs && vs !== character ? vs : ""} defaultFlair={newPlayer ? "newplayer" : undefined} />
+      <ThreadComposer key={`${game}|${character}|${vs}|${newPlayer}|${smash6}`} defaultGame={game} defaultCharacter={character} defaultVs={vs && vs !== character ? vs : ""} defaultFlair={newPlayer ? "newplayer" : smash6 ? "smash6" : undefined} />
     </LangProvider>
   );
 }

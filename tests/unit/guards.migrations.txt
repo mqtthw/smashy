@@ -178,3 +178,4 @@
 20270125590000_player_snapshots.sql
 20270125620000_player_follows.sql
 20270125640000_followed_player_checks.sql
+20270125660000_smash6_topic.sql

@@ -11,6 +11,7 @@ const KEYS: Record<Flair, MessageKey> = {
   news: "feed.flair.news",
   meme: "feed.flair.meme",
   art: "feed.flair.art",
+  smash6: "feed.flair.smash6",
 };
 
 export const flairKey = (f: Flair): MessageKey => KEYS[f];

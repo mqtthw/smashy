@@ -47,8 +47,10 @@ export async function generateMetadata({ searchParams }: PageProps<"/discuss">):
 }
 
 /** "New thread", already set to the game and character being looked at. */
-const newThreadHref = (game: FeedGame | undefined, character: string | undefined) =>
-  `/discuss/new${game ? `?game=${game}${character ? `&character=${character}` : ""}` : ""}`;
+const newThreadHref = (game: FeedGame | undefined, character: string | undefined, flair?: string) =>
+  flair === "smash6" && !game ? "/discuss/new?flair=smash6" : `/discuss/new${game ? `?game=${game}${character ? `&character=${character}` : ""}` : ""}`;
+/** The Smash 6 tab (round 1006): every game's threads with the Smash 6 topic. */
+const onSmash6 = (f: { game?: FeedGame; flair?: string }) => !f.game && f.flair === "smash6";
 
 function href(base: ReturnType<typeof parse>, change: Partial<ReturnType<typeof parse>>) {
   const v = { ...base, page: 0, ...change };
@@ -69,11 +71,24 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
   const userId = await getUserId();
   const [{ posts, hasMore }, myGames, t, lang] = await Promise.all([getThreads({ ...f, userId }), getMyGames(userId), getT(), getLang()]);
   const games = gamesFor(f.game && f.game !== "general" ? [...myGames, f.game] : myGames);
-  const tabs = [{ key: "all", label: t("feed.tab.all") }, ...games.map((g) => ({ key: g, label: GAMES[g].short })), { key: "general", label: t("feed.tab.general") }];
+  const tabs = [{ key: "all", label: t("feed.tab.all") }, ...games.map((g) => ({ key: g, label: GAMES[g].short })), { key: "general", label: t("feed.tab.general") }, { key: "smash6", label: t("feed.flair.smash6") }];
   const now = unixNow();
   return (
     <LangProvider lang={lang}>
-      <TabBar sticky scroll label={t("feed.discuss.board")} active={f.game ?? "all"} tabs={tabs.map((tab) => ({ ...tab, href: href(f, { game: tab.key === "all" ? undefined : (tab.key as FeedGame), character: undefined }) }))} />
+      <TabBar
+        sticky
+        scroll
+        label={t("feed.discuss.board")}
+        active={onSmash6(f) ? "smash6" : (f.game ?? "all")}
+        tabs={tabs.map((tab) => ({
+          ...tab,
+          href:
+            tab.key === "smash6"
+              ? href(f, { game: undefined, character: undefined, flair: "smash6" })
+              : href(f, { game: tab.key === "all" ? undefined : (tab.key as FeedGame), character: undefined, flair: f.flair === "smash6" ? undefined : f.flair }),
+        }))}
+      />
+      {onSmash6(f) && <p className="border-b border-line px-4 py-3 text-sm text-muted">{t("feed.discuss.smash6Intro")}</p>}
       <div className="flex flex-col gap-2 border-b border-line px-4 py-3">
         {/* Sorting as plain words, not a row of buttons (round 863): the type filters below are the chips. */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1" role="group" aria-label={t("feed.discuss.sortThreads")}>
@@ -137,7 +152,7 @@ async function Threads({ searchParams }: { searchParams: PageProps<"/discuss">["
               game={f.game}
               title={f.noReplies ? t("feed.discuss.allAnswered") : t("feed.discuss.empty")}
               body={f.noReplies ? t("feed.discuss.allAnsweredBody") : t("feed.discuss.emptyBody")}
-              action={<Link href={newThreadHref(f.game, f.character)} className="btn btn-md btn-primary">{t("feed.discuss.start")}</Link>}
+              action={<Link href={newThreadHref(f.game, f.character, f.flair)} className="btn btn-md btn-primary">{t("feed.discuss.start")}</Link>}
             />
           </div>
           {(f.game || f.flair || f.noReplies || f.character) && <HotEverywhere userId={userId} now={now} />}
@@ -181,9 +196,9 @@ export default function DiscussPage(props: PageProps<"/discuss">) {
 }
 
 async function NewThreadButton({ searchParams }: { searchParams: PageProps<"/discuss">["searchParams"] }) {
-  const { game, character } = parse((await searchParams) as Search);
+  const { game, character, flair } = parse((await searchParams) as Search);
   return (
-    <Link href={newThreadHref(game, character)} className="btn btn-md btn-primary shrink-0">
+    <Link href={newThreadHref(game, character, flair)} className="btn btn-md btn-primary shrink-0">
       <T k="feed.discuss.newThread" />
     </Link>
   );

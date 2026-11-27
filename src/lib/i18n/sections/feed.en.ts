@@ -269,6 +269,8 @@ export const feedEn = {
   "feed.flair.question": "Question",
   "feed.flair.help": "Help",
   "feed.flair.newplayer": "New player",
+  "feed.flair.smash6": "Smash 6",
+  "feed.discuss.smash6Intro": "Smash 6 speculation: rumors, roster wishlists, and what you want back. Nothing here is confirmed unless it says where it's from.",
   "feed.flair.analysis": "Analysis",
   "feed.flair.news": "News",
   "feed.flair.meme": "Meme",
