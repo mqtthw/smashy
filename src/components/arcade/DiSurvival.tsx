@@ -5,9 +5,11 @@
 // (lib/diSurvival.ts, with its sources). The dashed line is where no DI would have sent you. Three stocks; the
 // best run is kept in this browser. Plain shapes only.
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Confetti } from "@/components/arcade/ArcadeBits";
+import { GAME_LOOK } from "@/components/arcade/ArcadeArt";
+import { Confetti, Picker } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { characterName } from "@/lib/characters";
+import { stockIconUrl } from "@/lib/mainBadge";
 import { DI_VICTIMS, STAGES, STAGE_KEYS, dealHit, passedTopAlive, resolveHit, type DiHit, type Stage, type StageKey, type Stick, type Victim } from "@/lib/diSurvival";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
@@ -250,8 +252,18 @@ export default function DiSurvival() {
   const noteText = (n: NonNullable<Hud["note"]>) => t(n.key, "zone" in n.values ? { ...n.values, zone: t(ZONE[n.values.zone as "top" | "side" | "bottom"]) } : n.values);
   const idle = hud.phase === "idle" || hud.phase === "over";
 
+  // Round 972: the character and the stage are picked above the screen (locked while playing); over the screen only
+  // the Play button, or the score; the instructions are folded under "How to play".
+  const pickStage = (k: StageKey) => {
+    setStage(k);
+    if (game.current.phase !== "freeze" && game.current.phase !== "flight") game.current.stage = STAGES[k];
+  };
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3" style={{ "--tile": GAME_LOOK.di.color } as React.CSSProperties}>
+      <div className="flex flex-col gap-3">
+        <Picker label={t("history.arcade.di.victim")} options={DI_VICTIMS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={victim} onPick={setVictim} locked={!idle} />
+        <Picker label={t("history.arcade.di.stage")} options={STAGE_KEYS.map((k) => ({ key: k, label: STAGES[k].name }))} value={stage} onPick={pickStage} locked={!idle} />
+      </div>
       <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold">
         <span>{t("history.arcade.di.survived", { n: hud.survived })}</span>
         <span aria-label={t("history.arcade.tech.lives", { n: hud.lives })} className="tracking-widest">
@@ -271,30 +283,16 @@ export default function DiSurvival() {
           {hud.phase === "result" && hud.note && <p className={`arcade-pop badge border bg-overlay px-3 py-1 text-sm ${hud.note.good ? "border-success text-success" : "border-danger"}`}>{noteText(hud.note)}</p>}
         </div>
         {idle && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-overlay p-4 text-center">
+          <div className="arcade-screen-over absolute inset-0 flex flex-col items-center justify-center gap-2 p-3 text-center">
             {hud.phase === "over" && hud.newBest && <Confetti />}
-            {hud.phase === "over" ? (
+            {hud.phase === "over" && (
               <>
                 <p className="arcade-pop text-3xl font-black italic tabular-nums">{t("history.arcade.di.survived", { n: hud.survived })}</p>
                 {hud.newBest && <p className="arcade-pop badge border border-success text-success">{t("history.arcade.hl.newBest")}</p>}
               </>
-            ) : (
-              <p className="max-w-md text-sm">{t("history.arcade.di.how")}</p>
             )}
-            <div className="flex flex-wrap items-center justify-center gap-1.5">
-              <span className="text-meta">{t("history.arcade.di.victim")}</span>
-              {DI_VICTIMS.map((v) => (
-                <button key={v} type="button" onClick={() => setVictim(v)} aria-pressed={victim === v} className={`chip py-1 text-meta ${victim === v ? "border-brand text-brand" : ""}`}>{characterName("melee", v)}</button>
-              ))}
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-1.5">
-              <span className="text-meta">{t("history.arcade.di.stage")}</span>
-              {STAGE_KEYS.map((k) => (
-                <button key={k} type="button" onClick={() => { setStage(k); if (game.current.phase !== "freeze" && game.current.phase !== "flight") game.current.stage = STAGES[k]; }} aria-pressed={stage === k} className={`chip py-1 text-meta ${stage === k ? "border-brand text-brand" : ""}`}>{STAGES[k].name}</button>
-              ))}
-            </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <button type="button" onClick={start} className="btn btn-md btn-inverse">{t(hud.phase === "over" ? "history.arcade.hl.again" : "history.arcade.tech.start")}</button>
+              <button type="button" onClick={start} className="arcade-promo-btn arcade-start-play">{t(hud.phase === "over" ? "history.arcade.hl.again" : "history.arcade.fq.play")} →</button>
               {hud.phase === "over" && hud.survived > 0 && <button type="button" onClick={share} className="btn btn-md btn-outline">{t("history.arcade.share")}</button>}
             </div>
           </div>
@@ -303,12 +301,16 @@ export default function DiSurvival() {
       <div className="grid w-max grid-cols-3 gap-1 self-center sm:hidden">
         {[{ x: -1, y: 1 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: -1, y: -1 }, { x: 0, y: -1 }, { x: 1, y: -1 }].map(padBtn)}
       </div>
-      <ul className="flex flex-col gap-1 text-meta text-muted">
-        <li>{t("history.arcade.di.keys")}</li>
-        <li>{t("history.arcade.di.tip")}</li>
-        <li>{t("history.arcade.di.maths")}</li>
-        <li>{t("history.arcade.di.note")}</li>
-      </ul>
+      <p className="text-meta text-muted">{t("history.arcade.di.keys")}</p>
+      <details className="arcade-start-how">
+        <summary>{t("history.arcade.fq.howTo")}</summary>
+        <ul className="mt-2 flex flex-col gap-1.5 text-sm">
+          <li>{t("history.arcade.di.how")}</li>
+          <li>{t("history.arcade.di.tip")}</li>
+          <li className="text-meta text-muted">{t("history.arcade.di.maths")}</li>
+          <li className="text-meta text-muted">{t("history.arcade.di.note")}</li>
+        </ul>
+      </details>
     </div>
   );
 }

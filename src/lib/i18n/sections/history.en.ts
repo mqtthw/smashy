@@ -472,4 +472,5 @@ export const historyEn = {
   "history.arcade.fq.howTo": "How to play",
   "history.arcade.fq.about": "About the numbers",
   "history.arcade.fq.gameLabel": "Game",
+  "history.arcade.tech.halfShort": "Half speed",
 };

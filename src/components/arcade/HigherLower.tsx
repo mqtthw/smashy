@@ -4,6 +4,7 @@
 // is kept in this browser. Round 945: the numbers count up when revealed, the streak bumps, and a new best
 // throws confetti.
 import { useState } from "react";
+import { GAME_LOOK } from "@/components/arcade/ArcadeArt";
 import { Confetti, CountUp } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { hlAnswer, hlRound, type HlMajor, type HlRound } from "@/lib/arcade";
@@ -53,7 +54,7 @@ export default function HigherLower({ pool, first }: { pool: HlMajor[]; first: H
   const side = (key: "a" | "b", m: HlMajor) => {
     const state = !picked ? "" : key === right ? "arcade-right" : key === picked ? "arcade-wrong" : "";
     return (
-      <button type="button" onClick={() => pick(key)} disabled={picked !== null} className={`arcade-side arcade-pop card flex min-h-32 flex-1 flex-col items-center justify-center gap-1 p-4 text-center ${state}`}>
+      <button type="button" onClick={() => pick(key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-32 flex-1 flex-col items-center justify-center gap-1 p-4 text-center ${state}`}>
         <span className="text-lg font-bold">{picked && key === right && <span className="text-success">✓ </span>}{m.name}</span>
         <span className="text-meta text-muted">
           {GAMES[m.game].short}
@@ -64,7 +65,7 @@ export default function HigherLower({ pool, first }: { pool: HlMajor[]; first: H
     );
   };
   return (
-    <div className="relative flex flex-col gap-4">
+    <div className="relative flex flex-col gap-4" style={{ "--tile": GAME_LOOK.hl.color } as React.CSSProperties}>
       {newBest && picked === right && <Confetti key={streak} />}
       <p className="flex items-center gap-4 text-sm font-semibold">
         <span className="text-base">

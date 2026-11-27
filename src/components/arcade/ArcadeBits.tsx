@@ -65,3 +65,24 @@ export function NextPuzzle({ className = "text-meta text-muted", bare = false }:
   if (bare) return <span className={className}>{left === null ? "--:--:--" : clock(left)}</span>;
   return <p className={className}>{left === null ? " " : t("history.arcade.next", { time: clock(left) })}</p>;
 }
+
+/**
+ * A row of big choice buttons (round 972): an opponent, a stage. Each can have a stock icon. Locked while a round
+ * is being played.
+ */
+export function Picker<K extends string>({ label, options, value, onPick, locked = false }: { label: string; options: { key: K; label: string; icon?: string | null }[]; value: K; onPick: (k: K) => void; locked?: boolean }) {
+  return (
+    <div className="flex flex-col gap-1.5" role="group" aria-label={label}>
+      <span className="text-meta font-bold uppercase tracking-wide text-muted">{label}</span>
+      <div className="flex flex-wrap gap-1.5">
+        {options.map((o) => (
+          <button key={o.key} type="button" disabled={locked} onClick={() => onPick(o.key)} aria-pressed={value === o.key} className="arcade-pick">
+            {/* eslint-disable-next-line @next/next/no-img-element -- a small stock icon */}
+            {o.icon && <img src={o.icon} alt="" width={24} height={24} className="h-6 w-6 object-contain" />}
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}

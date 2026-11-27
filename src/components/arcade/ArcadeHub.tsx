@@ -10,14 +10,14 @@ import { SETS_PER_ROUND, liveStreak, readStats } from "@/lib/arcade";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { useStoredState } from "@/lib/useStoredState";
-import { ART, QUIZ_LOOK } from "./ArcadeArt";
+import { ART, GAME_LOOK, QUIZ_LOOK } from "./ArcadeArt";
 
 type Game = { href: string; title: MessageKey; line: MessageKey; color: string; art: React.ReactNode };
 const MAJOR: Game = { href: "/arcade/major", title: "history.arcade.major.title", line: "history.arcade.major.line", color: "#ffd447", art: ART.major };
 const PLAYER: Game = { href: "/arcade/player", title: "history.arcade.player.title", line: "history.arcade.player.line", color: "#ff6b5e", art: ART.player };
-const HL: Game = { href: "/arcade/higher-lower", title: "history.arcade.hl.title", line: "history.arcade.hl.line", color: "#5ad1ff", art: ART.hl };
-const SETS: Game = { href: "/arcade/sets", title: "history.arcade.sets.title", line: "history.arcade.sets.line", color: "#7dff9a", art: ART.sets };
-const DI: Game = { href: "/arcade/di", title: "history.arcade.di.title", line: "history.arcade.di.line", color: "#c58bff", art: ART.di };
+const HL: Game = { href: "/arcade/higher-lower", ...GAME_LOOK.hl };
+const SETS: Game = { href: "/arcade/sets", ...GAME_LOOK.sets };
+const DI: Game = { href: "/arcade/di", ...GAME_LOOK.di };
 // Left to right (Matthew's order): Does it kill?, Guess the move, Which is faster?; then Which is safer on shield?
 // (round 968) starting the next row, so the first three stay as he set them.
 const QUIZZES: (Game & { best: string })[] = [
@@ -26,7 +26,7 @@ const QUIZZES: (Game & { best: string })[] = [
   { href: "/arcade/frames", ...QUIZ_LOOK.frames, best: "arcade.fq.frames.best" },
   { href: "/arcade/shield", ...QUIZ_LOOK.shield, best: "arcade.fq.shield.best" },
 ];
-const TECH: Game = { href: "/arcade/tech-chase", title: "history.arcade.tech.title", line: "history.arcade.tech.line", color: "#ffa040", art: ART.tech };
+const TECH: Game = { href: "/arcade/tech-chase", ...GAME_LOOK.tech };
 
 /** A quiz's card: its best score out of ten is read here, one stored value per card. */
 function QuizCard({ quiz, i }: { quiz: (typeof QUIZZES)[number]; i: number }) {

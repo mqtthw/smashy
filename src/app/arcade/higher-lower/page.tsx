@@ -1,6 +1,7 @@
 // Higher or lower: the Arcade's endless game, played in the browser from the list of majors with a known size.
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArcadeBanner, GAME_LOOK } from "@/components/arcade/ArcadeArt";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import GameChips from "@/components/arcade/GameChips";
@@ -35,10 +36,7 @@ export default function HigherLowerPage(props: PageProps<"/arcade/higher-lower">
   return (
     <section className="flex flex-col gap-4 p-4">
       <Link href="/arcade" className="text-sm text-muted hover:text-foreground"><T k="history.arcade.back" /></Link>
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold"><T k="history.arcade.hl.title" /></h1>
-        <p className="text-sm text-muted"><T k="history.arcade.hl.blurb" /></p>
-      </header>
+      <ArcadeBanner look={GAME_LOOK.hl} />
       <Suspense fallback={<CardListSkeleton count={2} />}>
         <Game searchParams={props.searchParams} />
       </Suspense>

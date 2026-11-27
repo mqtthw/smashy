@@ -7,13 +7,15 @@
 // which hits you if you're standing on him. Colours say what he is: flashing white = intangible, blue = open,
 // purple = on the floor (hit, don't grab), green = got away. Three lives; the best score is kept in the browser.
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Confetti } from "@/components/arcade/ArcadeBits";
+import { GAME_LOOK } from "@/components/arcade/ArcadeArt";
+import { Confetti, Picker } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { FALL_FRAMES, FPS, POINTS, START_LIVES, busy, foxAt, framesAt, judgeFrame, moveFrame, moveSlot, newScript, openFrames, striking, type Action, type Move, type Outcome, type PhaseName, type Script, type Slot, type Whiff } from "@/lib/techChase";
 import { TECH_VICTIMS, type TechVictim } from "@/lib/techChase.data";
 import { characterName } from "@/lib/characters";
+import { stockIconUrl } from "@/lib/mainBadge";
 import { useStoredState } from "@/lib/useStoredState";
 
 const W = 640;
@@ -287,8 +289,18 @@ export default function TechChase() {
     return t(n.key, { ...n.values, what: face && n.values.what !== "bounce" && n.values.what !== "lying" ? `${what} (${face})` : what });
   };
 
+  // Round 972: the opponent and the speed are picked above the screen (locked while playing); over the screen only
+  // the Play button, or the score; the instructions are folded under "How to play".
+  const playing = hud.phase === "round";
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3" style={{ "--tile": GAME_LOOK.tech.color } as React.CSSProperties}>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <Picker label={t("history.arcade.tech.victim")} options={TECH_VICTIMS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={victim} onPick={setVictim} locked={playing} />
+        <button type="button" className="arcade-toggle" aria-pressed={half} disabled={playing} onClick={() => setHalf(!half)} title={t("history.arcade.tech.half")}>
+          <span aria-hidden="true" className="arcade-toggle-dot" />
+          {t("history.arcade.tech.halfShort")}
+        </button>
+      </div>
       <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold">
         <span>{t("history.arcade.tech.points", { n: hud.points })}</span>
         <span aria-label={t("history.arcade.tech.lives", { n: hud.lives })} className="tracking-widest">
@@ -304,31 +316,20 @@ export default function TechChase() {
           )}
         </div>
         {hud.phase !== "round" && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-overlay p-4 text-center">
+          <div className="arcade-screen-over absolute inset-0 flex flex-col items-center justify-center gap-2 p-3 text-center">
             {hud.phase === "over" && hud.newBest && <Confetti />}
-            {hud.phase === "over" ? (
+            {hud.phase === "over" && (
               <>
                 <p className="arcade-pop text-3xl font-black italic tabular-nums">{t("history.arcade.tech.points", { n: hud.points })}</p>
                 <p className="text-sm">{t("history.arcade.tech.punishes", { n: hud.punishes })}</p>
                 {hud.newBest && <p className="arcade-pop badge border border-success text-success">{t("history.arcade.hl.newBest")}</p>}
               </>
-            ) : (
-              <p className="max-w-md text-sm">{t("history.arcade.tech.how")}</p>
             )}
-            <div className="flex flex-wrap items-center justify-center gap-1.5">
-              <span className="text-meta">{t("history.arcade.tech.victim")}</span>
-              {TECH_VICTIMS.map((v) => (
-                <button key={v} type="button" onClick={() => setVictim(v)} aria-pressed={victim === v} className={`chip py-1 text-meta ${victim === v ? "border-brand text-brand" : ""}`}>{characterName("melee", v)}</button>
-              ))}
-            </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <button type="button" onClick={start} className="btn btn-md btn-inverse">{t(hud.phase === "over" ? "history.arcade.hl.again" : "history.arcade.tech.start")}</button>
+              <button type="button" onClick={start} className="arcade-promo-btn arcade-start-play">{t(hud.phase === "over" ? "history.arcade.hl.again" : "history.arcade.fq.play")} →</button>
               {hud.phase === "over" && hud.points > 0 && <button type="button" onClick={share} className="btn btn-md btn-outline">{t("history.arcade.share")}</button>}
             </div>
-            <label className="flex items-center gap-2 text-meta">
-              <input type="checkbox" checked={half} onChange={(e) => setHalf(e.target.checked)} />
-              {t("history.arcade.tech.half")}
-            </label>
+            {hud.phase !== "over" && half && <p className="text-meta">{t("history.arcade.tech.half")}</p>}
           </div>
         )}
       </div>
@@ -340,12 +341,16 @@ export default function TechChase() {
         {pad("tilt", t("history.arcade.tech.hitBtn"), `${t("history.arcade.tech.hitBtn")} (W)`)}
         {pad("grab", t("history.arcade.tech.grabBtn"), t("history.arcade.tech.grabBtn"), true)}
       </div>
-      <ul className="flex flex-col gap-1 text-meta text-muted">
-        <li>{t("history.arcade.tech.keys")}</li>
-        <li>{t("history.arcade.tech.colours")}</li>
-        <li>{t("history.arcade.tech.frames")}</li>
-        <li>{t("history.arcade.tech.note")}</li>
-      </ul>
+      <p className="text-meta text-muted">{t("history.arcade.tech.keys")}</p>
+      <details className="arcade-start-how">
+        <summary>{t("history.arcade.fq.howTo")}</summary>
+        <ul className="mt-2 flex flex-col gap-1.5 text-sm">
+          <li>{t("history.arcade.tech.how")}</li>
+          <li>{t("history.arcade.tech.colours")}</li>
+          <li className="text-meta text-muted">{t("history.arcade.tech.frames")}</li>
+          <li className="text-meta text-muted">{t("history.arcade.tech.note")}</li>
+        </ul>
+      </details>
     </div>
   );
 }

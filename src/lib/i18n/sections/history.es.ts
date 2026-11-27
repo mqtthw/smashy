@@ -473,4 +473,5 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.fq.howTo": "Cómo se juega",
   "history.arcade.fq.about": "Sobre los números",
   "history.arcade.fq.gameLabel": "Juego",
+  "history.arcade.tech.halfShort": "Media velocidad",
 };

@@ -1,7 +1,9 @@
 // The Arcade's pictures (moved here from ArcadeHub.tsx in round 971 so a quiz's own start screen can show its card's
 // picture too): 200 x 110, a few plain shapes each, no artwork from the games. QUIZ_LOOK: each knowledge quiz's
-// title, one-line pitch, colour and picture, shared by its hub card and its start screen.
+// title, one-line pitch, colour and picture, shared by its hub card and its start screen. GAME_LOOK (round 972): the
+// same for the other play-anytime games, whose pages open with ArcadeBanner.
 import type { MessageKey } from "@/lib/i18n/base";
+import { T } from "@/lib/i18n/client";
 
 const ink = "#12102e";
 
@@ -100,3 +102,21 @@ export const QUIZ_LOOK: Record<"frames" | "move" | "kill" | "shield", QuizLook> 
   frames: { title: "history.arcade.fq.frames.title", line: "history.arcade.fq.frames.line", color: "#6aa7ff", art: ART.frames },
   shield: { title: "history.arcade.fq.shield.title", line: "history.arcade.fq.shield.line", color: "#4fe3c1", art: ART.shield },
 };
+
+export const GAME_LOOK: Record<"hl" | "sets" | "tech" | "di", QuizLook> = {
+  hl: { title: "history.arcade.hl.title", line: "history.arcade.hl.line", color: "#5ad1ff", art: ART.hl },
+  sets: { title: "history.arcade.sets.title", line: "history.arcade.sets.line", color: "#7dff9a", art: ART.sets },
+  tech: { title: "history.arcade.tech.title", line: "history.arcade.tech.line", color: "#ffa040", art: ART.tech },
+  di: { title: "history.arcade.di.title", line: "history.arcade.di.line", color: "#c58bff", art: ART.di },
+};
+
+/** A game page's title (round 972): its card's picture and colour in a band, the title and one line over it. */
+export function ArcadeBanner({ look }: { look: QuizLook }) {
+  return (
+    <header className="arcade-banner" style={{ "--tile": look.color } as React.CSSProperties}>
+      <span className="arcade-banner-art">{look.art}</span>
+      <h1 className="arcade-banner-title"><T k={look.title} /></h1>
+      <p className="arcade-banner-line"><T k={look.line} /></p>
+    </header>
+  );
+}

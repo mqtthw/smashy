@@ -2,6 +2,7 @@
 // hides their stats are left out, and when that can't be checked no sets are shown.
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArcadeBanner, GAME_LOOK } from "@/components/arcade/ArcadeArt";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import GameChips from "@/components/arcade/GameChips";
@@ -57,10 +58,7 @@ export default function WhoWonPage(props: PageProps<"/arcade/sets">) {
   return (
     <section className="flex flex-col gap-4 p-4">
       <Link href="/arcade" className="text-sm text-muted hover:text-foreground"><T k="history.arcade.back" /></Link>
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold"><T k="history.arcade.sets.title" /></h1>
-        <p className="text-sm text-muted"><T k="history.arcade.sets.blurb" /></p>
-      </header>
+      <ArcadeBanner look={GAME_LOOK.sets} />
       <Suspense fallback={<CardListSkeleton count={2} />}>
         <Round searchParams={props.searchParams} />
       </Suspense>

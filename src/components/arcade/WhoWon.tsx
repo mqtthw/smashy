@@ -5,6 +5,7 @@
 // kept in this browser.
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { GAME_LOOK } from "@/components/arcade/ArcadeArt";
 import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
 import NewTab from "@/components/ui/NewTab";
 import { showToast } from "@/components/ui/Toaster";
@@ -50,14 +51,19 @@ export default function WhoWon({ sets }: { sets: ArcadeSet[] }) {
   if (finished) {
     const rank = setsRank(score, answers.length);
     return (
-      <div className="arcade-pop card relative flex flex-col gap-3 p-4" role="status">
+      // Round 972: a score card like the quizzes' end screen.
+      <div className="arcade-pop arcade-start relative flex flex-col gap-4 p-4 sm:p-5" role="status" style={{ "--tile": GAME_LOOK.sets.color } as React.CSSProperties}>
         {(rank === "perfect" || rank === "top8") && <Confetti />}
-        <p className="text-3xl font-black italic tabular-nums"><span className="arcade-bump">{score}</span><span className="text-muted">/{answers.length}</span></p>
-        <p className="text-lg font-bold">{t(RANK[rank])}</p>
-        <Pips results={answers} total={answers.length} />
-        <p className="text-meta text-muted">{t("history.arcade.sets.best", { n: Math.max(best, score), total: answers.length })}</p>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-5xl font-black italic tabular-nums leading-none"><span className="arcade-bump">{score}</span><span className="text-2xl text-muted">/{answers.length}</span></p>
+            <p className="mt-1 text-lg font-bold">{t(RANK[rank])}</p>
+          </div>
+          <Pips results={answers} total={answers.length} />
+        </div>
         <div className="flex flex-wrap items-center gap-3">
-          <button type="button" onClick={again} autoFocus className="btn btn-md btn-inverse">{t("history.arcade.hl.again")}</button>
+          <button type="button" onClick={again} autoFocus className="arcade-promo-btn arcade-start-play">{t("history.arcade.hl.again")} →</button>
+          <span className="arcade-start-best">★ {t("history.arcade.sets.best", { n: Math.max(best, score), total: answers.length })}</span>
           <button type="button" onClick={share} className="btn btn-md btn-outline">{t("history.arcade.share")}</button>
         </div>
       </div>
@@ -66,7 +72,7 @@ export default function WhoWon({ sets }: { sets: ArcadeSet[] }) {
   const side = (key: "a" | "b", s: SetSide) => {
     const state = !picked ? "" : key === set.winner ? "arcade-right" : key === picked ? "arcade-wrong" : "";
     return (
-      <button type="button" onClick={() => pick(key)} disabled={picked !== null} className={`arcade-side arcade-pop card flex min-h-32 flex-1 flex-col items-center justify-center gap-2 p-4 text-center ${state}`}>
+      <button type="button" onClick={() => pick(key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-32 flex-1 flex-col items-center justify-center gap-2 p-4 text-center ${state}`}>
         {s.icons.length > 0 && (
           <span className="flex items-center gap-1">
             {/* eslint-disable-next-line @next/next/no-img-element -- small stock icons */}
@@ -80,7 +86,7 @@ export default function WhoWon({ sets }: { sets: ArcadeSet[] }) {
     );
   };
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" style={{ "--tile": GAME_LOOK.sets.color } as React.CSSProperties}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-meta font-semibold text-muted">{t("history.arcade.sets.progress", { n: at + 1, total: sets.length })}</p>
         <Pips results={answers} total={sets.length} />

@@ -2,6 +2,7 @@
 // itself is fixed and reads nothing.
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArcadeBanner, GAME_LOOK } from "@/components/arcade/ArcadeArt";
 import TechChase from "@/components/arcade/TechChase";
 import { T } from "@/lib/i18n/client";
 import { getT } from "@/lib/i18n/server";
@@ -14,10 +15,7 @@ export default function TechChasePage() {
   return (
     <section className="flex flex-col gap-4 p-4">
       <Link href="/arcade" className="text-sm text-muted hover:text-foreground"><T k="history.arcade.back" /></Link>
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold"><T k="history.arcade.tech.title" /></h1>
-        <p className="text-sm text-muted"><T k="history.arcade.tech.blurb" /></p>
-      </header>
+      <ArcadeBanner look={GAME_LOOK.tech} />
       <TechChase />
     </section>
   );
