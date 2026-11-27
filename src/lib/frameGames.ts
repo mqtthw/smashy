@@ -104,9 +104,12 @@ export function killPercentBestDi(kill: NonNullable<MoveData["kill"]>, victim: V
   }
   return null;
 }
+/** The moves Does it kill? asks about: a hit that sends by percent, with real growth, upward or sideways (or the
+ *  Sakurai angle). tools/melee-disc/build-kill.mjs draws each of these (round 997). */
+export const killMoves = (): MoveRef[] => allMoves().filter((m) => m.data.kill && m.data.kill.growth >= 60 && (m.data.kill.angle <= 180 || m.data.kill.angle === 361));
 /** A hit near the percent where it starts to kill: half the questions a little above it, half a little below. */
 export function newKillQuestion(rand: () => number, hard = false): KillQuestion {
-  const strong = allMoves().filter((m) => m.data.kill && m.data.kill.growth >= 60 && (m.data.kill.angle <= 180 || m.data.kill.angle === 361));
+  const strong = killMoves();
   for (let i = 0; i < 200; i++) {
     const hit = pick(strong, rand);
     const victim = pick(DI_VICTIMS, rand);

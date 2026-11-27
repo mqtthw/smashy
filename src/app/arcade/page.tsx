@@ -22,6 +22,13 @@ async function Tiles() {
   return <ArcadeHub day={dayNumber(unixNow() * 1000)} />;
 }
 
+// Each shown with its own site icon, kept in public/community/ (round 997, Matthew: "use the site's own icon"; Super
+// Smash Flash 2 added at his request).
+const OTHER_GAMES = [
+  { name: "Smashdle", href: "https://smashdle.net/", icon: "/community/smashdle.png", line: "history.arcade.other.smashdle", color: "#c58bff", plate: false },
+  { name: "Super Smash Flash 2", href: "https://www.supersmashflash.com/", icon: "/community/ssf2.png", line: "history.arcade.other.ssf2", color: "#ff5a4f", plate: true },
+] as const;
+
 export default function ArcadePage() {
   return (
     <section className="flex flex-col gap-5 p-4">
@@ -34,14 +41,17 @@ export default function ArcadePage() {
           community's work rather than copying it. */}
       <section aria-labelledby="arcade-other" className="flex flex-col gap-2">
         <h2 id="arcade-other" className="font-bold"><T k="history.arcade.other.title" /></h2>
-        <a href="https://smashdle.net/" target="_blank" rel="noopener noreferrer" className="arcade-tile card flex items-start gap-4 p-4" style={{ "--tile": "#c58bff" } as React.CSSProperties}>
-          <span aria-hidden="true" className="arcade-glyph">S</span>
-          <span className="flex min-w-0 flex-col gap-1">
-            <span className="text-lg font-bold">Smashdle ↗︎<NewTab /></span>
-            <span className="text-sm text-muted"><T k="history.arcade.other.smashdle" /></span>
-            <span className="text-meta text-muted"><T k="history.arcade.other.note" /></span>
-          </span>
-        </a>
+        {OTHER_GAMES.map((g) => (
+          <a key={g.href} href={g.href} target="_blank" rel="noopener noreferrer" className="arcade-tile card flex items-start gap-4 p-4" style={{ "--tile": g.color } as React.CSSProperties}>
+            {/* eslint-disable-next-line @next/next/no-img-element -- the site's own small icon */}
+            <img src={g.icon} alt="" width={56} height={56} className={`h-14 w-14 shrink-0 rounded-xl object-contain ${g.plate ? "bg-[#f4f1ff] p-1" : ""}`} />
+            <span className="flex min-w-0 flex-col gap-1">
+              <span className="text-lg font-bold">{g.name} ↗︎<NewTab /></span>
+              <span className="text-sm text-muted"><T k={g.line} /></span>
+              <span className="text-meta text-muted"><T k="history.arcade.other.note" /></span>
+            </span>
+          </a>
+        ))}
       </section>
     </section>
   );

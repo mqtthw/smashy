@@ -2706,6 +2706,7 @@ export const en = {
   "history.arcade.tech.touch": "Tap the floor to run to a spot, tap the opponent to grab, or double-tap them for {move} (it starts from your first tap). Tapping them from another spot runs you to them. The buttons below work too; Grab also starts.",
   "history.arcade.di.touch": "Touch anywhere on the picture: a stick appears under your thumb. Drag and hold until the freeze ends; any angle counts, read the way the game reads a controller's stick. Let go to hold nothing.",
   "history.arcade.di.stickNote": "The touch stick is read as the game reads a controller (from its code: clamped to a circle, cut into 80 steps each way, and an axis at 22 steps or fewer counts as 0), so its best DI can be a little better than the keyboard's eight directions. After a KO, the arrow shown is the nearest of the eight to the best angle.",
+  "history.arcade.other.ssf2": "A free fan-made platform fighter in the style of Smash, made by McLeodGaming.",
   "playnow.title": "Play now",
   "playnow.req.incoming": "{who} wants to play {game} now",
   "playnow.req.outgoing": "Waiting for {who} to answer ({game})",

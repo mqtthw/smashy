@@ -2705,6 +2705,7 @@ export const es = {
   "history.arcade.tech.touch": "Toca el suelo para correr a un punto, toca al rival para agarrar, o tócalo dos veces para {move} (empieza desde tu primer toque). Si lo tocas desde otro punto, corres hacia él. Los botones de abajo también sirven; Agarrar también empieza.",
   "history.arcade.di.touch": "Toca cualquier parte de la imagen: aparece una palanca bajo tu pulgar. Arrastra y mantén hasta que termine la pausa; cualquier ángulo cuenta, leído como el juego lee la palanca de un mando. Suelta para no mantener nada.",
   "history.arcade.di.stickNote": "La palanca táctil se lee como el juego lee un mando (según su código: limitada a un círculo, cortada en 80 pasos por lado, y un eje de 22 pasos o menos cuenta como 0), así que su mejor DI puede ser algo mejor que las ocho direcciones del teclado. Tras un KO, la flecha mostrada es la más cercana de las ocho al mejor ángulo.",
+  "history.arcade.other.ssf2": "Un juego de lucha de plataformas gratuito hecho por fans al estilo de Smash, creado por McLeodGaming.",
   "playnow.title": "Jugar ya",
   "playnow.req.incoming": "{who} quiere jugar {game} ahora",
   "playnow.req.outgoing": "Esperando a que {who} responda ({game})",

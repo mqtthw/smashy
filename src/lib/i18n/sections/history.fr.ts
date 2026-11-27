@@ -490,4 +490,5 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.arcade.tech.touch": "Touchez le sol pour courir à une position, touchez l’adversaire pour saisir, ou touchez-le deux fois pour {move} (cela part de votre premier toucher). Le toucher depuis une autre position vous y fait courir. Les boutons en dessous marchent aussi ; Saisir lance aussi la partie.",
   "history.arcade.di.touch": "Touchez n’importe où sur l’image : un stick apparaît sous votre pouce. Faites glisser et maintenez jusqu’à la fin du gel ; tout angle compte, lu comme le jeu lit le stick d’une manette. Relâchez pour ne rien tenir.",
   "history.arcade.di.stickNote": "Le stick tactile est lu comme le jeu lit une manette (d’après son code : limité à un cercle, découpé en 80 crans de chaque côté, et un axe à 22 crans ou moins compte pour 0), donc son meilleur DI peut être un peu meilleur que les huit directions du clavier. Après un KO, la flèche affichée est la plus proche des huit du meilleur angle.",
+  "history.arcade.other.ssf2": "Un jeu de combat de plateforme gratuit créé par des fans dans le style de Smash, par McLeodGaming.",
 };
