@@ -2527,7 +2527,6 @@ export const fr = {
   "history.arcade.sets.wrong": "Pas cette fois.",
   "history.arcade.sets.results": "Voir les résultats",
   "history.arcade.card.title": "Arcade",
-  "history.arcade.card.text": "Énigmes du jour, quiz Melee et Ultimate, et entraîneurs bâtis sur les vrais chiffres des jeux.",
   "history.arcade.card.play": "Jouer",
   "history.arcade.next": "Prochaines énigmes dans {time}",
   "history.arcade.streak": "Série de {n} jours",

@@ -2528,7 +2528,6 @@ export const en = {
   "history.arcade.sets.wrong": "Not this time.",
   "history.arcade.sets.results": "See the results",
   "history.arcade.card.title": "Arcade",
-  "history.arcade.card.text": "Daily puzzles, Melee and Ultimate quizzes, and trainers built on the games' real numbers.",
   "history.arcade.card.play": "Play now",
   "history.arcade.next": "Next puzzles in {time}",
   "history.arcade.streak": "{n}-day streak",

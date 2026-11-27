@@ -307,7 +307,6 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.arcade.sets.result": "Vous en avez trouvé {n} sur {total}.",
   "history.arcade.sets.results": "Voir les résultats",
   "history.arcade.card.title": "Arcade",
-  "history.arcade.card.text": "Énigmes du jour, quiz Melee et Ultimate, et entraîneurs bâtis sur les vrais chiffres des jeux.",
   "history.arcade.card.play": "Jouer",
   "history.arcade.next": "Prochaines énigmes dans {time}",
   "history.arcade.streak": "Série de {n} jours",

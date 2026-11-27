@@ -2527,7 +2527,6 @@ export const es = {
   "history.arcade.sets.wrong": "Esta vez no.",
   "history.arcade.sets.results": "Ver los resultados",
   "history.arcade.card.title": "Arcade",
-  "history.arcade.card.text": "Retos diarios, quizzes de Melee y Ultimate, y entrenadores hechos con los números reales de los juegos.",
   "history.arcade.card.play": "Jugar ahora",
   "history.arcade.next": "Próximos retos en {time}",
   "history.arcade.streak": "Racha de {n} días",

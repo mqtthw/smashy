@@ -2527,7 +2527,6 @@ export const ja = {
   "history.arcade.sets.wrong": "残念。",
   "history.arcade.sets.results": "結果を見る",
   "history.arcade.card.title": "アーケード",
-  "history.arcade.card.text": "デイリー問題、DXとSPのクイズ、ゲームの実際の数値で作ったトレーナー。",
   "history.arcade.card.play": "今すぐプレイ",
   "history.arcade.next": "次の問題まで {time}",
   "history.arcade.streak": "{n}日連続正解",
