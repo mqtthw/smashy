@@ -49,3 +49,10 @@ as above (`--window-size=2820,644`).
 `assets/social/x-header.png` (1500 × 500, round 649): the SMASHY logo centred on the night background
 with an ember glow. X crops the top and bottom a little on some screens and puts the profile picture over
 the bottom left, so the logo stays in the middle.
+
+## Animated SMASHY.gg (not used yet)
+
+`animated/smashy-gg-spin-a.gif` and `animated/smashy-gg-spin-b.gif` (2026-11-27, Matthew; made with 3dgifmaker): the
+SMASHY.gg flame wordmark turning around in 3D, 440 × 440, 150 frames of 20 ms (a 3-second loop). Kept for later
+(a loading screen, promos, social posts). Before using one on the site: the logo is small in the middle of a white
+square, so trim the empty space and take out the white so it sits on Smashy's dark pages.
