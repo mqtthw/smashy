@@ -18,10 +18,15 @@ const ink = "#12102e";
 const ART = {
   major: (
     <svg viewBox="0 0 200 110" aria-hidden="true">
-      {[0, 1, 2, 3].map((i) => <rect key={i} x={34} y={14 + i * 22} width={132 - i * 18} height={14} fill={ink} opacity={0.85 - i * 0.14} transform="skewX(-12)" />)}
-      {[1, 2, 3, 4].map((n, i) => <text key={n} x={22} y={26 + i * 22} fontSize="13" fontWeight="900" fontStyle="italic" fill={ink}>{n}</text>)}
-      <rect x={120} y={36} width={58} height={40} fill="#fff" transform="rotate(8 150 56)" />
-      <text x={149} y={66} fontSize="30" fontWeight="900" fontStyle="italic" textAnchor="middle" fill={ink} transform="rotate(8 150 56)">?</text>
+      {/* Each bar is slanted in its own place (a skew on the whole group slid the lower bars into the numbers). */}
+      {[0, 1, 2, 3].map((i) => {
+        const y = 17 + i * 21;
+        const w = 88 - i * 14;
+        return <path key={i} d={`M40 ${y}h${w}l-3 14h-${w}z`} fill={ink} opacity={0.85 - i * 0.14} />;
+      })}
+      {[1, 2, 3, 4].map((n, i) => <text key={n} x={30} y={29 + i * 21} fontSize="13" fontWeight="900" fontStyle="italic" textAnchor="end" fill={ink}>{n}</text>)}
+      <rect x={138} y={32} width={48} height={42} fill="#fff" transform="rotate(8 162 53)" />
+      <text x={162} y={64} fontSize="30" fontWeight="900" fontStyle="italic" textAnchor="middle" fill={ink} transform="rotate(8 162 53)">?</text>
     </svg>
   ),
   player: (
