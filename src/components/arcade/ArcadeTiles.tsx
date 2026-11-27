@@ -14,6 +14,7 @@ const DAILY: (Tile & { stats: string })[] = [
   { href: "/arcade/player", title: "history.arcade.player.title", blurb: "history.arcade.player.blurb", glyph: "?", color: "#ff6b5e", stats: "arcade.player.stats" },
 ];
 const HL: Tile = { href: "/arcade/higher-lower", title: "history.arcade.hl.title", blurb: "history.arcade.hl.blurb", glyph: "↑↓", color: "#5ad1ff" };
+const TECH: Tile = { href: "/arcade/tech-chase", title: "history.arcade.tech.title", blurb: "history.arcade.tech.blurb", glyph: "⚡", color: "#ffa040" };
 const SETS: Tile = { href: "/arcade/sets", title: "history.arcade.sets.title", blurb: "history.arcade.sets.blurb", glyph: "VS", color: "#7dff9a" };
 
 function TileCard({ tile, kind, status, i }: { tile: Tile; kind: MessageKey; status: React.ReactNode; i: number }) {
@@ -58,12 +59,14 @@ export default function ArcadeTiles({ day }: { day: number }) {
   const t = useT();
   const [hlBest] = useStoredState("arcade.hl.best", "0");
   const [setsBest] = useStoredState("arcade.sets.best", "0");
+  const [techBest] = useStoredState("arcade.tech.best", "0");
   return (
     <div className="flex flex-col gap-3">
       <ul className="grid gap-3 sm:grid-cols-2">
         {DAILY.map((tile, i) => <DailyTile key={tile.href} tile={tile} day={day} i={i} />)}
         <TileCard tile={HL} kind="history.arcade.endless" i={2} status={Number(hlBest) > 0 ? `⚡ ${t("history.arcade.hl.best", { n: Number(hlBest) })}` : <span className="text-brand">▶ {t("history.arcade.tile.fresh")}</span>} />
         <TileCard tile={SETS} kind="history.arcade.endless" i={3} status={Number(setsBest) > 0 ? `★ ${t("history.arcade.sets.best", { n: Number(setsBest), total: SETS_PER_ROUND })}` : <span className="text-brand">▶ {t("history.arcade.tile.fresh")}</span>} />
+        <TileCard tile={TECH} kind="history.arcade.reflex" i={4} status={Number(techBest) > 0 ? `⚡ ${t("history.arcade.hl.best", { n: Number(techBest) })}` : <span className="text-brand">▶ {t("history.arcade.tile.fresh")}</span>} />
       </ul>
       <NextPuzzle className="text-center text-sm font-semibold text-muted" />
     </div>
