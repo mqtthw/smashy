@@ -1960,6 +1960,7 @@ body::before {
 }
 .arcade-side,
 .arcade-pick,
+.arcade-css-slot,
 .arcade-toggle,
 .arcade-seg > button,
 .arcade-promo-btn,
@@ -2024,4 +2025,97 @@ body::before {
   border-color: #ffd447;
   background: radial-gradient(circle at 35% 30%, #fff3b0, #ffd447 60%, #c79a10);
   transition: none;
+}
+
+/* The character pickers as slots on a character select screen (round 993): a bevelled grey-blue frame, the stock
+   icon large on a dark portrait panel, the name in caps on a black plate, and on the pick a red frame and a coin
+   (P1 red for you, CPU grey for the opponent). */
+.arcade-css-slot {
+  position: relative;
+  width: 5.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px;
+  border: 2px solid #b9c3e0;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #6d779c, #333a5c 55%, #232843);
+  box-shadow: inset 0 0 0 1px #12152a, 0 2px 0 rgb(0 0 0 / 0.45);
+  transition: border-color 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+  --coin: #e8322f;
+  --coin-dark: #8e1010;
+}
+.arcade-css-cpu {
+  --coin: #9aa0b4;
+  --coin-dark: #4a4f63;
+}
+.arcade-css-face {
+  height: 3.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 38%, #46548a, #181d3a 75%);
+  & img {
+    width: 2.6rem;
+    height: 2.6rem;
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 2px 0 rgb(0 0 0 / 0.5));
+  }
+}
+.arcade-css-name {
+  min-height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 2px;
+  background: #0b0d1a;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #000;
+}
+.arcade-css-slot[aria-pressed="true"] {
+  border-color: var(--coin);
+  box-shadow: inset 0 0 0 1px #12152a, 0 0 0 2px var(--coin-dark), 0 0 14px -2px var(--coin);
+  & .arcade-css-face {
+    background: radial-gradient(circle at 50% 38%, #6a7cc4, #232a55 75%);
+  }
+  &::after {
+    content: attr(data-token);
+    position: absolute;
+    right: -6px;
+    top: -7px;
+    width: 1.55rem;
+    height: 1.55rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--coin) 55%, #fff), var(--coin) 55%, var(--coin-dark));
+    color: #fff;
+    font-size: 0.55rem;
+    font-weight: 900;
+    font-style: italic;
+    text-shadow: 0 1px 0 rgb(0 0 0 / 0.6);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 0.5);
+  }
+}
+.arcade-css-slot:disabled:not([aria-pressed="true"]) {
+  opacity: 0.45;
+}
+@media (hover: hover) {
+  .arcade-css-slot:not(:disabled):not([aria-pressed="true"]):hover {
+    border-color: #fff;
+    transform: translateY(-2px);
+  }
+}
+.arcade-pick-row:has(> .arcade-css-slot) {
+  padding-top: 8px;
+  padding-right: 8px;
 }

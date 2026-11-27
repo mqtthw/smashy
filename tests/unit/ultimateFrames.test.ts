@@ -8,10 +8,12 @@ describe("Ultimate's move frames (round 968)", () => {
   it("has every Ultimate fighter the calculator covers, with Mario's moves as ultimateframedata.com lists them", () => {
     expect(Object.keys(ULT_MOVES).length).toBeGreaterThanOrEqual(80);
     const m = ULT_MOVES.mario;
-    // Checked by hand on 2026-11-27: startup, total frames, landing lag and on-shield numbers.
-    expect(m.ftilt).toMatchObject({ start: 5, total: 25, shield: -13 });
-    expect(m.fsmash).toMatchObject({ start: 15, end: 17, total: 47, shield: -20 });
-    expect(m.usmash).toMatchObject({ start: 9, total: 39, shield: -20 });
+    // Checked by hand on 2026-11-27: startup, total frames, landing lag and on-shield numbers. On the ground the number
+    // is the move at its safest (round 993): ultimateframedata.com's (counted from the first frame it can hit:
+    // -13, -20, -20) plus the frames it stays out after that, as hitting on its last frame out.
+    expect(m.ftilt).toMatchObject({ start: 5, end: 7, total: 25, shield: -13 + 2 });
+    expect(m.fsmash).toMatchObject({ start: 15, end: 17, total: 47, shield: -20 + 2 });
+    expect(m.usmash).toMatchObject({ start: 9, end: 12, total: 39, shield: -20 + 3 });
     expect(m.nair).toMatchObject({ start: 3, total: 45, landing: 6, shield: -2 });
     expect(m.fair).toMatchObject({ start: 16, total: 59, landing: 17, shield: -12 });
     expect(m.uair).toMatchObject({ start: 4, total: 30, landing: 6, shield: -3 });
@@ -19,7 +21,7 @@ describe("Ultimate's move frames (round 968)", () => {
     expect(m.dair!.hits.map(([a, b]) => `${a}-${b}`)).toEqual(["5-5", "7-7", "9-9", "11-11", "13-13", "23-23"]);
     expect(m.dair!.shield).toBeNull();
     expect(ULT_MOVES.fox.bair).toMatchObject({ start: 9, total: 48, landing: 9, shield: -4 });
-    expect(ULT_MOVES.fox.usmash).toMatchObject({ start: 8, total: 55, shield: -36 });
+    expect(ULT_MOVES.fox.usmash).toMatchObject({ start: 8, total: 55, shield: -35 }); // -36 from its first frame
   });
 
   it("asks Which is faster? and Guess the move from Ultimate's moves", () => {

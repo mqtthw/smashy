@@ -16,15 +16,13 @@
 // - Landing lag: the fighter's own stats (Data/<fighter>/data.json, "NairLandingLag" and so on).
 // - On shield (the calculator's own formula, js/formulas.js, ShieldAdvantage): shield stun is
 //   floor(damage x 0.8 x m x the hit's own multiplier + 3) - 1, with m 0.725 for smash attacks, 0.33 for aerials,
-//   1 otherwise (both sides' shield hitlag is the same, so it cancels). On the ground: the hit's first frame - total
+//   1 otherwise (both sides' shield hitlag is the same, so it cancels). On the ground: the frame it hits - total
 //   + shield stun. An aerial is taken as hitting just before it lands: shield stun - landing lag.
-//   Given only for moves that are one swing (early and late parts with no gap between them). On the ground it is
-//   taken from the first frame the move can hit, with that part's damage (as ultimateframedata.com counts it: Pikachu's
-//   forward smash was 5 frames off when counted from its strongest part); an aerial from its strongest part. A ground
-//   move whose parts get stronger later (a weak hit leading into the main one, like Falco's up smash) gets none: which
-//   part to count is unclear, and counting the first was 11 frames off there.
-//   Checked on 2026-11-27 against ultimateframedata.com for Mario, Fox, Pikachu, Falco, Ganondorf and Bowser: every
-//   number is the same or one frame apart (some hits have their own shield-stun multiplier this data can't see).
+//   Given only for moves that are one swing (early and late parts with no gap between them), and since round 993
+//   each move at its safest: on the ground, the best of every hitbox hitting on its last frame out with its own
+//   damage; an aerial with its strongest part. (Until round 993 a ground move was counted from the first frame it
+//   can hit, as ultimateframedata.com counts it; on 2026-11-27 that matched ultimateframedata.com for Mario, Fox,
+//   Pikachu, Falco, Ganondorf and Bowser to within a frame, which checks the formula the safest numbers use too.)
 //   A hit's own multiplier is only listed in the fuller move files (Data/<fighter>/data.json), which 20 fighters
 //   have; among their normal moves only dash attacks and one forward smash (Corrin's) have one. Other fighters'
 //   moves can have one too (Mega Man's down air: -9 by the formula, +1 on ultimateframedata.com), so since round 992
@@ -115,16 +113,21 @@ display.forEach((name, i) => {
     const kind = AERIAL_LAG[id] ? "aerial" : SMASH.includes(id) ? "smash" : "ground";
     const landing = kind === "aerial" ? (params[AERIAL_LAG[id]] ?? null) : null;
     const oneSwing = hits.every((h, j) => j === 0 || h.from === hits[j - 1].to + 1);
-    const fades = hits.every((h, j) => j === 0 || h.damage <= hits[j - 1].damage);
     const top = hits.reduce((a, b) => (b.damage > a.damage ? b : a));
     let shield = null;
     // Only fighters whose fuller file lists the multipliers (round 992): Mega Man's down air was given -9 with no
     // multiplier to see, where ultimateframedata.com says +1. Others get no on-shield number, not a guessed one.
     const mult = known ? (mults[id] ?? 1) : null;
-    if (oneSwing && id !== "jab" && mult !== null && (kind === "aerial" || fades)) {
-      const hit = kind === "aerial" ? top : hits[0];
-      const stun = shieldStun(hit.damage, mult, kind);
-      shield = kind === "aerial" ? (landing === null ? null : stun - landing) : hit.from - total + stun;
+    if (oneSwing && id !== "jab" && mult !== null) {
+      if (kind === "aerial") {
+        // At its safest: the strongest part, just before landing.
+        shield = landing === null ? null : shieldStun(top.damage, mult, kind) - landing;
+      } else {
+        // At its safest (round 993, Matthew: "the safest/best spacing possible hit of each move"): of every hitbox,
+        // the one and the frame that leave the attacker least behind, so a box's last frame out ("meaty") with its
+        // own damage. Each box's own window, not the merged hits, so a strong early part isn't counted late.
+        shield = Math.max(...windows.map((w) => w.to - total + shieldStun(w.damage, mult, kind)));
+      }
     }
     mine[id] = { start: hits[0].from, end: hits.at(-1).to, total, damage: r2(top.damage), hits: hits.map((h) => [h.from, h.to, r2(h.damage)]), landing, shield };
   }

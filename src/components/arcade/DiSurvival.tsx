@@ -399,7 +399,7 @@ export default function DiSurvival() {
   return (
     <div className="flex flex-col gap-3" style={{ "--tile": GAME_LOOK.di.color } as React.CSSProperties}>
       <div className="flex flex-col gap-3">
-        <Picker label={t("history.arcade.di.victim")} options={DI_VICTIMS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={victim} onPick={setVictim} locked={!idle} />
+        <Picker label={t("history.arcade.di.victim")} options={DI_VICTIMS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={victim} onPick={setVictim} locked={!idle} token="P1" />
         <Picker label={t("history.arcade.di.stage")} options={STAGE_KEYS.map((k) => ({ key: k, label: STAGES[k].name }))} value={stage} onPick={pickStage} locked={!idle} />
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold">

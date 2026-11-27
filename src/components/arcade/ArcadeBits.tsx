@@ -70,7 +70,13 @@ export function NextPuzzle({ className = "text-meta text-muted", bare = false }:
  * A row of big choice buttons (round 972): an opponent, a stage. Each can have a stock icon. Locked while a round
  * is being played.
  */
-export function Picker<K extends string>({ label, options, value, onPick, locked = false }: { label: string; options: { key: K; label: string; icon?: string | null }[]; value: K; onPick: (k: K) => void; locked?: boolean }) {
+/**
+ * A row of choices. Characters (every option with a stock icon) show as slots like a character select screen (round
+ * 993, Matthew: "edit this character selection to match melee visuals"; stock icons, no game portraits), the pick
+ * marked with a coin: `token` "P1" (red) for your character, "CPU" (grey) for the opponent.
+ */
+export function Picker<K extends string>({ label, options, value, onPick, locked = false, token }: { label: string; options: { key: K; label: string; icon?: string | null }[]; value: K; onPick: (k: K) => void; locked?: boolean; token?: "P1" | "CPU" }) {
+  const slots = options.length > 0 && options.every((o) => o.icon);
   // In a row that scrolls sideways, keep the picked one in sight (only the row scrolls, not the page).
   const row = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -83,8 +89,18 @@ export function Picker<K extends string>({ label, options, value, onPick, locked
     <div className="flex min-w-0 flex-col gap-1.5" role="group" aria-label={label}>
       <span className="text-meta font-bold uppercase tracking-wide text-muted">{label}</span>
       {/* On a phone, one row that scrolls sideways (round 980), so the game stays near the top. */}
-      <div ref={row} className="arcade-pick-row flex flex-wrap gap-1.5">
-        {options.map((o) => (
+      <div ref={row} className={`arcade-pick-row flex flex-wrap ${slots ? "gap-1" : "gap-1.5"}`}>
+        {slots
+          ? options.map((o) => (
+              <button key={o.key} type="button" disabled={locked} onClick={() => onPick(o.key)} aria-pressed={value === o.key} data-token={token === "CPU" ? "CPU" : "P1"} className={`arcade-css-slot ${token === "CPU" ? "arcade-css-cpu" : ""}`}>
+                <span className="arcade-css-face">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- a small stock icon */}
+                  <img src={o.icon!} alt="" width={24} height={24} />
+                </span>
+                <span className="arcade-css-name">{o.label}</span>
+              </button>
+            ))
+          : options.map((o) => (
           <button key={o.key} type="button" disabled={locked} onClick={() => onPick(o.key)} aria-pressed={value === o.key} className="arcade-pick">
             {/* eslint-disable-next-line @next/next/no-img-element -- a small stock icon */}
             {o.icon && <img src={o.icon} alt="" width={24} height={24} className="h-6 w-6 object-contain" />}

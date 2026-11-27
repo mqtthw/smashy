@@ -449,8 +449,8 @@ export default function TechChase() {
   return (
     <div className="flex flex-col gap-3" style={{ "--tile": GAME_LOOK.tech.color } as React.CSSProperties}>
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <Picker label={t("history.arcade.tech.player")} options={CHASERS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={player} onPick={setPlayer} locked={playing} />
-        <Picker label={t("history.arcade.tech.victim")} options={TECH_VICTIMS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={victim} onPick={setVictim} locked={playing} />
+        <Picker label={t("history.arcade.tech.player")} options={CHASERS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={player} onPick={setPlayer} locked={playing} token="P1" />
+        <Picker label={t("history.arcade.tech.victim")} options={TECH_VICTIMS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={victim} onPick={setVictim} locked={playing} token="CPU" />
         <button type="button" className="arcade-toggle" aria-pressed={half} disabled={playing} onClick={() => setHalf(!half)} title={t("history.arcade.tech.half")}>
           <span aria-hidden="true" className="arcade-toggle-dot" />
           {t("history.arcade.tech.halfShort")}
