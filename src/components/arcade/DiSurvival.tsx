@@ -237,7 +237,10 @@ export default function DiSurvival() {
     setHud((h) => ({ ...h, phase, hit, note: null }));
   }, []);
 
+  const playArea = useRef<HTMLDivElement>(null);
   const start = useCallback(() => {
+    // On a phone, the picture and the pad in view together (round 980).
+    playArea.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
     game.current = { phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: game.current.stick, lives: LIVES, survived: 0, victim, stage: STAGES[stage] };
     setHud({ phase: "freeze", lives: LIVES, survived: 0, hit: null, note: null, newBest: false });
     nextHit(performance.now());
@@ -326,18 +329,22 @@ export default function DiSurvival() {
     }
   };
   // The on-screen stick, for phones: a direction is held while its button is pressed.
-  const padBtn = (s: Stick) => {
-    const set = (on: boolean) => {
-      held.current.clear();
-      if (on) {
-        if (s.x) held.current.add(s.x > 0 ? "right" : "left");
-        if (s.y) held.current.add(s.y > 0 ? "up" : "down");
-      }
-      readStick();
-    };
-    return (
-      <button key={arrow(s)} type="button" aria-label={arrow(s)} onPointerDown={(e) => { e.preventDefault(); set(true); }} onPointerUp={() => set(false)} onPointerLeave={() => set(false)} className="btn btn-sm btn-outline h-11 w-11 touch-none select-none p-0 text-lg">{arrow(s)}</button>
-    );
+  // The on-screen stick, for phones (round 980): one pad that follows the thumb, so sliding from one direction to
+  // the next changes the hold; letting go holds nothing.
+  const PAD: Stick[] = [{ x: -1, y: 1 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: -1, y: -1 }, { x: 0, y: -1 }, { x: 1, y: -1 }];
+  const holdAt = (e: React.PointerEvent) => {
+    const el = document.elementFromPoint(e.clientX, e.clientY)?.closest<HTMLElement>("[data-stick]");
+    held.current.clear();
+    if (el) {
+      const [x, y] = el.dataset.stick!.split(",").map(Number);
+      if (x) held.current.add(x > 0 ? "right" : "left");
+      if (y) held.current.add(y > 0 ? "up" : "down");
+    }
+    readStick();
+  };
+  const letGo = () => {
+    held.current.clear();
+    readStick();
   };
   const noteText = (n: NonNullable<Hud["note"]>) => t(n.key, "zone" in n.values ? { ...n.values, zone: t(ZONE[n.values.zone as "top" | "side" | "bottom"]) } : n.values);
   const idle = hud.phase === "idle" || hud.phase === "over";
@@ -361,6 +368,7 @@ export default function DiSurvival() {
         </span>
         <span className="text-muted">{t("history.arcade.hl.best", { n: best })}</span>
       </div>
+      <div ref={playArea} className="arcade-play-area flex flex-col gap-3">
       <div className="card relative overflow-hidden">
         <canvas ref={canvas} width={W} height={H} className="block h-auto w-full" />
         <div className="pointer-events-none absolute inset-x-0 top-3 flex flex-col items-center gap-2 px-3 text-center" role="status">
@@ -388,10 +396,32 @@ export default function DiSurvival() {
           </div>
         )}
       </div>
-      <div className="grid w-max grid-cols-3 gap-1 self-center sm:hidden">
-        {[{ x: -1, y: 1 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: -1, y: -1 }, { x: 0, y: -1 }, { x: 1, y: -1 }].map(padBtn)}
+      <div
+        className="grid w-max touch-none select-none grid-cols-3 gap-1.5 self-center sm:hidden"
+        onPointerDown={(e) => {
+          e.preventDefault();
+          try {
+            (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+          } catch {
+            // not every pointer can be captured; the press still counts
+          }
+          holdAt(e);
+        }}
+        onPointerMove={(e) => {
+          if (e.buttons || e.pointerType === "touch") holdAt(e);
+        }}
+        onPointerUp={letGo}
+        onPointerCancel={letGo}
+      >
+        {PAD.map((p) => (
+          <span key={`${p.x},${p.y}`} data-stick={`${p.x},${p.y}`} aria-hidden="true" className={`btn btn-outline flex h-16 w-16 items-center justify-center p-0 text-xl ${holding === arrow(p) && (p.x || p.y) ? "border-brand bg-[rgb(255_212_71/0.18)] text-brand" : ""}`}>
+            {arrow(p)}
+          </span>
+        ))}
       </div>
-      <p className="text-meta text-muted">{t("history.arcade.di.keys")}</p>
+      </div>
+      <p className="keys-only text-meta text-muted">{t("history.arcade.di.keys")}</p>
+      <p className="touch-only text-meta text-muted">{t("history.arcade.di.touch")}</p>
       <details className="arcade-start-how">
         <summary>{t("history.arcade.fq.howTo")}</summary>
         <ul className="mt-2 flex flex-col gap-1.5 text-sm">

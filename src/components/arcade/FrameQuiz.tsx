@@ -16,7 +16,7 @@
 // hid the gap between a move's hits; Does it kill? was "boring without any visuals").
 import { useState } from "react";
 import { QUIZ_LOOK } from "@/components/arcade/ArcadeArt";
-import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
+import { Confetti, Pips, Reveal } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type SetsRank } from "@/lib/arcade";
 import { characterName } from "@/lib/characters";
@@ -347,14 +347,15 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
           {prompt}
         </h2>
         {extra}
-        <div className="grid gap-3 sm:grid-cols-2">
+        {/* Two a row on a phone too (round 980), so all the answers fit on the screen. */}
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
           {options.map((o) => {
             const state = !picked ? "" : o.key === answer ? "arcade-right" : o.key === picked ? "arcade-wrong" : "";
             return (
-              <button key={o.key} type="button" onClick={() => pick(o.key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-28 flex-col items-center justify-center gap-2 p-4 text-center ${state}`}>
+              <button key={o.key} type="button" onClick={() => pick(o.key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-20 flex-col items-center justify-center gap-1.5 p-3 text-center sm:min-h-28 sm:gap-2 sm:p-4 ${state}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element -- a small stock icon */}
                 {o.icon && <img src={o.icon} alt="" width={48} height={48} className="h-12 w-12 object-contain" />}
-                <span className="text-lg font-black italic">{picked && o.key === answer && <span className="text-success">✓ </span>}{o.label}</span>
+                <span className="text-base font-black italic leading-tight sm:text-lg">{picked && o.key === answer && <span className="text-success">✓ </span>}{o.label}</span>
                 {/* The numbers only show once answered: knowing them is the game. */}
                 {o.sub && picked && <span className="arcade-bump text-sm font-semibold">{o.sub}</span>}
               </button>
@@ -363,11 +364,11 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
         </div>
       </div>
       {picked && (
-        <div className="arcade-pop flex flex-wrap items-center gap-3" role="status">
+        <Reveal className="arcade-pop flex flex-wrap items-center gap-3" role="status">
           <p className="text-sm font-semibold">{right ? t("history.arcade.hl.right") : t("history.arcade.sets.wrong")} {explain}</p>
           {overTop && <p className="basis-full text-sm text-muted">{overTop}</p>}
           <button type="button" onClick={next} disabled={loading} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= QUIZ_LENGTH ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
-        </div>
+        </Reveal>
       )}
       <details className="arcade-start-how">
         <summary>{t("history.arcade.fq.about")}</summary>

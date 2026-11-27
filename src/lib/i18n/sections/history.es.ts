@@ -480,4 +480,6 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.tech.player": "Juegas con:",
   "history.arcade.mv.shine": "shine",
   "history.arcade.di.outlines": "Los luchadores son las siluetas del propio juego (NTSC 1.02): el movimiento se ve frame a frame hasta el frame en que golpea, con el atacante colocado para que su hitbox real alcance justo una de tus hurtboxes reales, y tú apareces en la pose de golpe que elige el juego para esa hurtbox y ese lanzamiento. Dónde se coloca el atacante lo decide Smashy, y la vibración durante la pausa solo indica que está congelado.",
+  "history.arcade.tech.touch": "Toca ◀ ● ▶ para perseguir entre los tres puntos, {move} para golpear y Agarrar para agarrar (Agarrar también empieza).",
+  "history.arcade.di.touch": "Mantén una dirección en el pad hasta que termine la pausa. Desliza el pulgar para cambiarla; suelta para no mantener nada.",
 };

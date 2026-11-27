@@ -59,8 +59,17 @@ const HIT_NAME: Record<(typeof CHASER_MOVES)[Chaser]["move"], MessageKey> = { dt
 type Note = { key: MessageKey; values?: Record<string, string | number>; good: boolean };
 type Hud = { phase: Game["phase"]; points: number; punishes: number; lives: number; note: Note | null; newBest: boolean };
 
+/**
+ * On a narrow screen (a phone) the picture shows the middle of the stage, bigger (round 980): x from 70 to 570 and
+ * the floor near the bottom, so the characters are a third bigger. The fall in from above starts out of sight.
+ */
+let narrow = false;
+const NARROW = { x: 70, y: 25, k: W / 500 };
+
 function draw(ctx: CanvasRenderingContext2D, g: Game, now: number, figs: Figures) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, W, H);
+  if (narrow) ctx.setTransform(NARROW.k, 0, 0, NARROW.k, -NARROW.x * NARROW.k, -NARROW.y * NARROW.k);
   ctx.fillStyle = "rgba(190,200,255,0.10)";
   ctx.fillRect(40, GROUND, W - 80, 10);
   ctx.fillStyle = "rgba(190,200,255,0.35)";
@@ -278,7 +287,19 @@ export default function TechChase() {
     setHud((h) => ({ ...h, note: null }));
   }, []);
 
+  const playArea = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const c = canvas.current;
+    if (!c) return;
+    const watch = new ResizeObserver(() => {
+      narrow = c.clientWidth < 520;
+    });
+    watch.observe(c);
+    return () => watch.disconnect();
+  }, []);
   const start = useCallback(() => {
+    // On a phone, the picture and the buttons in view together (round 980).
+    playArea.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
     game.current = fresh(half ? 0.5 : 1, victim, player);
     setHud({ phase: "round", points: 0, punishes: 0, lives: START_LIVES, note: null, newBest: false });
     nextRound(performance.now());
@@ -372,8 +393,11 @@ export default function TechChase() {
       showToast(t("ui.shareFailed"));
     }
   };
-  const pad = (what: Parameters<typeof act>[0], label: string, text: string, strong = false) => (
-    <button type="button" aria-label={label} onPointerDown={(e) => { e.preventDefault(); act(what); }} className={`btn btn-md ${strong ? "btn-inverse" : "btn-outline"} flex-1 touch-none select-none`}>{text}</button>
+  const pad = (what: Parameters<typeof act>[0], label: string, text: string, key: string, strong = false) => (
+    <button type="button" aria-label={label} onPointerDown={(e) => { e.preventDefault(); act(what); }} className={`btn btn-md ${strong ? "btn-inverse" : "btn-outline"} h-14 min-w-0 touch-none select-none whitespace-normal px-1 leading-tight sm:h-auto`}>
+      {text}
+      {key && <span className="keys-only">&nbsp;{key}</span>}
+    </button>
   );
   // A phase's name inside a result line ("frame 23 of tech in place").
   const noteText = (n: Note) => {
@@ -403,6 +427,7 @@ export default function TechChase() {
         </span>
         <span className="text-muted">{t("history.arcade.hl.best", { n: best })}</span>
       </div>
+      <div ref={playArea} className="arcade-play-area flex flex-col gap-3">
       <div className="card relative overflow-hidden">
         <canvas ref={canvas} width={W} height={H} className="block h-auto w-full" />
         <div className="pointer-events-none absolute inset-x-0 top-3 flex justify-center px-3" role="status">
@@ -429,14 +454,16 @@ export default function TechChase() {
         )}
       </div>
       {/* The same moves as buttons, for phones (and anyone who'd rather tap). */}
-      <div className="flex gap-2">
-        {pad("left", t("history.arcade.tech.left"), "◀ A")}
-        {pad("centre", t("history.arcade.tech.centre"), "● S")}
-        {pad("right", t("history.arcade.tech.right"), "D ▶")}
-        {pad("tilt", hitName, `${hitName} (W)`)}
-        {pad("grab", t("history.arcade.tech.grabBtn"), t("history.arcade.tech.grabBtn"), true)}
+      <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
+        {pad("left", t("history.arcade.tech.left"), "◀", "A")}
+        {pad("centre", t("history.arcade.tech.centre"), "●", "S")}
+        {pad("right", t("history.arcade.tech.right"), "▶", "D")}
+        {pad("tilt", hitName, hitName, "(W)")}
+        {pad("grab", t("history.arcade.tech.grabBtn"), t("history.arcade.tech.grabBtn"), "", true)}
       </div>
-      <p className="text-meta text-muted">{t("history.arcade.tech.keys", { move: hitName })}</p>
+      </div>
+      <p className="keys-only text-meta text-muted">{t("history.arcade.tech.keys", { move: hitName })}</p>
+      <p className="touch-only text-meta text-muted">{t("history.arcade.tech.touch", { move: hitName })}</p>
       <details className="arcade-start-how">
         <summary>{t("history.arcade.fq.howTo")}</summary>
         <ul className="mt-2 flex flex-col gap-1.5 text-sm">

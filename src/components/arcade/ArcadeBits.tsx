@@ -2,7 +2,7 @@
 // Small moving parts the Arcade's games share (round 945): confetti for a win, the tries meter, a number that
 // counts up, and the clock to the next daily puzzle. The motion itself is in globals.css (".arcade-…") and
 // stands still for people who ask for less of it.
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { clock, untilNextPuzzle } from "@/lib/arcade";
 import { useT } from "@/lib/i18n/client";
 
@@ -71,10 +71,19 @@ export function NextPuzzle({ className = "text-meta text-muted", bare = false }:
  * is being played.
  */
 export function Picker<K extends string>({ label, options, value, onPick, locked = false }: { label: string; options: { key: K; label: string; icon?: string | null }[]; value: K; onPick: (k: K) => void; locked?: boolean }) {
+  // In a row that scrolls sideways, keep the picked one in sight (only the row scrolls, not the page).
+  const row = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const r = row.current;
+    const b = r?.querySelector<HTMLElement>('[aria-pressed="true"]');
+    if (!r || !b || r.scrollWidth <= r.clientWidth) return;
+    r.scrollTo({ left: Math.max(0, b.offsetLeft - r.offsetLeft - 16), behavior: "smooth" });
+  }, [value]);
   return (
-    <div className="flex flex-col gap-1.5" role="group" aria-label={label}>
+    <div className="flex min-w-0 flex-col gap-1.5" role="group" aria-label={label}>
       <span className="text-meta font-bold uppercase tracking-wide text-muted">{label}</span>
-      <div className="flex flex-wrap gap-1.5">
+      {/* On a phone, one row that scrolls sideways (round 980), so the game stays near the top. */}
+      <div ref={row} className="arcade-pick-row flex flex-wrap gap-1.5">
         {options.map((o) => (
           <button key={o.key} type="button" disabled={locked} onClick={() => onPick(o.key)} aria-pressed={value === o.key} className="arcade-pick">
             {/* eslint-disable-next-line @next/next/no-img-element -- a small stock icon */}
@@ -83,6 +92,22 @@ export function Picker<K extends string>({ label, options, value, onPick, locked
           </button>
         ))}
       </div>
+    </div>
+  );
+}
+
+/**
+ * A block that scrolls itself into view when it appears (round 980: on a phone the result and "Next" under an
+ * answer were below the screen). Only as far as needed, clear of the bottom bar.
+ */
+export function Reveal({ className = "", role, children }: { className?: string; role?: string; children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    ref.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, []);
+  return (
+    <div ref={ref} className={`arcade-reveal ${className}`} role={role}>
+      {children}
     </div>
   );
 }

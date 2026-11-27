@@ -1888,3 +1888,41 @@ body::before {
 .arcade-start-art:has(> canvas) {
   grid-template-rows: 100%;
 }
+
+/* Phones (round 980). A row of choices scrolls sideways instead of wrapping into many lines. */
+@media (max-width: 639px) {
+  .arcade-pick-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+    & > * {
+      flex-shrink: 0;
+    }
+  }
+}
+/* What scrolls into view (a result and its Next button, a game's play area) stays clear of the bottom bar. */
+.arcade-reveal,
+.arcade-play-area {
+  scroll-margin-top: 4rem;
+  scroll-margin-bottom: 6rem;
+}
+@media (min-width: 640px) {
+  .arcade-reveal,
+  .arcade-play-area {
+    scroll-margin-bottom: 1rem;
+  }
+}
+/* Instructions for keys, or for touch, by the kind of pointer. */
+@media (pointer: coarse) {
+  .keys-only {
+    display: none;
+  }
+}
+@media not (pointer: coarse) {
+  .touch-only {
+    display: none;
+  }
+}

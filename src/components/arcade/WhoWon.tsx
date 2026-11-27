@@ -6,7 +6,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { GAME_LOOK } from "@/components/arcade/ArcadeArt";
-import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
+import { Confetti, Pips, Reveal } from "@/components/arcade/ArcadeBits";
 import NewTab from "@/components/ui/NewTab";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type ArcadeSet, type SetSide, type SetsRank } from "@/lib/arcade";
@@ -72,14 +72,14 @@ export default function WhoWon({ sets }: { sets: ArcadeSet[] }) {
   const side = (key: "a" | "b", s: SetSide) => {
     const state = !picked ? "" : key === set.winner ? "arcade-right" : key === picked ? "arcade-wrong" : "";
     return (
-      <button type="button" onClick={() => pick(key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-32 flex-1 flex-col items-center justify-center gap-2 p-4 text-center ${state}`}>
+      <button type="button" onClick={() => pick(key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-28 min-w-0 flex-col items-center justify-center gap-2 p-2.5 text-center sm:min-h-32 sm:p-4 ${state}`}>
         {s.icons.length > 0 && (
           <span className="flex items-center gap-1">
             {/* eslint-disable-next-line @next/next/no-img-element -- small stock icons */}
             {s.icons.map((src) => <img key={src} src={src} alt="" width={28} height={28} className="h-7 w-7 object-contain" />)}
           </span>
         )}
-        <span className="text-lg font-bold">{picked && key === set.winner && <span className="text-success">✓ </span>}{s.name}</span>
+        <span className="break-words text-base font-bold leading-tight sm:text-lg">{picked && key === set.winner && <span className="text-success">✓ </span>}{s.name}</span>
         {s.characters.length > 0 && <span className="text-meta text-muted">{s.characters.join(", ")}</span>}
         {picked && <span className="arcade-bump text-3xl font-black italic tabular-nums">{s.score}</span>}
       </button>
@@ -95,19 +95,19 @@ export default function WhoWon({ sets }: { sets: ArcadeSet[] }) {
         <h2 className="text-lg font-bold">{set.major}{!set.major.includes(String(set.year)) && ` (${set.year})`}</h2>
         <p className="text-sm text-muted">{GAMES[set.game].short} · {set.round}</p>
       </div>
-      <div key={set.id} className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+      <div key={set.id} className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-1.5 sm:gap-3">
         {side("a", set.a)}
         <span aria-hidden="true" className="arcade-vs">VS</span>
         {side("b", set.b)}
       </div>
       {picked && (
-        <div className="arcade-pop flex flex-wrap items-center gap-3" role="status">
+        <Reveal className="arcade-pop flex flex-wrap items-center gap-3" role="status">
           <p className="text-sm font-semibold">{answers.at(-1) ? t("history.arcade.hl.right") : t("history.arcade.sets.wrong")} {t("history.arcade.sets.thisSet", { winner: set[set.winner].name, round: set.round })}</p>
           <button type="button" onClick={() => setPicked(null)} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= sets.length ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
           {/* The tournament itself, to check a result that looks wrong (round 956: a winners final lost by the player
               who went on to win the tournament). A new tab, so the round isn't lost. */}
           <a href={set.href} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-brand">{t("history.arcade.sets.bracket")} ↗︎<NewTab /></a>
-        </div>
+        </Reveal>
       )}
     </div>
   );

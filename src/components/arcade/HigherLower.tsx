@@ -5,7 +5,7 @@
 // throws confetti.
 import { useState } from "react";
 import { GAME_LOOK } from "@/components/arcade/ArcadeArt";
-import { Confetti, CountUp } from "@/components/arcade/ArcadeBits";
+import { Confetti, CountUp, Reveal } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { hlAnswer, hlRound, type HlMajor, type HlRound } from "@/lib/arcade";
 import { GAMES } from "@/lib/games";
@@ -54,8 +54,8 @@ export default function HigherLower({ pool, first }: { pool: HlMajor[]; first: H
   const side = (key: "a" | "b", m: HlMajor) => {
     const state = !picked ? "" : key === right ? "arcade-right" : key === picked ? "arcade-wrong" : "";
     return (
-      <button type="button" onClick={() => pick(key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-32 flex-1 flex-col items-center justify-center gap-1 p-4 text-center ${state}`}>
-        <span className="text-lg font-bold">{picked && key === right && <span className="text-success">✓ </span>}{m.name}</span>
+      <button type="button" onClick={() => pick(key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-28 min-w-0 flex-col items-center justify-center gap-1 p-2.5 text-center sm:min-h-32 sm:p-4 ${state}`}>
+        <span className="break-words text-base font-bold leading-tight sm:text-lg">{picked && key === right && <span className="text-success">✓ </span>}{m.name}</span>
         <span className="text-meta text-muted">
           {GAMES[m.game].short}
           {(round.question === "entrants" || picked) && ` · ${m.year}`}
@@ -75,17 +75,17 @@ export default function HigherLower({ pool, first }: { pool: HlMajor[]; first: H
         {newBest && <span className="arcade-pop badge border border-success text-success">{t("history.arcade.hl.newBest")}</span>}
       </p>
       <h2 className="text-lg font-bold">{t(round.question === "entrants" ? "history.arcade.hl.entrants" : "history.arcade.hl.first")}</h2>
-      <div key={turn} className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+      <div key={turn} className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-1.5 sm:gap-3">
         {side("a", round.a)}
         <span aria-hidden="true" className="arcade-vs">VS</span>
         {side("b", round.b)}
       </div>
       {picked && (
-        <div className="arcade-pop flex flex-wrap items-center gap-3" role="status">
+        <Reveal className="arcade-pop flex flex-wrap items-center gap-3" role="status">
           <p className="text-sm font-semibold">{lost ? t("history.arcade.hl.wrong", { n: streak }) : t("history.arcade.hl.right")}</p>
           <button type="button" onClick={next} autoFocus className="btn btn-md btn-inverse">{t(lost ? "history.arcade.hl.again" : "history.arcade.hl.next")}</button>
           {lost && streak > 0 && <button type="button" onClick={share} className="btn btn-md btn-outline">{t("history.arcade.share")}</button>}
-        </div>
+        </Reveal>
       )}
     </div>
   );

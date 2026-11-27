@@ -2693,6 +2693,8 @@ export const ja = {
   "history.arcade.tech.player": "使うキャラ：",
   "history.arcade.mv.shine": "リフレクター",
   "history.arcade.di.outlines": "キャラはゲーム本体（NTSC 1.02）のシルエットです。ワザは当たるフレームまで1Fずつ再生され、攻撃側は本物の攻撃判定があなたの本物のくらい判定にちょうど届く位置に置かれます。あなたはそのくらい判定とふっとぶ角度に応じてゲームが選ぶやられポーズで表示されます。攻撃側の立ち位置はSmashyが決めたもので、停止中の揺れは止まっていることを示すだけです。",
+  "history.arcade.tech.touch": "◀ ● ▶ で3か所を移動、{move}で攻撃、「つかむ」でつかみ（「つかむ」で開始もできます）。",
+  "history.arcade.di.touch": "停止が終わるまでパッドで方向を押し続けてください。指をすべらせると方向が変わり、離すと何も入力しません。",
   "playnow.title": "今すぐ対戦",
   "playnow.req.incoming": "{who}さんが今すぐ{game}で対戦したがっています",
   "playnow.req.outgoing": "{who}さんの返事を待っています（{game}）",
