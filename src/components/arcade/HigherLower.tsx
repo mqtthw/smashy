@@ -1,5 +1,5 @@
 "use client";
-// Higher or lower (the Arcade's endless game), as a chain since round 981 (Matthew: "needs to be relooked to be
+// Higher or lower (the Arcade's endless game), as a chain since round 982 (Matthew: "needs to be relooked to be
 // more interesting"). The left card shows its number; the right card's is hidden, and the player says higher or
 // lower. A right answer reveals the number, then the right card slides over to the left and a new one comes in.
 // Cards are famous players (major wins, top 8s) and big majors (entrants); the topic changes every five right

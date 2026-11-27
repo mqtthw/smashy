@@ -74,7 +74,7 @@ export function shareSquares(guessesRight: boolean[], tries: number): string {
 
 // ---------- Higher or lower ----------
 
-// A chain (round 981, Matthew: "needs to be relooked to be more interesting"): one card stays on screen with its
+// A chain (round 982, Matthew: "needs to be relooked to be more interesting"): one card stays on screen with its
 // number showing, the next card's number is hidden, and the player says higher or lower. A right answer slides
 // the new card over and deals another. The topic (a major's entrants, a player's major wins or top 8s) changes
 // every HL_TOPIC_LEN right answers, and the pairs get closer as the streak grows.
