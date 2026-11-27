@@ -1,46 +1,127 @@
-// The Arcade's tech-chase trainer (round 946, Matthew: "a simple browser game that implements mechanics from
-// melee, maybe a techchase simulator … wasd and spacebar"). The rules, apart from the drawing: a knocked-down
-// dummy gets up one of four ways, and the player has to be on the right spot and grab in the short moment
-// after the dummy stops being invincible. A reaction game inspired by the mechanic, drawn with plain shapes;
-// it doesn't copy Melee's frame data.
+// The Arcade's tech-chase trainer: the rules, counted in Melee's frames (60 a second). Round 946 made the
+// first version with timings of its own; round 949 (Matthew: "Prioritize accuracy to the game. For example I
+// cant grab a missed tech opponent") rebuilt it on the game's frame data:
+//
+// - The opponent is Fox. Tech in place: 26 frames, intangible 1-20. Tech roll: 40 frames, intangible 1-20.
+//   Getup roll: 35 frames, intangible 1-19 (forward) or 12-29 (backward, from lying on his back). Getup attack:
+//   49 frames, intangible 1-26, hitting on 17-19 and 24-26. (fightcore.gg/characters/224/fox)
+// - A missed tech bounces for 26 frames, vulnerable throughout (one video's description only: weakly sourced),
+//   then lies there. Grabs don't work on an opponent knocked down on the floor (ssbwiki.com/Grab); a hit does.
+// - The player is Marth. Standing grab: active on frames 7-8 of 30. Down tilt: active 7-9, free to act on
+//   frame 20. (ssbwiki.com/Marth_(SSBM)/Grab, /Down_tilt)
+//
+// What is NOT the game's: the stage is three spots and moving between them is instant (no dash speeds, ranges
+// or roll distances); how long Fox lies there before getting up is a random 10 to 40 frames; he never does a
+// neutral getup (its frames weren't found on a page that could be read); and a browser can't promise that
+// every frame is shown on time.
 
-export type TechOption = "left" | "right" | "inPlace" | "missed";
-export const TECH_OPTIONS: TechOption[] = ["left", "right", "inPlace", "missed"];
-/** The three spots on the stage: -1 left, 0 centre (where the dummy lands), 1 right. */
 export type Slot = -1 | 0 | 1;
-export const techSlot = (o: TechOption): Slot => (o === "left" ? -1 : o === "right" ? 1 : 0);
-
-export const FALL_MS = 420; // the knockdown, before the wait
-export const WHIFF_MS = 380; // a missed grab leaves the player stuck this long
+export const FPS = 60;
 export const START_LIVES = 3;
+export const FALL_FRAMES = 24; // the fall before he lands (Smashy's choice)
 
-/** How long the get-up is invincible and how long the opening after it lasts: both shrink as grabs add up. */
-export function techTimings(grabs: number) {
-  return { rollMs: Math.max(300, 560 - 12 * grabs), openMs: Math.max(170, 430 - 10 * grabs), missedOpenMs: Math.max(230, 540 - 12 * grabs) };
+export const GRAB = { active: [7, 8] as const, total: 30 };
+export const TILT = { active: [7, 9] as const, total: 19 }; // interruptible on frame 20
+export type Move = "grab" | "tilt";
+export const MOVES: Record<Move, { active: readonly [number, number]; total: number }> = { grab: GRAB, tilt: TILT };
+
+export type PhaseName = "tech" | "techRoll" | "bounce" | "lying" | "getupRoll" | "getupAttack";
+export type Phase = {
+  name: PhaseName;
+  frames: number;
+  intangible: readonly [number, number] | null;
+  downed: boolean; // on the floor: hits connect, grabs don't
+  hits?: readonly (readonly [number, number])[]; // frames his own attack hits on
+  to?: Slot; // where a roll ends
+  arrives?: number; // the frame from which he counts as being there
+};
+
+export type TechOption = "inPlace" | "left" | "right" | "missed";
+export type Getup = "rollLeft" | "rollRight" | "attack";
+export const TECH_OPTIONS: TechOption[] = ["inPlace", "left", "right", "missed"];
+export const GETUPS: Getup[] = ["rollLeft", "rollRight", "attack"];
+
+const TECH: Phase = { name: "tech", frames: 26, intangible: [1, 20], downed: false };
+const techRoll = (to: Slot): Phase => ({ name: "techRoll", frames: 40, intangible: [1, 20], downed: false, to, arrives: 12 });
+const BOUNCE: Phase = { name: "bounce", frames: 26, intangible: null, downed: true };
+const lying = (frames: number): Phase => ({ name: "lying", frames, intangible: null, downed: true });
+// He lies on his back facing right: rolling right is his forward getup roll, left his backward one.
+const getupRoll = (to: Slot): Phase => ({ name: "getupRoll", frames: 35, intangible: to === 1 ? [1, 19] : [12, 29], downed: false, to, arrives: 12 });
+const GETUP_ATTACK: Phase = { name: "getupAttack", frames: 49, intangible: [1, 26], downed: false, hits: [[17, 19], [24, 26]] };
+
+/** One knockdown, start to finish: what Fox does on landing (frame 1 is the frame he lands), and after. */
+export type Script = { option: TechOption; getup: Getup | null; phases: Phase[] };
+
+const pick = <T>(list: readonly T[], rand: () => number): T => list[Math.min(list.length - 1, Math.floor(rand() * list.length))];
+
+/** `rand` gives 0..1 numbers (Math.random in the browser, a fixed list in tests). */
+export function newScript(rand: () => number): Script {
+  const option = pick(TECH_OPTIONS, rand);
+  if (option === "inPlace") return { option, getup: null, phases: [TECH] };
+  if (option === "left" || option === "right") return { option, getup: null, phases: [techRoll(option === "left" ? -1 : 1)] };
+  const wait = 10 + Math.floor(rand() * 31);
+  const getup = pick(GETUPS, rand);
+  return { option, getup, phases: [BOUNCE, lying(wait), getup === "attack" ? GETUP_ATTACK : getupRoll(getup === "rollLeft" ? -1 : 1)] };
 }
 
-/** One knockdown: what the dummy does, how long it lies there first, then its invincible time and its opening. */
-export type TechRound = { option: TechOption; waitMs: number; rollMs: number; openMs: number };
+export const scriptFrames = (s: Script) => s.phases.reduce((n, p) => n + p.frames, 0);
+const within = (f: number, range: readonly [number, number] | null | undefined) => !!range && f >= range[0] && f <= range[1];
 
-/** `rand` gives 0..1 numbers (Math.random in the browser, a fixed list in tests). A missed tech has no invincible time. */
-export function newRound(grabs: number, rand: () => number): TechRound {
-  const option = TECH_OPTIONS[Math.min(TECH_OPTIONS.length - 1, Math.floor(rand() * TECH_OPTIONS.length))];
-  const t = techTimings(grabs);
-  return { option, waitMs: 500 + Math.floor(rand() * 700), rollMs: option === "missed" ? 0 : t.rollMs, openMs: option === "missed" ? t.missedOpenMs : t.openMs };
+/** Fox on frame `f` since landing (1 = the landing frame). After the script he is free: he got away. */
+export function foxAt(s: Script, f: number) {
+  let start = 0;
+  let spot: Slot = 0;
+  for (const p of s.phases) {
+    const pf = f - start; // the frame within this phase
+    if (pf <= p.frames) {
+      const from = spot;
+      const here: Slot = p.to !== undefined && pf >= (p.arrives ?? 1) ? p.to : spot;
+      return { phase: p, frame: pf, spot: here, from, vulnerable: !within(pf, p.intangible), downed: p.downed, hitting: (p.hits ?? []).some((h) => within(pf, h)), free: false, progress: pf / p.frames };
+    }
+    start += p.frames;
+    if (p.to !== undefined) spot = p.to;
+  }
+  return { phase: null, frame: f - start, spot, from: spot, vulnerable: true, downed: false, hitting: false, free: true, progress: 1 };
 }
 
-export type Judge = "grab" | "early" | "late" | "wrongSpot";
-/** A grab pressed `sinceMs` after the dummy chose, with the player on `slot`. Before it chose, sinceMs is negative. */
-export function judgeGrab(round: TechRound, sinceMs: number, slot: Slot): Judge {
-  if (sinceMs < 0) return "early";
-  if (slot !== techSlot(round.option)) return "wrongSpot";
-  if (sinceMs < round.rollMs) return "early";
-  return sinceMs <= round.rollMs + round.openMs ? "grab" : "late";
+/** What the player is doing: a move started on frame `since` (in Fox's frames), or nothing. */
+export type Action = { move: Move; since: number } | null;
+/** The frame of the player's own move on Fox's frame `f` (1 = the frame after the press). */
+export const moveFrame = (a: Action, f: number) => (a ? f - a.since : 0);
+export const busy = (a: Action, f: number) => !!a && moveFrame(a, f) <= MOVES[a.move].total;
+export const striking = (a: Action, f: number) => !!a && within(moveFrame(a, f), MOVES[a.move].active);
+
+export type Outcome =
+  | { kind: "grab" | "hit"; frame: number; phase: PhaseName } // the punish landed
+  | { kind: "gotHit" } // his getup attack caught the player
+  | { kind: "escaped" }
+  | null;
+/** Why a move that is out right now isn't connecting (for the hint under the stage). */
+export type Whiff = "intangible" | "downed" | "wrongSpot" | null;
+
+/** One frame of the round: does the player's move connect, does Fox's attack, or has he got away? */
+export function judgeFrame(s: Script, f: number, playerSpot: Slot, action: Action): { outcome: Outcome; whiff: Whiff } {
+  const fox = foxAt(s, f);
+  if (fox.free) return { outcome: { kind: "escaped" }, whiff: null };
+  let whiff: Whiff = null;
+  if (striking(action, f)) {
+    if (playerSpot !== fox.spot) whiff = "wrongSpot";
+    else if (!fox.vulnerable) whiff = "intangible";
+    else if (action!.move === "grab" && fox.downed) whiff = "downed";
+    else return { outcome: { kind: action!.move === "grab" ? "grab" : "hit", frame: fox.frame, phase: fox.phase!.name }, whiff: null };
+  }
+  if (fox.hitting && playerSpot === fox.spot) return { outcome: { kind: "gotHit" }, whiff };
+  return { outcome: null, whiff };
 }
 
-/** How long after the opening began the grab came. */
-export const reactionMs = (round: TechRound, sinceMs: number) => Math.max(0, Math.round(sinceMs - round.rollMs));
+/** A grab keeps the chase going, so it's worth more than a hit. */
+export const POINTS = { grab: 2, hit: 1 } as const;
+
+/** The frames a phase can be punished on, for the line shown after a round ("vulnerable 21-26"). */
+export function openFrames(p: Phase): [number, number] {
+  if (!p.intangible) return [1, p.frames];
+  return p.intangible[0] > 1 && p.intangible[1] >= p.frames ? [1, p.intangible[0] - 1] : [p.intangible[1] + 1, p.frames];
+}
 
 export const moveSlot = (slot: Slot, by: -1 | 1): Slot => Math.max(-1, Math.min(1, slot + by)) as Slot;
-
-export const average = (list: number[]) => (list.length ? Math.round(list.reduce((a, b) => a + b, 0) / list.length) : 0);
+export const framesAt = (elapsedMs: number, speed = 1) => Math.floor((elapsedMs * FPS * speed) / 1000);

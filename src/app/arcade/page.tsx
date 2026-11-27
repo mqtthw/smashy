@@ -5,7 +5,7 @@
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { Suspense } from "react";
-import ArcadeTiles from "@/components/arcade/ArcadeTiles";
+import ArcadeHub from "@/components/arcade/ArcadeHub";
 import NewTab from "@/components/ui/NewTab";
 import { CardListSkeleton } from "@/components/ui/Skeleton";
 import { dayNumber } from "@/lib/arcade";
@@ -19,16 +19,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 async function Tiles() {
   await connection(); // today's puzzle number
-  return <ArcadeTiles day={dayNumber(unixNow() * 1000)} />;
+  return <ArcadeHub day={dayNumber(unixNow() * 1000)} />;
 }
 
 export default function ArcadePage() {
   return (
     <section className="flex flex-col gap-5 p-4">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold"><T k="history.arcade.title" /></h1>
-        <p className="text-sm text-muted"><T k="history.arcade.intro" /></p>
-      </header>
+      {/* The hero inside ArcadeHub carries the name in big letters; this is the page's heading for screen readers. */}
+      <h1 className="sr-only"><T k="history.arcade.title" /></h1>
       <Suspense fallback={<CardListSkeleton count={4} />}>
         <Tiles />
       </Suspense>

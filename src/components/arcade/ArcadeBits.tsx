@@ -50,7 +50,7 @@ export function CountUp({ to, ms = 600 }: { to: number; ms?: number }) {
 }
 
 /** "Next puzzle in 07:04:09", ticking. Empty until the browser has the time. */
-export function NextPuzzle({ className = "text-meta text-muted" }: { className?: string }) {
+export function NextPuzzle({ className = "text-meta text-muted", bare = false }: { className?: string; bare?: boolean }) {
   const t = useT();
   const [left, setLeft] = useState<number | null>(null);
   useEffect(() => {
@@ -62,5 +62,6 @@ export function NextPuzzle({ className = "text-meta text-muted" }: { className?:
       clearInterval(id);
     };
   }, []);
+  if (bare) return <span className={className}>{left === null ? "--:--:--" : clock(left)}</span>;
   return <p className={className}>{left === null ? " " : t("history.arcade.next", { time: clock(left) })}</p>;
 }

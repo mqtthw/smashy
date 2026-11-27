@@ -327,6 +327,12 @@ header.pt-6 {
 
 /* The iPhone app's own scroll bar (ScrollIndicator). The track runs between the clock strip and the
    bottom tab bar (4rem tall plus the home-bar strip; no tab bar from md up). */
+/* The phone dock's gap above the screen's bottom edge (round 950). It used to sit a full home-bar strip
+   (34px on an iPhone) plus 0.5rem up, which left a band of page showing under it. Now it overlaps the
+   strip, leaving room for the home bar itself, like the iPhone's own tab bars; 0.5rem where there's no strip. */
+:root {
+  --dock-gap: max(0.5rem, calc(env(safe-area-inset-bottom, 0px) - 0.75rem));
+}
 :root {
   --scroll-track-top: calc(env(safe-area-inset-top, 0px) + 6px);
   --scroll-track-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px) + 6px);
@@ -448,7 +454,7 @@ body::before {
    non-zero in the store apps, where the page starts below it (body padding), so it has to come off
    too or the bottom of the page slides under the dock. Bigger screens have no dock. */
 @utility h-above-dock {
-  height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 0.5rem - var(--dock-h, 4.5rem));
+  height: calc(100dvh - env(safe-area-inset-top, 0px) - var(--dock-gap) - var(--dock-h, 4.5rem));
   @media (width >= 48rem) {
     height: calc(100dvh - env(safe-area-inset-top, 0px));
   }
@@ -1466,6 +1472,116 @@ body::before {
     animation: none !important;
   }
   .arcade-promo:hover {
+    transform: none;
+  }
+}
+
+/* The Arcade page (round 948): a hero that carries today's progress, and picture cards for the games. */
+.arcade-hero {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  overflow: hidden;
+  padding: 1.5rem;
+  color: #fff;
+  border: 2px solid #ffd447;
+  border-radius: 3px;
+  background:
+    radial-gradient(90% 120% at 100% 0%, rgb(255 212 71 / 0.3), transparent 60%),
+    repeating-linear-gradient(115deg, rgb(255 255 255 / 0.05) 0 2px, transparent 2px 22px),
+    linear-gradient(115deg, #c2181a 0%, #8a1c8f 55%, #3b1fa8 100%);
+}
+.arcade-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  & > div {
+    min-width: 6.5rem;
+    padding: 0.5rem 0.75rem;
+    background: rgb(10 8 40 / 0.55);
+    border: 1px solid rgb(255 255 255 / 0.25);
+    transform: skewX(-8deg);
+  }
+  & dt {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.8;
+  }
+  & dd {
+    font-size: 1.15rem;
+    font-weight: 900;
+    font-style: italic;
+  }
+}
+.arcade-game {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--glass-line, var(--line));
+  border-radius: 3px;
+  background: var(--panel, var(--surface));
+  transition: transform 0.18s cubic-bezier(0.2, 1.5, 0.4, 1), border-color 0.18s ease, box-shadow 0.18s ease;
+  &:hover {
+    transform: translateY(-5px) rotate(-0.4deg);
+    border-color: var(--tile);
+    box-shadow: 0 12px 30px color-mix(in srgb, var(--tile) 40%, transparent);
+  }
+  &:hover .arcade-game-art > svg {
+    transform: scale(1.1) rotate(-2deg);
+  }
+  &:hover .arcade-game-play {
+    background: var(--tile);
+    color: #12102e;
+  }
+}
+.arcade-game-art {
+  display: grid;
+  place-items: center;
+  height: 7rem;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(115deg, rgb(255 255 255 / 0.16) 0 3px, transparent 3px 18px),
+    linear-gradient(160deg, var(--tile), color-mix(in srgb, var(--tile) 55%, #12102e));
+  & > svg {
+    height: 100%;
+    width: auto;
+    transition: transform 0.25s cubic-bezier(0.2, 1.5, 0.4, 1);
+  }
+}
+.arcade-game-big .arcade-game-art {
+  height: 9.5rem;
+}
+.arcade-game-title {
+  font-size: 1.15rem;
+  line-height: 1.2;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+}
+.arcade-game-big .arcade-game-title {
+  font-size: 1.4rem;
+}
+.arcade-game-play {
+  flex-shrink: 0;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  border: 1px solid var(--tile);
+  color: var(--tile);
+  transform: skewX(-8deg);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .arcade-game:hover,
+  .arcade-game:hover .arcade-game-art > svg {
     transform: none;
   }
 }

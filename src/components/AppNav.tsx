@@ -107,7 +107,7 @@ export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
       ref={navRef}
       aria-label={t("nav.main")}
       // Phones: a floating frosted-glass dock above the home-bar strip. Bigger screens: a side bar.
-      className="fixed inset-x-3 bottom-[calc(0.5rem+env(safe-area-inset-bottom))] z-10 rounded-3xl glass-bar shadow-[0_10px_26px_rgb(80_10_8/0.25)] print:hidden
+      className="fixed inset-x-3 bottom-(--dock-gap) z-10 rounded-3xl glass-bar shadow-[0_10px_26px_rgb(80_10_8/0.25)] print:hidden
                  md:sticky md:flex md:flex-col md:top-0 md:bottom-auto md:inset-x-auto md:h-screen md:w-20 md:shrink-0 md:rounded-none md:border-0 md:border-r md:border-line md:bg-transparent md:shadow-none md:backdrop-blur-none lg:w-56"
     >
       <Link href="/" aria-label={t("nav.home")} className="hidden py-6 text-center md:block lg:px-5 lg:text-left">
