@@ -2476,6 +2476,7 @@ export const ja = {
   "history.arcade.link": "アーケード",
   "history.arcade.intro": "デイリー問題、DXとSPのクイズ、ゲームの実際の数値で作ったトレーナー。無料、ログイン不要。",
   "history.arcade.back": "← アーケード",
+  "history.arcade.daily": "デイリー",
   "history.arcade.more": "ほかのゲーム",
   "history.arcade.share": "結果をシェア",
   "history.arcade.unavailable": "このゲームを読み込めませんでした。少ししてからもう一度お試しください。",

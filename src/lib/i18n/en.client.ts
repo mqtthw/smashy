@@ -2477,6 +2477,7 @@ export const en = {
   "history.arcade.link": "Arcade",
   "history.arcade.intro": "Daily puzzles, Melee and Ultimate quizzes, and trainers built on the games' real numbers. Free, no sign-in needed.",
   "history.arcade.back": "← Arcade",
+  "history.arcade.daily": "Daily",
   "history.arcade.more": "More games",
   "history.arcade.share": "Share result",
   "history.arcade.unavailable": "This game couldn't be loaded. Try again in a moment.",

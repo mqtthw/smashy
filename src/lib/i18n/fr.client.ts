@@ -2476,6 +2476,7 @@ export const fr = {
   "history.arcade.link": "Arcade",
   "history.arcade.intro": "Énigmes du jour, quiz Melee et Ultimate, et entraîneurs bâtis sur les vrais chiffres des jeux. Gratuits, sans connexion.",
   "history.arcade.back": "← Arcade",
+  "history.arcade.daily": "Quotidien",
   "history.arcade.more": "Plus de jeux",
   "history.arcade.share": "Partager le résultat",
   "history.arcade.unavailable": "Ce jeu n’a pas pu être chargé. Réessayez dans un instant.",

@@ -2476,6 +2476,7 @@ export const es = {
   "history.arcade.link": "Arcade",
   "history.arcade.intro": "Retos diarios, quizzes de Melee y Ultimate, y entrenadores hechos con los números reales de los juegos. Gratis y sin iniciar sesión.",
   "history.arcade.back": "← Arcade",
+  "history.arcade.daily": "Diario",
   "history.arcade.more": "Más juegos",
   "history.arcade.share": "Compartir resultado",
   "history.arcade.unavailable": "No se pudo cargar este juego. Inténtalo de nuevo en un momento.",
