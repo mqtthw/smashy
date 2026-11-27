@@ -160,8 +160,6 @@ export type KillView = {
   move: UltMoveKey | "jab" | "grab" | "dashGrab";
   victim: string;
   stage: Stage;
-  /** Melee's stage key, for its real shape (round 1000: killVisuals.data.ts). */
-  stageKey?: string;
   percent: number;
   killsFrom: number;
   kills: boolean;
