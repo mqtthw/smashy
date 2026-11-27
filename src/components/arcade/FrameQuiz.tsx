@@ -12,7 +12,7 @@ import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type SetsRank } from "@/lib/arcade";
 import { characterName } from "@/lib/characters";
-import { STAGES, stickArrow } from "@/lib/diSurvival";
+import { STAGES } from "@/lib/diSurvival";
 import { QUIZ_LENGTH, newDuel, newKillQuestion, newMoveGuess, type Duel, type KillQuestion, type MoveGuess } from "@/lib/frameGames";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
@@ -102,6 +102,16 @@ function KillStage({ q, answered }: { q: KillQuestion; answered: boolean }) {
             {victim ? <image href={victim} x={-size / 2} y={-size / 2} width={size} height={size} /> : <circle r={size / 2.4} fill="#ffd447" />}
             <animateMotion dur={`${secs}s`} fill="freeze" path={path} calcMode="linear" />
           </g>
+          {q.hard && !q.kills && q.stickAngle !== null && (
+            <g transform={`translate(${s.right - size * 1.9} ${-s.top + size * 1.9})`}>
+              <g className="arcade-ko">
+              <circle r={size * 1.2} fill="rgb(10 8 40 / 0.7)" stroke="rgb(190 200 255 / 0.6)" strokeWidth={2} />
+              <line x1={0} y1={0} x2={Math.cos((q.stickAngle * Math.PI) / 180) * size * 1.05} y2={-Math.sin((q.stickAngle * Math.PI) / 180) * size * 1.05} stroke="#ffd447" strokeWidth={5} strokeLinecap="round" />
+              <circle cx={Math.cos((q.stickAngle * Math.PI) / 180) * size * 1.05} cy={-Math.sin((q.stickAngle * Math.PI) / 180) * size * 1.05} r={size * 0.32} fill="#ffd447" />
+              <text y={size * 1.95} fontSize={14} fontWeight={700} textAnchor="middle" fill="rgb(190 200 255 / 0.85)">DI</text>
+              </g>
+            </g>
+          )}
           {q.kills && (
             <g className="arcade-ko" style={{ animationDelay: `${secs}s` }}>
               <circle cx={ex} cy={ey} r={size} fill="none" stroke="#ff5a4f" strokeWidth={5} />
@@ -217,7 +227,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     options = [{ key: "yes", label: t("history.arcade.fq.kill.yes") }, { key: "no", label: t("history.arcade.fq.kill.no") }];
     answer = q.kills ? "yes" : "no";
     // On hard: when it kills whatever is held there is no direction to name; when they live, the one that saved them.
-    explain = !q.hard ? t("history.arcade.fq.kill.why", { n: q.killsFrom }) : q.kills ? t("history.arcade.fq.kill.whyHardDead", { n: q.killsFrom, m: q.noDiFrom }) : t("history.arcade.fq.kill.whyHard", { n: q.killsFrom, m: q.noDiFrom, arrow: stickArrow(q.bestStick) });
+    explain = !q.hard ? t("history.arcade.fq.kill.why", { n: q.killsFrom }) : q.kills ? t("history.arcade.fq.kill.whyHardDead", { n: q.killsFrom, m: q.noDiFrom }) : q.stickAngle === null ? t("history.arcade.fq.kill.whyHardNone", { n: q.killsFrom }) : t("history.arcade.fq.kill.whyHard", { n: q.killsFrom, m: q.noDiFrom });
   }
   const pick = (key: string) => {
     if (picked) return;

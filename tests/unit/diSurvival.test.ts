@@ -103,3 +103,42 @@ describe("the DI trainer's hits", () => {
     expect(band!.max).toBeGreaterThan(band!.kill);
   });
 });
+
+import { analogDiRange, analogStick, bestAnalogDi, stickTurn } from "@/lib/diSurvival";
+
+describe("the best DI on an analog stick, as the game reads a controller", () => {
+  it("reads the stick in whole steps of a circle of 80, with a deadzone on each axis", () => {
+    expect(analogStick(0)).toEqual({ x: 1, y: 0 });
+    expect(analogStick(45)).toEqual({ x: 56 / 80, y: 56 / 80 });
+    expect(analogStick(10)).toEqual({ x: 78 / 80, y: 0 }); // 13 steps up: under the deadzone, so it reads as flat
+    expect(analogStick(17).y).toBeCloseTo(23 / 80); // 23 steps: the first that counts
+    expect(analogStick(180).x).toBe(-1);
+  });
+
+  it("turns a launch by up to 18 degrees either way: the full 18 when straight across is a cardinal, a little less when it isn't", () => {
+    expect(stickTurn(90, { x: -1, y: 0 })).toBeCloseTo(18);
+    expect(stickTurn(90, { x: 1, y: 0 })).toBeCloseTo(-18);
+    const up = analogDiRange(90);
+    expect(up.max).toBeCloseTo(18);
+    expect(up.min).toBeCloseTo(-18);
+    const usmash = analogDiRange(80); // straight across is 170 and 350 degrees: inside the vertical axis's deadzone
+    expect(usmash.max).toBeGreaterThan(16.5);
+    expect(usmash.max).toBeLessThan(18);
+    // More than a keyboard's flat left or right gets here, which is 18 * sin(80)^2.
+    expect(usmash.max).toBeGreaterThan(18 * Math.sin((80 * Math.PI) / 180) ** 2);
+    const diagonal = analogDiRange(45); // straight across is a clean diagonal: 0.7 on each axis, length 0.99
+    expect(diagonal.max).toBeGreaterThanOrEqual(18 * (2 * 0.7 * 0.7)); // a step beside the clean diagonal is a touch longer
+    expect(diagonal.max).toBeLessThanOrEqual(18);
+  });
+
+  it("finds a direction that survives where a keyboard's best doesn't have to", () => {
+    // Fox's up smash on Marth: the analog best is at least as good as the best of eight directions at every percent.
+    const move = DI_MOVES.find((m) => m.key === "fox-usmash")!;
+    for (const pct of [90, 100, 110, 120, 130]) {
+      const keyboard = resolveHit(move, pct, "marth", 0, 1, { x: 0, y: 0 });
+      const analog = bestAnalogDi(keyboard.kb, keyboard.angle, "marth", 0);
+      expect(margin(analog.flight)).toBeGreaterThanOrEqual(margin(keyboard.best.flight) - 0.5);
+      if (analog.turn !== 0) expect(analog.stickAngle).not.toBeNull();
+    }
+  });
+});

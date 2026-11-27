@@ -197,3 +197,66 @@ export function dealHit(rand: () => number, victim: Victim, level: number, stage
   }
   return { move: DI_MOVES[0], x0: 0, facing: 1, percent: 100 };
 }
+
+// ---------- The best DI on a real analog stick (round 960) ----------
+// Matthew, of Does it kill?'s hard mode: "We want it to cover the best DI for an analog stick; this knowledge check
+// will be to apply to real gameplay." The DI trainer above stays on a keyboard's eight directions; this is the
+// controller, as the game reads it (github.com/doldecomp/melee: sysdolphin/baselib/controller.c, melee/gm/gmmain.c,
+// melee/ft/fighter.c): the stick is clamped to a circle of radius 80 and cut to whole steps, divided by 80, and an
+// axis at or under the deadzone (0.28: 22 steps or fewer) reads as 0. DI is then max angle * perp^2 as above.
+
+/** A stick held all the way out at `deg` degrees, as the game reads it. */
+export function analogStick(deg: number): Stick {
+  const axis = (v: number) => {
+    const steps = Math.trunc(80 * v);
+    return Math.abs(steps) <= 22 ? 0 : steps / 80;
+  };
+  return { x: axis(Math.cos(rad(deg))), y: axis(Math.sin(rad(deg))) };
+}
+
+/** How far a stick position turns a launch, in degrees (positive: anticlockwise), by the game's rule. */
+export function stickTurn(angle: number, stick: Stick): number {
+  if (!stick.x && !stick.y) return 0;
+  const perp = Math.sin(rad(angle) - Math.atan2(stick.y, stick.x)) * Math.hypot(stick.x, stick.y);
+  return -Math.sign(perp) * Math.min(MAX_DI, perp * perp * MAX_DI);
+}
+
+/**
+ * The most an analog stick can turn a launch each way, and the stick angle that does it. It is a little under 18
+ * degrees when the direction straight across the launch falls in the deadzone of an axis (a launch at 80 degrees:
+ * the stick has to tilt off the horizontal to keep both axes alive).
+ */
+export function analogDiRange(angle: number): { min: number; max: number; minAt: number; maxAt: number } {
+  let out = { min: 0, max: 0, minAt: 0, maxAt: 0 };
+  for (let deg = 0; deg < 360; deg += 0.5) {
+    const turn = stickTurn(angle, analogStick(deg));
+    if (turn > out.max) out = { ...out, max: turn, maxAt: deg };
+    if (turn < out.min) out = { ...out, min: turn, minAt: deg };
+  }
+  return out;
+}
+
+export type AnalogDi = { turn: number; stickAngle: number | null; flight: Flight };
+/**
+ * The best DI an analog stick allows for a launch: every turn between the two extremes can be held (a stick
+ * between "none" and "straight across"), so they are tried half a degree apart and the one that ends furthest
+ * from the blast lines wins. `stickAngle`: where to hold the stick for it (null: holding nothing is best).
+ */
+export function bestAnalogDi(kb: number, angle: number, victim: Victim, x0: number, stage: Stage = STAGE): AnalogDi {
+  const range = analogDiRange(angle);
+  let best: AnalogDi = { turn: 0, stickAngle: null, flight: fly(kb, angle, victim, x0, stage) };
+  let bestMargin = margin(best.flight, stage);
+  const turns = [range.min, range.max];
+  for (let t = Math.ceil(range.min * 2) / 2; t <= range.max; t += 0.5) if (t !== 0) turns.push(t);
+  for (const turn of turns) {
+    const flight = fly(kb, angle + turn, victim, x0, stage);
+    const m = margin(flight, stage);
+    if (m <= bestMargin) continue;
+    // Where the stick sits for this turn: straight across the launch at the extremes, nearer the launch for less.
+    const lean = (Math.asin(Math.sqrt(Math.min(1, Math.abs(turn) / MAX_DI))) * 180) / Math.PI;
+    const stickAngle = turn === range.max ? range.maxAt : turn === range.min ? range.minAt : (((angle + Math.sign(turn) * lean) % 360) + 360) % 360;
+    best = { turn, stickAngle, flight };
+    bestMargin = m;
+  }
+  return best;
+}

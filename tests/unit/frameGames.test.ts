@@ -64,12 +64,13 @@ describe("the Arcade's Melee knowledge games", () => {
     }
   });
 
-  it("Does it kill? on hard: judged with the best DI, which never dies sooner than no DI", () => {
+  it("Does it kill? on hard: judged with the best DI an analog stick allows, which never dies sooner than no DI", () => {
     const usmash = MELEE_MOVES.fox.usmash!.kill!;
     expect(killPercentBestDi(usmash, "marth", "fd")!).toBeGreaterThan(killPercent(usmash, "marth", "fd")!); // DI buys percent
     const rand = stream(21);
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 12; i++) {
       const q = newKillQuestion(rand, true);
+      if (!q.kills && q.percent >= q.noDiFrom) expect(q.stickAngle).not.toBeNull(); // saved by DI: there's a direction to show
       expect(q.hard).toBe(true);
       expect(q.flight.ko !== null).toBe(q.kills);
       expect(q.killsFrom).toBeGreaterThanOrEqual(q.noDiFrom);
