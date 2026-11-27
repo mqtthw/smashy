@@ -2671,6 +2671,8 @@ export const ja = {
   "history.arcade.fq.kill.whyHard": "表示されたスティックの位置で生き残れます。最善の入力でも{n}%から撃墜、入力なしなら{m}%から。",
   "history.arcade.fq.kill.whyHardDead": "どの方向でも助かりません：最善の入力でも{n}%から撃墜、入力なしなら{m}%から。",
   "history.arcade.fq.kill.whyHardNone": "ここでは何を入力しても生き残ります。最善の入力でも{n}%から撃墜されます。",
+  "history.arcade.fq.kill.overTop": "{who}は上の撃墜ラインを越えますが、遅すぎて撃墜されません。DXでは、ふっとびでまだ速く上昇している間（毎F 2.4ユニット超）だけ上で撃墜されます。横と下は速さに関係なく撃墜されます。",
+  "history.arcade.di.r.livedTop": "生存！{you} で軌道が{deg}°曲がりました。上の撃墜ラインは越えますが、遅すぎて撃墜されません。上は、ふっとびでまだ速く上昇している間だけ撃墜されます。",
   "playnow.title": "今すぐ対戦",
   "playnow.req.incoming": "{who}さんが今すぐ{game}で対戦したがっています",
   "playnow.req.outgoing": "{who}さんの返事を待っています（{game}）",

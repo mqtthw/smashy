@@ -2671,6 +2671,8 @@ export const fr = {
   "history.arcade.fq.kill.whyHard": "La position du stick affichée le sauve ici. Il tue malgré le meilleur DI à partir de {n} % ; sans DI, à partir de {m} %.",
   "history.arcade.fq.kill.whyHardDead": "Aucune direction ne le sauve : il tue malgré le meilleur DI à partir de {n} % ; sans DI, à partir de {m} %.",
   "history.arcade.fq.kill.whyHardNone": "Ici il survit quoi qu’il tienne. Il tue malgré le meilleur DI à partir de {n} %.",
+  "history.arcade.fq.kill.overTop": "{who} dépasse bien la ligne du haut, mais trop lentement pour mourir : dans Melee, le haut ne tue que tant que le coup vous emporte encore vite vers le haut (plus de 2,4 unités par frame). Les côtés et le bas tuent à n’importe quelle vitesse.",
+  "history.arcade.di.r.livedTop": "Survécu ! Tenir {you} a dévié l’éjection de {deg}°. Vous dépassez la ligne du haut, mais trop lentement pour mourir : le haut ne tue que tant que le coup vous emporte encore vite vers le haut.",
   "playnow.title": "Jouer maintenant",
   "playnow.req.incoming": "{who} veut jouer à {game} maintenant",
   "playnow.req.outgoing": "En attente de la réponse de {who} ({game})",

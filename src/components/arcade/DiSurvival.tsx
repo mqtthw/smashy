@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Confetti } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { characterName } from "@/lib/characters";
-import { DI_VICTIMS, STAGES, STAGE_KEYS, dealHit, resolveHit, type DiHit, type Stage, type StageKey, type Stick, type Victim } from "@/lib/diSurvival";
+import { DI_VICTIMS, STAGES, STAGE_KEYS, dealHit, passedTopAlive, resolveHit, type DiHit, type Stage, type StageKey, type Stick, type Victim } from "@/lib/diSurvival";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { FPS, framesAt } from "@/lib/techChase";
@@ -176,7 +176,7 @@ export default function DiSurvival() {
         else g.survived++;
         const note: NonNullable<Hud["note"]> = s.mine.ko
           ? { key: "history.arcade.di.r.died", values: { zone: s.mine.ko, arrow: arrow(s.best.stick), you: arrow(g.stick) }, good: false }
-          : { key: "history.arcade.di.r.lived", values: { deg: Math.abs(Math.round(s.turned)), you: arrow(g.stick) }, good: true };
+          : { key: passedTopAlive(s.mine, g.stage) ? "history.arcade.di.r.livedTop" : "history.arcade.di.r.lived", values: { deg: Math.abs(Math.round(s.turned)), you: arrow(g.stick) }, good: true };
         setHud((h) => ({ ...h, phase: "result", lives: g.lives, survived: g.survived, note }));
       } else if (g.phase === "result" && now - g.at > RESULT_MS) {
         if (g.lives > 0) nextHit(now);

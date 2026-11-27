@@ -260,3 +260,10 @@ export function bestAnalogDi(kb: number, angle: number, victim: Victim, x0: numb
   }
   return best;
 }
+
+/**
+ * True when a launch rose past the top blast line and wasn't KO'd: by then the knockback was carrying the
+ * character up no faster than the threshold, which is the game's own condition for a KO off the top (round 961:
+ * Matthew saw Jigglypuff drawn above the line with "They live" and asked whether she doesn't still pass it).
+ */
+export const passedTopAlive = (flight: Flight, stage: Stage = STAGE) => flight.ko === null && flight.points.some(([, y]) => y > stage.top);

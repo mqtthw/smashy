@@ -142,3 +142,22 @@ describe("the best DI on an analog stick, as the game reads a controller", () =>
     }
   });
 });
+
+import { passedTopAlive } from "@/lib/diSurvival";
+
+describe("the top blast line", () => {
+  it("only kills while knockback is still carrying the character up fast: a slow drift over it lives", () => {
+    // Jigglypuff, sent up Yoshi's Story at a strength that tops out just above the line.
+    let found = null;
+    for (let kb = 120; kb < 260 && !found; kb++) {
+      const f = fly(kb, 70, "jigglypuff", 0, STAGES.yoshis);
+      if (passedTopAlive(f, STAGES.yoshis)) found = f;
+    }
+    expect(found).not.toBeNull();
+    expect(Math.max(...found!.points.map(([, y]) => y))).toBeGreaterThan(STAGES.yoshis.top);
+    expect(found!.ko).toBeNull();
+    // Harder, and she is still rising fast at the line: that one kills.
+    expect(fly(400, 70, "jigglypuff", 0, STAGES.yoshis).ko).toBe("top");
+    expect(passedTopAlive(fly(60, 70, "jigglypuff", 0, STAGES.yoshis), STAGES.yoshis)).toBe(false); // never got there
+  });
+});

@@ -2672,6 +2672,8 @@ export const en = {
   "history.arcade.fq.kill.whyHard": "The stick position shown saves them here. It kills through the best DI from {n}%; with no DI, from {m}%.",
   "history.arcade.fq.kill.whyHardDead": "No direction saves them: it kills through the best DI from {n}%; with no DI, from {m}%.",
   "history.arcade.fq.kill.whyHardNone": "They live here whatever is held. It kills through the best DI from {n}%.",
+  "history.arcade.fq.kill.overTop": "{who} does drift past the top line, but too slowly to die: in Melee the top only kills while the hit is still carrying you up fast (over 2.4 units a frame). The sides and the bottom kill at any speed.",
+  "history.arcade.di.r.livedTop": "Survived! Holding {you} bent the launch {deg}°. You drift past the top line, but too slowly to die: the top only kills while the hit is still carrying you up fast.",
   "playnow.title": "Play now",
   "playnow.req.incoming": "{who} wants to play {game} now",
   "playnow.req.outgoing": "Waiting for {who} to answer ({game})",

@@ -12,7 +12,7 @@ import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type SetsRank } from "@/lib/arcade";
 import { characterName } from "@/lib/characters";
-import { STAGES } from "@/lib/diSurvival";
+import { STAGES, passedTopAlive } from "@/lib/diSurvival";
 import { QUIZ_LENGTH, newDuel, newKillQuestion, newMoveGuess, type Duel, type KillQuestion, type MoveGuess } from "@/lib/frameGames";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
@@ -205,6 +205,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   let answer = "";
   let explain = "";
   let extra: React.ReactNode = null;
+  let overTop = "";
   if (question.kind === "frames") {
     const { q } = question;
     prompt = t("history.arcade.fq.frames.sooner");
@@ -227,6 +228,8 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     options = [{ key: "yes", label: t("history.arcade.fq.kill.yes") }, { key: "no", label: t("history.arcade.fq.kill.no") }];
     answer = q.kills ? "yes" : "no";
     // On hard: when it kills whatever is held there is no direction to name; when they live, the one that saved them.
+    // Over the top line and alive: say why, or it looks like a mistake.
+    if (passedTopAlive(q.flight, STAGES[q.stage])) overTop = t("history.arcade.fq.kill.overTop", { who: who(q.victim) });
     explain = !q.hard ? t("history.arcade.fq.kill.why", { n: q.killsFrom }) : q.kills ? t("history.arcade.fq.kill.whyHardDead", { n: q.killsFrom, m: q.noDiFrom }) : q.stickAngle === null ? t("history.arcade.fq.kill.whyHardNone", { n: q.killsFrom }) : t("history.arcade.fq.kill.whyHard", { n: q.killsFrom, m: q.noDiFrom });
   }
   const pick = (key: string) => {
@@ -270,6 +273,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
       {picked && (
         <div className="arcade-pop flex flex-wrap items-center gap-3" role="status">
           <p className="text-sm font-semibold">{right ? t("history.arcade.hl.right") : t("history.arcade.sets.wrong")} {explain}</p>
+          {overTop && <p className="basis-full text-sm text-muted">{overTop}</p>}
           <button type="button" onClick={next} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= QUIZ_LENGTH ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
         </div>
       )}
