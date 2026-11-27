@@ -13,7 +13,10 @@ import { DI_VICTIMS, STAGES, STAGE_KEYS, bestAnalogDi, fly, knockback, launchAng
 import type { KillView } from "./ultimateKill";
 import { MELEE_MOVES, MOVE_CHARS, MOVE_KEYS, type MoveChar, type MoveData, type MoveKey } from "./meleeMoves.data";
 
-export type MoveRef = { char: MoveChar; move: MoveKey; data: MoveData };
+/** A move of a character (Melee's keys, or Ultimate's since round 968: lib/ultimateFrames.ts). */
+export type MoveRef = { char: string; move: MoveKey; data: MoveData };
+/** Every move of every character, by character. */
+export type MoveTable = Record<string, Partial<Record<MoveKey, MoveData>>>;
 export const QUIZ_LENGTH = 10;
 const GRABS: MoveKey[] = ["grab", "dashGrab"];
 const isGrab = (m: MoveKey) => GRABS.includes(m);
@@ -44,16 +47,18 @@ export function newDuel(rand: () => number, moves = allMoves()): Duel {
 
 // ---------- Guess the move ----------
 
-export type MoveGuess = { char: MoveChar; answer: MoveKey; data: MoveData; options: MoveKey[] };
+export type MoveGuess = { char: string; answer: MoveKey; data: MoveData; options: MoveKey[] };
 const shape = (d: MoveData) => `${d.hits.map((h) => `${h[0]}-${h[1]}`).join(",")}|${d.total}`;
 /** One character's move and three of their others whose frames look different. */
-export function newMoveGuess(rand: () => number): MoveGuess {
+export function newMoveGuess(rand: () => number, table: MoveTable = MELEE_MOVES): MoveGuess {
+  const chars = Object.keys(table);
   for (let i = 0; i < 200; i++) {
-    const char = pick(MOVE_CHARS, rand);
-    const mine = MOVE_KEYS.filter((m) => MELEE_MOVES[char][m] && !isGrab(m));
+    const char = pick(chars, rand);
+    const mine = MOVE_KEYS.filter((m) => table[char][m] && !isGrab(m));
+    if (mine.length < 4) continue;
     const answer = pick(mine, rand);
-    const data = MELEE_MOVES[char][answer]!;
-    const others = shuffled(mine.filter((m) => m !== answer && shape(MELEE_MOVES[char][m]!) !== shape(data)), rand).slice(0, 3);
+    const data = table[char][answer]!;
+    const others = shuffled(mine.filter((m) => m !== answer && shape(table[char][m]!) !== shape(data)), rand).slice(0, 3);
     if (others.length < 3) continue;
     return { char, answer, data, options: shuffled([answer, ...others], rand) };
   }
@@ -123,7 +128,7 @@ export function newKillQuestion(rand: () => number, hard = false): KillQuestion 
     const last = launchOf(hit.data.kill!, diFrom - 1, victim);
     const stickAngle = best.flight.ko ? bestAnalogDi(last.kb, last.angle, victim, 0, STAGES[stage]).stickAngle : best.stickAngle;
     if ((flight.ko !== null) !== kills) continue; // DI in play: just above the line isn't always a kill
-    return { attacker: hit.char, move: hit.move, victim, stage, percent, killsFrom, kills, flight, hard, stickAngle, noDi, noDiFrom, diFrom };
+    return { attacker: hit.char as MoveChar, move: hit.move, victim, stage, percent, killsFrom, kills, flight, hard, stickAngle, noDi, noDiFrom, diFrom };
   }
   throw new Error("no kill question could be made");
 }

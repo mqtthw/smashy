@@ -6,7 +6,7 @@ import { T } from "@/lib/i18n/client";
 import { getT } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: (await getT())("history.arcade.fq.move.title"), description: "A free Super Smash Bros. Melee quiz: a move shown as its frames (startup, active, recovery). Which move is it?" };
+  return { title: (await getT())("history.arcade.fq.move.title"), description: "A free Super Smash Bros. Melee and Ultimate quiz: a move shown as its frames (startup, active, recovery). Which move is it?" };
 }
 
 export default function Page() {

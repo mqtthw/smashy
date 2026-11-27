@@ -6,6 +6,9 @@
 // - move: Guess the move (the move's frames as a strip, each separate hit with its damage; four choices)
 // - kill: Does it kill? (the hit set up on its stage with both characters; yes or no; then the launch is flown);
 //   Melee or Ultimate (round 963: Ultimate's rules from the Smash Ultimate Calculator, lib/ultimateKill.ts)
+// - shield: Which is safer on shield? (two Ultimate moves hit a shield; which leaves its user less behind)
+// Since round 968 Which is faster? and Guess the move can be asked about Ultimate too (lib/ultimateFrames.ts), and
+// Which is safer on shield? is Ultimate's own (Matthew picked it over "can they shield-grab it?" and "how minus").
 // Round 958 (Matthew: no "which does more damage" in a game about speed; Guess the move "could use more data" and
 // hid the gap between a move's hits; Does it kill? was "boring without any visuals").
 import { useState } from "react";
@@ -20,15 +23,23 @@ import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { stockIconUrl } from "@/lib/mainBadge";
 import type { MoveChar, MoveData, MoveKey } from "@/lib/meleeMoves.data";
+import type { ShieldDuel, UltMoveData } from "@/lib/ultimateFrames";
 import type { KillView } from "@/lib/ultimateKill";
 import { useStoredState } from "@/lib/useStoredState";
 
-export type QuizKind = "frames" | "move" | "kill";
-type Question = { kind: "frames"; q: Duel } | { kind: "move"; q: MoveGuess } | { kind: "kill"; q: KillView };
-const MAKE: Record<QuizKind, (hard: boolean) => Question> = {
-  frames: () => ({ kind: "frames", q: newDuel(Math.random) }),
-  move: () => ({ kind: "move", q: newMoveGuess(Math.random) }),
+export type QuizKind = "frames" | "move" | "kill" | "shield";
+type Question = { kind: "frames"; q: Duel; game: GameKey } | { kind: "move"; q: MoveGuess; game: GameKey } | { kind: "kill"; q: KillView } | { kind: "shield"; q: ShieldDuel };
+/** Melee's questions, made right here (Ultimate's data is fetched when asked for). */
+const MAKE: Record<Exclude<QuizKind, "shield">, (hard: boolean) => Question> = {
+  frames: () => ({ kind: "frames", q: newDuel(Math.random), game: "melee" }),
+  move: () => ({ kind: "move", q: newMoveGuess(Math.random), game: "melee" }),
   kill: (hard) => ({ kind: "kill", q: toKillView(newKillQuestion(Math.random, hard)) }),
+};
+const NOTE: Record<QuizKind, { melee: MessageKey; ultimate: MessageKey }> = {
+  frames: { melee: "history.arcade.fq.frames.note", ultimate: "history.arcade.fq.frames.noteUlt" },
+  move: { melee: "history.arcade.fq.move.note", ultimate: "history.arcade.fq.move.noteUlt" },
+  kill: { melee: "history.arcade.fq.kill.note", ultimate: "history.arcade.fq.kill.noteUlt" },
+  shield: { melee: "history.arcade.fq.shield.note", ultimate: "history.arcade.fq.shield.note" },
 };
 const RANK: Record<SetsRank, MessageKey> = { perfect: "history.arcade.fq.rank.perfect", top8: "history.arcade.sets.rank.top8", pools: "history.arcade.sets.rank.pools", out: "history.arcade.sets.rank.out" };
 const MOVE: Record<MoveKey, MessageKey> = {
@@ -49,7 +60,7 @@ const icon = (c: string, game: GameKey = "melee") => stockIconUrl({ game, charac
 const HIT_COLORS = ["#ff5a4f", "#ffd447", "#5ad1ff", "#7dff9a", "#c58bff", "#ffa040"];
 const hitColor = (i: number) => HIT_COLORS[i % HIT_COLORS.length];
 
-function FrameStrip({ d }: { d: MoveData }) {
+function FrameStrip({ d, landing = null }: { d: MoveData; landing?: number | null }) {
   const t = useT();
   /** Which hit is out on a frame (-1: none). */
   const hitOn = (f: number) => d.hits.findIndex(([from, to]) => f >= from && f <= to);
@@ -76,6 +87,8 @@ function FrameStrip({ d }: { d: MoveData }) {
           </li>
         ))}
         <li className="badge border border-line font-normal"><span className="mr-1 inline-block h-2 w-2 bg-[#3d4170]" />{t("history.arcade.fq.free", { n: d.total + 1 })}</li>
+        {/* Ultimate's aerials: the landing lag, which the strip leaves out. */}
+        {landing !== null && <li className="badge border border-line font-normal">{t("history.arcade.fq.landing", { n: landing })}</li>}
       </ul>
     </div>
   );
@@ -148,21 +161,29 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   // Does it kill? has a hard mode, with a best score of its own.
   const [hardStored, setHardStored] = useStoredState("arcade.fq.kill.hard", "");
   const hard = kind === "kill" && hardStored === "1";
-  // ... and can be asked about Ultimate (round 963), with best scores of its own.
-  const [gameStored, setGameStored] = useStoredState("arcade.fq.kill.game", "melee");
-  const ultimate = kind === "kill" && gameStored === "ultimate";
+  // ... and each can be asked about Ultimate (Does it kill? since round 963, the other two since 968), with best scores
+  // of their own. Which is safer on shield? is only Ultimate's.
+  const choosesGame = kind !== "shield";
+  const [gameStored, setGameStored] = useStoredState(`arcade.fq.${kind}.game`, "melee");
+  const ultimate = !choosesGame || gameStored === "ultimate";
   const [loading, setLoading] = useState(false);
-  const [bestStored, setBest] = useStoredState(`arcade.fq.${kind}${ultimate ? ".ult" : ""}${hard ? ".hard" : ""}.best`, "0");
+  const [bestStored, setBest] = useStoredState(`arcade.fq.${kind}${ultimate && choosesGame ? ".ult" : ""}${hard ? ".hard" : ""}.best`, "0");
   const best = Number(bestStored) || 0;
   const mv = (m: MoveKey) => t(MOVE[m]);
   const named = (c: MoveChar | string, m: MoveKey, game: GameKey = "melee") => t("history.arcade.fq.of", { char: who(c, game), move: mv(m) });
-  // Ultimate's maths and its data (about 35 KB) are only fetched when an Ultimate round is played.
+  // Ultimate's maths and data (tens of KB) are only fetched when an Ultimate round is played.
   const make = async (): Promise<Question> => {
-    if (!ultimate) return MAKE[kind](hard);
+    if (!ultimate && choosesGame) return MAKE[kind as Exclude<QuizKind, "shield">](hard);
     setLoading(true);
     try {
-      const { newUltKillQuestion } = await import("@/lib/ultimateKill");
-      return { kind: "kill", q: newUltKillQuestion(Math.random, hard) };
+      if (kind === "kill") {
+        const { newUltKillQuestion } = await import("@/lib/ultimateKill");
+        return { kind: "kill", q: newUltKillQuestion(Math.random, hard) };
+      }
+      const f = await import("@/lib/ultimateFrames");
+      if (kind === "frames") return { kind: "frames", q: f.newUltDuel(Math.random), game: "ultimate" };
+      if (kind === "move") return { kind: "move", q: f.newUltMoveGuess(Math.random), game: "ultimate" };
+      return { kind: "shield", q: f.newShieldDuel(Math.random) };
     } finally {
       setLoading(false);
     }
@@ -195,7 +216,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
         ) : (
           <p className="text-sm">{t(`history.arcade.fq.${kind}.how`)}</p>
         )}
-        {kind === "kill" && (
+        {choosesGame && (
           <div className="flex flex-wrap items-center gap-2">
             {(["melee", "ultimate"] as const).map((g) => (
               <button key={g} type="button" onClick={() => { setGameStored(g); setAnswers([]); }} aria-pressed={(g === "ultimate") === ultimate} className={`chip py-1 ${(g === "ultimate") === ultimate ? "border-brand text-brand" : ""}`}>{GAMES[g].short}</button>
@@ -240,20 +261,30 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   let extra: React.ReactNode = null;
   let overTop = "";
   if (question.kind === "frames") {
-    const { q } = question;
+    const { q, game } = question;
     prompt = t("history.arcade.fq.frames.sooner");
     options = [
-      { key: "a", label: named(q.a.char, q.a.move), sub: t("history.arcade.fq.frame", { n: q.a.data.start }), icon: icon(q.a.char) },
-      { key: "b", label: named(q.b.char, q.b.move), sub: t("history.arcade.fq.frame", { n: q.b.data.start }), icon: icon(q.b.char) },
+      { key: "a", label: named(q.a.char, q.a.move, game), sub: t("history.arcade.fq.frame", { n: q.a.data.start }), icon: icon(q.a.char, game) },
+      { key: "b", label: named(q.b.char, q.b.move, game), sub: t("history.arcade.fq.frame", { n: q.b.data.start }), icon: icon(q.b.char, game) },
     ];
     answer = q.answer;
   } else if (question.kind === "move") {
-    const { q } = question;
-    prompt = t("history.arcade.fq.move.q", { char: who(q.char) });
-    extra = <FrameStrip d={q.data} />;
+    const { q, game } = question;
+    prompt = t("history.arcade.fq.move.q", { char: who(q.char, game) });
+    extra = <FrameStrip d={q.data} landing={(q.data as Partial<UltMoveData>).landing ?? null} />;
     options = q.options.map((m) => ({ key: m, label: mv(m) }));
     answer = q.answer;
-    explain = t("history.arcade.fq.move.why", { move: named(q.char, q.answer) });
+    explain = t("history.arcade.fq.move.why", { move: named(q.char, q.answer, game) });
+  } else if (question.kind === "shield") {
+    const { q } = question;
+    const on = (n: number) => t("history.arcade.fq.shield.on", { n: n > 0 ? `+${n}` : String(n) });
+    prompt = t("history.arcade.fq.shield.q");
+    options = [
+      { key: "a", label: named(q.a.char, q.a.move, "ultimate"), sub: on(q.a.data.shield!), icon: icon(q.a.char, "ultimate") },
+      { key: "b", label: named(q.b.char, q.b.move, "ultimate"), sub: on(q.b.data.shield!), icon: icon(q.b.char, "ultimate") },
+    ];
+    answer = q.answer;
+    explain = t("history.arcade.fq.shield.why", { n: Math.abs(q.a.data.shield! - q.b.data.shield!) });
   } else {
     const { q } = question;
     prompt = t(q.hard ? "history.arcade.fq.kill.qHard" : "history.arcade.fq.kill.q", { hit: named(q.attacker, q.move, q.game), victim: who(q.victim, q.game), n: q.percent });
@@ -273,7 +304,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     if (next.length >= QUIZ_LENGTH && next.filter(Boolean).length > best) setBest(String(next.filter(Boolean).length));
   };
   const right = picked === answer;
-  const moveIcon = question.kind === "move" ? icon(question.q.char) : null;
+  const moveIcon = question.kind === "move" ? icon(question.q.char, question.game) : null;
 
   return (
     <div className="flex flex-col gap-4">
@@ -310,7 +341,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
           <button type="button" onClick={next} disabled={loading} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= QUIZ_LENGTH ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
         </div>
       )}
-      <p className="text-meta text-muted">{t(ultimate ? "history.arcade.fq.kill.noteUlt" : `history.arcade.fq.${kind}.note`)}</p>
+      <p className="text-meta text-muted">{t(NOTE[kind][ultimate ? "ultimate" : "melee"])}</p>
     </div>
   );
 }

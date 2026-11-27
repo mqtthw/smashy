@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { allMoves, killPercent, killPercentBestDi, newDuel, newKillQuestion, newMoveGuess, shuffled } from "@/lib/frameGames";
-import { MELEE_MOVES } from "@/lib/meleeMoves.data";
+import { MELEE_MOVES, type MoveChar } from "@/lib/meleeMoves.data";
 
 // A repeatable stream of 0..1 numbers.
 const stream = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
@@ -41,7 +41,7 @@ describe("the Arcade's Melee knowledge games", () => {
       expect(new Set(g.options).size).toBe(4);
       expect(g.options).toContain(g.answer);
       const same = g.options.filter((m) => m !== g.answer).filter((m) => {
-        const o = MELEE_MOVES[g.char][m]!;
+        const o = MELEE_MOVES[g.char as MoveChar][m]!;
         return JSON.stringify(o.hits.map((h) => [h[0], h[1]])) === JSON.stringify(g.data.hits.map((h) => [h[0], h[1]])) && o.total === g.data.total;
       });
       expect(same).toEqual([]);
