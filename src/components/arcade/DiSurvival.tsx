@@ -339,28 +339,54 @@ export default function DiSurvival() {
       showToast(t("ui.shareFailed"));
     }
   };
-  // The on-screen stick, for touch screens (round 985, Matthew: "a DI joystick", any angle): drag the knob; where the
-  // thumb is in the stick's circle is the stick, read as the game reads a controller; letting go holds nothing.
+  // The on-screen stick (round 985, Matthew: "a DI joystick", any angle), read as the game reads a controller. Since
+  // round 988 (Matthew: "shows the joystick when you tap anywhere on screen and can control it from there, disappearing
+  // when you let go") it appears where the thumb lands on the picture: how far the thumb has moved from there is the
+  // stick, and letting go holds nothing and hides it.
   const knob = useRef<HTMLSpanElement>(null);
+  const origin = useRef<{ x: number; y: number } | null>(null);
+  const [stickAt, setStickAt] = useState<{ x: number; y: number } | null>(null);
   const setStick = (stick: Stick, kx: number, ky: number) => {
     game.current.stick = stick;
     game.current.analog = true;
     setHolding(arrow(touchStick(stick)));
     if (knob.current) knob.current.style.transform = `translate(${kx}px, ${ky}px)`;
   };
-  const stickAt = (e: React.PointerEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const reach = r.width * 0.3; // how far the knob travels to the rim
-    let dx = e.clientX - (r.left + r.width / 2);
-    let dy = e.clientY - (r.top + r.height / 2);
-    const d = Math.hypot(dx, dy);
-    if (d > reach) {
-      dx = (dx / d) * reach;
-      dy = (dy / d) * reach;
+  const REACH = 48; // pixels from the centre to the rim: the knob's full tilt
+  const BASE = 72; // the stick's half width, to keep it inside the picture
+  const touchDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const p = game.current.phase;
+    if (p === "idle" || p === "over" || (e.target as HTMLElement).closest("button")) return;
+    e.preventDefault();
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // not every pointer can be captured; the press still counts
     }
-    setStick({ x: dx / reach, y: -dy / reach }, dx, dy);
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = Math.max(BASE, Math.min(r.width - BASE, e.clientX - r.left));
+    const y = Math.max(BASE, Math.min(r.height - BASE, e.clientY - r.top));
+    origin.current = { x: r.left + x, y: r.top + y };
+    setStickAt({ x, y });
+    touchMove(e);
   };
-  const letGo = () => setStick({ x: 0, y: 0 }, 0, 0);
+  const touchMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const o = origin.current;
+    if (!o) return;
+    let dx = e.clientX - o.x;
+    let dy = e.clientY - o.y;
+    const d = Math.hypot(dx, dy);
+    if (d > REACH) {
+      dx = (dx / d) * REACH;
+      dy = (dy / d) * REACH;
+    }
+    setStick({ x: dx / REACH, y: -dy / REACH }, dx, dy);
+  };
+  const letGo = () => {
+    origin.current = null;
+    setStickAt(null);
+    setStick({ x: 0, y: 0 }, 0, 0);
+  };
   const noteText = (n: NonNullable<Hud["note"]>) => t(n.key, "zone" in n.values ? { ...n.values, zone: t(ZONE[n.values.zone as "top" | "side" | "bottom"]) } : n.values);
   const idle = hud.phase === "idle" || hud.phase === "over";
 
@@ -385,8 +411,13 @@ export default function DiSurvival() {
       </div>
       <div ref={playArea} className="arcade-play-area flex flex-col gap-3">
       <p className="touch-only text-meta text-muted">{t("history.arcade.di.touch")}</p>
-      <div className="card relative overflow-hidden">
+      <div className="card relative touch-none select-none overflow-hidden" onPointerDown={touchDown} onPointerMove={touchMove} onPointerUp={letGo} onPointerCancel={letGo}>
         <canvas ref={canvas} width={W} height={H} className="block h-auto w-full" />
+        {stickAt && (
+          <div aria-hidden="true" className={`arcade-stick ${holding !== "·" ? "arcade-stick-on" : ""}`} style={{ left: stickAt.x, top: stickAt.y }}>
+            <span ref={knob} className="arcade-stick-knob">{holding !== "·" ? holding : ""}</span>
+          </div>
+        )}
         <div className="pointer-events-none absolute inset-x-0 top-3 flex flex-col items-center gap-2 px-3 text-center" role="status">
           {!idle && hud.hit && (
             <p className="badge border border-line bg-overlay px-3 py-1 text-sm">
@@ -411,26 +442,6 @@ export default function DiSurvival() {
             </div>
           </div>
         )}
-      </div>
-      <div
-        aria-hidden="true"
-        className={`arcade-stick touch-only touch-none select-none self-center ${holding !== "·" ? "arcade-stick-on" : ""}`}
-        onPointerDown={(e) => {
-          e.preventDefault();
-          try {
-            e.currentTarget.setPointerCapture(e.pointerId);
-          } catch {
-            // not every pointer can be captured; the press still counts
-          }
-          stickAt(e);
-        }}
-        onPointerMove={(e) => {
-          if (e.buttons || e.pointerType === "touch") stickAt(e);
-        }}
-        onPointerUp={letGo}
-        onPointerCancel={letGo}
-      >
-        <span ref={knob} className="arcade-stick-knob">{holding !== "·" ? holding : ""}</span>
       </div>
       </div>
       <p className="keys-only text-meta text-muted">{t("history.arcade.di.keys")}</p>
