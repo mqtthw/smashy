@@ -21,7 +21,7 @@ export type FirstWin = { key: string; playerId: string | null; name: string; maj
  * Each major's main bracket of the game (pickMainEvent), oldest first, for the majors big enough to count:
  * the game's biggest bracket there reached the game's major size. Hand-added ones count whatever their size.
  */
-function mainBrackets(brackets: WinBracket[], game: GameKey): WinBracket[] {
+export function mainBrackets(brackets: WinBracket[], game: GameKey): WinBracket[] {
   const byMajor = new Map<string, WinBracket[]>();
   for (const b of brackets) if (b.top8[0]?.place === 1) byMajor.set(b.majorSlug, [...(byMajor.get(b.majorSlug) ?? []), b]);
   const out: WinBracket[] = [];
@@ -478,4 +478,44 @@ export function firstCharacterWins(wins: CharacterWin[]): Map<string, CharacterW
   for (const w of [...wins].sort((a, b) => a.startAt.localeCompare(b.startAt)))
     for (const key of new Set(w.characters.map((c) => startggCharacterKey(c)))) if (!firsts.has(key)) firsts.set(key, w);
   return firsts;
+}
+
+/** A player as the Arcade's Guess the player knows them: their major results in one game. */
+export type ArcadePlayerRow = { key: string; playerId: string | null; name: string; wins: number; top8s: number; firstYear: number; lastYear: number; main: string | null };
+
+/**
+ * A game's players with at least two major top 8s (or a win), most top 8s first: wins, top 8s, first and last
+ * top 8 year, and the character they played in the most top 8 placings (null where unknown). Shared by every
+ * server, refreshed every few hours. Players who hide their stats are NOT left out here (a kept answer can't
+ * follow that setting): the page checks them at each visit (playersHidingStats).
+ */
+export async function arcadePlayers(game: GameKey): Promise<ArcadePlayerRow[]> {
+  "use cache: remote";
+  cacheLife("hours");
+  cacheTag(MAJORS_TAG);
+  const { brackets, links, sets } = await characterSources(game);
+  const who = winnerOf(brackets, links);
+  const records = gameRecords(brackets, game, links);
+  const wins = new Map(records.wins.map((w) => [w.key, w.wins]));
+  const played = new Map<string, Map<string, number>>();
+  for (const b of mainBrackets(brackets, game))
+    for (const r of b.top8) {
+      if (r.place > 8 || r.name.includes(" / ")) continue;
+      const p = who(b, r);
+      const mine = played.get(p.key) ?? new Map<string, number>();
+      for (const c of new Set(rowCharacters(b, r, p.playerId, sets).map((n) => startggCharacterKey(n)))) mine.set(c, (mine.get(c) ?? 0) + 1);
+      played.set(p.key, mine);
+    }
+  return records.top8s
+    .filter((p) => p.top8s >= 2 || wins.has(p.key))
+    .map((p) => ({
+      key: p.key,
+      playerId: p.playerId,
+      name: p.name,
+      wins: wins.get(p.key) ?? 0,
+      top8s: p.top8s,
+      firstYear: Number(p.firstAt.slice(0, 4)),
+      lastYear: Number(p.lastAt.slice(0, 4)),
+      main: [...(played.get(p.key) ?? [])].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]?.[0] ?? null,
+    }));
 }

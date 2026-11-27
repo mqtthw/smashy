@@ -177,6 +177,7 @@ export default function HistoryPage(props: PageProps<"/history">) {
           <span aria-current="page" className="font-bold underline decoration-brand decoration-2 underline-offset-[6px]"><T k="ui.guest.majors" /></span>
           <Link href="/history/timeline" className="text-muted hover:text-foreground"><T k="history.timeline.link" /></Link>
           <Link href="/history/records" className="text-muted hover:text-foreground"><T k="history.records.link" /></Link>
+          <Link href="/arcade" className="text-muted hover:text-foreground"><T k="history.arcade.link" /></Link>
         </nav>
       </header>
       <Suspense fallback={<CardListSkeleton count={6} />}>

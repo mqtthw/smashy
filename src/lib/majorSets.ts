@@ -16,6 +16,7 @@
 // Smash history): 1.5 s between requests, stopping when this server has sent 25 of start.gg's 80 a
 // minute (live brackets and guests come first), one bracket at a time claimed in the database.
 import "server-only";
+import { cacheLife } from "next/cache";
 import { characterKey } from "./characters";
 import { gameOfEvent, type GameKey } from "./games";
 import { isManualEvent } from "./handMajors";
@@ -475,4 +476,32 @@ export function winnerCharacters(events: MajorEvent[], game: GameKey, chars: Maj
 /** Every winner's player id in these majors' events (to check who asked not to be listed). */
 export function winnerIds(events: MajorEvent[], links?: Map<string, string>): string[] {
   return events.flatMap((e) => (e.top8[0]?.place === 1 ? [placingId(e.top8[0], links, e.game)] : [])).filter((x): x is string => !!x);
+}
+
+/** A finals set as the Arcade's "Who won this set?" uses it. */
+export type FinalsSet = Pick<SavedSet, "set_id" | "major_slug" | "game" | "round" | "p1_id" | "p1_name" | "p1_score" | "p1_chars" | "p2_id" | "p2_name" | "p2_score" | "p2_chars" | "winner">;
+const FINALS_ROUND = /^(grand finals?( reset| \(reset\))?|winners finals?|losers finals?)$/i;
+
+/**
+ * Every saved winners, losers and grand final with a real score (no walkovers). Shared by every server and
+ * refreshed every few hours. Read as a guest: saved sets are public, and a kept answer may not use a sign-in.
+ */
+export async function finalsSets(): Promise<FinalsSet[]> {
+  "use cache: remote";
+  cacheLife("hours");
+  const { data, error } = await createGuestClient()
+    .from("major_sets")
+    .select("set_id, major_slug, game, round, p1_id, p1_name, p1_score, p1_chars, p2_id, p2_name, p2_score, p2_chars, winner")
+    .ilike("round", "%final%")
+    .not("round", "ilike", "%quarter%")
+    .not("round", "ilike", "%semi%")
+    .gte("p1_score", 0)
+    .gte("p2_score", 0)
+    .limit(5000);
+  if (error) throw error;
+  return ((data ?? []) as unknown as FinalsSet[]).filter((s) => {
+    const [won, lost] = s.winner === 1 ? [s.p1_score, s.p2_score] : [s.p2_score, s.p1_score];
+    const real = (name: string) => !name.includes(" / ") && !/^deleted user$/i.test(tagOnly(name));
+    return FINALS_ROUND.test(s.round ?? "") && real(s.p1_name) && real(s.p2_name) && won !== null && lost !== null && won > lost;
+  });
 }
