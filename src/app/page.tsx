@@ -26,6 +26,7 @@ import { GAMES, gamesFor } from "@/lib/games";
 import { getMyGames, getMyHomeCity, needsProfile } from "@/lib/viewer";
 import { FeedSkeleton } from "@/components/ui/Skeleton";
 import GuestWelcome from "@/components/GuestWelcome";
+import ArcadeCard from "@/components/arcade/ArcadeCard";
 import { FeedTicker } from "@/components/LiveTicker";
 import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
 import { STOCK_ICON_KEYS } from "@/lib/stockIconKeys";
@@ -256,6 +257,9 @@ async function Feed({ searchParams }: { searchParams: PageProps<"/">["searchPara
           <Link href="/signin" className="shrink-0 btn btn-md btn-primary btn-hero">{t("feed.join")}</Link>
         </div>
       )}
+
+      {/* The Arcade's daily puzzles (round 943): on the first page of For you, for guests and players alike. */}
+      {view === "for_you" && pageNum === 0 && !before && <ArcadeCard />}
 
       {/* Clips of the week left the Feed (round 843): it's a post from @smashyhq every Monday instead. */}
 

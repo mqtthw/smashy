@@ -305,4 +305,7 @@ export const historyEn = {
   "history.arcade.sets.wrong": "Not this time.",
   "history.arcade.sets.result": "You got {n} of {total}.",
   "history.arcade.sets.results": "See the results",
+  "history.arcade.card.title": "Today's Arcade puzzles",
+  "history.arcade.card.text": "Guess the major and Guess the player: a new one of each every day.",
+  "history.arcade.card.play": "Play",
 };

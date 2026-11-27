@@ -306,4 +306,7 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.sets.wrong": "Esta vez no.",
   "history.arcade.sets.result": "Acertaste {n} de {total}.",
   "history.arcade.sets.results": "Ver los resultados",
+  "history.arcade.card.title": "Los retos de hoy en Arcade",
+  "history.arcade.card.text": "Adivina el major y Adivina al jugador: uno nuevo de cada uno cada día.",
+  "history.arcade.card.play": "Jugar",
 };

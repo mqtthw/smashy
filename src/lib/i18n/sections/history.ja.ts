@@ -306,4 +306,7 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.sets.wrong": "残念。",
   "history.arcade.sets.result": "{total}問中 {n}問正解。",
   "history.arcade.sets.results": "結果を見る",
+  "history.arcade.card.title": "今日のアーケード問題",
+  "history.arcade.card.text": "大会当てクイズとプレイヤー当てクイズ。毎日それぞれ新しい問題が出ます。",
+  "history.arcade.card.play": "プレイ",
 };
