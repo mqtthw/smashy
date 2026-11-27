@@ -306,8 +306,8 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.arcade.sets.wrong": "Pas cette fois.",
   "history.arcade.sets.result": "Vous en avez trouvé {n} sur {total}.",
   "history.arcade.sets.results": "Voir les résultats",
-  "history.arcade.card.title": "Les énigmes Arcade du jour",
-  "history.arcade.card.text": "Devinez le major et Devinez le joueur : un nouveau de chaque, tous les jours.",
+  "history.arcade.card.title": "Arcade",
+  "history.arcade.card.text": "Énigmes du jour, quiz rapides et un entraîneur de tech chase. Tiendrez-vous une série ?",
   "history.arcade.card.play": "Jouer",
   "history.arcade.next": "Prochaines énigmes dans {time}",
   "history.arcade.streak": "Série de {n} jours",
@@ -350,4 +350,5 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.arcade.tech.colours": "Blanc clignotant : on ne peut pas encore le saisir. Bleu : saisissez maintenant. Vert : il s’est échappé. S’il reste au sol et devient bleu, il a raté son tech : saisissez tout de suite.",
   "history.arcade.tech.note": "Un jeu de réflexes inspiré de la mécanique, pas une copie à la frame près de Melee. Il accélère à chaque saisie.",
   "history.arcade.tech.shareText": "Entraîneur de tech chase : {n} saisies, {ms} ms de réaction moyenne",
+  "history.arcade.card.tag": "Smashy a des jeux !",
 };

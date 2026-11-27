@@ -305,9 +305,9 @@ export const historyEn = {
   "history.arcade.sets.wrong": "Not this time.",
   "history.arcade.sets.result": "You got {n} of {total}.",
   "history.arcade.sets.results": "See the results",
-  "history.arcade.card.title": "Today's Arcade puzzles",
-  "history.arcade.card.text": "Guess the major and Guess the player: a new one of each every day.",
-  "history.arcade.card.play": "Play",
+  "history.arcade.card.title": "Arcade",
+  "history.arcade.card.text": "Daily puzzles, quick quizzes and a tech-chase trainer. Can you keep a streak?",
+  "history.arcade.card.play": "Play now",
   "history.arcade.next": "Next puzzles in {time}",
   "history.arcade.streak": "{n}-day streak",
   "history.arcade.streakBest": "Best: {n}",
@@ -349,4 +349,5 @@ export const historyEn = {
   "history.arcade.tech.colours": "Flashing white: it can't be grabbed yet. Blue: grab now. Green: it got away. If it stays lying down and turns blue, it missed the tech: grab at once.",
   "history.arcade.tech.note": "A reaction game inspired by the mechanic, not a frame-accurate copy of Melee. It gets faster with every grab.",
   "history.arcade.tech.shareText": "Tech-chase trainer: {n} grabs, {ms} ms average reaction",
+  "history.arcade.card.tag": "Smashy has games!",
 };

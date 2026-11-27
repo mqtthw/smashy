@@ -6,6 +6,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArcadePromo } from "@/components/arcade/ArcadeCard";
 import GameBadge from "@/components/GameBadge";
 import { formatEventTime } from "@/lib/format";
 import { useLang, useT } from "@/lib/i18n/client";
@@ -49,11 +50,7 @@ export default function SideColumn() {
     <aside aria-label={t("browse.brackets.onlineToday")} className="sticky top-0 hidden h-screen w-80 shrink-0 flex-col gap-4 overflow-y-auto p-4 print:hidden xl:flex">
       {/* The Arcade's daily puzzles (round 944, Matthew: on the right "so it stands out and isn't in the way of
           the feed"). Narrower screens have no column, so the Feed keeps its own card there. */}
-      <Link href="/arcade" className="card flex flex-col gap-2 border-brand p-4 hover:bg-surface">
-        <span className="font-bold">{t("history.arcade.card.title")}</span>
-        <span className="text-sm text-muted">{t("history.arcade.card.text")}</span>
-        <span className="btn btn-sm btn-inverse self-start">{t("history.arcade.card.play")} →</span>
-      </Link>
+      <ArcadePromo />
       {/* Online brackets today (round 813, Matthew: in the side column "so the feed isn't too cluttered"). */}
       {data.online?.length > 0 && (
         <section className="flex flex-col gap-2">

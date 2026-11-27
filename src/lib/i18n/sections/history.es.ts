@@ -306,9 +306,9 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.sets.wrong": "Esta vez no.",
   "history.arcade.sets.result": "Acertaste {n} de {total}.",
   "history.arcade.sets.results": "Ver los resultados",
-  "history.arcade.card.title": "Los retos de hoy en Arcade",
-  "history.arcade.card.text": "Adivina el major y Adivina al jugador: uno nuevo de cada uno cada día.",
-  "history.arcade.card.play": "Jugar",
+  "history.arcade.card.title": "Arcade",
+  "history.arcade.card.text": "Retos diarios, quizzes rápidos y un entrenador de tech chase. ¿Mantendrás la racha?",
+  "history.arcade.card.play": "Jugar ahora",
   "history.arcade.next": "Próximos retos en {time}",
   "history.arcade.streak": "Racha de {n} días",
   "history.arcade.streakBest": "Mejor: {n}",
@@ -350,4 +350,5 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.tech.colours": "Parpadeo blanco: aún no se le puede agarrar. Azul: agarra ya. Verde: se escapó. Si sigue en el suelo y se pone azul, falló el tech: agarra enseguida.",
   "history.arcade.tech.note": "Un juego de reflejos inspirado en la mecánica, no una copia exacta de los frames de Melee. Se acelera con cada agarre.",
   "history.arcade.tech.shareText": "Entrenador de tech chase: {n} agarres, {ms} ms de reacción media",
+  "history.arcade.card.tag": "¡Smashy tiene juegos!",
 };

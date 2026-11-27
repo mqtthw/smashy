@@ -306,9 +306,9 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.sets.wrong": "残念。",
   "history.arcade.sets.result": "{total}問中 {n}問正解。",
   "history.arcade.sets.results": "結果を見る",
-  "history.arcade.card.title": "今日のアーケード問題",
-  "history.arcade.card.text": "大会当てクイズとプレイヤー当てクイズ。毎日それぞれ新しい問題が出ます。",
-  "history.arcade.card.play": "プレイ",
+  "history.arcade.card.title": "アーケード",
+  "history.arcade.card.text": "デイリー問題、クイズ、受け身狩りトレーナー。連続正解を伸ばせるかな？",
+  "history.arcade.card.play": "今すぐプレイ",
   "history.arcade.next": "次の問題まで {time}",
   "history.arcade.streak": "{n}日連続正解",
   "history.arcade.streakBest": "ベスト：{n}",
@@ -350,4 +350,5 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.tech.colours": "白く点滅：まだつかめません。青：今つかもう。緑：逃げられました。倒れたまま青くなったら受け身失敗です。すぐにつかもう。",
   "history.arcade.tech.note": "この仕組みをもとにした反射神経ゲームで、DXのフレームを正確に再現したものではありません。つかむたびに速くなります。",
   "history.arcade.tech.shareText": "受け身狩りトレーナー：つかみ{n}回、平均反応{ms} ms",
+  "history.arcade.card.tag": "Smashyにゲームが登場！",
 };

@@ -1392,3 +1392,80 @@ body::before {
     transform: none;
   }
 }
+
+/* The Arcade's advert on the home page (round 947): made to be clicked. */
+.arcade-promo {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  border: 2px solid #ffd447;
+  border-radius: 3px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgb(255 212 71 / 0.28), transparent 60%),
+    linear-gradient(115deg, #c2181a 0%, #8a1c8f 55%, #3b1fa8 100%);
+  box-shadow: 0 0 0 rgb(255 212 71 / 0);
+  animation: arcade-glow 2.4s ease-in-out infinite;
+  transition: transform 0.18s cubic-bezier(0.2, 1.5, 0.4, 1);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgb(255 255 255 / 0.28) 50%, transparent 60%);
+    transform: translateX(-120%);
+    animation: skin-shine 3.6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  &:hover {
+    transform: translateY(-3px) scale(1.02) rotate(-0.5deg);
+  }
+  &:hover .arcade-promo-btn {
+    transform: skewX(-8deg) scale(1.08);
+  }
+}
+.arcade-promo-title {
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-shadow: 3px 3px 0 rgb(0 0 0 / 0.35);
+}
+.arcade-promo-btn {
+  margin-top: 0.25rem;
+  padding: 0.45rem 1rem;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  color: #1a1200;
+  background: linear-gradient(180deg, #ffe680, #ffb400);
+  border: 1px solid #fff0b0;
+  transform: skewX(-8deg);
+  box-shadow: 3px 3px 0 rgb(0 0 0 / 0.35);
+  transition: transform 0.18s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+.arcade-mini {
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.85rem;
+  border: 1px solid rgb(255 255 255 / 0.6);
+  animation: arcade-hop 1.6s ease-in-out infinite;
+}
+@keyframes arcade-glow {
+  0%, 100% { box-shadow: 0 0 0 rgb(255 212 71 / 0); }
+  50% { box-shadow: 0 0 22px rgb(255 212 71 / 0.55); }
+}
+@keyframes arcade-hop {
+  0%, 60%, 100% { translate: 0 0; }
+  30% { translate: 0 -5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arcade-promo,
+  .arcade-promo::after,
+  .arcade-mini {
+    animation: none !important;
+  }
+  .arcade-promo:hover {
+    transform: none;
+  }
+}
