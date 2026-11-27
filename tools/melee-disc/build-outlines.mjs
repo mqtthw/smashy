@@ -40,7 +40,7 @@ const CHARS = { fox: "Fx", falco: "Fc", marth: "Ms", sheik: "Sk", "captain-falco
 const VICTIM = ["Passive", "PassiveStandF", "PassiveStandB", "DownBoundU", "DownBoundD", "DownWaitU", "DownWaitD", "DownStandU", "DownStandD", "DownAttackU", "DownAttackD", "DownFowardU", "DownFowardD", "DownBackU", "DownBackD", "DamageFall", "Wait", "CaptureWaitHi", "DamageFlyN"];
 const PLAYER = ["Catch", "CatchWait", "AttackLw3"];
 // Each one's own hit (round 974): Marth's down tilt is AttackLw3 above.
-const HITS = { "captain-falcon": "Attack11", sheik: "Attack11", fox: "AttackHi4", falco: "SpecialLwStart", peach: "Attack11" };
+const HITS = { marth: "Attack11", "captain-falcon": "Attack11", sheik: "Attack11", fox: "AttackHi4", falco: "SpecialLwStart", peach: "Attack11" };
 // Who can be played as (round 974): their grab and down tilt are drawn too.
 const PLAYABLE = ["marth", "captain-falcon", "sheik", "fox", "falco", "peach"];
 // Poses held still in the trainer (falling in, standing, held, sent flying): their first frame only. Lying down:
@@ -152,7 +152,27 @@ for (const [who, code] of Object.entries(CHARS)) {
       return frameOutline(model, tracks, Math.min(i + 1, tracks.frames), hiddenMeshes(parts, picked), parts.scale, hang).map(deltas);
     });
   }
-  const body = JSON.stringify({ v: 1, unit: STORE, states });
+  // Falco's shine (round 975, Matthew: "show falco's shine"): the reflector's look isn't part of his model, so the
+  // trainer draws a plain hexagon where its hitbox is: centred on the hitbox's bone on the shine's first frame,
+  // with the hitbox's radius, both scaled by the model scaling as in the game. Stored as [x, y, radius].
+  const marks = {};
+  if (who === "falco") {
+    const a = acts.get("SpecialLwStart");
+    const box = a.events.find((e) => e.what === "hitbox");
+    const tracks = allTracks(a.anim);
+    const world = worldMatrices(model.joints, (j) => {
+      const t = tracks.joints[j];
+      if (!t) return null;
+      const jt = model.joints[j];
+      const v = (type, def) => (t[type] ? valueAt(t[type], 1) : def);
+      const pos = [v(5, jt.pos[0]), v(6, jt.pos[1]), v(7, jt.pos[2])];
+      if (j === 1) pos[2] = jt.pos[2];
+      return { rot: [v(1, jt.rot[0]), v(2, jt.rot[1]), v(3, jt.rot[2])], pos, scale: [v(8, jt.scale[0]), v(9, jt.scale[1]), v(10, jt.scale[2])] };
+    });
+    const m = world[box.bone];
+    marks.shine = [Math.round(m[11] * parts.scale * STORE), Math.round(-m[7] * parts.scale * STORE), Math.round((box.size / 256) * parts.scale * STORE)];
+  }
+  const body = JSON.stringify({ v: 1, unit: STORE, states, marks });
   fs.writeFileSync(`${outDir}/${who}.json`, body);
   bytes += body.length;
   console.log(who, Object.keys(states).length, "states,", Object.values(states).reduce((s, f) => s + f.length, 0), "frames,", Math.round(body.length / 1024), "KB");

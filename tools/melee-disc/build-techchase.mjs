@@ -60,7 +60,8 @@ for (const [who, code] of Object.entries(CHARS)) {
 
 // The characters you can chase as (round 974, Matthew: "let users play as captain falcon, sheik, fox, falco, and
 // peach"), with Marth: their standing grab and the move each hits with, as Matthew picked ("for captain falcon use
-// jab, for sheik use jab, for fox use up smash, for falco do shine, and peach do jab"; Marth keeps his down tilt).
+// jab, for sheik use jab, for fox use up smash, for falco do shine, and peach do jab"; Marth's down tilt became his
+// jab in round 975: "replace marth's down tilt with his jab").
 // - Grab ("Catch"): the script makes its grab boxes at frame N and a command keeps them two frames, so they are out
 //   on N+1 and N+2 (Marth: 7-8, as SmashWiki gives); the state lasts its animation (30 frames for all six).
 // - The hit: entered by a button, so a box made at frame N is out from N (from frame 1 when N is 0) and a box
@@ -69,7 +70,7 @@ for (const [who, code] of Object.entries(CHARS)) {
 // - Falco's shine ("SpecialLwStart", 4 frames, out on frame 1) is counted as jump-cancelled: free on frame 4, when
 //   the start ends and a jump can cancel it (held, it goes on into its loop and an 18-frame end).
 const CHASERS = { marth: "Ms", "captain-falcon": "Ca", sheik: "Sk", fox: "Fx", falco: "Fc", peach: "Pe" };
-const HIT = { marth: ["dtilt", "AttackLw3"], "captain-falcon": ["jab", "Attack11"], sheik: ["jab", "Attack11"], fox: ["usmash", "AttackHi4"], falco: ["shine", "SpecialLwStart"], peach: ["jab", "Attack11"] };
+const HIT = { marth: ["jab", "Attack11"], "captain-falcon": ["jab", "Attack11"], sheik: ["jab", "Attack11"], fox: ["usmash", "AttackHi4"], falco: ["shine", "SpecialLwStart"], peach: ["jab", "Attack11"] };
 const chasers = {};
 for (const [who, code] of Object.entries(CHASERS)) {
   const acts = actions(disc, code);

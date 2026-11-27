@@ -48,11 +48,11 @@ describe("the tech-chase trainer, in Melee's frames", () => {
     expect(foxAt(m, 36 + 27)).toMatchObject({ vulnerable: true, hitting: false });
   });
 
-  it("times the player's moves: a grab is out on frames 7-8 of 30, a down tilt on 7-9 and free on 20", () => {
+  it("times the player's moves: a grab is out on frames 7-8 of 30, a jab on 4-7 and free on 26 (Marth's jab since round 975)", () => {
     expect([6, 7, 8, 9].map((f) => striking(grabAt(0), f))).toEqual([false, true, true, false]);
-    expect([6, 7, 9, 10].map((f) => striking(tiltAt(0), f))).toEqual([false, true, true, false]);
+    expect([3, 4, 7, 8].map((f) => striking(tiltAt(0), f))).toEqual([false, true, true, false]);
     expect([30, 31].map((f) => busy(grabAt(0), f))).toEqual([true, false]);
-    expect([19, 20].map((f) => busy(tiltAt(0), f))).toEqual([true, false]);
+    expect([25, 26].map((f) => busy(tiltAt(0), f))).toEqual([true, false]);
     expect(busy(null, 5)).toBe(false);
   });
 
@@ -122,12 +122,12 @@ describe("the tech-chase trainer, in Melee's frames", () => {
 
   it("plays as six characters, each with their own grab and hit read from the game (round 974)", () => {
     expect([...CHASERS]).toEqual(["marth", "captain-falcon", "sheik", "fox", "falco", "peach"]);
-    // Marth's are the ones the trainer always had (SmashWiki agrees).
-    expect(CHASER_MOVES.marth).toMatchObject({ grab: { active: [7, 8], total: 30 }, tilt: { active: [7, 9], total: 19 }, move: "dtilt" });
+    // Marth's grab is the one the trainer always had (SmashWiki agrees); his jab since round 975.
+    expect(CHASER_MOVES.marth).toMatchObject({ grab: { active: [7, 8], total: 30 }, tilt: { active: [4, 7], total: 25 }, move: "jab" });
     expect(CHASER_MOVES["captain-falcon"]).toMatchObject({ tilt: { active: [3, 5] }, move: "jab" });
     expect(CHASER_MOVES.fox).toMatchObject({ tilt: { active: [7, 17], total: 41 }, move: "usmash" });
     expect(CHASER_MOVES.falco).toMatchObject({ tilt: { active: [1, 1], total: 3 }, move: "shine" });
-    // A move knows who made it: Fox's up smash is out on frame 17, Marth's down tilt isn't.
+    // A move knows who made it: Fox's up smash is out on frame 17, Marth's jab isn't.
     expect(striking({ move: "tilt", since: 0, by: "fox" }, 17)).toBe(true);
     expect(striking({ move: "tilt", since: 0 }, 17)).toBe(false);
     expect([3, 4].map((f) => busy({ move: "tilt", since: 0, by: "falco" }, f))).toEqual([true, false]);

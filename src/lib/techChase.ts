@@ -16,7 +16,8 @@
 // animations are 26 frames for the bounce and for the tech in place, 40 for a tech roll, and 30 for the plain
 // getup, whose script ends its intangibility at frame 23 (PlFx.dat / PlFxAJ.dat). The plain getup's last
 // intangible frame is 22 or 23 depending on how the game counts the first frame of that state; 23 is used.
-// - The player is Marth by default. Standing grab: active on frames 7-8 of 30. Down tilt: active 7-9, free to act
+// - The player is Marth by default. Standing grab: active on frames 7-8 of 30. Down tilt (until round 975, now his
+//   jab: 4-7, free on 26): active 7-9, free to act
 //   on frame 20. (ssbwiki.com/Marth_(SSBM)/Grab, /Down_tilt; read from the disc since round 974, which agrees.)
 //   Since round 974 the player can also be Captain Falcon, Sheik, Fox, Falco or Peach (CHASER_MOVES).
 //
@@ -37,7 +38,7 @@ export const START_LIVES = 3;
 export const FALL_FRAMES = 24; // the fall before he lands (Smashy's choice)
 
 export type Move = "grab" | "tilt";
-/** A character's grab and down tilt (Marth's: grab 7-8 of 30, down tilt 7-9 of 19, read from the game). */
+/** A character's grab and the move they hit with (Marth's: grab 7-8 of 30, jab 4-7 of 25, read from the game). */
 export const movesOf = (who: Chaser = "marth"): Record<Move, { active: readonly [number, number]; total: number }> => CHASER_MOVES[who];
 export const MOVES = movesOf("marth");
 

@@ -16,7 +16,7 @@ export const CHASERS = ["marth","captain-falcon","sheik","fox","falco","peach"] 
 export type Chaser = (typeof CHASERS)[number];
 /** `tilt` is the move each hits with (`move` names it, `state` is the game's name for it). */
 export const CHASER_MOVES: Record<Chaser, { grab: ChaserMove; tilt: ChaserMove; move: "dtilt" | "jab" | "usmash" | "shine"; state: string }> = {
-  "marth": {grab: {active: [7, 8], total: 30}, tilt: {active: [7, 9], total: 19}, move: "dtilt", state: "AttackLw3"},
+  "marth": {grab: {active: [7, 8], total: 30}, tilt: {active: [4, 7], total: 25}, move: "jab", state: "Attack11"},
   "captain-falcon": {grab: {active: [7, 8], total: 30}, tilt: {active: [3, 5], total: 15}, move: "jab", state: "Attack11"},
   "sheik": {grab: {active: [7, 8], total: 30}, tilt: {active: [2, 3], total: 15}, move: "jab", state: "Attack11"},
   "fox": {grab: {active: [7, 8], total: 30}, tilt: {active: [7, 17], total: 41}, move: "usmash", state: "AttackHi4"},

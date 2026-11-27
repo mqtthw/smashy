@@ -2,7 +2,7 @@
 // The tech-chase trainer, drawn with plain shapes on a canvas and counted in Melee's frames (round 949; the
 // frame data and what is simplified are at the top of lib/techChase.ts). Fox falls, and on landing he techs in
 // place, techs left or right, or misses the tech and bounces. You are Marth: A / D chase, S goes back to the
-// middle, Space grabs (out on frames 7-8), W is a down tilt (out on 7-9). A grab only works on a standing,
+// middle, Space grabs (out on frames 7-8), W hits (Marth: his jab, out on 4-7). A grab only works on a standing,
 // vulnerable Fox; on the floor he has to be hit. After a missed tech he gets up with a roll or a getup attack,
 // which hits you if you're standing on him. Colours say what he is: flashing white = intangible, blue = open,
 // purple = on the floor (hit, don't grab), green = got away. Three lives; the best score is kept in the browser.
@@ -52,7 +52,7 @@ const fresh = (speed: number, victim: TechVictim = "fox", player: Chaser = "mart
 // served from /outlines/melee/ (kept out of the public open-source copy, whose trainer draws plain shapes instead).
 // Each frame is loops of points in quarter units, the first point whole and the rest as steps; x across (facing
 // right), y down from the floor.
-type Outlines = { unit: number; states: Record<string, number[][][]> };
+type Outlines = { unit: number; states: Record<string, number[][][]>; marks?: { shine?: [number, number, number] } };
 const outlineFiles = new Map<string, Promise<Outlines | null>>();
 const loadOutlines = (who: string) => {
   if (!outlineFiles.has(who)) outlineFiles.set(who, fetch(`/outlines/melee/${who}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null));
@@ -228,7 +228,7 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number, figs: Figures
   ctx.save();
   ctx.translate(g.px - 46, GROUND);
   ctx.fillStyle = g.phase !== "round" && g.outcome?.kind === "gotHit" ? "#ff5a4f" : stuck && !out ? "#b99a2a" : "#ffd447";
-  // Marth's own outline (round 973): his grab and down tilt on the frame he's on, holding after a grab.
+  // The chaser's own outline (round 973): their grab and hit on the frame they're on, holding after a grab.
   const gotHit = g.phase !== "round" && g.outcome?.kind === "gotHit";
   const held = g.phase !== "round" && g.outcome?.kind === "grab";
   // Whoever is chasing (round 974): their grab, or the move they hit with.
@@ -238,6 +238,22 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number, figs: Figures
   if (mFig) {
     ctx.translate(0, gotHit ? -30 : 0);
     ctx.fill(mFig, "evenodd");
+    // Falco's shine (round 975): a hexagon where its hitbox is, while he is in it.
+    const shine = figs.player?.marks?.shine;
+    if (shine && mState === hitState && CHASER_MOVES[g.player].move === "shine") {
+      const [sx, sy, sr] = shine.map((v) => v * FIG);
+      ctx.beginPath();
+      for (let k = 0; k < 6; k++) {
+        const a = (Math.PI / 3) * k + Math.PI / 6;
+        ctx[k ? "lineTo" : "moveTo"](sx + Math.cos(a) * sr, sy + Math.sin(a) * sr);
+      }
+      ctx.closePath();
+      ctx.fillStyle = "rgba(110, 200, 255, 0.45)";
+      ctx.fill();
+      ctx.strokeStyle = "#e8f8ff";
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+    }
     ctx.restore();
     return;
   }

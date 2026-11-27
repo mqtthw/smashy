@@ -126,7 +126,8 @@ export function actions(disc, code) {
       else if (cmd === 0x1a) events.push({ frame, what: (w & 3) === 0 ? "vulnerable" : "intangible" });
       else if (cmd === 0x0b) {
         const w3 = d.u32(p + 12);
-        events.push({ frame, what: "hitbox", damage: w & 0x3ff, angle: w3 >>> 23, growth: (w3 >>> 14) & 0x1ff, set: (w3 >>> 5) & 0x1ff, base: d.u32(p + 16) >>> 23 });
+        // Also the bone it is on (8 bits from bit 11) and its size (word 1's top 16 bits, in 1/256 units), round 975.
+        events.push({ frame, what: "hitbox", bone: (w >>> 11) & 0xff, size: d.u32(p + 4) >>> 16, damage: w & 0x3ff, angle: w3 >>> 23, growth: (w3 >>> 14) & 0x1ff, set: (w3 >>> 5) & 0x1ff, base: d.u32(p + 16) >>> 23 });
       } else if (cmd === 0x17) events.push({ frame, what: "free" });
       else if (cmd === 0x10) events.push({ frame, what: "clear" });
       // "7C": show one variant of a model part (lb/types.h set_dobj_flags: a 7-bit part, a 19-bit variant), round 973.
