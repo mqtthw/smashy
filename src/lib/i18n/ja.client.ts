@@ -2631,7 +2631,7 @@ export const ja = {
   "history.arcade.fq.move.title": "ワザ当てクイズ",
   "history.arcade.fq.move.line": "フレームの並びから、どのワザか当てよう。",
   "history.arcade.fq.move.blurb": "ワザをフレームで表示：発生まで、各段の判定とダメージ、段の間の隙間、残り。そのキャラの4つのワザから当てよう。",
-  "history.arcade.fq.move.how": "1マスが1フレーム：灰色は発生前、赤は攻撃判定が出ている間、暗い色は判定なし。その下に各段のフレームとダメージ、行動可能になるフレーム。そのキャラのどのワザか選ぼう。全10問。",
+  "history.arcade.fq.move.how": "1マスが1フレーム：灰色は発生まで、各段は出ている間それぞれの色、暗い色は判定なし。その下に各段のフレームとダメージ、行動可能になるフレーム。そのキャラのどのワザか選ぼう。全10問。",
   "history.arcade.fq.move.note": "フレームはゲーム本体のファイル（NTSC 1.02）から読み取りました。空中攻撃は着地なし、スマッシュ攻撃はホールドなしです。",
   "history.arcade.fq.move.q": "{char}：このフレームのワザはどれ？",
   "history.arcade.fq.move.why": "正解は{move}。",

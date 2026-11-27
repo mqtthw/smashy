@@ -11,6 +11,7 @@
 // - an animation's length in frames is the float at +8 of its figatree;
 // - a script is a list of commands, 4 bytes each except effects and hitboxes (20), sounds (12) and jumps (8);
 //   "08 NN" waits until frame NN, "04 NN" waits NN frames, "68 ...02" / "68 ...00" turns intangibility on / off,
+//   "0C NN" starts a loop of NN turns and "10" ends it, "14"/"1C"/"18" jump, call and return;
 //   "2C" makes a hitbox and "40" clears them, "5C" lets the character act again (the move can be interrupted).
 // - a hitbox command's five words (lb/types.h, spawn_hitbox_0..4): word 0 ends with the damage (10 bits); word 3
 //   starts with the angle, knockback growth and weight-set knockback (9 bits each); word 4 starts with the base
@@ -91,11 +92,35 @@ export function actions(disc, code) {
     // Walk the script, keeping the frame it has reached.
     const events = [];
     let frame = 0;
-    for (let p = d.u32(e + 12), n = 0; p && n < 200; n++) {
+    // Loops ("0C NN" ... "10": repeat NN times) and subroutines are followed, so a drill's every hit is seen
+    // (round 962: Jigglypuff's down air read as one hit, and Samus's forward air as two, because the loop wasn't run).
+    const loops = [];
+    const calls = [];
+    for (let p = d.u32(e + 12), n = 0; p && n < 4000; n++) {
+      if (p + 20 > d.data.length) break; // a jump out of the file: not a script this reader understands
       const w = d.u32(p);
       const cmd = w >>> 26;
       if (cmd === 0) break;
-      if (cmd === 0x02) frame = w & 0xffffff;
+      if (cmd === 0x03) loops.push({ at: p + 4, left: w & 0xffffff });
+      else if (cmd === 0x04) {
+        const loop = loops.at(-1);
+        if (loop && --loop.left > 0) {
+          p = loop.at;
+          continue;
+        }
+        loops.pop();
+      } else if (cmd === 0x05) {
+        p = d.u32(p + 4);
+        continue;
+      } else if (cmd === 0x07) {
+        calls.push(p + 8);
+        p = d.u32(p + 4);
+        continue;
+      } else if (cmd === 0x06) {
+        if (!calls.length) break;
+        p = calls.pop();
+        continue;
+      } else if (cmd === 0x02) frame = w & 0xffffff;
       else if (cmd === 0x01) frame += w & 0xffffff;
       else if (cmd === 0x1a) events.push({ frame, what: (w & 3) === 0 ? "vulnerable" : "intangible" });
       else if (cmd === 0x0b) {
@@ -103,7 +128,7 @@ export function actions(disc, code) {
         events.push({ frame, what: "hitbox", damage: w & 0x3ff, angle: w3 >>> 23, growth: (w3 >>> 14) & 0x1ff, set: (w3 >>> 5) & 0x1ff, base: d.u32(p + 16) >>> 23 });
       } else if (cmd === 0x17) events.push({ frame, what: "free" });
       else if (cmd === 0x10) events.push({ frame, what: "clear" });
-      p += cmd === 0x0a || cmd === 0x0b ? 20 : cmd === 0x11 ? 12 : cmd === 0x05 || cmd === 0x07 ? 8 : 4;
+      p += cmd === 0x0a || cmd === 0x0b ? 20 : cmd === 0x11 ? 12 : 4;
     }
     out.set(m[1], { frames, events });
   }

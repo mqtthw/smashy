@@ -82,3 +82,13 @@ describe("the Arcade's Melee knowledge games", () => {
     expect(shuffled([1, 2, 3, 4], stream(2)).sort()).toEqual([1, 2, 3, 4]);
   });
 });
+
+describe("moves whose script loops", () => {
+  it("keeps every hit of a drill, not just the first turn of the loop", () => {
+    expect(MELEE_MOVES.jigglypuff.dair!.hits).toHaveLength(8);
+    expect(MELEE_MOVES.jigglypuff.dair!.hits[0]).toEqual([5, 6, 2]);
+    expect(MELEE_MOVES.jigglypuff.dair!.hits[7]).toEqual([26, 27, 2]);
+    expect(MELEE_MOVES.samus.fair!.hits.map((h) => h[0])).toEqual([5, 12, 19, 26, 31]);
+    expect(MELEE_MOVES.fox.dair!.hits).toHaveLength(7);
+  });
+});

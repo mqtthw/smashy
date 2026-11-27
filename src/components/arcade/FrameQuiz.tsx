@@ -37,20 +37,26 @@ const who = (c: string) => characterName("melee", c) ?? c;
 const icon = (c: string) => stockIconUrl({ game: "melee", character: c });
 
 /**
- * A move's frames as a row of boxes: grey before it can hit, red on each frame a hit is out (with the gaps
- * between separate hits left dark), the rest until the character can act again. Under it, each hit's frames
+ * A move's frames as a row of boxes: grey for startup, each hit in its own colour on the frames it is out (with
+ * the gaps between separate hits left dark), the rest until the character can act again. Under it, each hit's frames
  * and damage, and the frame the character is free on.
  */
+// One colour per hit of a multi-hit move, in turn (round 962, Matthew: "multihit moves should have their different
+// hitboxes represented by different colors because these ones tripped me up").
+const HIT_COLORS = ["#ff5a4f", "#ffd447", "#5ad1ff", "#7dff9a", "#c58bff", "#ffa040"];
+const hitColor = (i: number) => HIT_COLORS[i % HIT_COLORS.length];
+
 function FrameStrip({ d }: { d: MoveData }) {
   const t = useT();
-  const out = (f: number) => d.hits.some(([from, to]) => f >= from && f <= to);
+  /** Which hit is out on a frame (-1: none). */
+  const hitOn = (f: number) => d.hits.findIndex(([from, to]) => f >= from && f <= to);
   return (
     <div className="card flex flex-col gap-3 p-3">
       <div aria-hidden="true">
         <div className="flex gap-px">
           {Array.from({ length: d.total }, (_, i) => {
             const f = i + 1;
-            return <span key={f} className="arcade-flip h-7 min-w-0 flex-1" style={{ "--i": i * 0.06, background: f < d.start ? "var(--line-strong)" : out(f) ? "#ff5a4f" : "#3d4170" } as React.CSSProperties} />;
+            return <span key={f} className="arcade-flip h-7 min-w-0 flex-1" style={{ "--i": i * 0.06, background: f < d.start ? "var(--line-strong)" : hitOn(f) >= 0 ? hitColor(hitOn(f)) : "#3d4170" } as React.CSSProperties} />;
           })}
         </div>
         {/* A number under every tenth frame. */}
@@ -62,7 +68,7 @@ function FrameStrip({ d }: { d: MoveData }) {
         <li className="badge border border-line font-normal"><span className="mr-1 inline-block h-2 w-2 bg-[var(--line-strong)]" />{t("history.arcade.fq.startup", { n: d.start - 1 })}</li>
         {d.hits.map(([from, to, damage], i) => (
           <li key={from} className="badge border border-line font-normal">
-            <span className="mr-1 inline-block h-2 w-2 bg-[#ff5a4f]" />
+            <span className="mr-1 inline-block h-2 w-2" style={{ background: hitColor(i) }} />
             {t(from === to ? "history.arcade.fq.hit1" : "history.arcade.fq.hit", { i: i + 1, a: from, b: to, d: damage })}
           </li>
         ))}
