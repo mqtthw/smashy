@@ -455,9 +455,9 @@ export default function TechChase() {
       </div>
       {/* The same moves as buttons, for phones (and anyone who'd rather tap). */}
       <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
-        {pad("left", t("history.arcade.tech.left"), "◀", "A")}
+        {pad("left", t("history.arcade.tech.left"), "◀︎", "A")}
         {pad("centre", t("history.arcade.tech.centre"), "●", "S")}
-        {pad("right", t("history.arcade.tech.right"), "▶", "D")}
+        {pad("right", t("history.arcade.tech.right"), "▶︎", "D")}
         {pad("tilt", hitName, hitName, "(W)")}
         {pad("grab", t("history.arcade.tech.grabBtn"), t("history.arcade.tech.grabBtn"), "", true)}
       </div>

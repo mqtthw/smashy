@@ -114,6 +114,7 @@ export default function GuessPlayer({ day, gameLabel, answer, answerHref, option
               onChange={(e) => setTyped(e.target.value)}
               onFocus={lift.onFocus}
               onBlur={lift.onBlur}
+              onInput={lift.onInput}
               // The keyboard's Go guesses the top suggestion (round 981).
               onKeyDown={(e) => {
                 if (e.key === "Enter" && matches.length) {

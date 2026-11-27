@@ -110,6 +110,7 @@ export default function GuessMajor({ day, gameLabel, top8, answer, answerHref, o
               onChange={(e) => setTyped(e.target.value)}
               onFocus={lift.onFocus}
               onBlur={lift.onBlur}
+              onInput={lift.onInput}
               // The keyboard's Go guesses the top suggestion (round 981).
               onKeyDown={(e) => {
                 if (e.key === "Enter" && matches.length) {

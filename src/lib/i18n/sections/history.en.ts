@@ -486,6 +486,6 @@ export const historyEn = {
   "history.arcade.tech.player": "You play:",
   "history.arcade.mv.shine": "shine",
   "history.arcade.di.outlines": "The fighters are the game's own outlines (NTSC 1.02): the move plays frame by frame up to the frame it hits, with the attacker placed so its real hitbox just reaches one of your real hurtboxes, and you're shown in the hit pose the game picks for that hurtbox and launch. Where the attacker stands is Smashy's choice, and the shaking in the freeze is only to show it's frozen.",
-  "history.arcade.tech.touch": "Tap ◀ ● ▶ to chase between the three spots, {move} to hit, and Grab to grab (Grab also starts).",
+  "history.arcade.tech.touch": "Tap ◀︎ ● ▶︎ to chase between the three spots, {move} to hit, and Grab to grab (Grab also starts).",
   "history.arcade.di.touch": "Hold a direction on the pad until the freeze ends. Slide your thumb to change it; let go to hold nothing.",
 };

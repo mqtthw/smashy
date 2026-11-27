@@ -38,7 +38,8 @@ const sy = (y: number) => GROUND_Y - y * S;
 const FREEZE_FRAMES = 60; // time to read the hit and choose (Smashy's own, not the move's hitlag)
 const RESULT_MS = 2200;
 const LIVES = 3;
-const ARROWS: Record<string, string> = { "0,0": "·", "1,0": "→", "-1,0": "←", "0,1": "↑", "0,-1": "↓", "1,1": "↗︎", "-1,1": "↖", "1,-1": "↘", "-1,-1": "↙" };
+// Each arrow ends in U+FE0E so iPhones draw it as text, not as a blue emoji tile (round 984).
+const ARROWS: Record<string, string> = { "0,0": "·", "1,0": "→︎", "-1,0": "←︎", "0,1": "↑︎", "0,-1": "↓︎", "1,1": "↗︎", "-1,1": "↖︎", "1,-1": "↘︎", "-1,-1": "↙︎" };
 const arrow = (s: Stick) => ARROWS[`${s.x},${s.y}`];
 const ZONE: Record<"top" | "side" | "bottom", MessageKey> = { top: "history.arcade.di.zone.top", side: "history.arcade.di.zone.side", bottom: "history.arcade.di.zone.bottom" };
 

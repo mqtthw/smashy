@@ -119,14 +119,26 @@ export function Reveal({ className = "", role, children }: { className?: string;
  */
 export function useLift() {
   const [typing, setTyping] = useState(false);
+  const phone = () => window.matchMedia("(max-width: 639px)").matches;
+  const lift = (el: HTMLElement) => el.scrollIntoView({ block: "start", behavior: "smooth" });
   const onFocus = (e: React.FocusEvent<HTMLElement>) => {
     const el = e.currentTarget;
-    if (!window.matchMedia("(max-width: 639px)").matches) return;
+    if (!phone()) return;
     setTyping(true);
-    window.setTimeout(() => el.scrollIntoView({ block: "start", behavior: "smooth" }), 300);
+    // iPhone Safari scrolls the box into view itself as the keyboard opens; lift once it has, and again once it settles.
+    window.setTimeout(() => lift(el), 300);
+    window.setTimeout(() => lift(el), 700);
+  };
+  // After a wrong guess the box sits lower; if typing finds it below the top third of what's visible, lift it again.
+  const onInput = (e: React.FormEvent<HTMLElement>) => {
+    const el = e.currentTarget;
+    if (!phone()) return;
+    const vv = window.visualViewport;
+    const top = el.getBoundingClientRect().top - (vv?.offsetTop ?? 0);
+    if (top > (vv?.height ?? window.innerHeight) / 3) lift(el);
   };
   // Tapping a suggestion blurs the box first: keep the room until the tap has landed.
   const onBlur = () => window.setTimeout(() => setTyping(false), 250);
   const room = typing ? <div aria-hidden="true" className="h-[60vh] sm:hidden" /> : null;
-  return { onFocus, onBlur, room };
+  return { onFocus, onBlur, onInput, room };
 }
