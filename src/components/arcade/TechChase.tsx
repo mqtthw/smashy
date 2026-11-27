@@ -16,6 +16,7 @@ import { FALL_FRAMES, FPS, POINTS, START_LIVES, busy, foxAt, framesAt, judgeFram
 import { CHASERS, CHASER_MOVES, TECH_VICTIMS, type Chaser, type TechVictim } from "@/lib/techChase.data";
 import { characterName } from "@/lib/characters";
 import { stockIconUrl } from "@/lib/mainBadge";
+import { loadOutlines, outlinePath, type Outlines } from "@/lib/outlines";
 import { useStoredState } from "@/lib/useStoredState";
 
 const W = 640;
@@ -47,41 +48,8 @@ type Game = {
 };
 const fresh = (speed: number, victim: TechVictim = "fox", player: Chaser = "marth"): Game => ({ victim, player, phase: "idle", script: null, landAt: 0, speed, slot: 0, px: slotX(0), action: null, done: 0, frozen: 0, resultAt: 0, outcome: null, whiff: null, points: 0, punishes: 0, lives: START_LIVES });
 // The characters' outlines (round 973, Matthew: "the outline has to be accurate to the animation because the point
-// is to help players recognize the visual cues of each characters tech animations"): every frame of each tech,
-// roll, bounce and getup, made from the game's own models and animations by tools/melee-disc/build-outlines.mjs and
-// served from /outlines/melee/ (kept out of the public open-source copy, whose trainer draws plain shapes instead).
-// Each frame is loops of points in quarter units, the first point whole and the rest as steps; x across (facing
-// right), y down from the floor.
-type Outlines = { unit: number; states: Record<string, number[][][]>; marks?: { shine?: [number, number, number] } };
-const outlineFiles = new Map<string, Promise<Outlines | null>>();
-const loadOutlines = (who: string) => {
-  if (!outlineFiles.has(who)) outlineFiles.set(who, fetch(`/outlines/melee/${who}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null));
-  return outlineFiles.get(who)!;
-};
-const paths = new Map<string, Path2D | null>();
-/** One frame of a state as a path (frame 1 = the state's first), or null if it isn't there. */
-function figure(o: Outlines | null | undefined, who: string, state: string, frame: number): Path2D | null {
-  const frames = o?.states[state];
-  if (!frames?.length) return null;
-  const i = Math.max(0, Math.min(frames.length, Math.round(frame)) - 1);
-  const key = `${who}|${state}|${i}`;
-  if (!paths.has(key)) {
-    const path = new Path2D();
-    for (const d of frames[i]) {
-      let x = 0;
-      let y = 0;
-      for (let k = 0; k < d.length; k += 2) {
-        x = k ? x + d[k] : d[k];
-        y = k ? y + d[k + 1] : d[k + 1];
-        if (k) path.lineTo(x * FIG, y * FIG);
-        else path.moveTo(x * FIG, y * FIG);
-      }
-      path.closePath();
-    }
-    paths.set(key, path);
-  }
-  return paths.get(key)!;
-}
+// is to help players recognize the visual cues of each characters tech animations"): lib/outlines.ts since round 976.
+const figure = (o: Outlines | null | undefined, who: string, state: string, frame: number) => outlinePath(o, who, state, frame, FIG);
 /** Pixels a stored quarter unit is drawn at: Fox stands about 70 pixels tall. */
 const FIG = 1.05;
 type Figures = { who: string; victim: Outlines | null; playerWho: string; player: Outlines | null };

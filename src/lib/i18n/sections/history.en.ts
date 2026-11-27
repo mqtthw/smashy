@@ -344,7 +344,7 @@ export const historyEn = {
   "history.arcade.player.line": "Six guesses to find the mystery player.",
   "history.arcade.hl.line": "Bigger, or earlier? Keep the streak alive.",
   "history.arcade.sets.line": "Pick the winner of real finals sets.",
-  "history.arcade.tech.line": "Read the get-up. Chase. Punish.",
+  "history.arcade.tech.line": "Real Melee tech animations. Six characters.",
   "history.arcade.hero.cta": "Play today's puzzle",
   "history.arcade.hero.keep": "Keep playing",
   "history.arcade.hero.today": "Solved today",

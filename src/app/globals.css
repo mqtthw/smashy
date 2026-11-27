@@ -1874,3 +1874,17 @@ body::before {
     }
   }
 }
+
+/* A moving picture drawn on a canvas (the tech-chase card, round 976): sized like the SVG pictures. */
+.arcade-game-art > canvas,
+.arcade-banner-art > canvas,
+.arcade-start-art > canvas {
+  height: 100%;
+  width: auto;
+}
+/* A canvas's height in percent needs its grid row to have a height (an SVG's doesn't). */
+.arcade-game-art:has(> canvas),
+.arcade-banner-art:has(> canvas),
+.arcade-start-art:has(> canvas) {
+  grid-template-rows: 100%;
+}

@@ -4,6 +4,7 @@
 // same for the other play-anytime games, whose pages open with ArcadeBanner.
 import type { MessageKey } from "@/lib/i18n/base";
 import { T } from "@/lib/i18n/client";
+import TechChaseArt from "./TechChaseArt";
 
 const ink = "#12102e";
 
@@ -45,15 +46,21 @@ export const ART = {
       <text x={100} y={68} fontSize="34" fontWeight="900" fontStyle="italic" textAnchor="middle" fill="#ffd447" stroke={ink} strokeWidth={2} paintOrder="stroke">VS</text>
     </svg>
   ),
+  // Since round 976 the real outlines, moving (TechChaseArt); this plain picture shows until they load, or where
+  // they aren't served.
   tech: (
-    <svg viewBox="0 0 200 110" aria-hidden="true">
-      <rect x={14} y={86} width={172} height={6} fill={ink} />
-      <path d="M52 86l4-34h20l6 34z" fill={ink} />
-      <circle cx={68} cy={42} r={10} fill={ink} />
-      <rect x={76} y={58} width={26} height={7} fill={ink} />
-      <circle cx={140} cy={70} r={16} fill="#fff" />
-      <path d="M118 50a26 26 0 0 1 36-6" fill="none" stroke="#fff" strokeWidth={4} strokeDasharray="6 5" />
-    </svg>
+    <TechChaseArt
+      fallback={
+        <svg viewBox="0 0 200 110" aria-hidden="true">
+          <rect x={14} y={86} width={172} height={6} fill={ink} />
+          <path d="M52 86l4-34h20l6 34z" fill={ink} />
+          <circle cx={68} cy={42} r={10} fill={ink} />
+          <rect x={76} y={58} width={26} height={7} fill={ink} />
+          <circle cx={140} cy={70} r={16} fill="#fff" />
+          <path d="M118 50a26 26 0 0 1 36-6" fill="none" stroke="#fff" strokeWidth={4} strokeDasharray="6 5" />
+        </svg>
+      }
+    />
   ),
   di: (
     <svg viewBox="0 0 200 110" aria-hidden="true">

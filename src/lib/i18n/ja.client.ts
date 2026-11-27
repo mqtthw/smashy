@@ -2560,7 +2560,7 @@ export const ja = {
   "history.arcade.player.line": "6回の予想で謎のプレイヤーを当てよう。",
   "history.arcade.hl.line": "大きいのは？先なのは？連続正解を伸ばそう。",
   "history.arcade.sets.line": "実際の決勝の勝者を当てよう。",
-  "history.arcade.tech.line": "起き上がりを読んで、追って、反撃。",
+  "history.arcade.tech.line": "DXの本物の受け身アニメーション。6キャラで追える。",
   "history.arcade.hero.cta": "今日の問題をプレイ",
   "history.arcade.hero.keep": "つづけてプレイ",
   "history.arcade.hero.today": "今日の正解",

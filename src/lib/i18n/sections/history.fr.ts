@@ -345,7 +345,7 @@ export const historyFr: Record<keyof typeof historyEn, string> = {
   "history.arcade.player.line": "Six essais pour trouver le joueur mystère.",
   "history.arcade.hl.line": "Plus grand, ou plus ancien ? Gardez la série.",
   "history.arcade.sets.line": "Choisissez le vainqueur de vraies finales.",
-  "history.arcade.tech.line": "Lisez le relevé. Poursuivez. Punissez.",
+  "history.arcade.tech.line": "Les vraies animations de tech de Melee. Six personnages.",
   "history.arcade.hero.cta": "Jouer l’énigme du jour",
   "history.arcade.hero.keep": "Continuer à jouer",
   "history.arcade.hero.today": "Résolues aujourd’hui",

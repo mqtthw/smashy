@@ -2560,7 +2560,7 @@ export const es = {
   "history.arcade.player.line": "Seis intentos para encontrar al jugador misterioso.",
   "history.arcade.hl.line": "¿Más grande, o anterior? Mantén la racha.",
   "history.arcade.sets.line": "Elige al ganador de finales reales.",
-  "history.arcade.tech.line": "Lee cómo se levanta. Persigue. Castiga.",
+  "history.arcade.tech.line": "Animaciones de tech reales de Melee. Seis personajes.",
   "history.arcade.hero.cta": "Jugar el reto de hoy",
   "history.arcade.hero.keep": "Seguir jugando",
   "history.arcade.hero.today": "Resueltos hoy",
