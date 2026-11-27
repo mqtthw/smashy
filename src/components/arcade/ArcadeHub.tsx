@@ -66,14 +66,36 @@ const ART = {
       <path d="M70 60h-24m0 0 9-8m-9 8 9 8" fill="none" stroke={ink} strokeWidth={5} />
     </svg>
   ),
-  ps: (
+  frames: (
     <svg viewBox="0 0 200 110" aria-hidden="true">
-      <circle cx={62} cy={58} r={34} fill="#fff" opacity={0.85} />
-      <circle cx={62} cy={58} r={34} fill="none" stroke={ink} strokeWidth={4} />
-      <path d="M52 92l3-30h14l3 30z" fill={ink} />
-      <circle cx={62} cy={52} r={9} fill={ink} />
-      <rect x={104} y={54} width={52} height={7} fill={ink} />
-      <rect x={166} y={54} width={22} height={7} fill={ink} opacity={0.5} />
+      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => <rect key={i} x={22 + i * 13} y={22} width={10} height={24} fill={i < 3 ? "#fff" : ink} opacity={i < 3 ? 0.9 : 0.85} />)}
+      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => <rect key={i} x={22 + i * 13} y={64} width={10} height={24} fill={i < 7 ? "#fff" : ink} opacity={i < 7 ? 0.9 : 0.85} />)}
+    </svg>
+  ),
+  move: (
+    <svg viewBox="0 0 200 110" aria-hidden="true">
+      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((i) => <rect key={i} x={12 + i * 13} y={i >= 4 && i <= 6 ? 30 : 40} width={10} height={i >= 4 && i <= 6 ? 50 : 30} fill={i >= 4 && i <= 6 ? "#fff" : ink} opacity={0.9} />)}
+      <text x={170} y={30} fontSize="28" fontWeight="900" fontStyle="italic" fill={ink}>?</text>
+    </svg>
+  ),
+  punish: (
+    <svg viewBox="0 0 200 110" aria-hidden="true">
+      <rect x={14} y={88} width={172} height={6} fill={ink} />
+      <path d="M40 88l4-36h20l6 36z" fill={ink} />
+      <circle cx={56} cy={42} r={10} fill={ink} />
+      <path d="M72 60l44 -6-4 14z" fill="#fff" />
+      <path d="M132 88l3-30h18l5 30z" fill="#fff" opacity={0.85} />
+      <circle cx={146} cy={48} r={9} fill="#fff" opacity={0.85} />
+      <text x={160} y={38} fontSize="22" fontWeight="900" fontStyle="italic" fill={ink}>!</text>
+    </svg>
+  ),
+  kill: (
+    <svg viewBox="0 0 200 110" aria-hidden="true">
+      <rect x={10} y={8} width={180} height={94} fill="none" stroke={ink} strokeWidth={3} strokeDasharray="8 6" />
+      <rect x={70} y={78} width={60} height={5} fill={ink} />
+      <path d="M100 76C108 46 132 22 176 12" fill="none" stroke={ink} strokeWidth={5} />
+      <circle cx={100} cy={72} r={7} fill={ink} />
+      <text x={150} y={70} fontSize="30" fontWeight="900" fontStyle="italic" fill="#fff">?</text>
     </svg>
   ),
 };
@@ -83,8 +105,20 @@ const PLAYER: Game = { href: "/arcade/player", title: "history.arcade.player.tit
 const HL: Game = { href: "/arcade/higher-lower", title: "history.arcade.hl.title", line: "history.arcade.hl.line", color: "#5ad1ff", art: ART.hl };
 const SETS: Game = { href: "/arcade/sets", title: "history.arcade.sets.title", line: "history.arcade.sets.line", color: "#7dff9a", art: ART.sets };
 const DI: Game = { href: "/arcade/di", title: "history.arcade.di.title", line: "history.arcade.di.line", color: "#c58bff", art: ART.di };
-const PS: Game = { href: "/arcade/powershield", title: "history.arcade.ps.title", line: "history.arcade.ps.line", color: "#6aa7ff", art: ART.ps };
+const QUIZZES: (Game & { best: string })[] = [
+  { href: "/arcade/frames", title: "history.arcade.fq.frames.title", line: "history.arcade.fq.frames.line", color: "#6aa7ff", art: ART.frames, best: "arcade.fq.frames.best" },
+  { href: "/arcade/move", title: "history.arcade.fq.move.title", line: "history.arcade.fq.move.line", color: "#ff9ad5", art: ART.move, best: "arcade.fq.move.best" },
+  { href: "/arcade/punish", title: "history.arcade.fq.punish.title", line: "history.arcade.fq.punish.line", color: "#ff7a5e", art: ART.punish, best: "arcade.fq.punish.best" },
+  { href: "/arcade/kill", title: "history.arcade.fq.kill.title", line: "history.arcade.fq.kill.line", color: "#9dff6a", art: ART.kill, best: "arcade.fq.kill.best" },
+];
 const TECH: Game = { href: "/arcade/tech-chase", title: "history.arcade.tech.title", line: "history.arcade.tech.line", color: "#ffa040", art: ART.tech };
+
+/** A quiz's card: its best score out of ten is read here, one stored value per card. */
+function QuizCard({ quiz, i }: { quiz: (typeof QUIZZES)[number]; i: number }) {
+  const t = useT();
+  const [best] = useStoredState(quiz.best, "0");
+  return <GameCard game={quiz} i={i} chip={Number(best) > 0 ? <>★ {t("history.arcade.sets.best", { n: Number(best), total: 10 })}</> : <span className="text-muted">{t("history.arcade.tile.fresh")}</span>} />;
+}
 
 function GameCard({ game, chip, big = false, i }: { game: Game; chip: React.ReactNode; big?: boolean; i: number }) {
   const t = useT();
@@ -113,7 +147,6 @@ export default function ArcadeHub({ day }: { day: number }) {
   const [setsBest] = useStoredState("arcade.sets.best", "0");
   const [techBest] = useStoredState("arcade.tech.best", "0");
   const [diBest] = useStoredState("arcade.di.best", "0");
-  const [psBest] = useStoredState("arcade.ps.best", "0");
   const daily = [{ game: MAJOR, stats: readStats(majorStored) }, { game: PLAYER, stats: readStats(playerStored) }];
   const done = daily.filter((d) => d.stats.last === day);
   const streak = Math.max(...daily.map((d) => liveStreak(d.stats, day)));
@@ -165,12 +198,18 @@ export default function ArcadeHub({ day }: { day: number }) {
         </ul>
       </section>
 
+      <section aria-labelledby="arcade-knowledge" className="flex flex-col gap-3">
+        <h2 id="arcade-knowledge" className="font-bold">{t("history.arcade.sec.knowledge")}</h2>
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {QUIZZES.map((quiz, i) => <QuizCard key={quiz.href} quiz={quiz} i={4 + i} />)}
+        </ul>
+      </section>
+
       <section aria-labelledby="arcade-trainers" className="flex flex-col gap-3">
         <h2 id="arcade-trainers" className="font-bold">{t("history.arcade.sec.trainers")}</h2>
-        <ul className="grid gap-3 sm:grid-cols-3">
+        <ul className="grid gap-3 sm:grid-cols-2">
           <GameCard game={TECH} i={4} chip={bestChip(Number(techBest), t("history.arcade.hl.best", { n: Number(techBest) }))} />
           <GameCard game={DI} i={5} chip={bestChip(Number(diBest), t("history.arcade.hl.best", { n: Number(diBest) }))} />
-          <GameCard game={PS} i={6} chip={bestChip(Number(psBest), t("history.arcade.hl.best", { n: Number(psBest) }))} />
         </ul>
       </section>
     </div>

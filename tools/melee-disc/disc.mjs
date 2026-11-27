@@ -11,7 +11,10 @@
 // - an animation's length in frames is the float at +8 of its figatree;
 // - a script is a list of commands, 4 bytes each except effects and hitboxes (20), sounds (12) and jumps (8);
 //   "08 NN" waits until frame NN, "04 NN" waits NN frames, "68 ...02" / "68 ...00" turns intangibility on / off,
-//   "2C" makes a hitbox and "40" clears them.
+//   "2C" makes a hitbox and "40" clears them, "5C" lets the character act again (the move can be interrupted).
+// - a hitbox command's five words (lb/types.h, spawn_hitbox_0..4): word 0 ends with the damage (10 bits); word 3
+//   starts with the angle, knockback growth and weight-set knockback (9 bits each); word 4 starts with the base
+//   knockback (9 bits).
 import fs from "node:fs";
 
 export function openDisc(path) {
@@ -95,7 +98,10 @@ export function actions(disc, code) {
       if (cmd === 0x02) frame = w & 0xffffff;
       else if (cmd === 0x01) frame += w & 0xffffff;
       else if (cmd === 0x1a) events.push({ frame, what: (w & 3) === 0 ? "vulnerable" : "intangible" });
-      else if (cmd === 0x0b) events.push({ frame, what: "hitbox" });
+      else if (cmd === 0x0b) {
+        const w3 = d.u32(p + 12);
+        events.push({ frame, what: "hitbox", damage: w & 0x3ff, angle: w3 >>> 23, growth: (w3 >>> 14) & 0x1ff, set: (w3 >>> 5) & 0x1ff, base: d.u32(p + 16) >>> 23 });
+      } else if (cmd === 0x17) events.push({ frame, what: "free" });
       else if (cmd === 0x10) events.push({ frame, what: "clear" });
       p += cmd === 0x0a || cmd === 0x0b ? 20 : cmd === 0x11 ? 12 : cmd === 0x05 || cmd === 0x07 ? 8 : 4;
     }
