@@ -7,13 +7,21 @@
 //   49 frames, intangible 1-26, hitting on 17-19 and 24-26. (fightcore.gg/characters/224/fox)
 // - A missed tech bounces for 26 frames, vulnerable throughout (one video's description only: weakly sourced),
 //   then lies there. Grabs don't work on an opponent knocked down on the floor (ssbwiki.com/Grab); a hit does.
+//
+// Round 953 checked this against the game itself. In its decompiled code (github.com/doldecomp/melee, which
+// Matthew named as a source; src/melee/ft): the bounce blocks every kind of grab and lying down blocks the
+// ordinary one (kinds/ftCommon/ftCo_DownBound.c sets the mask that ftcoll.c's grab check reads), while techs
+// and getups don't block grabs at all; and a countdown forces a plain getup when he has lain there too long.
+// And in Matthew's own copy of the game (NTSC 1.02): that countdown is 220 frames (PlCo.dat, x424); Fox's
+// animations are 26 frames for the bounce and for the tech in place, 40 for a tech roll, and 30 for the plain
+// getup, whose script ends its intangibility at frame 23 (PlFx.dat / PlFxAJ.dat). The plain getup's last
+// intangible frame is 22 or 23 depending on how the game counts the first frame of that state; 23 is used.
 // - The player is Marth. Standing grab: active on frames 7-8 of 30. Down tilt: active 7-9, free to act on
 //   frame 20. (ssbwiki.com/Marth_(SSBM)/Grab, /Down_tilt)
 //
 // What is NOT the game's: the stage is three spots and moving between them is instant (no dash speeds, ranges
-// or roll distances); how long Fox lies there before getting up is a random 10 to 40 frames; he never does a
-// neutral getup (its frames weren't found on a page that could be read); and a browser can't promise that
-// every frame is shown on time.
+// or roll distances); how long Fox lies there before getting up is a random 10 to 40 frames (in the game it is
+// the opponent's choice, up to 220); and a browser can't promise that every frame is shown on time.
 
 export type Slot = -1 | 0 | 1;
 export const FPS = 60;
@@ -25,7 +33,7 @@ export const TILT = { active: [7, 9] as const, total: 19 }; // interruptible on 
 export type Move = "grab" | "tilt";
 export const MOVES: Record<Move, { active: readonly [number, number]; total: number }> = { grab: GRAB, tilt: TILT };
 
-export type PhaseName = "tech" | "techRoll" | "bounce" | "lying" | "getupRoll" | "getupAttack";
+export type PhaseName = "tech" | "techRoll" | "bounce" | "lying" | "getupRoll" | "getupAttack" | "getupStand";
 export type Phase = {
   name: PhaseName;
   frames: number;
@@ -37,9 +45,9 @@ export type Phase = {
 };
 
 export type TechOption = "inPlace" | "left" | "right" | "missed";
-export type Getup = "rollLeft" | "rollRight" | "attack";
+export type Getup = "rollLeft" | "rollRight" | "stand" | "attack";
 export const TECH_OPTIONS: TechOption[] = ["inPlace", "left", "right", "missed"];
-export const GETUPS: Getup[] = ["rollLeft", "rollRight", "attack"];
+export const GETUPS: Getup[] = ["rollLeft", "rollRight", "stand", "attack"];
 
 const TECH: Phase = { name: "tech", frames: 26, intangible: [1, 20], downed: false };
 const techRoll = (to: Slot): Phase => ({ name: "techRoll", frames: 40, intangible: [1, 20], downed: false, to, arrives: 12 });
@@ -47,6 +55,7 @@ const BOUNCE: Phase = { name: "bounce", frames: 26, intangible: null, downed: tr
 const lying = (frames: number): Phase => ({ name: "lying", frames, intangible: null, downed: true });
 // He lies on his back facing right: rolling right is his forward getup roll, left his backward one.
 const getupRoll = (to: Slot): Phase => ({ name: "getupRoll", frames: 35, intangible: to === 1 ? [1, 19] : [12, 29], downed: false, to, arrives: 12 });
+const GETUP_STAND: Phase = { name: "getupStand", frames: 30, intangible: [1, 23], downed: false };
 const GETUP_ATTACK: Phase = { name: "getupAttack", frames: 49, intangible: [1, 26], downed: false, hits: [[17, 19], [24, 26]] };
 
 /** One knockdown, start to finish: what Fox does on landing (frame 1 is the frame he lands), and after. */
@@ -61,7 +70,7 @@ export function newScript(rand: () => number): Script {
   if (option === "left" || option === "right") return { option, getup: null, phases: [techRoll(option === "left" ? -1 : 1)] };
   const wait = 10 + Math.floor(rand() * 31);
   const getup = pick(GETUPS, rand);
-  return { option, getup, phases: [BOUNCE, lying(wait), getup === "attack" ? GETUP_ATTACK : getupRoll(getup === "rollLeft" ? -1 : 1)] };
+  return { option, getup, phases: [BOUNCE, lying(wait), getup === "attack" ? GETUP_ATTACK : getup === "stand" ? GETUP_STAND : getupRoll(getup === "rollLeft" ? -1 : 1)] };
 }
 
 export const scriptFrames = (s: Script) => s.phases.reduce((n, p) => n + p.frames, 0);

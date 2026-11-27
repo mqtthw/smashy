@@ -17,8 +17,18 @@
 // - Weights, gravity and falling speeds: IKneeData (src/lib/characterStats.melee.ts). Moves: fightcore.gg and
 //   SmashWiki's move pages (NTSC).
 //
-// What is NOT the game's: a keyboard has eight directions at full tilt (a diagonal counts as longer than a
-// cardinal, as the formula has it); the freeze before the launch is a fixed time to read and choose, not the
+// Round 953 checked all of this against the game itself. The rules, in its decompiled code
+// (github.com/doldecomp/melee, which Matthew named as a source; paths under src/): DI is "angle += max angle *
+// perp^2", read on the frame hitlag ends, with no deadzone of its own (melee/ft/kinds/ftCommon/ftCo_Damage.c);
+// the decay comes off along the knockback direction each airborne frame and gravity only acts on the
+// character's own speed (melee/ft/fighter.c, ftcommon.c); the top blast line only kills while knockback is
+// still carrying the character up faster than a threshold (melee/ft/ft_0D31.c); the stick is clamped to a
+// circle of radius 80 and divided by 80 (sysdolphin/baselib/controller.c), so a full diagonal is (0.7, 0.7).
+// The numbers, read from Matthew's own copy of the game (NTSC 1.02, PlCo.dat, the offsets the code uses):
+// launch speed 0.03 per knockback (x100), decay 0.051 (x204), hitstun 0.4 (x154), DI 18 degrees (x1A8), top
+// threshold 2.4 (x4F0), and hitlag = damage / 3 + 3, at most 20 frames (x198, x19C, x194).
+//
+// What is NOT the game's: a keyboard has eight directions at full tilt; the freeze before the launch is a fixed time to read and choose, not the
 // move's hitlag; there is no smash DI, no crouch cancel, no staleness, and nothing after the launch (no jump,
 // no drift, no recovery): this only answers "would this hit have killed?".
 import { MELEE_STATS } from "./characterStats.melee";
@@ -27,6 +37,10 @@ export const STAGE = { top: 188, bottom: -140, side: 246, edge: 85.5657 };
 export const SAKURAI_GROUNDED = 44;
 export const MAX_DI = 18;
 export const TOP_KO_SPEED = 2.4;
+/** Each axis of a full diagonal on the stick: 80 * cos(45 degrees), cut to a whole number (56), over 80. */
+export const DIAGONAL = 56 / 80;
+/** The frames a hit freezes both players for, from its damage (the game's formula; electric and crouching change it). */
+export const hitlag = (damage: number) => Math.min(20, Math.floor(damage / 3 + 3));
 
 export type DiMove = { key: string; by: string; name: string; damage: number; angle: number; base: number; growth: number };
 /** Hits people die to. `angle` 361 is the Sakurai angle. */
@@ -62,7 +76,9 @@ const rad = (deg: number) => (deg * Math.PI) / 180;
 export function diAngle(angle: number, stick: Stick): number {
   if (!stick.x && !stick.y) return angle;
   const stickAngle = Math.atan2(stick.y, stick.x);
-  const perp = Math.sin(rad(angle) - stickAngle) * Math.hypot(stick.x, stick.y);
+  // The game clamps the stick to a circle: a full diagonal is 56/80 on each axis, so its length is 0.99, not 1.41.
+  const length = stick.x && stick.y ? Math.hypot(DIAGONAL, DIAGONAL) : 1;
+  const perp = Math.sin(rad(angle) - stickAngle) * length;
   const offset = Math.min(MAX_DI, perp * perp * MAX_DI);
   return angle - Math.sign(perp) * offset; // towards the stick
 }
@@ -94,7 +110,7 @@ export function fly(kb: number, angleDeg: number, victim: Victim, x0: number): F
     points.push([x, y]);
     if (Math.abs(x) > STAGE.side) return { points, ko: "side", frames: f, landed: false };
     if (y < STAGE.bottom) return { points, ko: "bottom", frames: f, landed: false };
-    if (y > STAGE.top && vy >= TOP_KO_SPEED) return { points, ko: "top", frames: f, landed: false };
+    if (y > STAGE.top && vy > TOP_KO_SPEED) return { points, ko: "top", frames: f, landed: false };
     if (y <= 0 && Math.abs(x) <= STAGE.edge && f > 1) return { points, ko: null, frames: f, landed: true };
     if (speed === 0) return { points, ko: null, frames: f, landed: false };
   }

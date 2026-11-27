@@ -19,7 +19,7 @@ const H = 280;
 const GROUND = 214;
 const slotX = (s: number) => W / 2 + s * 190;
 const RESULT_MS = 1500;
-const PHASE: Record<PhaseName, MessageKey> = { tech: "history.arcade.tech.p.tech", techRoll: "history.arcade.tech.p.techRoll", bounce: "history.arcade.tech.p.bounce", lying: "history.arcade.tech.p.lying", getupRoll: "history.arcade.tech.p.getupRoll", getupAttack: "history.arcade.tech.p.getupAttack" };
+const PHASE: Record<PhaseName, MessageKey> = { tech: "history.arcade.tech.p.tech", techRoll: "history.arcade.tech.p.techRoll", bounce: "history.arcade.tech.p.bounce", lying: "history.arcade.tech.p.lying", getupRoll: "history.arcade.tech.p.getupRoll", getupAttack: "history.arcade.tech.p.getupAttack", getupStand: "history.arcade.tech.p.getupStand" };
 const WHIFF: Record<Exclude<Whiff, null>, MessageKey> = { intangible: "history.arcade.tech.w.intangible", downed: "history.arcade.tech.w.downed", wrongSpot: "history.arcade.tech.w.wrongSpot" };
 
 type Game = {
@@ -85,7 +85,7 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
           lying = 1;
           lift = Math.sin(fox.progress * Math.PI) * 16;
         } else if (name === "lying") lying = 1;
-        else if (name === "tech" || name === "getupAttack") lying = Math.max(0, 1 - fox.progress * (name === "tech" ? 1.6 : 3));
+        else if (name === "tech" || name === "getupAttack" || name === "getupStand") lying = Math.max(0, 1 - fox.progress * (name === "getupAttack" ? 3 : 1.6));
         hitting = fox.hitting;
         if (name === "getupAttack" && !fox.vulnerable && !hitting) color = Math.floor(f / 2) % 2 ? "#ffffff" : "#ffb060";
       }

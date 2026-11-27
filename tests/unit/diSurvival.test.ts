@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DI_MOVES, STAGE, diAngle, fly, hitstun, knockback, launchAngle, margin, newDiRound, resolveHit } from "@/lib/diSurvival";
+import { DI_MOVES, STAGE, diAngle, fly, hitlag, hitstun, knockback, launchAngle, margin, newDiRound, resolveHit } from "@/lib/diSurvival";
 
 const move = (key: string) => DI_MOVES.find((m) => m.key === key)!;
 
@@ -10,6 +10,7 @@ describe("the DI trainer's Melee maths", () => {
     expect(knockback(move("fox-usmash"), 100, 75)).toBeCloseTo(261.6, 0);
     expect(knockback(move("fox-usmash"), 100, 104)).toBeLessThan(knockback(move("fox-usmash"), 100, 75)); // heavier flies less
     expect(hitstun(261.6)).toBe(104);
+    expect([18, 3, 60].map(hitlag)).toEqual([9, 4, 20]); // damage / 3 + 3, at most 20
   });
 
   it("turns the launch by up to 18 degrees, towards the stick, most when held straight across it", () => {
@@ -18,7 +19,9 @@ describe("the DI trainer's Melee maths", () => {
     expect(diAngle(90, { x: 0, y: 1 })).toBeCloseTo(90); // along the launch: nothing
     expect(diAngle(90, { x: 0, y: 0 })).toBe(90);
     expect(diAngle(45, { x: 1, y: 0 })).toBeCloseTo(45 - 9); // sin(45)^2 * 18
-    expect(diAngle(45, { x: -1, y: 1 })).toBeCloseTo(63); // a diagonal straight across: capped at 18
+    // A diagonal straight across: the stick is clamped to a circle, so it is 0.7 on each axis (length 0.99), not 1.41.
+    expect(diAngle(45, { x: -1, y: 1 })).toBeCloseTo(45 + 18 * (2 * 0.7 * 0.7));
+    expect(diAngle(45, { x: -1, y: 1 })).toBeLessThan(63);
   });
 
   it("mirrors a launch for a hit from the right, and reads the Sakurai angle as 44 on the ground", () => {

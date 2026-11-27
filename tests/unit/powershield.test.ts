@@ -25,10 +25,10 @@ describe("the powershield trainer, in Melee's frames", () => {
   it("fires Falco's laser on frame 23, and deals shots that come sooner as the run goes on", () => {
     const fixed = (list: number[]) => () => list.shift() ?? 0;
     const shot = newShot(100, 0, fixed([0, 0]));
-    expect(shot).toEqual({ start: 170, travel: 12 });
+    expect(shot).toEqual({ start: 170, travel: 12, distance: 60 }); // 60 units at 5 a frame
     expect(leavesAt(shot)).toBe(193);
     expect(arrivesAt(shot)).toBe(205);
-    expect(newShot(0, 0, fixed([0.999, 0.999]))).toEqual({ start: 119, travel: 30 });
+    expect(newShot(0, 0, fixed([0.999, 0.999]))).toEqual({ start: 119, travel: 30, distance: 150 });
     expect(newShot(0, 30, fixed([0, 0])).start).toBe(20);
   });
 });

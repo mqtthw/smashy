@@ -16,7 +16,8 @@ describe("the tech-chase trainer, in Melee's frames", () => {
     expect(scriptFrames(missed)).toBe(85);
     expect(script([0.99, 0.999, 0]).phases[1].frames).toBe(40); // the longest wait
     expect(script([0.99, 0, 0]).phases[2]).toMatchObject({ name: "getupRoll", intangible: [12, 29], to: -1 }); // backward
-    expect(script([0.99, 0, 0.5]).phases[2]).toMatchObject({ name: "getupRoll", intangible: [1, 19], to: 1 }); // forward
+    expect(script([0.99, 0, 0.3]).phases[2]).toMatchObject({ name: "getupRoll", intangible: [1, 19], to: 1 }); // forward
+    expect(script([0.99, 0, 0.6]).phases[2]).toMatchObject({ name: "getupStand", frames: 30, intangible: [1, 23] }); // the plain getup
   });
 
   it("knows where Fox is and whether he can be touched on any frame", () => {
@@ -69,7 +70,8 @@ describe("the tech-chase trainer, in Melee's frames", () => {
   it("names the frames a phase is open on", () => {
     expect(openFrames(script([0]).phases[0])).toEqual([21, 26]);
     expect(openFrames(script([0.3]).phases[0])).toEqual([21, 40]);
-    expect(openFrames(script([0.99, 0, 0.5]).phases[2])).toEqual([20, 35]);
+    expect(openFrames(script([0.99, 0, 0.3]).phases[2])).toEqual([20, 35]);
+    expect(openFrames(script([0.99, 0, 0.6]).phases[2])).toEqual([24, 30]);
     expect(openFrames(script([0.99, 0, 0]).phases[2])).toEqual([30, 35]); // backward: also open on 1-11
     expect(openFrames(script([0.99, 0, 0.99]).phases[0])).toEqual([1, 26]);
   });
