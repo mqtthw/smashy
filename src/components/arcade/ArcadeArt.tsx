@@ -4,6 +4,7 @@
 // same for the other play-anytime games, whose pages open with ArcadeBanner.
 import type { MessageKey } from "@/lib/i18n/base";
 import { T } from "@/lib/i18n/client";
+import DiArt from "./DiArt";
 import TechChaseArt from "./TechChaseArt";
 
 const ink = "#12102e";
@@ -62,14 +63,20 @@ export const ART = {
       }
     />
   ),
+  // Since round 991 one real hit and its DI, moving (DiArt); this plain picture shows until the outlines load, or
+  // where they aren't served.
   di: (
-    <svg viewBox="0 0 200 110" aria-hidden="true">
-      <rect x={60} y={90} width={80} height={6} fill={ink} />
-      <path d="M100 86C112 40 150 22 190 18" fill="none" stroke="#fff" strokeWidth={3} strokeDasharray="6 5" />
-      <path d="M100 86C96 44 116 14 150 4" fill="none" stroke={ink} strokeWidth={5} />
-      <circle cx={100} cy={82} r={9} fill={ink} />
-      <path d="M70 60h-24m0 0 9-8m-9 8 9 8" fill="none" stroke={ink} strokeWidth={5} />
-    </svg>
+    <DiArt
+      fallback={
+        <svg viewBox="0 0 200 110" aria-hidden="true">
+          <rect x={60} y={90} width={80} height={6} fill={ink} />
+          <path d="M100 86C112 40 150 22 190 18" fill="none" stroke="#fff" strokeWidth={3} strokeDasharray="6 5" />
+          <path d="M100 86C96 44 116 14 150 4" fill="none" stroke={ink} strokeWidth={5} />
+          <circle cx={100} cy={82} r={9} fill={ink} />
+          <path d="M70 60h-24m0 0 9-8m-9 8 9 8" fill="none" stroke={ink} strokeWidth={5} />
+        </svg>
+      }
+    />
   ),
   frames: (
     <svg viewBox="0 0 200 110" aria-hidden="true">

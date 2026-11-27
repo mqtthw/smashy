@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { GAME_KEYS, type GameKey } from "@/lib/games";
 import { allFields, sanitizeRules } from "@/lib/rulesetFields";
 import { SCENE_EMOJI_NAME } from "@/lib/reactions";
+import { parseSceneCities } from "@/lib/sceneCities";
 import { saveSceneEmoji } from "@/lib/sceneSocial";
 import { isSceneAdmin, isSiteAdmin } from "@/lib/scenes";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -32,11 +33,7 @@ function gamesFrom(formData: FormData): GameKey[] {
 export async function requestScene(_prev: FormResult, formData: FormData): Promise<FormResult> {
   const userId = await requireUser();
   const name = String(formData.get("name") ?? "").trim();
-  const cities = String(formData.get("cities") ?? "")
-    .split(",")
-    .map((c) => c.trim())
-    .filter(Boolean)
-    .slice(0, 20);
+  const cities = parseSceneCities(String(formData.get("cities") ?? ""));
   const games = gamesFrom(formData);
   const description = String(formData.get("description") ?? "").trim().slice(0, 500) || null;
   const slug = slugify(name);
