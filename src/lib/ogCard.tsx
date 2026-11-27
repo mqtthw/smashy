@@ -8,7 +8,7 @@ import { join } from "node:path";
 import type { ReactNode } from "react";
 import { ImageResponse } from "next/og";
 import type { GameKey } from "./games";
-import { TILE, Wordmark, wordmarkFont } from "./iconArt";
+import { TILE, Wordmark, logoTile, logoWordmark, wordmarkFont } from "./iconArt";
 import { clip } from "./siteMeta";
 
 export { clip };
@@ -165,7 +165,7 @@ export async function renderOg({ label, accent = BRAND, background, children, ca
         <div style={{ position: "absolute", left: 0, top: 0, width: 16, height: 630, background: accent, display: "flex" }} />
 
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <Wordmark size={64} />
+          <Wordmark size={64} src={await logoWordmark()} />
           <div style={{ display: "flex", flex: 1 }} />
           {label && <Pill color={accent}>{label}</Pill>}
         </div>
@@ -192,12 +192,11 @@ export async function siteCard(cacheControl = CARD_CACHE) {
     (
       <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: TILE, color: INK, fontFamily: "Body" }}>
         <div style={{ position: "absolute", left: 0, top: 0, width: 16, height: 630, display: "flex", background: BRAND }} />
-        {/* The app icon's red S tile on the right (round 886: with text only, the right half was empty). */}
-        <div style={{ position: "absolute", right: 90, top: 165, width: 300, height: 300, borderRadius: 66, background: "#d4231a", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ display: "flex", fontFamily: "Wordmark", fontWeight: 900, fontSize: 258, lineHeight: 1, color: "#ffffff", marginTop: -20 }}>S</div>
-        </div>
+        {/* The app icon on the right (round 886: with text only, the right half was empty); the flame S again since round 1002. */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- next/og draws plain <img> */}
+        <img src={await logoTile()} alt="" width={300} height={300} style={{ position: "absolute", right: 90, top: 165, borderRadius: 66 }} />
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 30, padding: "0 0 0 88px", width: 760 }}>
-          <Wordmark size={150} />
+          <Wordmark size={130} src={await logoWordmark()} />
           <div style={{ display: "flex", fontSize: 52, lineHeight: 1.15, letterSpacing: -1, color: "#ffffff" }}>Smash brackets, results and history.</div>
           <div style={{ display: "flex", fontSize: 30, color: MUTED, letterSpacing: -0.3 }}>Free, no ads · Locals · Players · Majors since 2003</div>
           <div style={{ display: "flex", gap: 12 }}>
