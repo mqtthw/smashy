@@ -11,7 +11,8 @@ import { arcadeMajors } from "@/lib/arcadeData";
 import { T } from "@/lib/i18n/client";
 import { localRound } from "@/lib/i18n/rounds";
 import { getT } from "@/lib/i18n/server";
-import { finalsSets, mostPlayed, tagOnly } from "@/lib/majorSets";
+import { stockIconUrl } from "@/lib/mainBadge";
+import { finalsSets, mostPlayed, startggCharacterKey, tagOnly } from "@/lib/majorSets";
 import { playersHidingStats } from "@/lib/playerStats";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,8 +30,13 @@ async function Round() {
     .slice(0, SETS_PER_ROUND)
     .map((s) => {
       const major = byMajor.get(`${s.major_slug}|${s.game}`)!;
-      const p1 = { name: tagOnly(s.p1_name), characters: mostPlayed(s.p1_chars ?? []).slice(0, 2), score: s.p1_score ?? 0 };
-      const p2 = { name: tagOnly(s.p2_name), characters: mostPlayed(s.p2_chars ?? []).slice(0, 2), score: s.p2_score ?? 0 };
+      const sideOf = (name: string, chars: string[] | null, score: number | null) => {
+        const characters = mostPlayed(chars ?? []).slice(0, 2);
+        const icons = characters.flatMap((c) => stockIconUrl({ game: s.game, character: startggCharacterKey(c) }) ?? []);
+        return { name: tagOnly(name), characters, icons, score: score ?? 0 };
+      };
+      const p1 = sideOf(s.p1_name, s.p1_chars, s.p1_score);
+      const p2 = sideOf(s.p2_name, s.p2_chars, s.p2_score);
       const flip = coin(Math.random); // which side comes first says nothing about who won
       return { id: s.set_id, major: major.name, year: yearOf(major.date), game: s.game, round: localRound(s.round ?? "", t), a: flip ? p2 : p1, b: flip ? p1 : p2, winner: (s.winner === 1) === !flip ? "a" : "b" };
     });

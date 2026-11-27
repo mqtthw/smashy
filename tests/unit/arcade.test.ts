@@ -105,3 +105,39 @@ describe("the Arcade's player games", () => {
     expect(setsShare([true, false, true])).toBe("🟩🟥🟩 2/3");
   });
 });
+
+import { addResult, clock, liveStreak, readStats, setsRank, untilNextPuzzle } from "@/lib/arcade";
+
+describe("the Arcade's streaks and scores", () => {
+  it("counts a run of solved days, once a day, and ends it on a miss or a skipped day", () => {
+    let s = readStats("");
+    s = addResult(s, 5, true);
+    s = addResult(s, 5, false); // the same day again changes nothing
+    expect(s).toMatchObject({ last: 5, won: true, streak: 1, played: 1, wins: 1 });
+    s = addResult(s, 6, true);
+    expect(s.streak).toBe(2);
+    expect(liveStreak(s, 7)).toBe(2); // still alive before today's is played
+    expect(liveStreak(s, 8)).toBe(0); // a day was skipped
+    s = addResult(s, 8, true);
+    expect(s).toMatchObject({ streak: 1, best: 2 });
+    s = addResult(s, 9, false);
+    expect(s).toMatchObject({ streak: 0, best: 2, played: 4, wins: 3 });
+    expect(liveStreak(s, 9)).toBe(0);
+  });
+
+  it("reads a damaged record as an empty one", () => {
+    expect(readStats("{oops")).toMatchObject({ last: 0, streak: 0 });
+    expect(readStats('{"last":"x","streak":-4,"won":"yes"}')).toMatchObject({ last: 0, streak: 0, won: false });
+  });
+
+  it("counts down to midnight UTC", () => {
+    expect(untilNextPuzzle(ARCADE_FIRST_DAY)).toBe(86400_000);
+    expect(untilNextPuzzle(ARCADE_FIRST_DAY + 86400_000 - 1000)).toBe(1000);
+    expect(clock(7 * 3600_000 + 4 * 60_000 + 9000)).toBe("07:04:09");
+    expect(clock(-5)).toBe("00:00:00");
+  });
+
+  it("greets a score out of ten", () => {
+    expect([10, 8, 5, 4].map((n) => setsRank(n, 10))).toEqual(["perfect", "top8", "pools", "out"]);
+  });
+});

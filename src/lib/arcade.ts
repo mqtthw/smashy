@@ -115,7 +115,7 @@ export function savedGuesses(stored: string, day: number): string[] {
 
 export const PLAYER_TRIES = 6;
 /** A player as a choice: `slug` is their key (start.gg player id, or "name:<key>" without one). */
-export type PlayerOption = { slug: string; name: string; wins: number; top8s: number; firstYear: number; lastYear: number; main: string | null; mainName: string | null };
+export type PlayerOption = { slug: string; name: string; wins: number; top8s: number; firstYear: number; lastYear: number; main: string | null; mainName: string | null; mainIcon?: string | null };
 
 /** Players who can be the day's answer: a major win, or at least six top 8s. In a fixed order. */
 export const playerPuzzlePool = (players: PlayerOption[]) => players.filter((p) => p.wins >= 1 || p.top8s >= 6).sort((a, b) => a.slug.localeCompare(b.slug));
@@ -139,7 +139,7 @@ export function playerHint(guess: PlayerOption, answer: PlayerOption) {
 // ---------- Who won this set? ----------
 
 export const SETS_PER_ROUND = 10;
-export type SetSide = { name: string; characters: string[]; score: number };
+export type SetSide = { name: string; characters: string[]; icons: string[]; score: number };
 export type ArcadeSet = { id: string; major: string; year: number; game: GameKey; round: string; a: SetSide; b: SetSide; winner: "a" | "b" };
 
 /** Up to `n` different items, picked with `rand` (0..1 numbers). */
@@ -155,3 +155,42 @@ export const setsShare = (answers: boolean[]) => `${answers.map((r) => (r ? "ðŸŸ
 
 /** Heads or tails from `rand`. */
 export const coin = (rand: () => number) => rand() < 0.5;
+
+// ---------- Streaks and scores (round 945: kept in the visitor's browser) ----------
+
+/** A daily puzzle's record in one browser: the last day finished, whether it was solved, and the run of solved days. */
+export type DailyStats = { last: number; won: boolean; streak: number; best: number; played: number; wins: number };
+const NO_STATS: DailyStats = { last: 0, won: false, streak: 0, best: 0, played: 0, wins: 0 };
+
+export function readStats(stored: string): DailyStats {
+  try {
+    const v = JSON.parse(stored) as Partial<DailyStats>;
+    const n = (x: unknown) => (typeof x === "number" && Number.isFinite(x) && x >= 0 ? Math.floor(x) : 0);
+    return { last: n(v.last), won: v.won === true, streak: n(v.streak), best: n(v.best), played: n(v.played), wins: n(v.wins) };
+  } catch {
+    return NO_STATS;
+  }
+}
+
+/** The record after finishing a day's puzzle. A day counts once; a miss or a skipped day ends the streak. */
+export function addResult(stats: DailyStats, day: number, won: boolean): DailyStats {
+  if (stats.last >= day) return stats;
+  const streak = won ? (stats.last === day - 1 && stats.won ? stats.streak + 1 : 1) : 0;
+  return { last: day, won, streak, best: Math.max(stats.best, streak), played: stats.played + 1, wins: stats.wins + (won ? 1 : 0) };
+}
+
+/** The streak still alive today: yesterday's run counts until today's puzzle is missed or skipped. */
+export const liveStreak = (stats: DailyStats, day: number) => (stats.won && stats.last >= day - 1 ? stats.streak : 0);
+
+/** Milliseconds until the next puzzle (midnight UTC). */
+export const untilNextPuzzle = (nowMs: number) => DAY_MS - (((nowMs - ARCADE_FIRST_DAY) % DAY_MS) + DAY_MS) % DAY_MS;
+
+/** "07:04:09" */
+export function clock(ms: number): string {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  return [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60].map((n) => String(n).padStart(2, "0")).join(":");
+}
+
+/** How a score out of ten in "Who won this set?" is greeted. */
+export type SetsRank = "perfect" | "top8" | "pools" | "out";
+export const setsRank = (right: number, total: number): SetsRank => (right >= total ? "perfect" : right >= total * 0.8 ? "top8" : right >= total * 0.5 ? "pools" : "out");

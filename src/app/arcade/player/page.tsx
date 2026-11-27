@@ -14,6 +14,7 @@ import { GAMES } from "@/lib/games";
 import { arcadePlayers, nameHref } from "@/lib/historyFirsts";
 import { T } from "@/lib/i18n/client";
 import { getT } from "@/lib/i18n/server";
+import { stockIconUrl } from "@/lib/mainBadge";
 import { playersHidingStats } from "@/lib/playerStats";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,7 +34,7 @@ async function Puzzle() {
         .filter((p) => (!p.playerId || !hidden.has(p.playerId)) && !/^deleted user$/i.test(p.name))
         .map((p) => {
           const mainName = p.main ? characterName(game, p.main) : null;
-          return { slug: p.key, name: p.name, wins: p.wins, top8s: p.top8s, firstYear: p.firstYear, lastYear: p.lastYear, main: mainName ? p.main : null, mainName };
+          return { slug: p.key, name: p.name, wins: p.wins, top8s: p.top8s, firstYear: p.firstYear, lastYear: p.lastYear, main: mainName ? p.main : null, mainName, mainIcon: mainName && p.main ? stockIconUrl({ game, character: p.main }) : null };
         })
     : [];
   const answer = pickDaily(playerPuzzlePool(options), day, 1);
