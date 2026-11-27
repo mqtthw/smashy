@@ -9,7 +9,7 @@ describe("Ultimate's move frames (round 968)", () => {
     expect(Object.keys(ULT_MOVES).length).toBeGreaterThanOrEqual(80);
     const m = ULT_MOVES.mario;
     // Checked by hand on 2026-11-27: startup, total frames, landing lag and on-shield numbers. On the ground the number
-    // is the move at its safest (round 993): ultimateframedata.com's (counted from the first frame it can hit:
+    // is the move at its safest (round 994): ultimateframedata.com's (counted from the first frame it can hit:
     // -13, -20, -20) plus the frames it stays out after that, as hitting on its last frame out.
     expect(m.ftilt).toMatchObject({ start: 5, end: 7, total: 25, shield: -13 + 2 });
     expect(m.fsmash).toMatchObject({ start: 15, end: 17, total: 47, shield: -20 + 2 });

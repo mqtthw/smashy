@@ -18,9 +18,9 @@
 //   floor(damage x 0.8 x m x the hit's own multiplier + 3) - 1, with m 0.725 for smash attacks, 0.33 for aerials,
 //   1 otherwise (both sides' shield hitlag is the same, so it cancels). On the ground: the frame it hits - total
 //   + shield stun. An aerial is taken as hitting just before it lands: shield stun - landing lag.
-//   Given only for moves that are one swing (early and late parts with no gap between them), and since round 993
+//   Given only for moves that are one swing (early and late parts with no gap between them), and since round 994
 //   each move at its safest: on the ground, the best of every hitbox hitting on its last frame out with its own
-//   damage; an aerial with its strongest part. (Until round 993 a ground move was counted from the first frame it
+//   damage; an aerial with its strongest part. (Until round 994 a ground move was counted from the first frame it
 //   can hit, as ultimateframedata.com counts it; on 2026-11-27 that matched ultimateframedata.com for Mario, Fox,
 //   Pikachu, Falco, Ganondorf and Bowser to within a frame, which checks the formula the safest numbers use too.)
 //   A hit's own multiplier is only listed in the fuller move files (Data/<fighter>/data.json), which 20 fighters
@@ -123,7 +123,7 @@ display.forEach((name, i) => {
         // At its safest: the strongest part, just before landing.
         shield = landing === null ? null : shieldStun(top.damage, mult, kind) - landing;
       } else {
-        // At its safest (round 993, Matthew: "the safest/best spacing possible hit of each move"): of every hitbox,
+        // At its safest (round 994, Matthew: "the safest/best spacing possible hit of each move"): of every hitbox,
         // the one and the frame that leave the attacker least behind, so a box's last frame out ("meaty") with its
         // own damage. Each box's own window, not the merged hits, so a strong early part isn't counted late.
         shield = Math.max(...windows.map((w) => w.to - total + shieldStun(w.damage, mult, kind)));
