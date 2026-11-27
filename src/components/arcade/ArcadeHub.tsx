@@ -4,8 +4,8 @@
 // ones) with one button to the next thing to play, the two daily puzzles as big picture cards, and the
 // play-anytime games in a row under them. Each card's picture is a few plain shapes drawn here (no artwork
 // from the games), in the game's own colour. This browser's record fills in the chips.
-// Round 995 (Matthew: "Try harder to overhaul the visuals and cards"): the hero is an arcade marquee (chasing lights,
-// a gold logo, a scoreboard), the sections have numbered plates, and the cards have cut corners, coloured frames and
+// Round 995 (Matthew: "Try harder to overhaul the visuals and cards"): the hero is an arcade marquee (a gold logo,
+// a scoreboard; its chasing lights came out in round 996), the sections have numbered plates, and the cards have cut corners, coloured frames and
 // halftone pictures; the daily puzzles carry a "Daily #N" plate and a stamp for today. The look is in
 // arcadeHub.css.
 import Link from "next/link";
@@ -109,7 +109,6 @@ export default function ArcadeHub({ day }: { day: number }) {
   return (
     <div className="flex flex-col gap-7">
       <header className="ah-hero">
-        <span aria-hidden="true" className="ah-lights" />
         <span aria-hidden="true" className="ah-floaters">
           <span />
           <span />

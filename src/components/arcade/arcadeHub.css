@@ -1,5 +1,5 @@
 /* The Arcade page's look (round 995, Matthew: "Try harder to overhaul the visuals and cards"): an arcade cabinet's
-   marquee for the hero (chasing lights, a gold logo, a glowing scoreboard), numbered section plates, and cards with
+   marquee for the hero (a gold logo, a glowing scoreboard), numbered section plates, and cards with
    cut corners, a coloured frame, halftone pictures with drifting speed lines and a shine on hover. Plain CSS shapes,
    no artwork from the games. Its own file with ah- names so it can't clash with the shared stylesheet (the project's Turbopack rule makes every .css file a plain stylesheet, so CSS modules aren't used). */
 
@@ -21,30 +21,7 @@
     linear-gradient(115deg, #c2181a 0%, #8a1c8f 55%, #3b1fa8 100%);
   clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
 }
-/* Chasing lights round the edge: four strips of gold dots marching clockwise. */
-.ah-lights {
-  position: absolute;
-  inset: 7px;
-  z-index: -1;
-  pointer-events: none;
-  --dot: radial-gradient(circle, #fff6c8 0 1.6px, #ffd447 2.2px, transparent 3px);
-  background:
-    var(--dot) 0 0 / 16px 8px repeat-x,
-    var(--dot) 0 100% / 16px 8px repeat-x,
-    var(--dot) 0 0 / 8px 16px repeat-y,
-    var(--dot) 100% 0 / 8px 16px repeat-y;
-  filter: drop-shadow(0 0 3px rgb(255 212 71 / 0.9));
-  animation: ah-chase 0.9s steps(4) infinite;
-}
-@keyframes ah-chase {
-  to {
-    background-position:
-      16px 0,
-      -16px 100%,
-      0 -16px,
-      100% 16px;
-  }
-}
+/* (The chasing gold lights round the edge were taken out in round 996: Matthew, "Remove the animated yellow dots".) */
 /* A few outlined shapes drifting up behind the words. */
 .ah-floaters {
   position: absolute;
@@ -494,7 +471,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ah-lights,
   .ah-floaters > span,
   .ah-logo,
   .ah-blink,
