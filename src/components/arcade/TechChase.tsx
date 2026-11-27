@@ -13,7 +13,7 @@ import { showToast } from "@/components/ui/Toaster";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { FALL_FRAMES, FPS, POINTS, START_LIVES, busy, foxAt, framesAt, judgeFrame, moveFrame, moveSlot, newScript, openFrames, striking, type Action, type Move, type Outcome, type PhaseName, type Script, type Slot, type Whiff } from "@/lib/techChase";
-import { TECH_VICTIMS, type TechVictim } from "@/lib/techChase.data";
+import { CHASERS, CHASER_MOVES, TECH_VICTIMS, type Chaser, type TechVictim } from "@/lib/techChase.data";
 import { characterName } from "@/lib/characters";
 import { stockIconUrl } from "@/lib/mainBadge";
 import { useStoredState } from "@/lib/useStoredState";
@@ -43,8 +43,9 @@ type Game = {
   punishes: number;
   lives: number;
   victim: TechVictim;
+  player: Chaser; // who chases (round 974)
 };
-const fresh = (speed: number, victim: TechVictim = "fox"): Game => ({ victim, phase: "idle", script: null, landAt: 0, speed, slot: 0, px: slotX(0), action: null, done: 0, frozen: 0, resultAt: 0, outcome: null, whiff: null, points: 0, punishes: 0, lives: START_LIVES });
+const fresh = (speed: number, victim: TechVictim = "fox", player: Chaser = "marth"): Game => ({ victim, player, phase: "idle", script: null, landAt: 0, speed, slot: 0, px: slotX(0), action: null, done: 0, frozen: 0, resultAt: 0, outcome: null, whiff: null, points: 0, punishes: 0, lives: START_LIVES });
 // The characters' outlines (round 973, Matthew: "the outline has to be accurate to the animation because the point
 // is to help players recognize the visual cues of each characters tech animations"): every frame of each tech,
 // roll, bounce and getup, made from the game's own models and animations by tools/melee-disc/build-outlines.mjs and
@@ -83,7 +84,9 @@ function figure(o: Outlines | null | undefined, who: string, state: string, fram
 }
 /** Pixels a stored quarter unit is drawn at: Fox stands about 70 pixels tall. */
 const FIG = 1.05;
-type Figures = { who: string; victim: Outlines | null; marth: Outlines | null };
+type Figures = { who: string; victim: Outlines | null; playerWho: string; player: Outlines | null };
+// The move each chaser hits with, by name (round 974).
+const HIT_NAME: Record<(typeof CHASER_MOVES)[Chaser]["move"], MessageKey> = { dtilt: "history.arcade.mv.dtilt", jab: "history.arcade.mv.jab", usmash: "history.arcade.mv.usmash", shine: "history.arcade.mv.shine" };
 
 type Note = { key: MessageKey; values?: Record<string, string | number>; good: boolean };
 type Hud = { phase: Game["phase"]; points: number; punishes: number; lives: number; note: Note | null; newBest: boolean };
@@ -228,8 +231,10 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number, figs: Figures
   // Marth's own outline (round 973): his grab and down tilt on the frame he's on, holding after a grab.
   const gotHit = g.phase !== "round" && g.outcome?.kind === "gotHit";
   const held = g.phase !== "round" && g.outcome?.kind === "grab";
-  const mState = gotHit ? "DamageFlyN" : g.action && stuck ? (g.action.move === "grab" ? "Catch" : "AttackLw3") : held ? "CatchWait" : g.phase !== "round" && g.outcome?.kind === "hit" ? "AttackLw3" : "Wait";
-  const mFig = figure(figs.marth, "marth", mState, mState === "Catch" || mState === "AttackLw3" ? Math.max(1, mf) : 1);
+  // Whoever is chasing (round 974): their grab, or the move they hit with.
+  const hitState = CHASER_MOVES[g.player].state;
+  const mState = gotHit ? "DamageFlyN" : g.action && stuck ? (g.action.move === "grab" ? "Catch" : hitState) : held ? "CatchWait" : g.phase !== "round" && g.outcome?.kind === "hit" ? hitState : "Wait";
+  const mFig = figure(figs.player, figs.playerWho, mState, mState === "Catch" || mState === hitState ? Math.max(1, mf) : 1);
   if (mFig) {
     ctx.translate(0, gotHit ? -30 : 0);
     ctx.fill(mFig, "evenodd");
@@ -257,19 +262,24 @@ export default function TechChase() {
   const t = useT();
   const canvas = useRef<HTMLCanvasElement>(null);
   const [half, setHalf] = useState(false);
+  // Who you chase as (round 974), kept in the browser.
+  const [playerStored, setPlayer] = useStoredState("arcade.tech.player", "marth");
+  const player: Chaser = (CHASERS as readonly string[]).includes(playerStored) ? (playerStored as Chaser) : "marth";
+  const mine = CHASER_MOVES[player];
+  const hitName = t(HIT_NAME[mine.move]);
   const [victim, setVictim] = useState<TechVictim>("fox");
   const game = useRef<Game>(fresh(1));
   // The opponent's and Marth's outlines, fetched when the opponent is picked (round 973).
-  const figs = useRef<Figures>({ who: "fox", victim: null, marth: null });
+  const figs = useRef<Figures>({ who: "fox", victim: null, playerWho: "marth", player: null });
   useEffect(() => {
     let live = true;
-    Promise.all([loadOutlines(victim), loadOutlines("marth")]).then(([v, m]) => {
-      if (live) figs.current = { who: victim, victim: v, marth: m };
+    Promise.all([loadOutlines(victim), loadOutlines(player)]).then(([v, m]) => {
+      if (live) figs.current = { who: victim, victim: v, playerWho: player, player: m };
     });
     return () => {
       live = false;
     };
-  }, [victim]);
+  }, [victim, player]);
   const [bestStored, setBest] = useStoredState("arcade.tech.best", "0");
   const best = Number(bestStored) || 0;
   const bestRef = useRef(best);
@@ -285,10 +295,10 @@ export default function TechChase() {
   }, []);
 
   const start = useCallback(() => {
-    game.current = fresh(half ? 0.5 : 1, victim);
+    game.current = fresh(half ? 0.5 : 1, victim, player);
     setHud({ phase: "round", points: 0, punishes: 0, lives: START_LIVES, note: null, newBest: false });
     nextRound(performance.now());
-  }, [half, nextRound, victim]);
+  }, [half, nextRound, victim, player]);
 
   const act = useCallback(
     (what: "left" | "right" | "centre" | Move) => {
@@ -303,7 +313,7 @@ export default function TechChase() {
       if (what === "left") g.slot = moveSlot(g.slot, -1);
       else if (what === "right") g.slot = moveSlot(g.slot, 1);
       else if (what === "centre") g.slot = 0;
-      else g.action = { move: what, since: f };
+      else g.action = { move: what, since: f, by: g.player };
     },
     [start],
   );
@@ -395,6 +405,7 @@ export default function TechChase() {
   return (
     <div className="flex flex-col gap-3" style={{ "--tile": GAME_LOOK.tech.color } as React.CSSProperties}>
       <div className="flex flex-wrap items-end justify-between gap-3">
+        <Picker label={t("history.arcade.tech.player")} options={CHASERS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={player} onPick={setPlayer} locked={playing} />
         <Picker label={t("history.arcade.tech.victim")} options={TECH_VICTIMS.map((v) => ({ key: v, label: characterName("melee", v) ?? v, icon: stockIconUrl({ game: "melee", character: v }) }))} value={victim} onPick={setVictim} locked={playing} />
         <button type="button" className="arcade-toggle" aria-pressed={half} disabled={playing} onClick={() => setHalf(!half)} title={t("history.arcade.tech.half")}>
           <span aria-hidden="true" className="arcade-toggle-dot" />
@@ -438,16 +449,20 @@ export default function TechChase() {
         {pad("left", t("history.arcade.tech.left"), "◀ A")}
         {pad("centre", t("history.arcade.tech.centre"), "● S")}
         {pad("right", t("history.arcade.tech.right"), "D ▶")}
-        {pad("tilt", t("history.arcade.tech.hitBtn"), `${t("history.arcade.tech.hitBtn")} (W)`)}
+        {pad("tilt", hitName, `${hitName} (W)`)}
         {pad("grab", t("history.arcade.tech.grabBtn"), t("history.arcade.tech.grabBtn"), true)}
       </div>
-      <p className="text-meta text-muted">{t("history.arcade.tech.keys")}</p>
+      <p className="text-meta text-muted">{t("history.arcade.tech.keys", { move: hitName })}</p>
       <details className="arcade-start-how">
         <summary>{t("history.arcade.fq.howTo")}</summary>
         <ul className="mt-2 flex flex-col gap-1.5 text-sm">
           <li>{t("history.arcade.tech.how")}</li>
           <li>{t("history.arcade.tech.colours")}</li>
           <li className="text-meta text-muted">{t("history.arcade.tech.frames")}</li>
+          <li className="text-meta text-muted">
+            {t("history.arcade.tech.yours", { who: characterName("melee", player) ?? player, g1: mine.grab.active[0], g2: mine.grab.active[1], gt: mine.grab.total, move: hitName, h1: mine.tilt.active[0], h2: mine.tilt.active[1], free: mine.tilt.total + 1 })}
+            {mine.move === "shine" && ` ${t("history.arcade.tech.shineJc")}`}
+          </li>
           <li className="text-meta text-muted">{t("history.arcade.tech.outlines")}</li>
           <li className="text-meta text-muted">{t("history.arcade.tech.note")}</li>
         </ul>

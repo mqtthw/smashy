@@ -16,8 +16,9 @@
 // animations are 26 frames for the bounce and for the tech in place, 40 for a tech roll, and 30 for the plain
 // getup, whose script ends its intangibility at frame 23 (PlFx.dat / PlFxAJ.dat). The plain getup's last
 // intangible frame is 22 or 23 depending on how the game counts the first frame of that state; 23 is used.
-// - The player is Marth. Standing grab: active on frames 7-8 of 30. Down tilt: active 7-9, free to act on
-//   frame 20. (ssbwiki.com/Marth_(SSBM)/Grab, /Down_tilt)
+// - The player is Marth by default. Standing grab: active on frames 7-8 of 30. Down tilt: active 7-9, free to act
+//   on frame 20. (ssbwiki.com/Marth_(SSBM)/Grab, /Down_tilt; read from the disc since round 974, which agrees.)
+//   Since round 974 the player can also be Captain Falcon, Sheik, Fox, Falco or Peach (CHASER_MOVES).
 //
 // Round 954: the opponent can be any of seven characters, each with their own frames read from the game
 // (techChase.data.ts, made by tools/melee-disc/build-techchase.mjs), and a missed tech leaves them on their back
@@ -28,17 +29,17 @@
 // or roll distances); how long Fox lies there before getting up is a random 10 to 40 frames (in the game it is
 // the opponent's choice, up to 220); and a browser can't promise that every frame is shown on time.
 
-import { TECH_DATA, type TechVictim, type Win } from "./techChase.data";
+import { CHASER_MOVES, TECH_DATA, type Chaser, type TechVictim, type Win } from "./techChase.data";
 
 export type Slot = -1 | 0 | 1;
 export const FPS = 60;
 export const START_LIVES = 3;
 export const FALL_FRAMES = 24; // the fall before he lands (Smashy's choice)
 
-export const GRAB = { active: [7, 8] as const, total: 30 };
-export const TILT = { active: [7, 9] as const, total: 19 }; // interruptible on frame 20
 export type Move = "grab" | "tilt";
-export const MOVES: Record<Move, { active: readonly [number, number]; total: number }> = { grab: GRAB, tilt: TILT };
+/** A character's grab and down tilt (Marth's: grab 7-8 of 30, down tilt 7-9 of 19, read from the game). */
+export const movesOf = (who: Chaser = "marth"): Record<Move, { active: readonly [number, number]; total: number }> => CHASER_MOVES[who];
+export const MOVES = movesOf("marth");
 
 export type PhaseName = "tech" | "techRoll" | "bounce" | "lying" | "getupRoll" | "getupAttack" | "getupStand";
 export type Phase = {
@@ -122,11 +123,11 @@ export function foxAt(s: Script, f: number) {
 }
 
 /** What the player is doing: a move started on frame `since` (in Fox's frames), or nothing. */
-export type Action = { move: Move; since: number } | null;
+export type Action = { move: Move; since: number; by?: Chaser } | null;
 /** The frame of the player's own move on Fox's frame `f` (1 = the frame after the press). */
 export const moveFrame = (a: Action, f: number) => (a ? f - a.since : 0);
-export const busy = (a: Action, f: number) => !!a && moveFrame(a, f) <= MOVES[a.move].total;
-export const striking = (a: Action, f: number) => !!a && within(moveFrame(a, f), MOVES[a.move].active);
+export const busy = (a: Action, f: number) => !!a && moveFrame(a, f) <= movesOf(a.by)[a.move].total;
+export const striking = (a: Action, f: number) => !!a && within(moveFrame(a, f), movesOf(a.by)[a.move].active);
 
 export type Outcome =
   | { kind: "grab" | "hit"; frame: number; phase: PhaseName } // the punish landed

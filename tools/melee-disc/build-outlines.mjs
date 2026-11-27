@@ -39,6 +39,10 @@ const CHARS = { fox: "Fx", falco: "Fc", marth: "Ms", sheik: "Sk", "captain-falco
 // The states drawn, by the game's names. Every opponent has the tech and getup ones; Marth also plays the player.
 const VICTIM = ["Passive", "PassiveStandF", "PassiveStandB", "DownBoundU", "DownBoundD", "DownWaitU", "DownWaitD", "DownStandU", "DownStandD", "DownAttackU", "DownAttackD", "DownFowardU", "DownFowardD", "DownBackU", "DownBackD", "DamageFall", "Wait", "CaptureWaitHi", "DamageFlyN"];
 const PLAYER = ["Catch", "CatchWait", "AttackLw3"];
+// Each one's own hit (round 974): Marth's down tilt is AttackLw3 above.
+const HITS = { "captain-falcon": "Attack11", sheik: "Attack11", fox: "AttackHi4", falco: "SpecialLwStart", peach: "Attack11" };
+// Who can be played as (round 974): their grab and down tilt are drawn too.
+const PLAYABLE = ["marth", "captain-falcon", "sheik", "fox", "falco", "peach"];
 // Poses held still in the trainer (falling in, standing, held, sent flying): their first frame only. Lying down:
 // the first 40 frames (the trainer's wait is 10 to 40 frames).
 const STILL = ["DamageFall", "Wait", "CaptureWaitHi", "DamageFlyN", "CatchWait"];
@@ -133,7 +137,7 @@ for (const [who, code] of Object.entries(CHARS)) {
   const chains = clothChains(pl);
   const standing = worldMatrices(model.joints);
   const states = {};
-  for (const name of [...VICTIM, ...(who === "marth" ? PLAYER : [])]) {
+  for (const name of [...VICTIM, ...(PLAYABLE.includes(who) ? PLAYER : []), ...(HITS[who] ? [HITS[who]] : [])]) {
     const a = (ALIAS[name] ?? [name]).map((n) => acts.get(n)).find((x) => x?.anim);
     if (!a) throw new Error(`${who}: ${name} has no animation`);
     const tracks = allTracks(a.anim);

@@ -58,6 +58,32 @@ for (const [who, code] of Object.entries(CHARS)) {
   out[who] = { tech: landed("Passive"), techRoll: { ...f, path: path("PassiveStandF", f.frames), pathBack: path("PassiveStandB", b.frames) }, bounce: { up: get("DownBoundU").frames, down: get("DownBoundD").frames }, up: side("U"), down: side("D") };
 }
 
+// The characters you can chase as (round 974, Matthew: "let users play as captain falcon, sheik, fox, falco, and
+// peach"), with Marth: their standing grab and the move each hits with, as Matthew picked ("for captain falcon use
+// jab, for sheik use jab, for fox use up smash, for falco do shine, and peach do jab"; Marth keeps his down tilt).
+// - Grab ("Catch"): the script makes its grab boxes at frame N and a command keeps them two frames, so they are out
+//   on N+1 and N+2 (Marth: 7-8, as SmashWiki gives); the state lasts its animation (30 frames for all six).
+// - The hit: entered by a button, so a box made at frame N is out from N (from frame 1 when N is 0) and a box
+//   cleared at frame N is out up to N - 1 (as for getups); the move lasts until the frame before the script lets
+//   the character act again ("5C"), or its animation less one when that comes later or never.
+// - Falco's shine ("SpecialLwStart", 4 frames, out on frame 1) is counted as jump-cancelled: free on frame 4, when
+//   the start ends and a jump can cancel it (held, it goes on into its loop and an 18-frame end).
+const CHASERS = { marth: "Ms", "captain-falcon": "Ca", sheik: "Sk", fox: "Fx", falco: "Fc", peach: "Pe" };
+const HIT = { marth: ["dtilt", "AttackLw3"], "captain-falcon": ["jab", "Attack11"], sheik: ["jab", "Attack11"], fox: ["usmash", "AttackHi4"], falco: ["shine", "SpecialLwStart"], peach: ["jab", "Attack11"] };
+const chasers = {};
+for (const [who, code] of Object.entries(CHASERS)) {
+  const acts = actions(disc, code);
+  const c = acts.get("Catch");
+  const [move, state] = HIT[who];
+  const t = acts.get(state);
+  const box = c.events.find((e) => e.what === "hitbox")?.frame;
+  const hit = t && windows(t).hits[0];
+  if (!box || !hit) throw new Error(`${who}: grab or ${state} not read`);
+  const free = t.events.find((e) => e.what === "free")?.frame;
+  const total = move === "shine" ? t.frames - 1 : Math.min(free ? free - 1 : Infinity, t.frames - 1);
+  chasers[who] = { grab: { active: [box + 1, box + 2], total: c.frames }, tilt: { active: [Math.max(1, hit[0]), Math.max(1, hit[1] - 1)], total }, move, state };
+}
+
 const line = (v) => JSON.stringify(v).replace(/"(\w+)":/g, "$1: ").replace(/,/g, ", ");
 fs.writeFileSync(
   "src/lib/techChase.data.ts",
@@ -72,6 +98,15 @@ export type TechData = { tech: Win; techRoll: Win; bounce: { up: number; down: n
 
 export const TECH_VICTIMS = ${JSON.stringify(Object.keys(out))} as const;
 export type TechVictim = (typeof TECH_VICTIMS)[number];
+
+/** The characters you can play as, and their standing grab and down tilt: the frames each is out, and how long it lasts. */
+export type ChaserMove = { active: [number, number]; total: number };
+export const CHASERS = ${JSON.stringify(Object.keys(chasers))} as const;
+export type Chaser = (typeof CHASERS)[number];
+/** \`tilt\` is the move each hits with (\`move\` names it, \`state\` is the game's name for it). */
+export const CHASER_MOVES: Record<Chaser, { grab: ChaserMove; tilt: ChaserMove; move: "dtilt" | "jab" | "usmash" | "shine"; state: string }> = {
+${Object.entries(chasers).map(([who, m]) => `  ${JSON.stringify(who)}: ${line(m)},`).join("\n")}
+};
 
 export const TECH_DATA: Record<TechVictim, TechData> = {
 ${Object.entries(out)

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { TECH_DATA, TECH_VICTIMS } from "@/lib/techChase.data";
+import { CHASER_MOVES, CHASERS, TECH_DATA, TECH_VICTIMS } from "@/lib/techChase.data";
 import { busy, foxAt, framesAt, judgeFrame, moveSlot, newScript, openFrames, scriptFrames, striking, type Action, type Script } from "@/lib/techChase";
 
 const fixed = (list: number[]) => () => list.shift() ?? 0;
@@ -118,5 +118,18 @@ describe("the tech-chase trainer, in Melee's frames", () => {
     expect(phase.arrives).toBe(18);
     expect(foxAt(s!, 17).spot).toBe(0);
     expect(foxAt(s!, 18).spot).toBe(1);
+  });
+
+  it("plays as six characters, each with their own grab and hit read from the game (round 974)", () => {
+    expect([...CHASERS]).toEqual(["marth", "captain-falcon", "sheik", "fox", "falco", "peach"]);
+    // Marth's are the ones the trainer always had (SmashWiki agrees).
+    expect(CHASER_MOVES.marth).toMatchObject({ grab: { active: [7, 8], total: 30 }, tilt: { active: [7, 9], total: 19 }, move: "dtilt" });
+    expect(CHASER_MOVES["captain-falcon"]).toMatchObject({ tilt: { active: [3, 5] }, move: "jab" });
+    expect(CHASER_MOVES.fox).toMatchObject({ tilt: { active: [7, 17], total: 41 }, move: "usmash" });
+    expect(CHASER_MOVES.falco).toMatchObject({ tilt: { active: [1, 1], total: 3 }, move: "shine" });
+    // A move knows who made it: Fox's up smash is out on frame 17, Marth's down tilt isn't.
+    expect(striking({ move: "tilt", since: 0, by: "fox" }, 17)).toBe(true);
+    expect(striking({ move: "tilt", since: 0 }, 17)).toBe(false);
+    expect([3, 4].map((f) => busy({ move: "tilt", since: 0, by: "falco" }, f))).toEqual([true, false]);
   });
 });
