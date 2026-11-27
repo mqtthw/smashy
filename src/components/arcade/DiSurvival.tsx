@@ -411,7 +411,7 @@ export default function DiSurvival() {
       </div>
       <div
         aria-hidden="true"
-        className={`arcade-stick touch-none select-none self-center sm:hidden ${holding !== "·" ? "arcade-stick-on" : ""}`}
+        className={`arcade-stick touch-only touch-none select-none self-center ${holding !== "·" ? "arcade-stick-on" : ""}`}
         onPointerDown={(e) => {
           e.preventDefault();
           try {
