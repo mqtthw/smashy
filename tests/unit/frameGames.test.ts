@@ -7,7 +7,12 @@ const stream = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) / 2
 
 describe("the moves read from the game", () => {
   it("has the numbers players know", () => {
-    expect(MELEE_MOVES.fox.usmash).toEqual({ start: 7, end: 17, total: 41, damage: 18, kill: { damage: 18, angle: 80, base: 30, growth: 112 } });
+    expect(MELEE_MOVES.fox.usmash).toEqual({ start: 7, end: 17, total: 41, damage: 18, hits: [[7, 17, 18]], kill: { damage: 18, angle: 80, base: 30, growth: 112 } });
+    // Moves that stop hitting and start again keep their gap: Fox's up air is two hits, 8-9 and 11-14.
+    expect(MELEE_MOVES.fox.uair!.hits).toEqual([[8, 9, 5], [11, 14, 13]]);
+    expect(MELEE_MOVES.sheik.fsmash!.hits.length).toBe(2);
+    expect(MELEE_MOVES.sheik.fsmash!.hits[1][0]).toBeGreaterThan(MELEE_MOVES.sheik.fsmash!.hits[0][1] + 1); // a gap between them
+    for (const m of allMoves()) expect(m.data.hits[0][0], `${m.char} ${m.move}`).toBe(m.data.start);
     expect(MELEE_MOVES.marth.fsmash).toMatchObject({ start: 10, end: 13, kill: { damage: 20, angle: 361, base: 80, growth: 70 } }); // the tipper
     expect(MELEE_MOVES.marth.dtilt).toMatchObject({ start: 7, end: 9, total: 19 });
     expect(MELEE_MOVES.marth.grab).toMatchObject({ start: 7, end: 8, total: 30 });
@@ -20,14 +25,12 @@ describe("the moves read from the game", () => {
 });
 
 describe("the Arcade's Melee knowledge games", () => {
-  it("Which is faster?: never a tie, and the answer is the sooner move or the bigger hit", () => {
+  it("Which is faster?: never a tie, and the answer is the move that comes out sooner", () => {
     const rand = stream(11);
     for (let i = 0; i < 200; i++) {
       const d = newDuel(rand);
-      const [x, y] = d.kind === "startup" ? [d.a.data.start, d.b.data.start] : [d.a.data.damage, d.b.data.damage];
-      expect(x).not.toBe(y);
-      expect(d.answer).toBe(d.kind === "startup" ? (x < y ? "a" : "b") : x > y ? "a" : "b");
-      if (d.kind === "damage") expect([d.a.move, d.b.move].some((m) => m === "grab" || m === "dashGrab")).toBe(false);
+      expect(d.a.data.start).not.toBe(d.b.data.start);
+      expect(d.answer).toBe(d.a.data.start < d.b.data.start ? "a" : "b");
     }
   });
 
@@ -39,7 +42,7 @@ describe("the Arcade's Melee knowledge games", () => {
       expect(g.options).toContain(g.answer);
       const same = g.options.filter((m) => m !== g.answer).filter((m) => {
         const o = MELEE_MOVES[g.char][m]!;
-        return o.start === g.data.start && o.end === g.data.end && o.total === g.data.total;
+        return JSON.stringify(o.hits.map((h) => [h[0], h[1]])) === JSON.stringify(g.data.hits.map((h) => [h[0], h[1]])) && o.total === g.data.total;
       });
       expect(same).toEqual([]);
     }

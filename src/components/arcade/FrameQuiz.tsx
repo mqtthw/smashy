@@ -2,8 +2,11 @@
 // The Arcade's three Melee knowledge quizzes on one screen (round 955; the questions are made in
 // lib/frameGames.ts from numbers read from the game). Ten questions a round, one at a time: pick an answer, see
 // why, move on; a score out of ten at the end, greeted like Who won this set?, and the best kept in the browser.
-// - frames: Which is faster? (two moves)     - move: Guess the move (a frame strip, four choices)
-// - kill: Does it kill? (yes or no, then the flight is drawn)
+// - frames: Which is faster? (two moves; which comes out sooner)
+// - move: Guess the move (the move's frames as a strip, each separate hit with its damage; four choices)
+// - kill: Does it kill? (the hit set up on its stage with both characters; yes or no; then the launch is flown)
+// Round 958 (Matthew: no "which does more damage" in a game about speed; Guess the move "could use more data" and
+// hid the gap between a move's hits; Does it kill? was "boring without any visuals").
 import { useState } from "react";
 import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
@@ -13,6 +16,7 @@ import { STAGES } from "@/lib/diSurvival";
 import { QUIZ_LENGTH, newDuel, newKillQuestion, newMoveGuess, type Duel, type KillQuestion, type MoveGuess } from "@/lib/frameGames";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
+import { stockIconUrl } from "@/lib/mainBadge";
 import type { MoveChar, MoveData, MoveKey } from "@/lib/meleeMoves.data";
 import { useStoredState } from "@/lib/useStoredState";
 
@@ -23,7 +27,6 @@ const MAKE: Record<QuizKind, () => Question> = {
   move: () => ({ kind: "move", q: newMoveGuess(Math.random) }),
   kill: () => ({ kind: "kill", q: newKillQuestion(Math.random) }),
 };
-const PATH: Record<QuizKind, string> = { frames: "frames", move: "move", kill: "kill" };
 const RANK: Record<SetsRank, MessageKey> = { perfect: "history.arcade.fq.rank.perfect", top8: "history.arcade.sets.rank.top8", pools: "history.arcade.sets.rank.pools", out: "history.arcade.sets.rank.out" };
 const MOVE: Record<MoveKey, MessageKey> = {
   jab: "history.arcade.mv.jab", dashAttack: "history.arcade.mv.dashAttack", ftilt: "history.arcade.mv.ftilt", utilt: "history.arcade.mv.utilt", dtilt: "history.arcade.mv.dtilt",
@@ -31,33 +34,86 @@ const MOVE: Record<MoveKey, MessageKey> = {
   bair: "history.arcade.mv.bair", uair: "history.arcade.mv.uair", dair: "history.arcade.mv.dair", grab: "history.arcade.mv.grab", dashGrab: "history.arcade.mv.dashGrab",
 };
 const who = (c: string) => characterName("melee", c) ?? c;
+const icon = (c: string) => stockIconUrl({ game: "melee", character: c });
 
-/** A move's frames as a row of small boxes: startup, the frames it can hit on, the rest. */
+/**
+ * A move's frames as a row of boxes: grey before it can hit, red on each frame a hit is out (with the gaps
+ * between separate hits left dark), the rest until the character can act again. Under it, each hit's frames
+ * and damage, and the frame the character is free on.
+ */
 function FrameStrip({ d }: { d: MoveData }) {
   const t = useT();
+  const out = (f: number) => d.hits.some(([from, to]) => f >= from && f <= to);
   return (
-    <div className="flex flex-col gap-1.5">
-      <div className="flex flex-wrap gap-px" aria-hidden="true">
-        {Array.from({ length: d.total }, (_, i) => {
-          const f = i + 1;
-          return <span key={f} className="arcade-flip h-5 w-1.5 sm:w-2" style={{ "--i": i * 0.08, background: f < d.start ? "var(--line-strong)" : f <= d.end ? "#ff5a4f" : "#5a5f8f" } as React.CSSProperties} />;
-        })}
+    <div className="card flex flex-col gap-3 p-3">
+      <div aria-hidden="true">
+        <div className="flex gap-px">
+          {Array.from({ length: d.total }, (_, i) => {
+            const f = i + 1;
+            return <span key={f} className="arcade-flip h-7 min-w-0 flex-1" style={{ "--i": i * 0.06, background: f < d.start ? "var(--line-strong)" : out(f) ? "#ff5a4f" : "#3d4170" } as React.CSSProperties} />;
+          })}
+        </div>
+        {/* A number under every tenth frame. */}
+        <div className="flex gap-px text-[10px] leading-4 text-muted">
+          {Array.from({ length: d.total }, (_, i) => <span key={i} className="min-w-0 flex-1 overflow-visible whitespace-nowrap">{(i + 1) % 10 === 0 || i === 0 ? i + 1 : ""}</span>)}
+        </div>
       </div>
-      <p className="text-meta text-muted">{t("history.arcade.fq.strip", { a: d.start, b: d.end, n: d.total, d: d.damage })}</p>
+      <ul className="flex flex-wrap gap-2 text-meta">
+        <li className="badge border border-line font-normal"><span className="mr-1 inline-block h-2 w-2 bg-[var(--line-strong)]" />{t("history.arcade.fq.startup", { n: d.start - 1 })}</li>
+        {d.hits.map(([from, to, damage], i) => (
+          <li key={from} className="badge border border-line font-normal">
+            <span className="mr-1 inline-block h-2 w-2 bg-[#ff5a4f]" />
+            {t(from === to ? "history.arcade.fq.hit1" : "history.arcade.fq.hit", { i: i + 1, a: from, b: to, d: damage })}
+          </li>
+        ))}
+        <li className="badge border border-line font-normal"><span className="mr-1 inline-block h-2 w-2 bg-[#3d4170]" />{t("history.arcade.fq.free", { n: d.total + 1 })}</li>
+      </ul>
     </div>
   );
 }
 
-/** The launch drawn on its stage (Does it kill?), after the answer. */
-function FlightMap({ q }: { q: KillQuestion }) {
+/**
+ * Does it kill?: the hit on its stage. Before answering: the blast lines, the stage, both characters and the
+ * percent. After: the launch is drawn along its real path with the character riding it, and a KO flash where it
+ * crosses the line.
+ */
+function KillStage({ q, answered }: { q: KillQuestion; answered: boolean }) {
   const s = STAGES[q.stage];
-  const pts = q.flight.points.map(([x, y]) => `${x.toFixed(1)},${(-y).toFixed(1)}`).join(" ");
+  const pts = q.flight.points.map(([x, y]) => [x, -y] as const);
+  const path = `M${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join("L")}`;
+  const [ex, ey] = pts.at(-1)!;
+  const size = Math.max(24, (s.right - s.left) / 14);
+  const secs = Math.min(2.2, Math.max(0.8, q.flight.frames / 60));
+  const victim = icon(q.victim);
+  const attacker = icon(q.attacker);
   return (
-    <svg viewBox={`${s.left - 12} ${-s.top - 12} ${s.right - s.left + 24} ${s.top - s.bottom + 24}`} className="arcade-pop h-44 w-full" aria-hidden="true">
-      <rect x={s.left} y={-s.top} width={s.right - s.left} height={s.top - s.bottom} fill="none" stroke="#ff5a4f" strokeWidth={2} strokeDasharray="8 6" />
-      <rect x={-s.edge} y={0} width={s.edge * 2} height={6} fill="rgb(190 200 255 / 0.6)" />
-      <polyline points={pts} fill="none" stroke={q.kills ? "#ff5a4f" : "#ffd447"} strokeWidth={3} />
-      <circle cx={0} cy={-6} r={6} fill="#ffd447" />
+    <svg viewBox={`${s.left - 14} ${-s.top - 14} ${s.right - s.left + 28} ${s.top - s.bottom + 28}`} className="arcade-pop card h-56 w-full sm:h-72" role="img" aria-label={STAGES[q.stage].name}>
+      <rect x={s.left} y={-s.top} width={s.right - s.left} height={s.top - s.bottom} fill="rgb(255 90 79 / 0.04)" stroke="#ff5a4f" strokeWidth={2} strokeDasharray="8 6" />
+      <path d={`M${-s.edge} 0H${s.edge}L${s.edge - 16} 26H${-s.edge + 16}Z`} fill="rgb(190 200 255 / 0.22)" />
+      <rect x={-s.edge} y={0} width={s.edge * 2} height={3} fill="rgb(190 200 255 / 0.8)" />
+      <text x={s.left + 8} y={-s.top + 22} fontSize={16} fontWeight={700} fill="rgb(190 200 255 / 0.75)">{s.name}</text>
+      {/* The attacker, beside the victim. */}
+      {attacker ? <image href={attacker} x={-size * 1.6} y={-size} width={size} height={size} /> : <circle cx={-size} cy={-size / 2} r={size / 2.4} fill="#ff6b5e" />}
+      {answered ? (
+        <>
+          <path d={path} pathLength={1} className="arcade-draw" style={{ animationDuration: `${secs}s` }} fill="none" stroke={q.kills ? "#ff5a4f" : "#ffd447"} strokeWidth={3.5} strokeLinecap="round" />
+          <g>
+            {victim ? <image href={victim} x={-size / 2} y={-size / 2} width={size} height={size} /> : <circle r={size / 2.4} fill="#ffd447" />}
+            <animateMotion dur={`${secs}s`} fill="freeze" path={path} calcMode="linear" />
+          </g>
+          {q.kills && (
+            <g className="arcade-ko" style={{ animationDelay: `${secs}s` }}>
+              <circle cx={ex} cy={ey} r={size} fill="none" stroke="#ff5a4f" strokeWidth={5} />
+              <text x={Math.max(s.left + 40, Math.min(s.right - 40, ex))} y={Math.max(-s.top + 46, Math.min(-s.bottom - 16, ey + size * 1.9))} fontSize={34} fontWeight={900} fontStyle="italic" textAnchor="middle" fill="#ff5a4f">KO!</text>
+            </g>
+          )}
+        </>
+      ) : (
+        <>
+          {victim ? <image href={victim} x={-size / 2} y={-size} width={size} height={size} className="arcade-bob" /> : <circle cx={0} cy={-size / 2} r={size / 2.4} fill="#ffd447" />}
+          <text x={0} y={-size * 1.35} fontSize={30} fontWeight={900} fontStyle="italic" textAnchor="middle" fill="#ffd447" stroke="#12102e" strokeWidth={5} paintOrder="stroke">{q.percent}%</text>
+        </>
+      )}
     </svg>
   );
 }
@@ -107,7 +163,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
               type="button"
               onClick={async () => {
                 try {
-                  await navigator.clipboard.writeText(`${t(`history.arcade.fq.${kind}.title`)}\n${setsShare(answers)}\nhttps://smashy.gg/arcade/${PATH[kind]}`);
+                  await navigator.clipboard.writeText(`${t(`history.arcade.fq.${kind}.title`)}\n${setsShare(answers)}\nhttps://smashy.gg/arcade/${kind}`);
                   showToast(t("ui.copied"));
                 } catch {
                   showToast(t("ui.shareFailed"));
@@ -125,16 +181,17 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
 
   // The question, worded.
   let prompt = "";
-  let options: { key: string; label: string; sub?: string }[] = [];
+  let options: { key: string; label: string; sub?: string; icon?: string | null }[] = [];
   let answer = "";
   let explain = "";
   let extra: React.ReactNode = null;
-  let after: React.ReactNode = null;
   if (question.kind === "frames") {
     const { q } = question;
-    prompt = t(q.kind === "startup" ? "history.arcade.fq.frames.sooner" : "history.arcade.fq.frames.harder");
-    const sub = (d: MoveData) => (q.kind === "startup" ? t("history.arcade.fq.frame", { n: d.start }) : `${d.damage}%`);
-    options = [{ key: "a", label: named(q.a.char, q.a.move), sub: sub(q.a.data) }, { key: "b", label: named(q.b.char, q.b.move), sub: sub(q.b.data) }];
+    prompt = t("history.arcade.fq.frames.sooner");
+    options = [
+      { key: "a", label: named(q.a.char, q.a.move), sub: t("history.arcade.fq.frame", { n: q.a.data.start }), icon: icon(q.a.char) },
+      { key: "b", label: named(q.b.char, q.b.move), sub: t("history.arcade.fq.frame", { n: q.b.data.start }), icon: icon(q.b.char) },
+    ];
     answer = q.answer;
   } else if (question.kind === "move") {
     const { q } = question;
@@ -142,14 +199,14 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     extra = <FrameStrip d={q.data} />;
     options = q.options.map((m) => ({ key: m, label: mv(m) }));
     answer = q.answer;
-    explain = t("history.arcade.fq.move.why", { move: mv(q.answer), a: q.data.start, b: q.data.end, n: q.data.total });
+    explain = t("history.arcade.fq.move.why", { move: named(q.char, q.answer) });
   } else {
     const { q } = question;
-    prompt = t("history.arcade.fq.kill.q", { hit: named(q.attacker, q.move), victim: who(q.victim), n: q.percent, stage: STAGES[q.stage].name });
+    prompt = t("history.arcade.fq.kill.q", { hit: named(q.attacker, q.move), victim: who(q.victim), n: q.percent });
+    extra = <KillStage q={q} answered={picked !== null} />;
     options = [{ key: "yes", label: t("history.arcade.fq.kill.yes") }, { key: "no", label: t("history.arcade.fq.kill.no") }];
     answer = q.kills ? "yes" : "no";
     explain = t("history.arcade.fq.kill.why", { n: q.killsFrom });
-    after = <FlightMap q={q} />;
   }
   const pick = (key: string) => {
     if (picked) return;
@@ -159,6 +216,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     if (next.length >= QUIZ_LENGTH && next.filter(Boolean).length > best) setBest(String(next.filter(Boolean).length));
   };
   const right = picked === answer;
+  const moveIcon = question.kind === "move" ? icon(question.q.char) : null;
 
   return (
     <div className="flex flex-col gap-4">
@@ -167,28 +225,31 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
         <Pips results={answers} total={QUIZ_LENGTH} />
       </div>
       <div key={answers.length - (picked ? 1 : 0)} className="flex flex-col gap-4">
-        <h2 className="arcade-pop text-lg font-bold">{prompt}</h2>
+        <h2 className="arcade-pop flex items-center gap-2 text-lg font-bold">
+          {/* eslint-disable-next-line @next/next/no-img-element -- a small stock icon */}
+          {moveIcon && <img src={moveIcon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />}
+          {prompt}
+        </h2>
         {extra}
         <div className="grid gap-3 sm:grid-cols-2">
           {options.map((o) => {
             const state = !picked ? "" : o.key === answer ? "arcade-right" : o.key === picked ? "arcade-wrong" : "";
             return (
               <button key={o.key} type="button" onClick={() => pick(o.key)} disabled={picked !== null} className={`arcade-side arcade-pop card flex min-h-20 flex-col items-center justify-center gap-1 p-4 text-center ${state}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- a small stock icon */}
+                {o.icon && <img src={o.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />}
                 <span className="text-base font-bold">{picked && o.key === answer && <span className="text-success">✓ </span>}{o.label}</span>
                 {/* The numbers only show once answered: knowing them is the game. */}
-                {o.sub && picked && <span className="text-meta text-muted">{o.sub}</span>}
+                {o.sub && picked && <span className="arcade-bump text-sm font-semibold">{o.sub}</span>}
               </button>
             );
           })}
         </div>
       </div>
       {picked && (
-        <div className="arcade-pop flex flex-col gap-3" role="status">
-          {after}
-          <div className="flex flex-wrap items-center gap-3">
-            <p className="text-sm font-semibold">{right ? t("history.arcade.hl.right") : t("history.arcade.sets.wrong")} {explain}</p>
-            <button type="button" onClick={next} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= QUIZ_LENGTH ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
-          </div>
+        <div className="arcade-pop flex flex-wrap items-center gap-3" role="status">
+          <p className="text-sm font-semibold">{right ? t("history.arcade.hl.right") : t("history.arcade.sets.wrong")} {explain}</p>
+          <button type="button" onClick={next} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= QUIZ_LENGTH ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
         </div>
       )}
       <p className="text-meta text-muted">{t(`history.arcade.fq.${kind}.note`)}</p>

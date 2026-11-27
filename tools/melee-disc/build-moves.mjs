@@ -34,19 +34,33 @@ for (const [who, code] of Object.entries(CHARS)) {
     if (!a?.frames || !hits.length) continue; // e.g. a move made of several actions
     const start = hits[0].frame;
     if (key === "grab" || key === "dashGrab") {
-      out[who][key] = { start: start + 1, end: start + 2, total: a.frames, damage: 0, kill: null };
+      out[who][key] = { start: start + 1, end: start + 2, total: a.frames, damage: 0, hits: [[start + 1, start + 2, 0]], kill: null };
       continue;
     }
     const free = a.events.find((e) => e.what === "free")?.frame;
     const total = Math.min(a.frames - 1, free ? free - 1 : Infinity);
     const lastClear = a.events.filter((e) => e.what === "clear").at(-1)?.frame;
     const end = Math.min(total, lastClear && lastClear > start ? lastClear - 1 : total);
+    // The separate hits: from a hitbox being made to the next clear. A new hitbox before a clear (a late, weaker
+    // hit taking over) stays the same hit; its damage is the first, clean one's.
+    const windows = [];
+    let open = null;
+    for (const e of a.events) {
+      if (e.what === "hitbox" && !open) open = { from: e.frame, at: e.frame, damage: e.damage };
+      else if (e.what === "hitbox" && open && e.frame === open.at) open.damage = Math.max(open.damage, e.damage);
+      else if (e.what === "clear" && open) {
+        if (e.frame - 1 >= open.from) windows.push({ from: open.from, to: Math.min(total, e.frame - 1), damage: open.damage });
+        open = null;
+      }
+    }
+    if (open) windows.push({ from: open.from, to: total, damage: open.damage });
     const byPercent = hits.filter((h) => h.set === 0 && h.growth > 0).sort((x, y) => y.damage - x.damage || y.base - x.base)[0];
     out[who][key] = {
       start,
       end,
       total,
       damage: Math.max(...hits.map((h) => h.damage)),
+      hits: windows.map((w) => [w.from, w.to, w.damage]),
       kill: byPercent ? { damage: byPercent.damage, angle: byPercent.angle, base: byPercent.base, growth: byPercent.growth } : null,
     };
   }
@@ -56,11 +70,14 @@ const line = (v) => JSON.stringify(v).replace(/"(\w+)":/g, "$1: ").replace(/,/g,
 fs.writeFileSync(
   "src/lib/meleeMoves.data.ts",
   `// MADE BY tools/melee-disc/build-moves.mjs: don't edit by hand. Twelve characters' moves as the game has them
-// (NTSC 1.02), for the Arcade's knowledge games. \`start\`-\`end\`: the frames the move can hit on; \`total\`: the
+// (NTSC 1.02), for the Arcade's knowledge games. \`start\`-\`end\`: the first and last frame the move can hit on;
+// \`hits\`: each separate hit between them (a move can stop hitting and start again); \`total\`: the
 // frames it keeps the character busy (in the air: without landing); \`damage\`: its strongest hit; \`kill\`: that
 // hit's knockback numbers when it sends by percent (\`angle\` 361 is the Sakurai angle). Smash attacks uncharged.
 export type KillData = { damage: number; angle: number; base: number; growth: number };
-export type MoveData = { start: number; end: number; total: number; damage: number; kill: KillData | null };
+/** One hit of a move: the first and last frame it's out on, and its damage. */
+export type MoveHit = [from: number, to: number, damage: number];
+export type MoveData = { start: number; end: number; total: number; damage: number; hits: MoveHit[]; kill: KillData | null };
 
 export const MOVE_KEYS = ${JSON.stringify(Object.keys(MOVES))} as const;
 export type MoveKey = (typeof MOVE_KEYS)[number];

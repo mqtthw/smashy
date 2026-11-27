@@ -1585,3 +1585,40 @@ body::before {
     transform: none;
   }
 }
+
+/* Does it kill? (round 958): the launch draws itself along its path, a KO flashes where it crosses the line,
+   and the character bobs while waiting to be hit. */
+.arcade-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: arcade-draw 1.4s linear forwards;
+}
+.arcade-ko {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: arcade-ko 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) forwards;
+}
+.arcade-bob {
+  animation: skin-bob 1.2s ease-in-out infinite;
+}
+@keyframes arcade-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes arcade-ko {
+  from { opacity: 0; transform: scale(0.4); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arcade-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .arcade-ko {
+    animation: none;
+    opacity: 1;
+  }
+  .arcade-bob {
+    animation: none;
+  }
+}

@@ -3,7 +3,8 @@
 // damage and frames alone "could teach unoptimal gameplay") asked from the game's own numbers (meleeMoves.data.ts, read from the disc), with no reflexes needed.
 // The questions are made here, as plain data; the screen (FrameQuiz.tsx) words them.
 //
-// - Which is faster?: two moves; which comes out sooner, or which does more damage.
+// - Which is faster?: two moves; which comes out sooner. (It also asked "which does more damage?" until round 958:
+//   Matthew didn't like that in a game about speed.)
 // - Guess the move: a move's frames as a strip (startup, active, recovery); which of four moves is it.
 // - Does it kill?: a move, a victim, a percent and a stage; flown with the DI trainer's maths (diSurvival.ts) with
 //   no DI. Yes or no.
@@ -28,18 +29,14 @@ export function shuffled<T>(list: readonly T[], rand: () => number): T[] {
 
 // ---------- Which is faster? ----------
 
-export type DuelKind = "startup" | "damage";
-export type Duel = { kind: DuelKind; a: MoveRef; b: MoveRef; answer: "a" | "b" };
-/** Two different moves whose answer isn't a tie. Grabs do no damage, so they're only asked about speed. */
+export type Duel = { a: MoveRef; b: MoveRef; answer: "a" | "b" };
+/** Two different moves that don't come out on the same frame; the answer is the sooner one. */
 export function newDuel(rand: () => number, moves = allMoves()): Duel {
   for (let i = 0; i < 200; i++) {
-    const kind: DuelKind = rand() < 0.7 ? "startup" : "damage";
-    const pool = kind === "damage" ? moves.filter((m) => !isGrab(m.move)) : moves;
-    const a = pick(pool, rand);
-    const b = pick(pool, rand);
-    const [x, y] = kind === "startup" ? [a.data.start, b.data.start] : [a.data.damage, b.data.damage];
-    if (a === b || x === y) continue;
-    return { kind, a, b, answer: kind === "startup" ? (x < y ? "a" : "b") : x > y ? "a" : "b" };
+    const a = pick(moves, rand);
+    const b = pick(moves, rand);
+    if (a === b || a.data.start === b.data.start) continue;
+    return { a, b, answer: a.data.start < b.data.start ? "a" : "b" };
   }
   throw new Error("no duel could be made");
 }
@@ -47,7 +44,7 @@ export function newDuel(rand: () => number, moves = allMoves()): Duel {
 // ---------- Guess the move ----------
 
 export type MoveGuess = { char: MoveChar; answer: MoveKey; data: MoveData; options: MoveKey[] };
-const shape = (d: MoveData) => `${d.start}|${d.end}|${d.total}`;
+const shape = (d: MoveData) => `${d.hits.map((h) => `${h[0]}-${h[1]}`).join(",")}|${d.total}`;
 /** One character's move and three of their others whose frames look different. */
 export function newMoveGuess(rand: () => number): MoveGuess {
   for (let i = 0; i < 200; i++) {
@@ -88,7 +85,7 @@ export function newKillQuestion(rand: () => number): KillQuestion {
     const victim = pick(DI_VICTIMS, rand);
     const stage = pick(STAGE_KEYS, rand);
     const killsFrom = killPercent(hit.data.kill!, victim, stage);
-    if (killsFrom === null || killsFrom < 30 || killsFrom > 220) continue;
+    if (killsFrom === null || killsFrom < 40 || killsFrom > 160) continue; // the percents people actually die at
     const kills = rand() < 0.5;
     const percent = kills ? killsFrom + Math.floor(rand() * 25) : killsFrom - 4 - Math.floor(rand() * 22);
     const flight = fly(knockback(hit.data.kill!, percent, MELEE_STATS[victim].weight ?? 100), launchAngle(hit.data.kill!, 1), victim, 0, STAGES[stage]);
