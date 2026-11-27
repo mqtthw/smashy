@@ -469,4 +469,8 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.fq.shield.on": "ガード時 {n}F",
   "history.arcade.fq.shield.why": "{n}F安全です。マイナスの数は、ガードした側が攻撃側より何F先に動けるかを表します。",
   "history.arcade.fq.shield.note": "SPのみ。Smash Ultimate Calculator（rubendal作、MITライセンス。ワザのデータはUltimate Hitboxes）のガード硬直の計算式で算出：ホールドなし・相殺なしで、ジャストシールドではない通常のガードに当てた場合です。地上ワザは最初に当たるフレームで、空中攻撃はいちばん強い部分を着地直前に当てたものとします。フレームだけの比較で、反撃が届くかどうかは含みません。ultimateframedata.comと比べると一部のワザで1Fずれるため、3F以上差のある組み合わせだけを出題します。",
+  "history.arcade.fq.play": "プレイ",
+  "history.arcade.fq.howTo": "遊び方",
+  "history.arcade.fq.about": "数値について",
+  "history.arcade.fq.gameLabel": "ゲーム",
 };

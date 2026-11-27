@@ -13,10 +13,6 @@ export default function Page() {
   return (
     <section className="flex flex-col gap-4 p-4">
       <Link href="/arcade" className="text-sm text-muted hover:text-foreground"><T k="history.arcade.back" /></Link>
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold"><T k="history.arcade.fq.kill.title" /></h1>
-        <p className="text-sm text-muted"><T k="history.arcade.fq.kill.blurb" /></p>
-      </header>
       <FrameQuiz kind="kill" />
     </section>
   );

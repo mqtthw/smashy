@@ -9,9 +9,13 @@
 // - shield: Which is safer on shield? (two Ultimate moves hit a shield; which leaves its user less behind)
 // Since round 968 Which is faster? and Guess the move can be asked about Ultimate too (lib/ultimateFrames.ts), and
 // Which is safer on shield? is Ultimate's own (Matthew picked it over "can they shield-grab it?" and "how minus").
+// Round 971 (Matthew, of the old start screen: "feels vibe coded and a user would quickly get disinterested"): the
+// start and end screens are a title card like the hub's (its picture, the title over it, one line), big buttons for
+// the game and Play, and the how-to and the notes on the numbers folded away.
 // Round 958 (Matthew: no "which does more damage" in a game about speed; Guess the move "could use more data" and
 // hid the gap between a move's hits; Does it kill? was "boring without any visuals").
 import { useState } from "react";
+import { QUIZ_LOOK } from "@/components/arcade/ArcadeArt";
 import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type SetsRank } from "@/lib/arcade";
@@ -199,55 +203,76 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     setQuestion(answers.length >= QUIZ_LENGTH ? null : await make());
   };
 
-  // Not started, or a round just ended.
+  const look = QUIZ_LOOK[kind];
+  const note = t(NOTE[kind][ultimate ? "ultimate" : "melee"]);
+
+  // Not started, or a round just ended: the quiz's title card.
   if (!question) {
     const over = answers.length >= QUIZ_LENGTH;
     const score = answers.filter(Boolean).length;
     const rank = setsRank(score, QUIZ_LENGTH);
     return (
-      <div className="arcade-pop card relative flex flex-col items-start gap-3 p-4" role="status">
-        {over ? (
-          <>
-            {(rank === "perfect" || rank === "top8") && <Confetti />}
-            <p className="text-3xl font-black italic tabular-nums"><span className="arcade-bump">{score}</span><span className="text-muted">/{QUIZ_LENGTH}</span></p>
-            <p className="text-lg font-bold">{t(RANK[rank])}</p>
-            <Pips results={answers} total={QUIZ_LENGTH} />
-          </>
-        ) : (
-          <p className="text-sm">{t(`history.arcade.fq.${kind}.how`)}</p>
-        )}
-        {choosesGame && (
-          <div className="flex flex-wrap items-center gap-2">
-            {(["melee", "ultimate"] as const).map((g) => (
-              <button key={g} type="button" onClick={() => { setGameStored(g); setAnswers([]); }} aria-pressed={(g === "ultimate") === ultimate} className={`chip py-1 ${(g === "ultimate") === ultimate ? "border-brand text-brand" : ""}`}>{GAMES[g].short}</button>
-            ))}
-          </div>
-        )}
-        {kind === "kill" && (
-          <label className="flex items-start gap-2 text-sm">
-            <input type="checkbox" className="mt-1" checked={hard} onChange={(e) => { setHardStored(e.target.checked ? "1" : ""); setAnswers([]); }} />
-            <span><span className="font-bold">{t("history.arcade.fq.kill.hard")}</span> <span className="text-muted">{t("history.arcade.fq.kill.hardHow")}</span></span>
-          </label>
-        )}
-        {best > 0 && <p className="text-meta text-muted">{t("history.arcade.sets.best", { n: best, total: QUIZ_LENGTH })}</p>}
-        <div className="flex flex-wrap items-center gap-3">
-          <button type="button" onClick={start} disabled={loading} autoFocus className="btn btn-md btn-inverse">{t(over ? "history.arcade.hl.again" : "history.arcade.tech.start")}</button>
-          {over && (
-            <button
-              type="button"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(`${t(`history.arcade.fq.${kind}.title`)}${hard ? ` (${t("history.arcade.fq.kill.hard")})` : ""}\n${setsShare(answers)}\nhttps://smashy.gg/arcade/${kind}`);
-                  showToast(t("ui.copied"));
-                } catch {
-                  showToast(t("ui.shareFailed"));
-                }
-              }}
-              className="btn btn-md btn-outline"
-            >
-              {t("history.arcade.share")}
-            </button>
+      <div className="arcade-pop arcade-start relative" style={{ "--tile": look.color } as React.CSSProperties}>
+        {over && (rank === "perfect" || rank === "top8") && <Confetti />}
+        <div className="arcade-start-art">
+          {look.art}
+          <h1 className="arcade-start-title">{t(look.title)}</h1>
+        </div>
+        <div className="flex flex-col gap-4 p-4 sm:p-5">
+          {over ? (
+            <div className="flex flex-wrap items-end justify-between gap-3" role="status">
+              <div>
+                <p className="text-5xl font-black italic tabular-nums leading-none"><span className="arcade-bump">{score}</span><span className="text-2xl text-muted">/{QUIZ_LENGTH}</span></p>
+                <p className="mt-1 text-lg font-bold">{t(RANK[rank])}</p>
+              </div>
+              <Pips results={answers} total={QUIZ_LENGTH} />
+            </div>
+          ) : (
+            <p className="text-lg font-bold">{t(look.line)}</p>
           )}
+          {choosesGame && (
+            <div className="flex flex-wrap items-center gap-3">
+              {choosesGame && (
+                <div className="arcade-seg" role="group" aria-label={t("history.arcade.fq.gameLabel")}>
+                  {(["melee", "ultimate"] as const).map((g) => (
+                    <button key={g} type="button" onClick={() => { setGameStored(g); setAnswers([]); }} aria-pressed={(g === "ultimate") === ultimate}>{GAMES[g].short}</button>
+                  ))}
+                </div>
+              )}
+              {kind === "kill" && (
+                <button type="button" className="arcade-toggle" aria-pressed={hard} onClick={() => { setHardStored(hard ? "" : "1"); setAnswers([]); }} title={t("history.arcade.fq.kill.hardHow")}>
+                  <span aria-hidden="true" className="arcade-toggle-dot" />
+                  {t("history.arcade.fq.kill.hard")}
+                </button>
+              )}
+            </div>
+          )}
+          {hard && <p className="-mt-2 text-sm text-muted">{t("history.arcade.fq.kill.hardHow")}</p>}
+          <div className="flex flex-wrap items-center gap-3">
+            <button type="button" onClick={start} disabled={loading} autoFocus className="arcade-promo-btn arcade-start-play">{t(over ? "history.arcade.hl.again" : "history.arcade.fq.play")} →</button>
+            {best > 0 && <span className="arcade-start-best">★ {t("history.arcade.sets.best", { n: best, total: QUIZ_LENGTH })}</span>}
+            {over && (
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(`${t(look.title)}${hard ? ` (${t("history.arcade.fq.kill.hard")})` : ""}\n${setsShare(answers)}\nhttps://smashy.gg/arcade/${kind}`);
+                    showToast(t("ui.copied"));
+                  } catch {
+                    showToast(t("ui.shareFailed"));
+                  }
+                }}
+                className="btn btn-md btn-outline"
+              >
+                {t("history.arcade.share")}
+              </button>
+            )}
+          </div>
+          <details className="arcade-start-how">
+            <summary>{t("history.arcade.fq.howTo")}</summary>
+            <p className="mt-2 text-sm">{t(`history.arcade.fq.${kind}.how`)}</p>
+            <p className="mt-2 text-meta text-muted">{note}</p>
+          </details>
         </div>
       </div>
     );
@@ -307,9 +332,12 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   const moveIcon = question.kind === "move" ? icon(question.q.char, question.game) : null;
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-meta font-semibold text-muted">{t("history.arcade.fq.progress", { n: answers.length + (picked ? 0 : 1), total: QUIZ_LENGTH })}</p>
+    <div className="arcade-quiz flex flex-col gap-4" style={{ "--tile": look.color } as React.CSSProperties}>
+      <div className="flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <h1 className="arcade-game-title" style={{ color: look.color }}>{t(look.title)}</h1>
+          <p className="text-meta font-semibold text-muted">{t("history.arcade.fq.progress", { n: answers.length + (picked ? 0 : 1), total: QUIZ_LENGTH })}</p>
+        </div>
         <Pips results={answers} total={QUIZ_LENGTH} />
       </div>
       <div key={answers.length - (picked ? 1 : 0)} className="flex flex-col gap-4">
@@ -323,10 +351,10 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
           {options.map((o) => {
             const state = !picked ? "" : o.key === answer ? "arcade-right" : o.key === picked ? "arcade-wrong" : "";
             return (
-              <button key={o.key} type="button" onClick={() => pick(o.key)} disabled={picked !== null} className={`arcade-side arcade-pop card flex min-h-20 flex-col items-center justify-center gap-1 p-4 text-center ${state}`}>
+              <button key={o.key} type="button" onClick={() => pick(o.key)} disabled={picked !== null} className={`arcade-side arcade-pop card arcade-answer flex min-h-28 flex-col items-center justify-center gap-2 p-4 text-center ${state}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element -- a small stock icon */}
-                {o.icon && <img src={o.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />}
-                <span className="text-base font-bold">{picked && o.key === answer && <span className="text-success">✓ </span>}{o.label}</span>
+                {o.icon && <img src={o.icon} alt="" width={48} height={48} className="h-12 w-12 object-contain" />}
+                <span className="text-lg font-black italic">{picked && o.key === answer && <span className="text-success">✓ </span>}{o.label}</span>
                 {/* The numbers only show once answered: knowing them is the game. */}
                 {o.sub && picked && <span className="arcade-bump text-sm font-semibold">{o.sub}</span>}
               </button>
@@ -341,7 +369,10 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
           <button type="button" onClick={next} disabled={loading} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= QUIZ_LENGTH ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
         </div>
       )}
-      <p className="text-meta text-muted">{t(NOTE[kind][ultimate ? "ultimate" : "melee"])}</p>
+      <details className="arcade-start-how">
+        <summary>{t("history.arcade.fq.about")}</summary>
+        <p className="mt-2 text-meta text-muted">{note}</p>
+      </details>
     </div>
   );
 }

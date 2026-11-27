@@ -469,4 +469,8 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.fq.shield.on": "{n} en escudo",
   "history.arcade.fq.shield.why": "Más seguro por {n} frames. Un número negativo es cuántos frames antes puede actuar el que se defiende.",
   "history.arcade.fq.shield.note": "Solo Ultimate. Calculado con la fórmula de escudo de Smash Ultimate Calculator (de rubendal, licencia MIT; datos de movimientos de Ultimate Hitboxes): sin cargar y sin desgaste, contra un escudo completo (no un escudo perfecto). Los movimientos en el suelo golpean en su primer frame posible; los aéreos, con su parte más fuerte, justo antes de aterrizar. Solo frames: no se cuenta si la respuesta del rival llega. Comparado con ultimateframedata.com, algunos movimientos difieren en un frame, así que dos movimientos comparados aquí siempre están a 3 frames o más.",
+  "history.arcade.fq.play": "Jugar",
+  "history.arcade.fq.howTo": "Cómo se juega",
+  "history.arcade.fq.about": "Sobre los números",
+  "history.arcade.fq.gameLabel": "Juego",
 };
