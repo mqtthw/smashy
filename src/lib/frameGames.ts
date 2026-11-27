@@ -10,6 +10,7 @@
 //   no DI. Yes or no. Hard mode asks the same with the best DI held.
 import { MELEE_STATS } from "./characterStats.melee";
 import { DI_VICTIMS, STAGES, STAGE_KEYS, bestAnalogDi, fly, knockback, launchAngle, type Flight, type StageKey, type Victim } from "./diSurvival";
+import type { KillView } from "./ultimateKill";
 import { MELEE_MOVES, MOVE_CHARS, MOVE_KEYS, type MoveChar, type MoveData, type MoveKey } from "./meleeMoves.data";
 
 export type MoveRef = { char: MoveChar; move: MoveKey; data: MoveData };
@@ -120,3 +121,6 @@ export function newKillQuestion(rand: () => number, hard = false): KillQuestion 
   }
   throw new Error("no kill question could be made");
 }
+
+/** A Melee question in the shape the quiz screen shows (the same as Ultimate's, round 963). */
+export const toKillView = (q: KillQuestion): KillView => ({ game: "melee", attacker: q.attacker, move: q.move, victim: q.victim, stage: STAGES[q.stage], percent: q.percent, killsFrom: q.killsFrom, kills: q.kills, flight: q.flight, hard: q.hard, stickAngle: q.stickAngle, noDi: q.noDi, noDiFrom: q.noDiFrom });

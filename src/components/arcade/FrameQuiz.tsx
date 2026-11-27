@@ -4,7 +4,8 @@
 // why, move on; a score out of ten at the end, greeted like Who won this set?, and the best kept in the browser.
 // - frames: Which is faster? (two moves; which comes out sooner)
 // - move: Guess the move (the move's frames as a strip, each separate hit with its damage; four choices)
-// - kill: Does it kill? (the hit set up on its stage with both characters; yes or no; then the launch is flown)
+// - kill: Does it kill? (the hit set up on its stage with both characters; yes or no; then the launch is flown);
+//   Melee or Ultimate (round 963: Ultimate's rules from the Smash Ultimate Calculator, lib/ultimateKill.ts)
 // Round 958 (Matthew: no "which does more damage" in a game about speed; Guess the move "could use more data" and
 // hid the gap between a move's hits; Does it kill? was "boring without any visuals").
 import { useState } from "react";
@@ -12,20 +13,22 @@ import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type SetsRank } from "@/lib/arcade";
 import { characterName } from "@/lib/characters";
-import { STAGES, passedTopAlive } from "@/lib/diSurvival";
-import { QUIZ_LENGTH, newDuel, newKillQuestion, newMoveGuess, type Duel, type KillQuestion, type MoveGuess } from "@/lib/frameGames";
+import { passedTopAlive } from "@/lib/diSurvival";
+import { QUIZ_LENGTH, newDuel, newKillQuestion, newMoveGuess, toKillView, type Duel, type MoveGuess } from "@/lib/frameGames";
+import { GAMES, type GameKey } from "@/lib/games";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { stockIconUrl } from "@/lib/mainBadge";
 import type { MoveChar, MoveData, MoveKey } from "@/lib/meleeMoves.data";
+import type { KillView } from "@/lib/ultimateKill";
 import { useStoredState } from "@/lib/useStoredState";
 
 export type QuizKind = "frames" | "move" | "kill";
-type Question = { kind: "frames"; q: Duel } | { kind: "move"; q: MoveGuess } | { kind: "kill"; q: KillQuestion };
+type Question = { kind: "frames"; q: Duel } | { kind: "move"; q: MoveGuess } | { kind: "kill"; q: KillView };
 const MAKE: Record<QuizKind, (hard: boolean) => Question> = {
   frames: () => ({ kind: "frames", q: newDuel(Math.random) }),
   move: () => ({ kind: "move", q: newMoveGuess(Math.random) }),
-  kill: (hard) => ({ kind: "kill", q: newKillQuestion(Math.random, hard) }),
+  kill: (hard) => ({ kind: "kill", q: toKillView(newKillQuestion(Math.random, hard)) }),
 };
 const RANK: Record<SetsRank, MessageKey> = { perfect: "history.arcade.fq.rank.perfect", top8: "history.arcade.sets.rank.top8", pools: "history.arcade.sets.rank.pools", out: "history.arcade.sets.rank.out" };
 const MOVE: Record<MoveKey, MessageKey> = {
@@ -33,8 +36,8 @@ const MOVE: Record<MoveKey, MessageKey> = {
   fsmash: "history.arcade.mv.fsmash", usmash: "history.arcade.mv.usmash", dsmash: "history.arcade.mv.dsmash", nair: "history.arcade.mv.nair", fair: "history.arcade.mv.fair",
   bair: "history.arcade.mv.bair", uair: "history.arcade.mv.uair", dair: "history.arcade.mv.dair", grab: "history.arcade.mv.grab", dashGrab: "history.arcade.mv.dashGrab",
 };
-const who = (c: string) => characterName("melee", c) ?? c;
-const icon = (c: string) => stockIconUrl({ game: "melee", character: c });
+const who = (c: string, game: GameKey = "melee") => characterName(game, c) ?? c;
+const icon = (c: string, game: GameKey = "melee") => stockIconUrl({ game, character: c });
 
 /**
  * A move's frames as a row of boxes: grey for startup, each hit in its own colour on the frames it is out (with
@@ -83,17 +86,17 @@ function FrameStrip({ d }: { d: MoveData }) {
  * percent. After: the launch is drawn along its real path with the character riding it, and a KO flash where it
  * crosses the line.
  */
-function KillStage({ q, answered }: { q: KillQuestion; answered: boolean }) {
-  const s = STAGES[q.stage];
+function KillStage({ q, answered }: { q: KillView; answered: boolean }) {
+  const s = q.stage;
   const pts = q.flight.points.map(([x, y]) => [x, -y] as const);
   const path = `M${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join("L")}`;
   const [ex, ey] = pts.at(-1)!;
   const size = Math.max(24, (s.right - s.left) / 14);
   const secs = Math.min(2.2, Math.max(0.8, q.flight.frames / 60));
-  const victim = icon(q.victim);
-  const attacker = icon(q.attacker);
+  const victim = icon(q.victim, q.game);
+  const attacker = icon(q.attacker, q.game);
   return (
-    <svg viewBox={`${s.left - 14} ${-s.top - 14} ${s.right - s.left + 28} ${s.top - s.bottom + 28}`} className="arcade-pop card h-56 w-full sm:h-72" role="img" aria-label={STAGES[q.stage].name}>
+    <svg viewBox={`${s.left - 14} ${-s.top - 14} ${s.right - s.left + 28} ${s.top - s.bottom + 28}`} className="arcade-pop card h-56 w-full sm:h-72" role="img" aria-label={s.name}>
       <rect x={s.left} y={-s.top} width={s.right - s.left} height={s.top - s.bottom} fill="rgb(255 90 79 / 0.04)" stroke="#ff5a4f" strokeWidth={2} strokeDasharray="8 6" />
       <path d={`M${-s.edge} 0H${s.edge}L${s.edge - 16} 26H${-s.edge + 16}Z`} fill="rgb(190 200 255 / 0.22)" />
       <rect x={-s.edge} y={0} width={s.edge * 2} height={3} fill="rgb(190 200 255 / 0.8)" />
@@ -143,19 +146,34 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   // Does it kill? has a hard mode, with a best score of its own.
   const [hardStored, setHardStored] = useStoredState("arcade.fq.kill.hard", "");
   const hard = kind === "kill" && hardStored === "1";
-  const [bestStored, setBest] = useStoredState(`arcade.fq.${kind}${hard ? ".hard" : ""}.best`, "0");
+  // ... and can be asked about Ultimate (round 963), with best scores of its own.
+  const [gameStored, setGameStored] = useStoredState("arcade.fq.kill.game", "melee");
+  const ultimate = kind === "kill" && gameStored === "ultimate";
+  const [loading, setLoading] = useState(false);
+  const [bestStored, setBest] = useStoredState(`arcade.fq.${kind}${ultimate ? ".ult" : ""}${hard ? ".hard" : ""}.best`, "0");
   const best = Number(bestStored) || 0;
   const mv = (m: MoveKey) => t(MOVE[m]);
-  const named = (c: MoveChar, m: MoveKey) => t("history.arcade.fq.of", { char: who(c), move: mv(m) });
+  const named = (c: MoveChar | string, m: MoveKey, game: GameKey = "melee") => t("history.arcade.fq.of", { char: who(c, game), move: mv(m) });
+  // Ultimate's maths and its data (about 35 KB) are only fetched when an Ultimate round is played.
+  const make = async (): Promise<Question> => {
+    if (!ultimate) return MAKE[kind](hard);
+    setLoading(true);
+    try {
+      const { newUltKillQuestion } = await import("@/lib/ultimateKill");
+      return { kind: "kill", q: newUltKillQuestion(Math.random, hard) };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const start = () => {
+  const start = async () => {
     setAnswers([]);
     setPicked(null);
-    setQuestion(MAKE[kind](hard));
+    setQuestion(await make());
   };
-  const next = () => {
+  const next = async () => {
     setPicked(null);
-    setQuestion(answers.length >= QUIZ_LENGTH ? null : MAKE[kind](hard));
+    setQuestion(answers.length >= QUIZ_LENGTH ? null : await make());
   };
 
   // Not started, or a round just ended.
@@ -176,6 +194,13 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
           <p className="text-sm">{t(`history.arcade.fq.${kind}.how`)}</p>
         )}
         {kind === "kill" && (
+          <div className="flex flex-wrap items-center gap-2">
+            {(["melee", "ultimate"] as const).map((g) => (
+              <button key={g} type="button" onClick={() => { setGameStored(g); setAnswers([]); }} aria-pressed={(g === "ultimate") === ultimate} className={`chip py-1 ${(g === "ultimate") === ultimate ? "border-brand text-brand" : ""}`}>{GAMES[g].short}</button>
+            ))}
+          </div>
+        )}
+        {kind === "kill" && (
           <label className="flex items-start gap-2 text-sm">
             <input type="checkbox" className="mt-1" checked={hard} onChange={(e) => { setHardStored(e.target.checked ? "1" : ""); setAnswers([]); }} />
             <span><span className="font-bold">{t("history.arcade.fq.kill.hard")}</span> <span className="text-muted">{t("history.arcade.fq.kill.hardHow")}</span></span>
@@ -183,7 +208,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
         )}
         {best > 0 && <p className="text-meta text-muted">{t("history.arcade.sets.best", { n: best, total: QUIZ_LENGTH })}</p>}
         <div className="flex flex-wrap items-center gap-3">
-          <button type="button" onClick={start} autoFocus className="btn btn-md btn-inverse">{t(over ? "history.arcade.hl.again" : "history.arcade.tech.start")}</button>
+          <button type="button" onClick={start} disabled={loading} autoFocus className="btn btn-md btn-inverse">{t(over ? "history.arcade.hl.again" : "history.arcade.tech.start")}</button>
           {over && (
             <button
               type="button"
@@ -229,13 +254,13 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     explain = t("history.arcade.fq.move.why", { move: named(q.char, q.answer) });
   } else {
     const { q } = question;
-    prompt = t(q.hard ? "history.arcade.fq.kill.qHard" : "history.arcade.fq.kill.q", { hit: named(q.attacker, q.move), victim: who(q.victim), n: q.percent });
+    prompt = t(q.hard ? "history.arcade.fq.kill.qHard" : "history.arcade.fq.kill.q", { hit: named(q.attacker, q.move, q.game), victim: who(q.victim, q.game), n: q.percent });
     extra = <KillStage q={q} answered={picked !== null} />;
     options = [{ key: "yes", label: t("history.arcade.fq.kill.yes") }, { key: "no", label: t("history.arcade.fq.kill.no") }];
     answer = q.kills ? "yes" : "no";
     // On hard: when it kills whatever is held there is no direction to name; when they live, the one that saved them.
     // Over the top line and alive: say why, or it looks like a mistake.
-    if (passedTopAlive(q.flight, STAGES[q.stage])) overTop = t("history.arcade.fq.kill.overTop", { who: who(q.victim) });
+    if (passedTopAlive(q.flight, q.stage)) overTop = t(q.game === "ultimate" ? "history.arcade.fq.kill.overTopUlt" : "history.arcade.fq.kill.overTop", { who: who(q.victim, q.game) });
     explain = !q.hard ? t("history.arcade.fq.kill.why", { n: q.killsFrom }) : q.kills ? t("history.arcade.fq.kill.whyHardDead", { n: q.killsFrom, m: q.noDiFrom }) : q.stickAngle === null ? t("history.arcade.fq.kill.whyHardNone", { n: q.killsFrom }) : t("history.arcade.fq.kill.whyHard", { n: q.killsFrom, m: q.noDiFrom });
   }
   const pick = (key: string) => {
@@ -280,10 +305,10 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
         <div className="arcade-pop flex flex-wrap items-center gap-3" role="status">
           <p className="text-sm font-semibold">{right ? t("history.arcade.hl.right") : t("history.arcade.sets.wrong")} {explain}</p>
           {overTop && <p className="basis-full text-sm text-muted">{overTop}</p>}
-          <button type="button" onClick={next} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= QUIZ_LENGTH ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
+          <button type="button" onClick={next} disabled={loading} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= QUIZ_LENGTH ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
         </div>
       )}
-      <p className="text-meta text-muted">{t(`history.arcade.fq.${kind}.note`)}</p>
+      <p className="text-meta text-muted">{t(ultimate ? "history.arcade.fq.kill.noteUlt" : `history.arcade.fq.${kind}.note`)}</p>
     </div>
   );
 }
