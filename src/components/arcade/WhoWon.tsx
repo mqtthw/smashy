@@ -6,6 +6,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
+import NewTab from "@/components/ui/NewTab";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type ArcadeSet, type SetSide, type SetsRank } from "@/lib/arcade";
 import { GAMES } from "@/lib/games";
@@ -95,8 +96,11 @@ export default function WhoWon({ sets }: { sets: ArcadeSet[] }) {
       </div>
       {picked && (
         <div className="arcade-pop flex flex-wrap items-center gap-3" role="status">
-          <p className="text-sm font-semibold">{answers.at(-1) ? t("history.arcade.hl.right") : t("history.arcade.sets.wrong")}</p>
+          <p className="text-sm font-semibold">{answers.at(-1) ? t("history.arcade.hl.right") : t("history.arcade.sets.wrong")} {t("history.arcade.sets.thisSet", { winner: set[set.winner].name, round: set.round })}</p>
           <button type="button" onClick={() => setPicked(null)} autoFocus className="btn btn-md btn-inverse">{t(answers.length >= sets.length ? "history.arcade.sets.results" : "history.arcade.hl.next")}</button>
+          {/* The tournament itself, to check a result that looks wrong (round 956: a winners final lost by the player
+              who went on to win the tournament). A new tab, so the round isn't lost. */}
+          <a href={set.href} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-brand">{t("history.arcade.sets.bracket")} ↗︎<NewTab /></a>
         </div>
       )}
     </div>

@@ -301,7 +301,7 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.player.answer": "正解は {name} でした。",
   "history.arcade.player.see": "戦績を見る",
   "history.arcade.sets.title": "このセット、勝ったのは？",
-  "history.arcade.sets.blurb": "大会の実際のウィナーズ決勝、ルーザーズ決勝、グランドファイナル。勝者を選ぼう。1ラウンド10セット。",
+  "history.arcade.sets.blurb": "大会の実際のウィナーズ決勝、ルーザーズ決勝、グランドファイナル。大会ではなく、そのセットの勝者を選ぼう。1ラウンド10セット。",
   "history.arcade.sets.progress": "{total}セット中 {n}セット目",
   "history.arcade.sets.wrong": "残念。",
   "history.arcade.sets.result": "{total}問中 {n}問正解。",
@@ -450,4 +450,6 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.mv.dair": "空中下攻撃",
   "history.arcade.mv.grab": "つかみ",
   "history.arcade.mv.dashGrab": "ダッシュつかみ",
+  "history.arcade.sets.bracket": "大会を見る",
+  "history.arcade.sets.thisSet": "このセット（{round}）は{winner}の勝ち。",
 };

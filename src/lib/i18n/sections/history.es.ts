@@ -301,7 +301,7 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.player.answer": "Era {name}.",
   "history.arcade.player.see": "Ver sus resultados",
   "history.arcade.sets.title": "¿Quién ganó este set?",
-  "history.arcade.sets.blurb": "Finales reales de winners, losers y grand finals de majors. Elige quién ganó, diez sets por ronda.",
+  "history.arcade.sets.blurb": "Finales reales de winners, losers y grand finals de majors. Elige quién ganó ese set (no el torneo), diez sets por ronda.",
   "history.arcade.sets.progress": "Set {n} de {total}",
   "history.arcade.sets.wrong": "Esta vez no.",
   "history.arcade.sets.result": "Acertaste {n} de {total}.",
@@ -450,4 +450,6 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.mv.dair": "aéreo abajo",
   "history.arcade.mv.grab": "agarre",
   "history.arcade.mv.dashGrab": "agarre en carrera",
+  "history.arcade.sets.bracket": "Ver el torneo",
+  "history.arcade.sets.thisSet": "{winner} ganó este set ({round}).",
 };

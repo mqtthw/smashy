@@ -300,7 +300,7 @@ export const historyEn = {
   "history.arcade.player.answer": "It was {name}.",
   "history.arcade.player.see": "See their results",
   "history.arcade.sets.title": "Who won this set?",
-  "history.arcade.sets.blurb": "Real winners, losers and grand finals from majors. Pick who won, ten sets a round.",
+  "history.arcade.sets.blurb": "Real winners, losers and grand finals from majors. Pick who won that set (not the tournament), ten sets a round.",
   "history.arcade.sets.progress": "Set {n} of {total}",
   "history.arcade.sets.wrong": "Not this time.",
   "history.arcade.sets.result": "You got {n} of {total}.",
@@ -449,4 +449,6 @@ export const historyEn = {
   "history.arcade.mv.dair": "down air",
   "history.arcade.mv.grab": "grab",
   "history.arcade.mv.dashGrab": "dash grab",
+  "history.arcade.sets.bracket": "See the tournament",
+  "history.arcade.sets.thisSet": "{winner} won this set ({round}).",
 };

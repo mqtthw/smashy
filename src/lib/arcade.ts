@@ -154,7 +154,7 @@ export function regionHint(guess: Pick<PlayerOption, "country" | "place">, answe
 
 export const SETS_PER_ROUND = 10;
 export type SetSide = { name: string; characters: string[]; icons: string[]; score: number };
-export type ArcadeSet = { id: string; major: string; year: number; game: GameKey; round: string; a: SetSide; b: SetSide; winner: "a" | "b" };
+export type ArcadeSet = { id: string; major: string; href: string; year: number; game: GameKey; round: string; a: SetSide; b: SetSide; winner: "a" | "b" };
 
 /** Up to `n` different items, picked with `rand` (0..1 numbers). */
 export function pickSome<T>(items: readonly T[], n: number, rand: () => number): T[] {

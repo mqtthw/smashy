@@ -17,6 +17,9 @@ import MessageBadge from "./messages/MessageBadge";
 // The five tabs from SPEC.md. Reels and Play are placeholders until later phases.
 const tabs = [
   { href: "/", label: "nav.feed" as const, icon: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z" },
+  // Search, from every page (round 956, Matthew: "I had to leave smashy to pull up this bracket"): in the side bar on
+  // bigger screens; phones already have it in the bar at the top of every page.
+  { href: "/search", label: "feed.search" as const, icon: "M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z", desktopOnly: true },
   // Discussions: in the side bar on bigger screens; on phones it's a tab at the top of the feed.
   { href: "/discuss", label: "nav.discuss" as const, icon: "M3 4h13v9H8l-5 4zm15 4h3v12l-4-3h-8v-2h9z", desktopOnly: true },
   { href: "/events", label: "nav.events" as const, icon: "M7 3v2H4v16h16V5h-3V3h-2v2H9V3zm-1 7h12v9H6z" },
