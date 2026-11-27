@@ -12,6 +12,11 @@ export type StarterVideo = { title: string; by?: string; url: string; /** null: 
 // Videos about the game as a whole, shown first and without a character's name (YouTube ids).
 const GENERAL = ["NQPTlCJ02iA", "A0MXyJxa6Ik", "ta3L35wsE6o"];
 
+// Videos a character's community lists as a "beginner's guide" that aren't for someone new to the game, by YouTube
+// id (Matthew, round 967: Mew2King's "How to embarrass with Pichu" "doesnt belong in the new players videos"). They
+// stay on their character's own page.
+const NOT_FOR_NEW_PLAYERS = ["Q3yexswM15Q"];
+
 const youtubeId = (url: string) => {
   const e = toEmbed(url);
   return e?.kind === "player" && e.provider === "YouTube" ? (e.src.match(/\/embed\/([A-Za-z0-9_-]+)/)?.[1] ?? null) : null;
@@ -33,7 +38,7 @@ export function starterVideos(game: GameKey, max = 6): StarterVideo[] {
     let taken = false;
     for (const l of lib.links) {
       const id = youtubeId(l.url);
-      if (!id || seen.has(id)) continue;
+      if (!id || seen.has(id) || NOT_FOR_NEW_PLAYERS.includes(id)) continue;
       const rank = GENERAL.indexOf(id);
       if (rank >= 0) {
         seen.add(id);

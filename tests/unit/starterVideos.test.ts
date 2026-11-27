@@ -29,7 +29,12 @@ describe("starterVideos", () => {
   });
 
   it("keeps to the limit and gives nothing for a game with no library", () => {
-    expect(starterVideos("melee", 3)).toHaveLength(3);
+    expect(starterVideos("ultimate", 3)).toHaveLength(3);
     expect(starterVideos("smash64")).toEqual([]);
+  });
+
+  it("leaves out a video that is listed as a beginner guide but is not for someone new to the game", () => {
+    // Mew2King's "How to embarrass with Pichu" (round 967): it stays on Pichu's own page.
+    expect(starterVideos("melee", 50).some((v) => /embarrass/i.test(v.title) || v.url.includes("Q3yexswM15Q"))).toBe(false);
   });
 });

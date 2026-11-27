@@ -194,7 +194,7 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
   const essentials = (GAME_ESSENTIALS[game] ?? []).filter((e) => !e.general);
   const short = GAMES[game].short;
   const [lang, t] = await Promise.all([getLang(), getT()]);
-  // Beginner videos from the community (round 911), in "Watch and learn" since round 914.
+  // Beginner videos from the community (round 911), in "Watch and learn" since round 914 ("Study and have fun" since 967).
   const videos = starterVideos(game);
   // Every game's fighters that have an icon (round 934, Matthew: "I'd like to see the icons for p+ as well").
   // stockIconUrl knows which picture each game uses: P+ has none of its own and borrows Melee's and Brawl's.
@@ -299,7 +299,10 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
         </p>
       </Section>
 
+      {/* "Study and have fun" (round 967, Matthew: Watch and learn "should be either renovated or removed in place of
+          something like study and have fun"): the beginner videos and sets to watch, then things to play with. */}
       <Section id="watch" num={++step} title={t("people.new.watch")}>
+        <h3 className="text-meta font-semibold uppercase tracking-wide text-muted">{t("people.new.study")}</h3>
         {videos.length > 0 && (
           <ul className="grid gap-4 sm:grid-cols-2">
             {videos.map((v) => <VideoTile key={v.url} v={v} by={(name) => t("people.new.videos.by", { name })} />)}
@@ -308,6 +311,22 @@ async function Corner({ searchParams }: { searchParams: PageProps<"/new">["searc
         <Suspense fallback={<CardListSkeleton count={2} label={t("people.new.loadingVideos")} />}>
           <Videos game={game} />
         </Suspense>
+        <h3 className="mt-2 text-meta font-semibold uppercase tracking-wide text-muted">{t("people.new.fun")}</h3>
+        <ul className="grid gap-3 sm:grid-cols-3">
+          {[
+            { href: "/arcade", title: t("people.new.fun.arcade"), text: t("people.new.fun.arcadeText") },
+            // Does it kill? is asked about Melee and Ultimate.
+            ...(game === "melee" || game === "ultimate" ? [{ href: "/arcade/kill", title: t("history.arcade.fq.kill.title"), text: t("people.new.fun.killText") }] : []),
+            { href: "/reels", title: t("people.new.fun.reels"), text: t("ui.guest.new.s.watchText") },
+          ].map((c) => (
+            <li key={c.href}>
+              <Link href={c.href} className="card flex h-full flex-col gap-1 p-3 hover:bg-surface">
+                <span className="font-bold">{c.title} →</span>
+                <span className="text-sm text-muted">{c.text}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </Section>
     </LangProvider>
   );
