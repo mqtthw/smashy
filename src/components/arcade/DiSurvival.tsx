@@ -3,14 +3,21 @@
 // DI but can be survived. While the hit freezes, hold a direction (WASD); when the freeze ends that direction
 // bends the launch by up to 18 degrees, and the launch is flown frame by frame with Melee's knockback maths
 // (lib/diSurvival.ts, with its sources). The dashed line is where no DI would have sent you. Three stocks; the
-// best run is kept in this browser. Plain shapes only.
+// best run is kept in this browser. Plain shapes only until round 977 (Matthew: "we want accurate visuals for the
+// DI survival game because the visual cues of seeing the move that you are DIing is essential"): now the attacker
+// does the real move (their outline, frame by frame) up to the frame it hits, placed so its hitbox is on you; the
+// freeze holds both there with you in the hit pose the game picks; then you tumble along the launch in that pose
+// while the attacker finishes the move (lib/diVisuals.ts). The camera is close for the move and pulls back for the
+// flight. Where the outlines aren't served (the public copy), the plain shapes are drawn instead.
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GAME_LOOK } from "@/components/arcade/ArcadeArt";
 import { Confetti, Picker } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { characterName } from "@/lib/characters";
 import { stockIconUrl } from "@/lib/mainBadge";
-import { DI_VICTIMS, STAGES, STAGE_KEYS, dealHit, passedTopAlive, resolveHit, type DiHit, type Stage, type StageKey, type Stick, type Victim } from "@/lib/diSurvival";
+import { DI_VICTIMS, STAGES, STAGE_KEYS, dealHit, launchAngle, passedTopAlive, resolveHit, type DiHit, type Stage, type StageKey, type Stick, type Victim } from "@/lib/diSurvival";
+import { hitScene, type HitScene } from "@/lib/diVisuals";
+import { loadOutlines, outlinePath, type Outlines } from "@/lib/outlines";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { FPS, framesAt } from "@/lib/techChase";
@@ -36,7 +43,18 @@ const arrow = (s: Stick) => ARROWS[`${s.x},${s.y}`];
 const ZONE: Record<"top" | "side" | "bottom", MessageKey> = { top: "history.arcade.di.zone.top", side: "history.arcade.di.zone.side", bottom: "history.arcade.di.zone.bottom" };
 
 type Solved = ReturnType<typeof resolveHit>;
-type Game = { phase: "idle" | "freeze" | "flight" | "result" | "over"; hit: DiHit | null; at: number; solved: Solved | null; stick: Stick; lives: number; survived: number; victim: Victim; stage: Stage };
+type Game = { phase: "idle" | "windup" | "freeze" | "flight" | "result" | "over"; hit: DiHit | null; scene: HitScene | null; at: number; solved: Solved | null; stick: Stick; lives: number; survived: number; victim: Victim; stage: Stage };
+// The characters' outlines, by who (loaded as they're needed).
+const figs: Record<string, Outlines | null> = {};
+const need = (who: string) => {
+  if (!(who in figs)) {
+    figs[who] = null;
+    loadOutlines(who).then((o) => {
+      figs[who] = o;
+    });
+  }
+};
+const FLIGHT_ZOOM_FRAMES = 24; // the camera pulling back as the flight starts
 type Hud = { phase: Game["phase"]; lives: number; survived: number; hit: DiHit | null; note: { key: MessageKey; values: Record<string, string | number>; good: boolean } | null; newBest: boolean };
 
 function path(ctx: CanvasRenderingContext2D, points: [number, number][], upTo = points.length) {
@@ -45,17 +63,52 @@ function path(ctx: CanvasRenderingContext2D, points: [number, number][], upTo = 
   ctx.stroke();
 }
 
+/** An outline at a place in the game (feet at x, y), facing `dir`, `state` on `frame`. False if it isn't there. */
+function figure(ctx: CanvasRenderingContext2D, who: string, state: string, frame: number, x: number, y: number, dir: 1 | -1, color: string): boolean {
+  const path = outlinePath(figs[who], who, state, frame, S / 4);
+  if (!path) return false;
+  ctx.save();
+  ctx.translate(sx(x), sy(y));
+  ctx.scale(dir, 1);
+  ctx.fillStyle = color;
+  ctx.fill(path, "evenodd");
+  ctx.restore();
+  return true;
+}
+
 function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   const STAGE = g.stage;
   fit(STAGE);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, W, H);
+  const hit = g.hit;
+  const scene = g.scene;
+  const f = hit && g.phase !== "idle" ? framesAt(now - g.at) : 0;
+  // The camera: close on the two fighters for the move and the freeze, pulling back to the whole stage as the flight
+  // starts. Z 1 is the whole stage.
+  let zoom = 1;
+  let cx = W / 2;
+  let cy = H / 2;
+  if (hit && scene && (g.phase === "windup" || g.phase === "freeze" || g.phase === "flight")) {
+    const mx = sx((scene.ax + hit.x0) / 2);
+    const my = sy(9);
+    const close = Math.max(1, Math.min(6, (W * 0.55) / (Math.max(30, Math.abs(scene.ax - hit.x0) + 22) * S)));
+    const t = g.phase === "flight" ? Math.min(1, f / FLIGHT_ZOOM_FRAMES) : 0;
+    const ease = t * t * (3 - 2 * t);
+    zoom = close + (1 - close) * ease;
+    cx = mx + (W / 2 - mx) * ease;
+    cy = my + (H / 2 - my) * ease;
+  }
+  ctx.setTransform(zoom, 0, 0, zoom, W / 2 - zoom * cx, H / 2 - zoom * cy);
+  const line = (w: number) => w / zoom;
+
   // The blast lines: past them is a KO.
   ctx.strokeStyle = "rgba(255,90,79,0.7)";
-  ctx.lineWidth = 2;
-  ctx.setLineDash([8, 6]);
+  ctx.lineWidth = line(2);
+  ctx.setLineDash([8 / zoom, 6 / zoom]);
   ctx.strokeRect(sx(STAGE.left), sy(STAGE.top), (STAGE.right - STAGE.left) * S, (STAGE.top - STAGE.bottom) * S);
   ctx.setLineDash([]);
-  // Final Destination: a slab.
+  // The stage: a slab.
   ctx.fillStyle = "rgba(190,200,255,0.25)";
   ctx.beginPath();
   ctx.moveTo(sx(-STAGE.edge), sy(0));
@@ -64,40 +117,48 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   ctx.lineTo(sx(-STAGE.edge + 22), sy(0) + 40);
   ctx.fill();
   ctx.fillStyle = "rgba(190,200,255,0.7)";
-  ctx.fillRect(sx(-STAGE.edge), sy(0), STAGE.edge * 2 * S, 2);
-  const hit = g.hit;
+  ctx.fillRect(sx(-STAGE.edge), sy(0), STAGE.edge * 2 * S, line(2));
   if (!hit || g.phase === "idle") return;
-  const f = framesAt(now - g.at);
+
+  // The attacker: their move up to the frame it hits, held through the freeze, then the rest of it.
+  const face = hit.facing;
+  if (scene) {
+    const frame = g.phase === "windup" ? Math.min(scene.hit, f + 1) : g.phase === "freeze" ? scene.hit : scene.hit + f;
+    const drawn = frame <= scene.frames ? figure(ctx, scene.attacker, scene.state, frame, scene.ax, scene.ay, face, "#ff6b5e") : figure(ctx, scene.attacker, "Wait", 1, scene.ax, scene.ay, face, "#ff6b5e");
+    if (!drawn) {
+      ctx.fillStyle = "#ff6b5e";
+      ctx.fillRect(sx(scene.ax) - 9, sy(scene.ay) - 34, 18, 34);
+    }
+    // Samus's Charge Shot, flying in.
+    if (scene.shot && g.phase !== "flight" && g.phase !== "result") {
+      const k = g.phase === "windup" ? f + 1 - scene.hit : scene.windup - scene.hit;
+      if (k >= 0) {
+        ctx.fillStyle = "rgba(255, 220, 120, 0.9)";
+        ctx.beginPath();
+        ctx.arc(sx(scene.shot.x + scene.shot.vx * k), sy(scene.shot.y), scene.shot.radius * S, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
 
   if (g.phase === "freeze") {
-    // The attacker, on the side the hit comes from, and the way the hit sends (before any DI).
-    const ax = sx(hit.x0 - hit.facing * 16);
-    ctx.fillStyle = "#ff6b5e";
-    ctx.fillRect(ax - 9, sy(0) - 34, 18, 34);
-    ctx.beginPath();
-    ctx.arc(ax, sy(0) - 43, 9, 0, Math.PI * 2);
-    ctx.fill();
-    const a = (((hit.move.angle === 361 ? 44 : hit.move.angle) * Math.PI) / 180);
-    const dirX = Math.cos(a) * hit.facing;
+    // The way the hit sends (before any DI), and the held direction.
+    const a = ((hit.move.angle === 361 ? 44 : hit.move.angle) * Math.PI) / 180;
+    const dirX = Math.cos(a) * face;
     ctx.strokeStyle = "rgba(255,255,255,0.75)";
-    ctx.lineWidth = 3;
-    ctx.setLineDash([6, 6]);
+    ctx.lineWidth = line(3);
+    ctx.setLineDash([6 / zoom, 6 / zoom]);
     ctx.beginPath();
     ctx.moveTo(sx(hit.x0), sy(8));
-    ctx.lineTo(sx(hit.x0) + dirX * 90, sy(8) - Math.sin(a) * 90);
+    ctx.lineTo(sx(hit.x0) + (dirX * 90) / zoom, sy(8) - (Math.sin(a) * 90) / zoom);
     ctx.stroke();
     ctx.setLineDash([]);
-    // The freeze running out.
-    const left = Math.max(0, 1 - f / FREEZE_FRAMES);
-    ctx.fillStyle = "#ffd447";
-    ctx.fillRect(W / 2 - 72, H - 14, 144 * left, 6);
-    // The held direction.
     if (g.stick.x || g.stick.y) {
       ctx.strokeStyle = "#ffd447";
-      ctx.lineWidth = 4;
+      ctx.lineWidth = line(4);
       ctx.beginPath();
       ctx.moveTo(sx(hit.x0), sy(8));
-      ctx.lineTo(sx(hit.x0) + g.stick.x * 30, sy(8) - g.stick.y * 30);
+      ctx.lineTo(sx(hit.x0) + (g.stick.x * 30) / zoom, sy(8) - (g.stick.y * 30) / zoom);
       ctx.stroke();
     }
   }
@@ -106,20 +167,39 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   if (g.solved && g.phase !== "freeze") {
     const mine = g.solved.mine.points;
     const upTo = g.phase === "flight" ? Math.min(mine.length, f + 1) : mine.length;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = line(2);
     ctx.strokeStyle = "rgba(255,255,255,0.45)";
-    ctx.setLineDash([5, 6]);
+    ctx.setLineDash([5 / zoom, 6 / zoom]);
     path(ctx, g.solved.none.points);
     ctx.setLineDash([]);
-    ctx.lineWidth = 3;
+    ctx.lineWidth = line(3);
     ctx.strokeStyle = g.solved.mine.ko && g.phase !== "flight" ? "#ff5a4f" : "#ffd447";
     path(ctx, mine, upTo);
     [px, py] = mine[upTo - 1];
   }
-  ctx.fillStyle = g.phase === "freeze" && Math.floor(f / 3) % 2 ? "#ffffff" : "#ffd447";
-  ctx.beginPath();
-  ctx.arc(sx(px), sy(py + 8), 9, 0, Math.PI * 2);
-  ctx.fill();
+  // You: standing until the hit, then in the hit pose the game picks, shaking through the freeze (flashing), then
+  // tumbling along the launch.
+  const you: 1 | -1 = face === 1 ? -1 : 1;
+  const color = g.phase === "freeze" && Math.floor(f / 3) % 2 ? "#ffffff" : "#ffd447";
+  let drawn = false;
+  if (scene) {
+    if (g.phase === "windup") drawn = figure(ctx, g.victim, "Wait", 1, hit.x0, 0, you, color);
+    else if (g.phase === "freeze") drawn = figure(ctx, g.victim, scene.pose, 1, hit.x0 + (f % 2 ? 0.6 : -0.6), 0, you, color);
+    else drawn = figure(ctx, g.victim, scene.pose, 1 + (g.phase === "flight" ? f : 999), px, py, you, color);
+  }
+  if (!drawn) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(sx(px), sy(py + 8), 9 / zoom, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // The freeze running out (on the screen, not in the game).
+  if (g.phase === "freeze") {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    const left = Math.max(0, 1 - f / FREEZE_FRAMES);
+    ctx.fillStyle = "#ffd447";
+    ctx.fillRect(W / 2 - 72, H - 14, 144 * left, 6);
+  }
 }
 
 export default function DiSurvival() {
@@ -127,7 +207,8 @@ export default function DiSurvival() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [victim, setVictim] = useState<Victim>("fox");
   const [stage, setStage] = useState<StageKey>("fd");
-  const game = useRef<Game>({ phase: "idle", hit: null, at: 0, solved: null, stick: { x: 0, y: 0 }, lives: LIVES, survived: 0, victim: "fox", stage: STAGES.fd });
+  const game = useRef<Game>({ phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: { x: 0, y: 0 }, lives: LIVES, survived: 0, victim: "fox", stage: STAGES.fd });
+  useEffect(() => need(victim), [victim]);
   const held = useRef(new Set<string>());
   const [bestStored, setBest] = useStoredState("arcade.di.best", "0");
   const best = Number(bestStored) || 0;
@@ -148,12 +229,16 @@ export default function DiSurvival() {
   const nextHit = useCallback((now: number) => {
     const g = game.current;
     const hit = dealHit(Math.random, g.victim, g.survived, g.stage);
-    Object.assign(g, { phase: "freeze", hit, at: now, solved: null });
-    setHud((h) => ({ ...h, phase: "freeze", hit, note: null }));
+    // The move as it's shown (round 977): first its startup, then the freeze.
+    const scene = hitScene(hit.move.key, g.victim, hit.x0, hit.facing, launchAngle(hit.move, hit.facing), hit.percent, Math.random);
+    if (scene) need(scene.attacker);
+    const phase = scene && scene.windup > 0 ? "windup" : "freeze";
+    Object.assign(g, { phase, hit, scene, at: now, solved: null });
+    setHud((h) => ({ ...h, phase, hit, note: null }));
   }, []);
 
   const start = useCallback(() => {
-    game.current = { phase: "idle", hit: null, at: 0, solved: null, stick: game.current.stick, lives: LIVES, survived: 0, victim, stage: STAGES[stage] };
+    game.current = { phase: "idle", hit: null, scene: null, at: 0, solved: null, stick: game.current.stick, lives: LIVES, survived: 0, victim, stage: STAGES[stage] };
     setHud({ phase: "freeze", lives: LIVES, survived: 0, hit: null, note: null, newBest: false });
     nextHit(performance.now());
   }, [nextHit, stage, victim]);
@@ -164,7 +249,12 @@ export default function DiSurvival() {
     let id = requestAnimationFrame(function frame(now) {
       const g = game.current;
       const f = framesAt(now - g.at);
-      if (g.phase === "freeze" && g.hit && f >= FREEZE_FRAMES) {
+      if (g.phase === "windup" && g.scene && f >= g.scene.windup) {
+        // The move lands: the freeze starts.
+        g.phase = "freeze";
+        g.at = now;
+        setHud((h) => ({ ...h, phase: "freeze" }));
+      } else if (g.phase === "freeze" && g.hit && f >= FREEZE_FRAMES) {
         // The stick is read as the freeze ends, as the game reads it on the last frame of hitlag.
         g.solved = resolveHit(g.hit.move, g.hit.percent, g.victim, g.hit.x0, g.hit.facing, g.stick, g.stage);
         g.phase = "flight";
@@ -256,7 +346,7 @@ export default function DiSurvival() {
   // the Play button, or the score; the instructions are folded under "How to play".
   const pickStage = (k: StageKey) => {
     setStage(k);
-    if (game.current.phase !== "freeze" && game.current.phase !== "flight") game.current.stage = STAGES[k];
+    if (game.current.phase !== "windup" && game.current.phase !== "freeze" && game.current.phase !== "flight") game.current.stage = STAGES[k];
   };
   return (
     <div className="flex flex-col gap-3" style={{ "--tile": GAME_LOOK.di.color } as React.CSSProperties}>
@@ -308,6 +398,7 @@ export default function DiSurvival() {
           <li>{t("history.arcade.di.how")}</li>
           <li>{t("history.arcade.di.tip")}</li>
           <li className="text-meta text-muted">{t("history.arcade.di.maths")}</li>
+          <li className="text-meta text-muted">{t("history.arcade.di.outlines")}</li>
           <li className="text-meta text-muted">{t("history.arcade.di.note")}</li>
         </ul>
       </details>

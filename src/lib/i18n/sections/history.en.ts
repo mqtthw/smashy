@@ -478,4 +478,5 @@ export const historyEn = {
   "history.arcade.tech.shineJc": "Falco's shine is counted as jump-cancelled: free when its start ends on frame 4 (held, it goes on into its loop).",
   "history.arcade.tech.player": "You play:",
   "history.arcade.mv.shine": "shine",
+  "history.arcade.di.outlines": "The fighters are the game's own outlines (NTSC 1.02): the move plays frame by frame up to the frame it hits, with the attacker placed so its real hitbox just reaches one of your real hurtboxes, and you're shown in the hit pose the game picks for that hurtbox and launch. Where the attacker stands is Smashy's choice, and the shaking in the freeze is only to show it's frozen.",
 };

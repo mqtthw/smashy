@@ -479,4 +479,5 @@ export const historyEs: Record<keyof typeof historyEn, string> = {
   "history.arcade.tech.shineJc": "El shine de Falco se cuenta cancelado con salto: libre cuando acaba su inicio en el frame 4 (si se mantiene, sigue en su bucle).",
   "history.arcade.tech.player": "Juegas con:",
   "history.arcade.mv.shine": "shine",
+  "history.arcade.di.outlines": "Los luchadores son las siluetas del propio juego (NTSC 1.02): el movimiento se ve frame a frame hasta el frame en que golpea, con el atacante colocado para que su hitbox real alcance justo una de tus hurtboxes reales, y tú apareces en la pose de golpe que elige el juego para esa hurtbox y ese lanzamiento. Dónde se coloca el atacante lo decide Smashy, y la vibración durante la pausa solo indica que está congelado.",
 };

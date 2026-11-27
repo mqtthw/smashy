@@ -479,4 +479,5 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.tech.shineJc": "ファルコのリフレクターはジャンプキャンセルとして数えます：出始めが終わる4F目から行動可能（押し続けるとそのまま続きます）。",
   "history.arcade.tech.player": "使うキャラ：",
   "history.arcade.mv.shine": "リフレクター",
+  "history.arcade.di.outlines": "キャラはゲーム本体（NTSC 1.02）のシルエットです。ワザは当たるフレームまで1Fずつ再生され、攻撃側は本物の攻撃判定があなたの本物のくらい判定にちょうど届く位置に置かれます。あなたはそのくらい判定とふっとぶ角度に応じてゲームが選ぶやられポーズで表示されます。攻撃側の立ち位置はSmashyが決めたもので、停止中の揺れは止まっていることを示すだけです。",
 };

@@ -35,7 +35,13 @@ if (!iso) throw new Error("Give the path to the disc image.");
 const disc = openDisc(iso);
 if (disc.id !== "GALE01" || disc.version !== 2) throw new Error(`This is ${disc.id} version byte ${disc.version}; expected NTSC 1.02.`);
 
-const CHARS = { fox: "Fx", falco: "Fc", marth: "Ms", sheik: "Sk", "captain-falcon": "Ca", peach: "Pe", jigglypuff: "Pr" };
+const CHARS = { fox: "Fx", falco: "Fc", marth: "Ms", sheik: "Sk", "captain-falcon": "Ca", peach: "Pe", jigglypuff: "Pr", ganondorf: "Gn", samus: "Ss" };
+// The DI trainer (round 977, Matthew: "we want accurate visuals for the DI survival game because the visual cues of
+// seeing the move that you are DIing is essential"): each attacker's move, and each victim's hit poses (which one
+// the game plays is worked out by build-di.mjs and lib/diVisuals.ts). Ganondorf and Samus only attack.
+const ATTACKS = { fox: ["AttackHi4", "AttackAirHi"], marth: ["AttackS4"], falco: ["AttackS4"], "captain-falcon": ["AttackAirF"], jigglypuff: ["SpecialLwR"], sheik: ["AttackAirF"], ganondorf: ["AttackAirF"], samus: ["SpecialN"] };
+const HIT_POSES = ["DamageFlyHi", "DamageFlyN", "DamageFlyLw", "DamageFlyTop", "DamageFlyRoll"];
+const ATTACK_ONLY = ["ganondorf", "samus"];
 // The states drawn, by the game's names. Every opponent has the tech and getup ones; Marth also plays the player.
 const VICTIM = ["Passive", "PassiveStandF", "PassiveStandB", "DownBoundU", "DownBoundD", "DownWaitU", "DownWaitD", "DownStandU", "DownStandD", "DownAttackU", "DownAttackD", "DownFowardU", "DownFowardD", "DownBackU", "DownBackD", "DamageFall", "Wait", "CaptureWaitHi", "DamageFlyN"];
 const PLAYER = ["Catch", "CatchWait", "AttackLw3"];
@@ -45,8 +51,9 @@ const HITS = { marth: "Attack11", "captain-falcon": "Attack11", sheik: "Attack11
 const PLAYABLE = ["marth", "captain-falcon", "sheik", "fox", "falco", "peach"];
 // Poses held still in the trainer (falling in, standing, held, sent flying): their first frame only. Lying down:
 // the first 40 frames (the trainer's wait is 10 to 40 frames).
-const STILL = ["DamageFall", "Wait", "CaptureWaitHi", "DamageFlyN", "CatchWait"];
-const KEEP = { DownWaitU: 40, DownWaitD: 40 };
+const STILL = ["DamageFall", "Wait", "CaptureWaitHi", "CatchWait"];
+// Rest: the hit and the first second of sleep (the state is 250 frames).
+const KEEP = { DownWaitU: 40, DownWaitD: 40, SpecialLwR: 60 };
 // Some characters name standing "Wait1", some "Wait".
 const ALIAS = { Wait: ["Wait1", "Wait"] };
 
@@ -59,6 +66,8 @@ const DEFAULT_PARTS = {
   "captain-falcon": { 0: 0 },
   peach: { 0: 0, 1: 0, 2: 0, 3: -1, 4: 0, 5: -1, 6: 0 },
   jigglypuff: { 0: 0 },
+  ganondorf: { 0: 0, 1: -1 }, // ftganon.c
+  samus: { 0: 0 }, // ftsamus.c
 };
 
 const CELLS = 6; // grid cells a unit
@@ -137,7 +146,8 @@ for (const [who, code] of Object.entries(CHARS)) {
   const chains = clothChains(pl);
   const standing = worldMatrices(model.joints);
   const states = {};
-  for (const name of [...VICTIM, ...(PLAYABLE.includes(who) ? PLAYER : []), ...(HITS[who] ? [HITS[who]] : [])]) {
+  const names = ATTACK_ONLY.includes(who) ? ["Wait", ...ATTACKS[who]] : [...VICTIM, ...HIT_POSES, ...(PLAYABLE.includes(who) ? PLAYER : []), ...(HITS[who] ? [HITS[who]] : []), ...(ATTACKS[who] ?? [])];
+  for (const name of [...new Set(names)]) {
     const a = (ALIAS[name] ?? [name]).map((n) => acts.get(n)).find((x) => x?.anim);
     if (!a) throw new Error(`${who}: ${name} has no animation`);
     const tracks = allTracks(a.anim);
