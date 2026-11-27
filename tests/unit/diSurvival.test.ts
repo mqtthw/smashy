@@ -38,6 +38,11 @@ describe("the DI trainer's Melee maths", () => {
     expect(strong.points.at(-1)![1]).toBeGreaterThan(STAGE.top);
     expect(fly(300, 25, "fox", 60).ko).toBe("side");
     expect(margin(strong)).toBe(0);
+    // Past the bottom line: a KO while still in hitstun, not after it (the player could have jumped).
+    const low = fly(120, 350, "fox", 80, STAGES.yoshis); // sent down and off the edge: 48 frames of hitstun
+    expect(low.points.at(-1)![1]).toBeLessThan(STAGES.yoshis.bottom);
+    expect(low.ko).toBe(low.frames <= 48 ? "bottom" : null);
+    expect(fly(60, 350, "jigglypuff", 60, STAGES.yoshis).ko).toBeNull(); // 24 frames of hitstun, a slow fall
     expect(margin(weak)).toBeGreaterThan(0);
     // The first frame already moves at the decayed speed: 261.6 * 0.03 - 0.051 up, less Fox's gravity.
     expect(fly(261.6, 90, "fox", 0).points[1][1]).toBeCloseTo(261.6 * 0.03 - 0.051 - 0.23, 6);
@@ -60,10 +65,11 @@ describe("the DI trainer's Melee maths", () => {
     const fixed = (list: number[]) => () => list.shift() ?? 0;
     expect(newDiRound(fixed([0, 0, 0]))).toEqual({ move: DI_MOVES[0], x0: -60, facing: 1 });
     expect(newDiRound(fixed([0.999, 0.999, 0.9]))).toEqual({ move: DI_MOVES.at(-1), x0: 60, facing: -1 });
+    expect(newDiRound(fixed([0, 0.999, 0]), STAGES.yoshis).x0).toBe(39); // a smaller stage: the spots move in
   });
 });
 
-import { DI_VICTIMS, dealHit, diBand } from "@/lib/diSurvival";
+import { DI_VICTIMS, STAGES, dealHit, diBand } from "@/lib/diSurvival";
 
 describe("the DI trainer's hits", () => {
   it("only deals hits where no DI dies and the best DI lives", () => {
@@ -76,6 +82,19 @@ describe("the DI trainer's hits", () => {
         expect(r.none.ko, `${victim} ${hit.move.key} ${hit.percent}%`).not.toBeNull();
         expect(r.best.flight.ko, `${victim} ${hit.move.key} ${hit.percent}%`).toBeNull();
       }
+  });
+
+  it("kills sooner on a small stage than on a big one", () => {
+    const round = { move: DI_MOVES.find((m) => m.key === "fox-usmash")!, x0: 0, facing: 1 as const };
+    const yoshis = diBand(round, "marth", STAGES.yoshis)!;
+    const dreamland = diBand(round, "marth", STAGES.dreamland)!;
+    expect(yoshis.kill).toBeLessThan(dreamland.kill);
+    for (const stage of Object.values(STAGES)) {
+      const hit = dealHit(Math.random, "fox", 3, stage);
+      const r = resolveHit(hit.move, hit.percent, "fox", hit.x0, hit.facing, { x: 0, y: 0 }, stage);
+      expect(r.none.ko, stage.name).not.toBeNull();
+      expect(r.best.flight.ko, stage.name).toBeNull();
+    }
   });
 
   it("has a band for the classic case", () => {

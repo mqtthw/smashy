@@ -15,24 +15,33 @@
 //   the disc agrees: a 7-frame start, then the shot on frame 16 of the loop).
 // - The laser flies at 5 units a frame (Falco's Blaster velocity in his data file, PlFc.dat; Fox's is 7).
 //
-// What is NOT the game's: how far away Falco stands (a random 60 to 150 units each shot, so the laser takes 12
+// What is NOT the game's: how far away the shooter stands (a random 60 to 150 units each shot, so the laser takes 12
 // to 30 frames to arrive) and the wait between shots.
 export const REFLECT_FRAMES = 2;
 export const DROP_FRAMES = 15;
-export const LASER_OUT = 23;
+/**
+ * Who is shooting (round 954, both read from the game's files): the frame of the Blaster the laser leaves on (a
+ * 7-frame start, then the shot on frame 16 of Falco's loop and frame 5 of Fox's) and how fast it flies.
+ */
+export const SHOOTERS = { falco: { out: 23, speed: 5 }, fox: { out: 12, speed: 7 } } as const;
+export type Shooter = keyof typeof SHOOTERS;
+export const LASER_OUT = SHOOTERS.falco.out;
 export const PS_LIVES = 3;
 export const LASER_SPEED = 5; // units a frame
 
 /** One shot: `start` is the frame Falco begins the move; the laser leaves on start + 23 and arrives `travel` frames later. */
-export type Shot = { start: number; travel: number; distance: number };
-export const leavesAt = (s: Shot) => s.start + LASER_OUT;
-export const arrivesAt = (s: Shot) => s.start + LASER_OUT + s.travel;
+export type Shot = { start: number; travel: number; distance: number; out: number };
+export const leavesAt = (s: Shot) => s.start + s.out;
+export const arrivesAt = (s: Shot) => s.start + s.out + s.travel;
 
 /** The next shot after frame `after`. `rand` gives 0..1 numbers. Later shots follow sooner. */
-export function newShot(after: number, level: number, rand: () => number): Shot {
+export function newShot(after: number, level: number, rand: () => number, shooter: Shooter = "falco"): Shot {
+  const { out, speed } = SHOOTERS[shooter];
   const wait = Math.max(20, 70 - level * 3) + Math.floor(rand() * 50);
-  const distance = 60 + Math.floor(rand() * 19) * LASER_SPEED; // 60 to 150 units, in whole frames of flight
-  return { start: after + wait, travel: distance / LASER_SPEED, distance };
+  // From about 60 to 150 units away, in whole frames of flight (Falco: 12 to 30 frames; Fox: 9 to 21).
+  const nearest = Math.ceil(60 / speed);
+  const travel = nearest + Math.floor(rand() * (Math.floor(150 / speed) - nearest + 1));
+  return { start: after + wait, travel, distance: travel * speed, out };
 }
 
 /** The shield: up since a frame (null when down), and the frame it can next be raised on. */

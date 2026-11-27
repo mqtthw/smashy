@@ -19,9 +19,16 @@
 // - The player is Marth. Standing grab: active on frames 7-8 of 30. Down tilt: active 7-9, free to act on
 //   frame 20. (ssbwiki.com/Marth_(SSBM)/Grab, /Down_tilt)
 //
+// Round 954: the opponent can be any of seven characters, each with their own frames read from the game
+// (techChase.data.ts, made by tools/melee-disc/build-techchase.mjs), and a missed tech leaves them on their back
+// or their front, which have different getups. The plain getup is counted like the other getups: one frame
+// less than round 953 had it (Fox: 29 frames, intangible 1-22).
+//
 // What is NOT the game's: the stage is three spots and moving between them is instant (no dash speeds, ranges
 // or roll distances); how long Fox lies there before getting up is a random 10 to 40 frames (in the game it is
 // the opponent's choice, up to 220); and a browser can't promise that every frame is shown on time.
+
+import { TECH_DATA, type TechVictim, type Win } from "./techChase.data";
 
 export type Slot = -1 | 0 | 1;
 export const FPS = 60;
@@ -49,34 +56,45 @@ export type Getup = "rollLeft" | "rollRight" | "stand" | "attack";
 export const TECH_OPTIONS: TechOption[] = ["inPlace", "left", "right", "missed"];
 export const GETUPS: Getup[] = ["rollLeft", "rollRight", "stand", "attack"];
 
-const TECH: Phase = { name: "tech", frames: 26, intangible: [1, 20], downed: false };
-const techRoll = (to: Slot): Phase => ({ name: "techRoll", frames: 40, intangible: [1, 20], downed: false, to, arrives: 12 });
-const BOUNCE: Phase = { name: "bounce", frames: 26, intangible: null, downed: true };
-const lying = (frames: number): Phase => ({ name: "lying", frames, intangible: null, downed: true });
-// He lies on his back facing right: rolling right is his forward getup roll, left his backward one.
-const getupRoll = (to: Slot): Phase => ({ name: "getupRoll", frames: 35, intangible: to === 1 ? [1, 19] : [12, 29], downed: false, to, arrives: 12 });
-const GETUP_STAND: Phase = { name: "getupStand", frames: 30, intangible: [1, 23], downed: false };
-const GETUP_ATTACK: Phase = { name: "getupAttack", frames: 49, intangible: [1, 26], downed: false, hits: [[17, 19], [24, 26]] };
+const phase = (name: PhaseName, w: Win, extra: Partial<Phase> = {}): Phase => ({ name, frames: w.frames, intangible: w.intangible, downed: false, ...(w.hits ? { hits: w.hits } : {}), ...extra });
 
-/** One knockdown, start to finish: what Fox does on landing (frame 1 is the frame he lands), and after. */
-export type Script = { option: TechOption; getup: Getup | null; phases: Phase[] };
+/**
+ * One knockdown, start to finish: what the opponent does on landing (frame 1 is the frame they land), and after.
+ * `face`: after a missed tech they lie on their back ("up") or front ("down"), which changes their getups' frames.
+ */
+export type Script = { victim: TechVictim; option: TechOption; getup: Getup | null; face: "up" | "down" | null; phases: Phase[] };
 
 const pick = <T>(list: readonly T[], rand: () => number): T => list[Math.min(list.length - 1, Math.floor(rand() * list.length))];
 
-/** `rand` gives 0..1 numbers (Math.random in the browser, a fixed list in tests). */
-export function newScript(rand: () => number): Script {
+/**
+ * `rand` gives 0..1 numbers (Math.random in the browser, a fixed list in tests). The opponent faces right: rolling
+ * right is their forward getup roll, left their backward one. Every frame count is that character's own
+ * (techChase.data.ts, read from the game).
+ */
+export function newScript(rand: () => number, victim: TechVictim = "fox"): Script {
+  const d = TECH_DATA[victim];
   const option = pick(TECH_OPTIONS, rand);
-  if (option === "inPlace") return { option, getup: null, phases: [TECH] };
-  if (option === "left" || option === "right") return { option, getup: null, phases: [techRoll(option === "left" ? -1 : 1)] };
+  if (option === "inPlace") return { victim, option, getup: null, face: null, phases: [phase("tech", d.tech)] };
+  if (option === "left" || option === "right") return { victim, option, getup: null, face: null, phases: [phase("techRoll", d.techRoll, { to: option === "left" ? -1 : 1, arrives: 12 })] };
   const wait = 10 + Math.floor(rand() * 31);
   const getup = pick(GETUPS, rand);
-  return { option, getup, phases: [BOUNCE, lying(wait), getup === "attack" ? GETUP_ATTACK : getup === "stand" ? GETUP_STAND : getupRoll(getup === "rollLeft" ? -1 : 1)] };
+  const face = rand() < 0.5 ? "up" : "down";
+  const g = d[face];
+  const up =
+    getup === "attack" ? phase("getupAttack", g.attack) : getup === "stand" ? phase("getupStand", g.stand) : phase("getupRoll", getup === "rollRight" ? g.forward : g.back, { to: getup === "rollRight" ? 1 : -1, arrives: 12 });
+  return {
+    victim,
+    option,
+    getup,
+    face,
+    phases: [{ name: "bounce", frames: d.bounce[face], intangible: null, downed: true }, { name: "lying", frames: wait, intangible: null, downed: true }, up],
+  };
 }
 
 export const scriptFrames = (s: Script) => s.phases.reduce((n, p) => n + p.frames, 0);
 const within = (f: number, range: readonly [number, number] | null | undefined) => !!range && f >= range[0] && f <= range[1];
 
-/** Fox on frame `f` since landing (1 = the landing frame). After the script he is free: he got away. */
+/** The opponent on frame `f` since landing (1 = the landing frame). After the script they are free: they got away. */
 export function foxAt(s: Script, f: number) {
   let start = 0;
   let spot: Slot = 0;

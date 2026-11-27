@@ -11,7 +11,8 @@
 //   ikneedata.com/calculatormaths.js).
 // - KO: past the side or bottom blast line; past the top one only while still flying up at 2.4 or more a frame
 //   (ikneedata.com/calculatormaths.js; ssbwiki.com/Blast_line says "sufficient vertical launch speed").
-// - Final Destination: blast lines at top 188, bottom -140, sides +-246; the stage ends at +-85.5657 (IKneeData).
+// - Six stages' blast lines and where each main platform ends (IKneeData): Final Destination's are top 188,
+//   bottom -140, sides +-246, edges +-85.5657. Side platforms aren't part of this: nobody lands on one.
 // - The Sakurai angle (361) launches a grounded target at 44 degrees at this strength (IKneeData; SmashWiki says
 //   45 in the air).
 // - Weights, gravity and falling speeds: IKneeData (src/lib/characterStats.melee.ts). Moves: fightcore.gg and
@@ -33,7 +34,19 @@
 // no drift, no recovery): this only answers "would this hit have killed?".
 import { MELEE_STATS } from "./characterStats.melee";
 
-export const STAGE = { top: 188, bottom: -140, side: 246, edge: 85.5657 };
+/** A stage's blast lines and where its main platform ends (IKneeData's calculator). Side platforms aren't flown into. */
+export type Stage = { name: string; top: number; bottom: number; left: number; right: number; edge: number };
+export const STAGES = {
+  fd: { name: "Final Destination", top: 188, bottom: -140, left: -246, right: 246, edge: 85.5657 },
+  battlefield: { name: "Battlefield", top: 200, bottom: -108.8, left: -224, right: 224, edge: 68.4 },
+  yoshis: { name: "Yoshi's Story", top: 168, bottom: -91, left: -175.7, right: 173.6, edge: 56 },
+  fountain: { name: "Fountain of Dreams", top: 202.5, bottom: -146.25, left: -198.75, right: 198.75, edge: 63.34755 },
+  dreamland: { name: "Dream Land", top: 250, bottom: -123, left: -255, right: 255, edge: 77.2713 },
+  stadium: { name: "Pokémon Stadium", top: 180, bottom: -111, left: -230, right: 230, edge: 87.75 },
+} satisfies Record<string, Stage>;
+export type StageKey = keyof typeof STAGES;
+export const STAGE_KEYS = Object.keys(STAGES) as StageKey[];
+export const STAGE = STAGES.fd;
 export const SAKURAI_GROUNDED = 44;
 export const MAX_DI = 18;
 export const TOP_KO_SPEED = 2.4;
@@ -92,10 +105,11 @@ export function launchAngle(move: Pick<DiMove, "angle">, facing: 1 | -1): number
 export type Flight = { points: [number, number][]; ko: "top" | "side" | "bottom" | null; frames: number; landed: boolean };
 
 /** Flies a launch from (x, 0) until it is KO'd, lands back on the stage, or the knockback has run out. */
-export function fly(kb: number, angleDeg: number, victim: Victim, x0: number): Flight {
+export function fly(kb: number, angleDeg: number, victim: Victim, x0: number, stage: Stage = STAGE): Flight {
   const { gravity, fallSpeed } = MELEE_STATS[victim];
   const cos = Math.cos(rad(angleDeg));
   const sin = Math.sin(rad(angleDeg));
+  const stun = hitstun(kb);
   let speed = kb * 0.03;
   let own = 0; // the character's own vertical speed
   let x = x0;
@@ -108,10 +122,12 @@ export function fly(kb: number, angleDeg: number, victim: Victim, x0: number): F
     x += speed * cos;
     y += vy + own;
     points.push([x, y]);
-    if (Math.abs(x) > STAGE.side) return { points, ko: "side", frames: f, landed: false };
-    if (y < STAGE.bottom) return { points, ko: "bottom", frames: f, landed: false };
-    if (y > STAGE.top && vy > TOP_KO_SPEED) return { points, ko: "top", frames: f, landed: false };
-    if (y <= 0 && Math.abs(x) <= STAGE.edge && f > 1) return { points, ko: null, frames: f, landed: true };
+    if (x < stage.left || x > stage.right) return { points, ko: "side", frames: f, landed: false };
+    // Falling past the bottom line only counts while still in hitstun: after that the player could jump, so the
+    // hit itself didn't kill (round 954). The sides and the top count throughout: knockback can't be cancelled.
+    if (y < stage.bottom) return { points, ko: f <= stun ? "bottom" : null, frames: f, landed: false };
+    if (y > stage.top && vy > TOP_KO_SPEED) return { points, ko: "top", frames: f, landed: false };
+    if (y <= 0 && Math.abs(x) <= stage.edge && f > 1) return { points, ko: null, frames: f, landed: true };
     if (speed === 0) return { points, ko: null, frames: f, landed: false };
   }
   return { points, ko: null, frames: 600, landed: false };
@@ -120,30 +136,31 @@ export function fly(kb: number, angleDeg: number, victim: Victim, x0: number): F
 export const STICKS: Stick[] = [NO_STICK, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }, { x: 1, y: 1 }, { x: -1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: -1 }];
 
 /** How far from death a flight ended: the smallest gap to the blast line it came closest to (0 when KO'd). */
-export function margin(flight: Flight): number {
+export function margin(flight: Flight, stage: Stage = STAGE): number {
   if (flight.ko) return 0;
-  return Math.min(...flight.points.map(([x, y]) => Math.min(STAGE.side - Math.abs(x), y - STAGE.bottom, STAGE.top - y > 0 ? STAGE.top - y : 0.01)));
+  return Math.min(...flight.points.map(([x, y]) => Math.min(stage.right - x, x - stage.left, y - stage.bottom, stage.top - y > 0 ? stage.top - y : 0.01)));
 }
 
 /** One hit, worked out: the knockback, the flight with no DI, with the player's DI, and the best the keyboard allows. */
-export function resolveHit(move: DiMove, percentBefore: number, victim: Victim, x0: number, facing: 1 | -1, stick: Stick) {
+export function resolveHit(move: DiMove, percentBefore: number, victim: Victim, x0: number, facing: 1 | -1, stick: Stick, stage: Stage = STAGE) {
   const kb = knockback(move, percentBefore, MELEE_STATS[victim].weight ?? 100);
   const angle = launchAngle(move, facing);
-  const at = (s: Stick) => fly(kb, diAngle(angle, s), victim, x0);
+  const at = (s: Stick) => fly(kb, diAngle(angle, s), victim, x0, stage);
   const mine = at(stick);
   let best = { stick: NO_STICK, flight: at(NO_STICK) };
   for (const s of STICKS) {
     const flight = at(s);
-    if (margin(flight) > margin(best.flight)) best = { stick: s, flight };
+    if (margin(flight, stage) > margin(best.flight, stage)) best = { stick: s, flight };
   }
   return { kb, angle, turned: diAngle(angle, stick) - angle, none: at(NO_STICK), mine, best, hitstun: hitstun(kb) };
 }
 
 export type DiRound = { move: DiMove; x0: number; facing: 1 | -1 };
 /** `rand` gives 0..1 numbers. The hit comes from the side the victim is further from, so it sends them the long way... or not. */
-export function newDiRound(rand: () => number): DiRound {
+export function newDiRound(rand: () => number, stage: Stage = STAGE): DiRound {
   const move = DI_MOVES[Math.min(DI_MOVES.length - 1, Math.floor(rand() * DI_MOVES.length))];
-  const x0 = [-60, -30, 0, 30, 60][Math.min(4, Math.floor(rand() * 5))];
+  // Five spots across the stage, out to about seven tenths of the way to its edge (-60 to 60 on Final Destination).
+  const x0 = Math.round(([-2, -1, 0, 1, 2][Math.min(4, Math.floor(rand() * 5))] * stage.edge * 0.7) / 2);
   return { move, x0, facing: rand() < 0.5 ? 1 : -1 };
 }
 
@@ -151,10 +168,10 @@ export function newDiRound(rand: () => number): DiRound {
  * The percents where DI decides a hit: from the lowest percent it kills with no DI (`kill`) to the highest the
  * best keyboard DI still survives (`max`). Null when DI can't save anyone from it there (or it never kills).
  */
-export function diBand(round: DiRound, victim: Victim): { kill: number; max: number } | null {
+export function diBand(round: DiRound, victim: Victim, stage: Stage = STAGE): { kill: number; max: number } | null {
   let kill = -1;
   for (let pct = 0; pct <= 300; pct++) {
-    const r = resolveHit(round.move, pct, victim, round.x0, round.facing, NO_STICK);
+    const r = resolveHit(round.move, pct, victim, round.x0, round.facing, NO_STICK, stage);
     if (kill < 0 && r.none.ko) kill = pct;
     if (kill >= 0 && r.best.flight.ko) return pct - 1 >= kill ? { kill, max: pct - 1 } : null;
   }
@@ -166,10 +183,10 @@ export type DiHit = DiRound & { percent: number };
  * The next hit of a run: a move, a spot and a side, at a percent inside its DI band, so that the right DI lives
  * and no DI dies. Early hits sit low in the band (more directions survive); later ones climb towards its top.
  */
-export function dealHit(rand: () => number, victim: Victim, level: number): DiHit {
+export function dealHit(rand: () => number, victim: Victim, level: number, stage: Stage = STAGE): DiHit {
   for (let tries = 0; tries < 30; tries++) {
-    const round = newDiRound(rand);
-    const band = diBand(round, victim);
+    const round = newDiRound(rand, stage);
+    const band = diBand(round, victim, stage);
     if (!band) continue;
     const reach = Math.min(1, 0.35 + level * 0.07);
     return { ...round, percent: band.kill + Math.floor(rand() * (band.max - band.kill + 1) * reach) };

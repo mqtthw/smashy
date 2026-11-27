@@ -12,6 +12,8 @@ import { showToast } from "@/components/ui/Toaster";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { FALL_FRAMES, FPS, POINTS, START_LIVES, busy, foxAt, framesAt, judgeFrame, moveFrame, moveSlot, newScript, openFrames, striking, type Action, type Move, type Outcome, type PhaseName, type Script, type Slot, type Whiff } from "@/lib/techChase";
+import { TECH_VICTIMS, type TechVictim } from "@/lib/techChase.data";
+import { characterName } from "@/lib/characters";
 import { useStoredState } from "@/lib/useStoredState";
 
 const W = 640;
@@ -38,8 +40,9 @@ type Game = {
   points: number;
   punishes: number;
   lives: number;
+  victim: TechVictim;
 };
-const fresh = (speed: number): Game => ({ phase: "idle", script: null, landAt: 0, speed, slot: 0, px: slotX(0), action: null, done: 0, frozen: 0, resultAt: 0, outcome: null, whiff: null, points: 0, punishes: 0, lives: START_LIVES });
+const fresh = (speed: number, victim: TechVictim = "fox"): Game => ({ victim, phase: "idle", script: null, landAt: 0, speed, slot: 0, px: slotX(0), action: null, done: 0, frozen: 0, resultAt: 0, outcome: null, whiff: null, points: 0, punishes: 0, lives: START_LIVES });
 type Note = { key: MessageKey; values?: Record<string, string | number>; good: boolean };
 type Hud = { phase: Game["phase"]; points: number; punishes: number; lives: number; note: Note | null; newBest: boolean };
 
@@ -163,6 +166,7 @@ export default function TechChase() {
   const t = useT();
   const canvas = useRef<HTMLCanvasElement>(null);
   const [half, setHalf] = useState(false);
+  const [victim, setVictim] = useState<TechVictim>("fox");
   const game = useRef<Game>(fresh(1));
   const [bestStored, setBest] = useStoredState("arcade.tech.best", "0");
   const best = Number(bestStored) || 0;
@@ -174,15 +178,15 @@ export default function TechChase() {
 
   const nextRound = useCallback((now: number) => {
     const g = game.current;
-    Object.assign(g, { phase: "round", script: newScript(Math.random), landAt: now + (FALL_FRAMES * 1000) / FPS / g.speed, slot: 0, action: null, done: 0, outcome: null, whiff: null });
+    Object.assign(g, { phase: "round", script: newScript(Math.random, g.victim), landAt: now + (FALL_FRAMES * 1000) / FPS / g.speed, slot: 0, action: null, done: 0, outcome: null, whiff: null });
     setHud((h) => ({ ...h, note: null }));
   }, []);
 
   const start = useCallback(() => {
-    game.current = fresh(half ? 0.5 : 1);
+    game.current = fresh(half ? 0.5 : 1, victim);
     setHud({ phase: "round", points: 0, punishes: 0, lives: START_LIVES, note: null, newBest: false });
     nextRound(performance.now());
-  }, [half, nextRound]);
+  }, [half, nextRound, victim]);
 
   const act = useCallback(
     (what: "left" | "right" | "centre" | Move) => {
@@ -228,11 +232,11 @@ export default function TechChase() {
             g.points += POINTS[outcome.kind];
             g.punishes++;
             const [a, b] = openFrames(g.script.phases.find((p) => p.name === outcome.phase)!);
-            note = { key: outcome.kind === "grab" ? "history.arcade.tech.r.grab" : "history.arcade.tech.r.hit", values: { f: outcome.frame, what: outcome.phase, a, b, n: POINTS[outcome.kind] }, good: true };
+            note = { key: outcome.kind === "grab" ? "history.arcade.tech.r.grab" : "history.arcade.tech.r.hit", values: { f: outcome.frame, what: outcome.phase, a, b, n: POINTS[outcome.kind], face: g.script.face ?? "" }, good: true };
           } else {
             g.lives--;
             const last = g.script.phases.at(-1)!;
-            note = outcome.kind === "gotHit" ? { key: "history.arcade.tech.r.gotHit", good: false } : { key: "history.arcade.tech.r.escaped", values: { what: last.name, a: openFrames(last)[0], b: openFrames(last)[1] }, good: false };
+            note = outcome.kind === "gotHit" ? { key: "history.arcade.tech.r.gotHit", good: false } : { key: "history.arcade.tech.r.escaped", values: { what: last.name, a: openFrames(last)[0], b: openFrames(last)[1], face: g.script.face ?? "" }, good: false };
           }
           setHud((h) => ({ ...h, points: g.points, punishes: g.punishes, lives: g.lives, note }));
         }
@@ -276,7 +280,12 @@ export default function TechChase() {
     <button type="button" aria-label={label} onPointerDown={(e) => { e.preventDefault(); act(what); }} className={`btn btn-md ${strong ? "btn-inverse" : "btn-outline"} flex-1 touch-none select-none`}>{text}</button>
   );
   // A phase's name inside a result line ("frame 23 of tech in place").
-  const noteText = (n: Note) => t(n.key, n.values && "what" in n.values ? { ...n.values, what: t(PHASE[n.values.what as PhaseName]) } : n.values);
+  const noteText = (n: Note) => {
+    if (!n.values || !("what" in n.values)) return t(n.key, n.values);
+    const what = t(PHASE[n.values.what as PhaseName]);
+    const face = n.values.face === "up" ? t("history.arcade.tech.faceUp") : n.values.face === "down" ? t("history.arcade.tech.faceDown") : "";
+    return t(n.key, { ...n.values, what: face && n.values.what !== "bounce" && n.values.what !== "lying" ? `${what} (${face})` : what });
+  };
 
   return (
     <div className="flex flex-col gap-3">
@@ -306,6 +315,12 @@ export default function TechChase() {
             ) : (
               <p className="max-w-md text-sm">{t("history.arcade.tech.how")}</p>
             )}
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              <span className="text-meta">{t("history.arcade.tech.victim")}</span>
+              {TECH_VICTIMS.map((v) => (
+                <button key={v} type="button" onClick={() => setVictim(v)} aria-pressed={victim === v} className={`chip py-1 text-meta ${victim === v ? "border-brand text-brand" : ""}`}>{characterName("melee", v)}</button>
+              ))}
+            </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <button type="button" onClick={start} className="btn btn-md btn-inverse">{t(hud.phase === "over" ? "history.arcade.hl.again" : "history.arcade.tech.start")}</button>
               {hud.phase === "over" && hud.points > 0 && <button type="button" onClick={share} className="btn btn-md btn-outline">{t("history.arcade.share")}</button>}

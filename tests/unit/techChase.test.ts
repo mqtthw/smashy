@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { TECH_VICTIMS } from "@/lib/techChase.data";
 import { busy, foxAt, framesAt, judgeFrame, moveSlot, newScript, openFrames, scriptFrames, striking, type Action, type Script } from "@/lib/techChase";
 
 const fixed = (list: number[]) => () => list.shift() ?? 0;
@@ -17,7 +18,19 @@ describe("the tech-chase trainer, in Melee's frames", () => {
     expect(script([0.99, 0.999, 0]).phases[1].frames).toBe(40); // the longest wait
     expect(script([0.99, 0, 0]).phases[2]).toMatchObject({ name: "getupRoll", intangible: [12, 29], to: -1 }); // backward
     expect(script([0.99, 0, 0.3]).phases[2]).toMatchObject({ name: "getupRoll", intangible: [1, 19], to: 1 }); // forward
-    expect(script([0.99, 0, 0.6]).phases[2]).toMatchObject({ name: "getupStand", frames: 30, intangible: [1, 23] }); // the plain getup
+    expect(script([0.99, 0, 0.6]).phases[2]).toMatchObject({ name: "getupStand", frames: 29, intangible: [1, 22] }); // the plain getup
+  });
+
+  it("uses each character's own getups, on their back or their front", () => {
+    // Fox on his front (the fourth number 0.9): his backward getup roll is intangible on 1-24 there, 12-29 on his back.
+    expect(newScript(fixed([0.99, 0, 0, 0.9]), "fox")).toMatchObject({ face: "down", phases: [{}, {}, { name: "getupRoll", intangible: [1, 24] }] });
+    expect(newScript(fixed([0.99, 0, 0, 0.1]), "fox")).toMatchObject({ face: "up", phases: [{}, {}, { name: "getupRoll", intangible: [12, 29] }] });
+    // Marth's getup attack from his back: 49 frames, intangible to 31, hitting on 20-23 and 30-31.
+    expect(newScript(fixed([0.99, 0, 0.99, 0.1]), "marth").phases[2]).toMatchObject({ name: "getupAttack", frames: 49, intangible: [1, 31], hits: [[20, 23], [30, 31]] });
+    // Sheik's plain getup is open three frames sooner than Fox's.
+    expect(newScript(fixed([0.99, 0, 0.6, 0.1]), "sheik").phases[2]).toMatchObject({ name: "getupStand", frames: 29, intangible: [1, 19] });
+    // Everyone techs alike.
+    for (const v of TECH_VICTIMS) expect(newScript(fixed([0]), v).phases[0]).toMatchObject({ frames: 26, intangible: [1, 20] });
   });
 
   it("knows where Fox is and whether he can be touched on any frame", () => {
@@ -71,7 +84,7 @@ describe("the tech-chase trainer, in Melee's frames", () => {
     expect(openFrames(script([0]).phases[0])).toEqual([21, 26]);
     expect(openFrames(script([0.3]).phases[0])).toEqual([21, 40]);
     expect(openFrames(script([0.99, 0, 0.3]).phases[2])).toEqual([20, 35]);
-    expect(openFrames(script([0.99, 0, 0.6]).phases[2])).toEqual([24, 30]);
+    expect(openFrames(script([0.99, 0, 0.6]).phases[2])).toEqual([23, 29]);
     expect(openFrames(script([0.99, 0, 0]).phases[2])).toEqual([30, 35]); // backward: also open on 1-11
     expect(openFrames(script([0.99, 0, 0.99]).phases[0])).toEqual([1, 26]);
   });

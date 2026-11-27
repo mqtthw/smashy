@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Confetti } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { characterName } from "@/lib/characters";
-import { DI_VICTIMS, STAGE, dealHit, resolveHit, type DiHit, type Stick, type Victim } from "@/lib/diSurvival";
+import { DI_VICTIMS, STAGES, STAGE_KEYS, dealHit, resolveHit, type DiHit, type Stage, type StageKey, type Stick, type Victim } from "@/lib/diSurvival";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
 import { FPS, framesAt } from "@/lib/techChase";
@@ -16,9 +16,16 @@ import { useStoredState } from "@/lib/useStoredState";
 
 const W = 640;
 const H = 440;
-const S = 1.2; // pixels per game unit
+// Pixels per game unit and where the ground is drawn: set for the stage being played, so the biggest (Dream
+// Land) and the smallest (Yoshi's Story) both fill the picture.
+let S = 1.2;
+let GROUND_Y = 250;
+const fit = (stage: Stage) => {
+  S = Math.min((W - 40) / (stage.right - stage.left), (H - 44) / (stage.top - stage.bottom));
+  GROUND_Y = 20 + stage.top * S;
+};
 const sx = (x: number) => W / 2 + x * S;
-const sy = (y: number) => 250 - y * S;
+const sy = (y: number) => GROUND_Y - y * S;
 const FREEZE_FRAMES = 60; // time to read the hit and choose (Smashy's own, not the move's hitlag)
 const RESULT_MS = 2200;
 const LIVES = 3;
@@ -27,7 +34,7 @@ const arrow = (s: Stick) => ARROWS[`${s.x},${s.y}`];
 const ZONE: Record<"top" | "side" | "bottom", MessageKey> = { top: "history.arcade.di.zone.top", side: "history.arcade.di.zone.side", bottom: "history.arcade.di.zone.bottom" };
 
 type Solved = ReturnType<typeof resolveHit>;
-type Game = { phase: "idle" | "freeze" | "flight" | "result" | "over"; hit: DiHit | null; at: number; solved: Solved | null; stick: Stick; lives: number; survived: number; victim: Victim };
+type Game = { phase: "idle" | "freeze" | "flight" | "result" | "over"; hit: DiHit | null; at: number; solved: Solved | null; stick: Stick; lives: number; survived: number; victim: Victim; stage: Stage };
 type Hud = { phase: Game["phase"]; lives: number; survived: number; hit: DiHit | null; note: { key: MessageKey; values: Record<string, string | number>; good: boolean } | null; newBest: boolean };
 
 function path(ctx: CanvasRenderingContext2D, points: [number, number][], upTo = points.length) {
@@ -37,20 +44,22 @@ function path(ctx: CanvasRenderingContext2D, points: [number, number][], upTo = 
 }
 
 function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  const STAGE = g.stage;
+  fit(STAGE);
   ctx.clearRect(0, 0, W, H);
   // The blast lines: past them is a KO.
   ctx.strokeStyle = "rgba(255,90,79,0.7)";
   ctx.lineWidth = 2;
   ctx.setLineDash([8, 6]);
-  ctx.strokeRect(sx(-STAGE.side), sy(STAGE.top), STAGE.side * 2 * S, (STAGE.top - STAGE.bottom) * S);
+  ctx.strokeRect(sx(STAGE.left), sy(STAGE.top), (STAGE.right - STAGE.left) * S, (STAGE.top - STAGE.bottom) * S);
   ctx.setLineDash([]);
   // Final Destination: a slab.
   ctx.fillStyle = "rgba(190,200,255,0.25)";
   ctx.beginPath();
   ctx.moveTo(sx(-STAGE.edge), sy(0));
   ctx.lineTo(sx(STAGE.edge), sy(0));
-  ctx.lineTo(sx(STAGE.edge - 22), sy(-34));
-  ctx.lineTo(sx(-STAGE.edge + 22), sy(-34));
+  ctx.lineTo(sx(STAGE.edge - 22), sy(0) + 40);
+  ctx.lineTo(sx(-STAGE.edge + 22), sy(0) + 40);
   ctx.fill();
   ctx.fillStyle = "rgba(190,200,255,0.7)";
   ctx.fillRect(sx(-STAGE.edge), sy(0), STAGE.edge * 2 * S, 2);
@@ -79,7 +88,7 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     // The freeze running out.
     const left = Math.max(0, 1 - f / FREEZE_FRAMES);
     ctx.fillStyle = "#ffd447";
-    ctx.fillRect(sx(-60), H - 16, 120 * S * left, 6);
+    ctx.fillRect(W / 2 - 72, H - 14, 144 * left, 6);
     // The held direction.
     if (g.stick.x || g.stick.y) {
       ctx.strokeStyle = "#ffd447";
@@ -115,7 +124,8 @@ export default function DiSurvival() {
   const t = useT();
   const canvas = useRef<HTMLCanvasElement>(null);
   const [victim, setVictim] = useState<Victim>("fox");
-  const game = useRef<Game>({ phase: "idle", hit: null, at: 0, solved: null, stick: { x: 0, y: 0 }, lives: LIVES, survived: 0, victim: "fox" });
+  const [stage, setStage] = useState<StageKey>("fd");
+  const game = useRef<Game>({ phase: "idle", hit: null, at: 0, solved: null, stick: { x: 0, y: 0 }, lives: LIVES, survived: 0, victim: "fox", stage: STAGES.fd });
   const held = useRef(new Set<string>());
   const [bestStored, setBest] = useStoredState("arcade.di.best", "0");
   const best = Number(bestStored) || 0;
@@ -135,16 +145,16 @@ export default function DiSurvival() {
 
   const nextHit = useCallback((now: number) => {
     const g = game.current;
-    const hit = dealHit(Math.random, g.victim, g.survived);
+    const hit = dealHit(Math.random, g.victim, g.survived, g.stage);
     Object.assign(g, { phase: "freeze", hit, at: now, solved: null });
     setHud((h) => ({ ...h, phase: "freeze", hit, note: null }));
   }, []);
 
   const start = useCallback(() => {
-    game.current = { phase: "idle", hit: null, at: 0, solved: null, stick: game.current.stick, lives: LIVES, survived: 0, victim };
+    game.current = { phase: "idle", hit: null, at: 0, solved: null, stick: game.current.stick, lives: LIVES, survived: 0, victim, stage: STAGES[stage] };
     setHud({ phase: "freeze", lives: LIVES, survived: 0, hit: null, note: null, newBest: false });
     nextHit(performance.now());
-  }, [nextHit, victim]);
+  }, [nextHit, stage, victim]);
 
   useEffect(() => {
     const ctx = canvas.current?.getContext("2d");
@@ -154,7 +164,7 @@ export default function DiSurvival() {
       const f = framesAt(now - g.at);
       if (g.phase === "freeze" && g.hit && f >= FREEZE_FRAMES) {
         // The stick is read as the freeze ends, as the game reads it on the last frame of hitlag.
-        g.solved = resolveHit(g.hit.move, g.hit.percent, g.victim, g.hit.x0, g.hit.facing, g.stick);
+        g.solved = resolveHit(g.hit.move, g.hit.percent, g.victim, g.hit.x0, g.hit.facing, g.stick, g.stage);
         g.phase = "flight";
         g.at = now;
         setHud((h) => ({ ...h, phase: "flight" }));
@@ -275,6 +285,12 @@ export default function DiSurvival() {
               <span className="text-meta">{t("history.arcade.di.victim")}</span>
               {DI_VICTIMS.map((v) => (
                 <button key={v} type="button" onClick={() => setVictim(v)} aria-pressed={victim === v} className={`chip py-1 text-meta ${victim === v ? "border-brand text-brand" : ""}`}>{characterName("melee", v)}</button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              <span className="text-meta">{t("history.arcade.di.stage")}</span>
+              {STAGE_KEYS.map((k) => (
+                <button key={k} type="button" onClick={() => { setStage(k); if (game.current.phase !== "freeze" && game.current.phase !== "flight") game.current.stage = STAGES[k]; }} aria-pressed={stage === k} className={`chip py-1 text-meta ${stage === k ? "border-brand text-brand" : ""}`}>{STAGES[k].name}</button>
               ))}
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3">

@@ -7,9 +7,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Confetti } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
+import { characterName } from "@/lib/characters";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
-import { NO_SHIELD, PS_LIVES, arrivesAt, drop, judgeShot, leavesAt, newShot, raise, type Shield, type Shot, type Verdict } from "@/lib/powershield";
+import { NO_SHIELD, PS_LIVES, arrivesAt, SHOOTERS, drop, judgeShot, leavesAt, newShot, raise, type Shield, type Shooter, type Shot, type Verdict } from "@/lib/powershield";
 import { framesAt } from "@/lib/techChase";
 import { useStoredState } from "@/lib/useStoredState";
 
@@ -19,8 +20,8 @@ const GROUND = 190;
 const ME = 110;
 const FALCO = 560;
 
-type Game = { phase: "idle" | "play" | "over"; t0: number; speed: number; shot: Shot | null; judged: boolean; verdict: Verdict | null; verdictAt: number; shield: Shield; lives: number; reflects: number; streak: number };
-const fresh = (speed: number): Game => ({ phase: "idle", t0: 0, speed, shot: null, judged: false, verdict: null, verdictAt: 0, shield: NO_SHIELD, lives: PS_LIVES, reflects: 0, streak: 0 });
+type Game = { phase: "idle" | "play" | "over"; t0: number; speed: number; shot: Shot | null; judged: boolean; verdict: Verdict | null; verdictAt: number; shield: Shield; lives: number; reflects: number; streak: number; shooter: Shooter };
+const fresh = (speed: number, shooter: Shooter = "falco"): Game => ({ shooter, phase: "idle", t0: 0, speed, shot: null, judged: false, verdict: null, verdictAt: 0, shield: NO_SHIELD, lives: PS_LIVES, reflects: 0, streak: 0 });
 type Hud = { phase: Game["phase"]; lives: number; reflects: number; note: { key: MessageKey; n: number; good: boolean } | null; newBest: boolean };
 
 function draw(ctx: CanvasRenderingContext2D, g: Game, f: number) {
@@ -43,9 +44,9 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, f: number) {
     ctx.fillRect(facing === 1 ? x + 8 : x - 8 - arm, GROUND - 40, arm, 8);
   };
   const shot = g.shot;
-  // Falco: the arm comes up over the 23 frames before the laser leaves.
-  const wind = shot && g.phase === "play" ? Math.max(0, Math.min(1, (f - shot.start) / 23)) : 0;
-  figure(FALCO, "#6aa7ff", -1, 6 + wind * 24);
+  // The shooter: the arm comes up over the frames before the laser leaves (23 for Falco, 12 for Fox).
+  const wind = shot && g.phase === "play" ? Math.max(0, Math.min(1, (f - shot.start) / shot.out)) : 0;
+  figure(FALCO, g.shooter === "fox" ? "#ffa040" : "#6aa7ff", -1, 6 + wind * 24);
   figure(ME, g.verdict?.kind === "hit" && f - g.verdictAt < 20 ? "#ff5a4f" : "#ffd447", 1, 8);
   // The shield: white on its first two frames (the reflect), then blue.
   if (g.shield.since !== null && g.phase === "play") {
@@ -79,6 +80,7 @@ export default function Powershield() {
   const t = useT();
   const canvas = useRef<HTMLCanvasElement>(null);
   const [half, setHalf] = useState(false);
+  const [shooter, setShooter] = useState<Shooter>("falco");
   const game = useRef<Game>(fresh(1));
   const [bestStored, setBest] = useStoredState("arcade.ps.best", "0");
   const best = Number(bestStored) || 0;
@@ -90,12 +92,12 @@ export default function Powershield() {
   const frameNow = () => framesAt(performance.now() - game.current.t0, game.current.speed);
 
   const start = useCallback(() => {
-    const g = (game.current = fresh(half ? 0.5 : 1));
+    const g = (game.current = fresh(half ? 0.5 : 1, shooter));
     g.phase = "play";
     g.t0 = performance.now();
-    g.shot = newShot(30, 0, Math.random);
+    g.shot = newShot(30, 0, Math.random, shooter);
     setHud({ phase: "play", lives: PS_LIVES, reflects: 0, note: null, newBest: false });
-  }, [half]);
+  }, [half, shooter]);
 
   const press = useCallback(
     (down: boolean) => {
@@ -138,7 +140,7 @@ export default function Powershield() {
             if (newBest) setBest(String(g.reflects));
             setHud((h) => ({ ...h, phase: "over", newBest }));
           } else {
-            g.shot = newShot(f, g.reflects, Math.random);
+            g.shot = newShot(f, g.reflects, Math.random, g.shooter);
             g.judged = false;
           }
         }
@@ -201,6 +203,12 @@ export default function Powershield() {
             ) : (
               <p className="max-w-md text-sm">{t("history.arcade.ps.how")}</p>
             )}
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              <span className="text-meta">{t("history.arcade.ps.shooter")}</span>
+              {(Object.keys(SHOOTERS) as Shooter[]).map((k) => (
+                <button key={k} type="button" onClick={() => setShooter(k)} aria-pressed={shooter === k} className={`chip py-1 text-meta ${shooter === k ? "border-brand text-brand" : ""}`}>{characterName("melee", k)}</button>
+              ))}
+            </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <button type="button" onClick={start} className="btn btn-md btn-inverse">{t(hud.phase === "over" ? "history.arcade.hl.again" : "history.arcade.tech.start")}</button>
               {hud.phase === "over" && hud.reflects > 0 && <button type="button" onClick={share} className="btn btn-md btn-outline">{t("history.arcade.share")}</button>}
