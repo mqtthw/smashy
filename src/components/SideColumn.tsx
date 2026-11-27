@@ -41,7 +41,8 @@ export default function SideColumn() {
   // Only the home page fills it, with "Online today" (round 813 moved that list here; the home page hides its
   // own copy on wide screens). Elsewhere it stays empty (rounds 869, 892, 899: reviewers saw nearby events and
   // the same two majors beside every page as a copy-pasted rail). The empty column keeps pages from shifting.
-  const home = pathname === "/";
+  // The home page and, since round 965, Play (Matthew: "we should include this right tab on the Play page as well").
+  const home = pathname === "/" || pathname === "/play";
   // Round 901: other pages get no column at all, so they sit centred; an empty column left a wide dark strip.
   if (!home) return null;
   if (!data) return <div aria-hidden="true" className="hidden w-80 shrink-0 print:hidden xl:block" />;

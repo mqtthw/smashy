@@ -67,9 +67,10 @@ export function newMoveGuess(rand: () => number): MoveGuess {
  * optimal DI"), and since round 960 that is the best an analog stick allows, as the game reads a controller
  * ("this knowledge check will be to apply to real gameplay"). Then `flight` is the launch with that DI, `stickAngle`
  * where the stick is held for it in degrees (null: holding nothing is best), `killsFrom` the percent it kills from
- * even so, and `noDi` / `noDiFrom` the same hit with nothing held.
+ * even so, and `noDi` / `noDiFrom` the same hit with nothing held. Since round 964 `stickAngle` and `diFrom` (the
+ * percent it kills from through the best DI) are worked out for every question, so the stick can always be shown.
  */
-export type KillQuestion = { attacker: MoveChar; move: MoveKey; victim: Victim; stage: StageKey; percent: number; killsFrom: number; kills: boolean; flight: Flight; hard: boolean; stickAngle: number | null; noDi: Flight; noDiFrom: number };
+export type KillQuestion = { attacker: MoveChar; move: MoveKey; victim: Victim; stage: StageKey; percent: number; killsFrom: number; kills: boolean; flight: Flight; hard: boolean; stickAngle: number | null; noDi: Flight; noDiFrom: number; diFrom: number };
 const launchOf = (kill: NonNullable<MoveData["kill"]>, pct: number, victim: Victim) => ({ kb: knockback(kill, pct, MELEE_STATS[victim].weight ?? 100), angle: launchAngle(kill, 1) });
 /** The lowest percent at which a hit kills from the middle of a stage with no DI, or null when it doesn't by 300%. */
 export function killPercent(kill: NonNullable<MoveData["kill"]>, victim: Victim, stage: StageKey): number | null {
@@ -107,20 +108,25 @@ export function newKillQuestion(rand: () => number, hard = false): KillQuestion 
     const stage = pick(STAGE_KEYS, rand);
     const noDiFrom = killPercent(hit.data.kill!, victim, stage);
     if (noDiFrom === null || noDiFrom < 40 || noDiFrom > 160) continue; // the percents people actually die at
-    const killsFrom = hard ? killPercentBestDi(hit.data.kill!, victim, stage) : noDiFrom;
-    if (killsFrom === null) continue;
+    const diFrom = killPercentBestDi(hit.data.kill!, victim, stage);
+    if (diFrom === null) continue;
+    const killsFrom = hard ? diFrom : noDiFrom;
     const kills = rand() < 0.5;
     // Hard: a miss sits between the two answers when it can, where no DI dies and the best DI lives.
     const percent = Math.max(0, kills ? killsFrom + Math.floor(rand() * 25) : killsFrom - 1 - Math.floor(rand() * Math.max(6, hard ? killsFrom - noDiFrom + 6 : 22)));
     const { kb, angle } = launchOf(hit.data.kill!, percent, victim);
     const noDi = fly(kb, angle, victim, 0, STAGES[stage]);
-    const best = hard ? bestAnalogDi(kb, angle, victim, 0, STAGES[stage]) : null;
-    const flight = best ? best.flight : noDi;
+    const best = bestAnalogDi(kb, angle, victim, 0, STAGES[stage]);
+    const flight = hard ? best.flight : noDi;
+    // The stick to show: the best DI here, or, when nothing saves them at this percent, the DI that lasts longest
+    // (the best one a percent under where it kills through DI).
+    const last = launchOf(hit.data.kill!, diFrom - 1, victim);
+    const stickAngle = best.flight.ko ? bestAnalogDi(last.kb, last.angle, victim, 0, STAGES[stage]).stickAngle : best.stickAngle;
     if ((flight.ko !== null) !== kills) continue; // DI in play: just above the line isn't always a kill
-    return { attacker: hit.char, move: hit.move, victim, stage, percent, killsFrom, kills, flight, hard, stickAngle: best?.stickAngle ?? null, noDi, noDiFrom };
+    return { attacker: hit.char, move: hit.move, victim, stage, percent, killsFrom, kills, flight, hard, stickAngle, noDi, noDiFrom, diFrom };
   }
   throw new Error("no kill question could be made");
 }
 
 /** A Melee question in the shape the quiz screen shows (the same as Ultimate's, round 963). */
-export const toKillView = (q: KillQuestion): KillView => ({ game: "melee", attacker: q.attacker, move: q.move, victim: q.victim, stage: STAGES[q.stage], percent: q.percent, killsFrom: q.killsFrom, kills: q.kills, flight: q.flight, hard: q.hard, stickAngle: q.stickAngle, noDi: q.noDi, noDiFrom: q.noDiFrom });
+export const toKillView = (q: KillQuestion): KillView => ({ game: "melee", attacker: q.attacker, move: q.move, victim: q.victim, stage: STAGES[q.stage], percent: q.percent, killsFrom: q.killsFrom, kills: q.kills, flight: q.flight, hard: q.hard, stickAngle: q.stickAngle, noDi: q.noDi, noDiFrom: q.noDiFrom, diFrom: q.diFrom });

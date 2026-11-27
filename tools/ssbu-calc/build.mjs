@@ -54,7 +54,7 @@ display.forEach((name, i) => {
 });
 
 // Stages: blast lines from the calculator's stage file; where the main floor ends, read from the same file's collisions by a researcher (round 963).
-const STAGES = { "Final Destination": 80, Battlefield: 80, "Small Battlefield": 80, "Pokémon Stadium 2": 93.78, Smashville: 70, "Town & City": 82.5, "Kalos Pokémon League": 80, "Yoshi's Story": 68, "Hollow Bastion": 80, "Northern Cave": 80 };
+const STAGES = { "Final Destination": 80, Battlefield: 80, "Small Battlefield": 80, "Pokémon Stadium 2": 93.78, Smashville: 70, "Town & City": 82.5, "Kalos Pokémon League": 80, "Hollow Bastion": 80 }; // Yoshi's Story and Northern Cave were taken out in round 964 (Matthew)
 const all = json("Data/Stages/ssbustagedata.json");
 const stages = Object.entries(STAGES).map(([name, edge]) => {
   const s = all.find((x) => x.stage === name);

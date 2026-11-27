@@ -168,6 +168,8 @@ export type KillView = {
   stickAngle: number | null;
   noDi: Flight;
   noDiFrom: number;
+  /** The percent it kills from through the best DI. */
+  diFrom: number;
 };
 
 const pick = <T>(list: readonly T[], rand: () => number): T => list[Math.min(list.length - 1, Math.floor(rand() * list.length))];
@@ -187,15 +189,18 @@ export function newUltKillQuestion(rand: () => number, hard = false): KillView {
     const stage = pick(ULT_STAGES, rand);
     const noDiFrom = ultKillPercent(move, victim, stage);
     if (noDiFrom === null || noDiFrom < 50 || noDiFrom > 190) continue; // the percents people actually die at
-    const killsFrom = hard ? ultKillPercent(move, victim, stage, true, noDiFrom) : noDiFrom;
-    if (killsFrom === null) continue;
+    const diFrom = ultKillPercent(move, victim, stage, true, noDiFrom);
+    if (diFrom === null) continue;
+    const killsFrom = hard ? diFrom : noDiFrom;
     const kills = rand() < 0.5;
     const percent = Math.max(0, kills ? killsFrom + Math.floor(rand() * 25) : killsFrom - 1 - Math.floor(rand() * Math.max(6, hard ? killsFrom - noDiFrom + 6 : 22)));
     const noDi = ultFly(ultLaunch(move, percent, victim), victim, stage);
-    const best = hard ? ultBestDi(move, percent, victim, stage) : null;
-    const flight = best ? best.flight : noDi;
+    const best = ultBestDi(move, percent, victim, stage);
+    const flight = hard ? best.flight : noDi;
+    // The stick to show: the best DI here, or, when nothing saves them at this percent, the DI that lasts longest.
+    const stickAngle = best.flight.ko ? ultBestDi(move, diFrom - 1, victim, stage).stickAngle : best.stickAngle;
     if ((flight.ko !== null) !== kills) continue; // with DI in play, just above the line isn't always a kill
-    return { game: "ultimate", attacker, move: moveKey, victim: victimKey, stage, percent, killsFrom, kills, flight, hard, stickAngle: best?.stickAngle ?? null, noDi, noDiFrom };
+    return { game: "ultimate", attacker, move: moveKey, victim: victimKey, stage, percent, killsFrom, kills, flight, hard, stickAngle, noDi, noDiFrom, diFrom };
   }
   throw new Error("no Ultimate kill question could be made");
 }

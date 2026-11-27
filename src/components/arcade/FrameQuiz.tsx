@@ -86,8 +86,10 @@ function FrameStrip({ d }: { d: MoveData }) {
  * percent. After: the launch is drawn along its real path with the character riding it, and a KO flash where it
  * crosses the line.
  */
-function KillStage({ q, answered }: { q: KillView; answered: boolean }) {
+function KillStage({ q, answered, dialLabel }: { q: KillView; answered: boolean; dialLabel: string }) {
   const s = q.stage;
+  const stickX = q.stickAngle === null ? 0 : Math.cos((q.stickAngle * Math.PI) / 180);
+  const stickY = q.stickAngle === null ? 0 : -Math.sin((q.stickAngle * Math.PI) / 180);
   const pts = q.flight.points.map(([x, y]) => [x, -y] as const);
   const path = `M${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join("L")}`;
   const [ex, ey] = pts.at(-1)!;
@@ -111,16 +113,16 @@ function KillStage({ q, answered }: { q: KillView; answered: boolean }) {
             {victim ? <image href={victim} x={-size / 2} y={-size / 2} width={size} height={size} /> : <circle r={size / 2.4} fill="#ffd447" />}
             <animateMotion dur={`${secs}s`} fill="freeze" path={path} calcMode="linear" />
           </g>
-          {q.hard && !q.kills && q.stickAngle !== null && (
-            <g transform={`translate(${s.right - size * 1.9} ${-s.top + size * 1.9})`}>
-              <g className="arcade-ko">
+          {/* The stick, where it is held for the best DI: after every answer, in both modes (round 964, Matthew:
+              "include the stick showing the best DI every time"). In the middle when holding nothing is best. */}
+          <g transform={`translate(${s.right - size * 1.9} ${-s.top + size * 1.9})`}>
+            <g className="arcade-ko">
               <circle r={size * 1.2} fill="rgb(10 8 40 / 0.7)" stroke="rgb(190 200 255 / 0.6)" strokeWidth={2} />
-              <line x1={0} y1={0} x2={Math.cos((q.stickAngle * Math.PI) / 180) * size * 1.05} y2={-Math.sin((q.stickAngle * Math.PI) / 180) * size * 1.05} stroke="#ffd447" strokeWidth={5} strokeLinecap="round" />
-              <circle cx={Math.cos((q.stickAngle * Math.PI) / 180) * size * 1.05} cy={-Math.sin((q.stickAngle * Math.PI) / 180) * size * 1.05} r={size * 0.32} fill="#ffd447" />
-              <text y={size * 1.95} fontSize={14} fontWeight={700} textAnchor="middle" fill="rgb(190 200 255 / 0.85)">DI</text>
-              </g>
+              <line x1={0} y1={0} x2={stickX * size * 1.05} y2={stickY * size * 1.05} stroke="#ffd447" strokeWidth={5} strokeLinecap="round" />
+              <circle cx={stickX * size * 1.05} cy={stickY * size * 1.05} r={size * 0.32} fill="#ffd447" />
+              <text y={size * 1.95} fontSize={14} fontWeight={700} textAnchor="middle" fill="rgb(190 200 255 / 0.85)">{dialLabel}</text>
             </g>
-          )}
+          </g>
           {q.kills && (
             <g className="arcade-ko" style={{ animationDelay: `${secs}s` }}>
               <circle cx={ex} cy={ey} r={size} fill="none" stroke="#ff5a4f" strokeWidth={5} />
@@ -255,13 +257,13 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   } else {
     const { q } = question;
     prompt = t(q.hard ? "history.arcade.fq.kill.qHard" : "history.arcade.fq.kill.q", { hit: named(q.attacker, q.move, q.game), victim: who(q.victim, q.game), n: q.percent });
-    extra = <KillStage q={q} answered={picked !== null} />;
+    extra = <KillStage q={q} answered={picked !== null} dialLabel={t("history.arcade.fq.kill.bestDi")} />;
     options = [{ key: "yes", label: t("history.arcade.fq.kill.yes") }, { key: "no", label: t("history.arcade.fq.kill.no") }];
     answer = q.kills ? "yes" : "no";
     // On hard: when it kills whatever is held there is no direction to name; when they live, the one that saved them.
     // Over the top line and alive: say why, or it looks like a mistake.
     if (passedTopAlive(q.flight, q.stage)) overTop = t(q.game === "ultimate" ? "history.arcade.fq.kill.overTopUlt" : "history.arcade.fq.kill.overTop", { who: who(q.victim, q.game) });
-    explain = !q.hard ? t("history.arcade.fq.kill.why", { n: q.killsFrom }) : q.kills ? t("history.arcade.fq.kill.whyHardDead", { n: q.killsFrom, m: q.noDiFrom }) : q.stickAngle === null ? t("history.arcade.fq.kill.whyHardNone", { n: q.killsFrom }) : t("history.arcade.fq.kill.whyHard", { n: q.killsFrom, m: q.noDiFrom });
+    explain = !q.hard ? `${t("history.arcade.fq.kill.why", { n: q.killsFrom })} ${t("history.arcade.fq.kill.whyDi", { n: q.diFrom })}` : q.kills ? t("history.arcade.fq.kill.whyHardDead", { n: q.killsFrom, m: q.noDiFrom }) : q.stickAngle === null ? t("history.arcade.fq.kill.whyHardNone", { n: q.killsFrom }) : t("history.arcade.fq.kill.whyHard", { n: q.killsFrom, m: q.noDiFrom });
   }
   const pick = (key: string) => {
     if (picked) return;

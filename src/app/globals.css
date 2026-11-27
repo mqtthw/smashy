@@ -1622,3 +1622,22 @@ body::before {
     animation: none;
   }
 }
+
+/* The Arcade card's quick links (round 965): small slanted plates inside the card's "today" panel. */
+.arcade-promo-chip {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-style: italic;
+  color: #fff;
+  border: 1px solid rgb(255 255 255 / 0.55);
+  background: rgb(255 255 255 / 0.08);
+  transform: skewX(-8deg);
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  &:hover {
+    background: #ffd447;
+    border-color: #fff0b0;
+    color: #1a1200;
+    transform: skewX(-8deg) translateY(-2px);
+  }
+}

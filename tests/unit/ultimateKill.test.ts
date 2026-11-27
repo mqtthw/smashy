@@ -14,7 +14,7 @@ describe("the data from the Smash Ultimate Calculator", () => {
     expect(fsmash).toEqual([17.8, 361, 25, 99]); // the fire hitbox
     expect(fd).toMatchObject({ name: "Final Destination", left: -240, right: 240, top: 180, bottom: -140 });
     expect(Object.keys(ULT_FIGHTERS).length).toBeGreaterThan(80);
-    expect(ULT_STAGES).toHaveLength(10);
+    expect(ULT_STAGES.map((s) => s.name)).toEqual(["Final Destination", "Battlefield", "Small Battlefield", "Pokémon Stadium 2", "Smashville", "Town & City", "Kalos Pokémon League", "Hollow Bastion"]);
   });
 });
 

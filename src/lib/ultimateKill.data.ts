@@ -188,7 +188,5 @@ export const ULT_STAGES: UltStage[] = [
   {name: "Smashville", left: -229, right: 230, top: 190, bottom: -115, edge: 70},
   {name: "Town & City", left: -230, right: 230, top: 190, bottom: -123, edge: 82.5},
   {name: "Kalos Pokémon League", left: -245, right: 245, top: 192, bottom: -118, edge: 80},
-  {name: "Yoshi's Story", left: -227.11, right: 227.11, top: 180, bottom: -117.85, edge: 68},
   {name: "Hollow Bastion", left: -240, right: 240, top: 180, bottom: -140, edge: 80},
-  {name: "Northern Cave", left: -237, right: 237, top: 177, bottom: -140, edge: 80},
 ];
