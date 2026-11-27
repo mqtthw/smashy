@@ -4398,8 +4398,6 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "Sa recovery est linéaire et prévisible, et Power of Flight n’a pas de hitbox pour le protéger.",
   "Most characters outperform him in one area or another.":
     "La plupart des personnages font mieux que lui dans un domaine ou un autre.",
-  "Pyra is the stronger half of the Aegis: a slow, hard-hitting swordswoman with long, disjointed range who excels at punishing. She must be patient and look for openings because of her slow mobility and poor disadvantage state. Her down special, Swap, switches her with Mythra, whose far better movement is best for keeping the advantage.":
-    "Pyra est la moitié la plus puissante d’Aegis : une épéiste lente qui frappe fort, avec une longue portée disjointe, et qui excelle à punir. Elle doit être patiente et chercher des ouvertures à cause de sa mobilité lente et de son mauvais désavantage. Son spécial bas, Swap, l’échange avec Mythra, dont le déplacement bien meilleur est idéal pour garder l’avantage.",
   "Pyra has vastly superior KO potential, damage output and range, with strong smash attacks, tilts and aerials.":
     "Pyra a un potentiel de KO, des dégâts et une portée largement supérieurs, avec de puissants smash, tilts et aériens.",
   "Almost all of her standard attacks are disjointed, and her forward smash reaches very far.":
@@ -4408,8 +4406,6 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "Prominence Revolt marche exceptionnellement bien en sortie de bouclier grâce à sa portée et à sa puissance.",
   "Swap lets her switch to Mythra and change playstyles on the fly.":
     "Swap lui permet de passer à Mythra et de changer de style de jeu à la volée.",
-  "Her mobility is very slow, so her approach is limited even against shorter-ranged characters.":
-    "Sa mobilité est très lente, donc son approche est limitée même contre des personnages à plus courte portée.",
   "High end lag makes her moves punishable after a single mistake.":
     "Un lag de fin élevé rend ses coups punissables après une seule erreur.",
   "Prominence Revolt covers very little horizontal distance, which makes recovering difficult.":
@@ -4690,4 +4686,24 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "Ses Lightning Kicks ont de minuscules sweetspots et des sourspots très faibles, ce qui les rend risqués.",
   "Her normal attacks have poor range, and all her special moves are punishable if misused.":
     "Ses attaques normales ont une mauvaise portée, et tous ses coups spéciaux sont punissables s’ils sont mal utilisés.",
+  "Pyra and Mythra are two halves of one fighter, the Aegis, and their down special, Swap, switches between them. Mythra is the faster half: a very quick, offense-oriented swordswoman with far better mobility and less ending lag, who excels at whiff punishing, tech-chasing, combos and stage control, but has weaker attacks and shorter range. Pyra is the stronger half: slow and hard-hitting, with long, disjointed range, who excels at punishing. Mythra suits the neutral game and horizontal recovery; Pyra brings the stronger punishes and KOs.":
+    "Pyra et Mythra sont les deux moitiés d’un même combattant, l’Aegis, et leur spécial bas, Swap, passe de l’une à l’autre. Mythra est la moitié rapide : une épéiste très vive et tournée vers l’attaque, avec une bien meilleure mobilité et moins de lag de fin, qui excelle à punir les coups dans le vide, au tech-chase, aux combos et au contrôle du terrain, mais avec des attaques plus faibles et une portée plus courte. Pyra est la moitié forte : lente et aux coups lourds, avec une longue portée disjointe, qui excelle à punir. Mythra convient au neutral et au retour horizontal ; Pyra apporte les punitions et les KO les plus forts.",
+  "Mythra has the fastest initial dash in the game, and some of the fastest dashing, walking and air speeds.":
+    "Mythra a le dash initial le plus rapide du jeu, et parmi les meilleures vitesses de course, de marche et aériennes.",
+  "Mythra's tilts are very quick and start or extend combos, and her neutral attack comes out on frame 2.":
+    "Les tilts de Mythra sont très rapides et lancent ou prolongent des combos, et son attaque neutre sort à la frame 2.",
+  "Foresight: when Mythra dodges just before being hit, she takes about half the damage and no knockback, and the opponent is slowed, which gives her a free punish.":
+    "Foresight : quand Mythra esquive juste avant d’être touchée, elle subit environ la moitié des dégâts et aucun knockback, et l’adversaire est ralenti, ce qui lui offre une punition gratuite.",
+  "Photon Edge is a burst option that is difficult to challenge, and it also works as a horizontal recovery.":
+    "Photon Edge est une option de burst difficile à contester, et sert aussi de retour horizontal.",
+  "Pyra's mobility is very slow, so her approach is limited even against shorter-ranged characters.":
+    "La mobilité de Pyra est très lente, si bien que son approche est limitée même contre des personnages à plus courte portée.",
+  "Mythra severely lacks KO options and her damage output is very poor; her smash attacks only KO at moderately high percents.":
+    "Mythra manque cruellement d’options de KO et ses dégâts sont très faibles ; ses smash ne mettent KO qu’à des pourcentages assez élevés.",
+  "Mythra's recovery is very exploitable: Ray of Punishment is almost strictly vertical, and Photon Edge leaves her helpless.":
+    "Le retour de Mythra est très exploitable : Ray of Punishment est presque strictement vertical, et Photon Edge la laisse sans défense.",
+  "Foresight also gives Mythra the slowest dodges in the game, which leaves her open to grabs.":
+    "Foresight donne aussi à Mythra les esquives les plus lentes du jeu, ce qui l’expose aux saisies.",
+  "Most of Mythra's moves are unsafe on shield unless they are spaced properly.":
+    "La plupart des coups de Mythra ne sont pas sûrs sur bouclier s’ils ne sont pas bien espacés.",
 };

@@ -4398,8 +4398,6 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "復帰は直線的で読まれやすく、飛翔の奇跡には身を守る攻撃判定がありません。",
   "Most characters outperform him in one area or another.":
     "ほとんどのキャラは、どこかの分野でピットを上回ります。",
-  "Pyra is the stronger half of the Aegis: a slow, hard-hitting swordswoman with long, disjointed range who excels at punishing. She must be patient and look for openings because of her slow mobility and poor disadvantage state. Her down special, Swap, switches her with Mythra, whose far better movement is best for keeping the advantage.":
-    "ホムラは「天の聖杯」の2人のうち力の強いほうです。遅くて一撃が重い女性剣士で、武器判定の長いリーチがあり、反撃が得意です。機動力が低く不利状況も弱いので、我慢強く隙を探す必要があります。下必殺ワザのチェンジでヒカリと交代します。ヒカリは動きがはるかに優れていて、有利を保つのに最適です。",
   "Pyra has vastly superior KO potential, damage output and range, with strong smash attacks, tilts and aerials.":
     "ホムラは撃墜力、ダメージ量、リーチがはるかに上で、スマッシュ攻撃、強攻撃、空中攻撃が強力です。",
   "Almost all of her standard attacks are disjointed, and her forward smash reaches very far.":
@@ -4408,8 +4406,6 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "プロミネンスリボルトは、リーチと威力のおかげで、ガーキャンから並外れてうまく使えます。",
   "Swap lets her switch to Mythra and change playstyles on the fly.":
     "チェンジでヒカリに交代し、その場で戦い方を変えられます。",
-  "Her mobility is very slow, so her approach is limited even against shorter-ranged characters.":
-    "機動力がとても低いので、自分よりリーチの短いキャラが相手でも接近が限られます。",
   "High end lag makes her moves punishable after a single mistake.":
     "後隙が大きいので、一度ミスするとワザに反撃を受けます。",
   "Prominence Revolt covers very little horizontal distance, which makes recovering difficult.":
@@ -4690,4 +4686,24 @@ export const OVERVIEW_TEXT: Record<string, string> = {
     "稲妻キックはスイートスポットがとても小さく、それ以外の当たりはとても弱いので、リスクがあります。",
   "Her normal attacks have poor range, and all her special moves are punishable if misused.":
     "通常攻撃はリーチが短く、必殺ワザはどれも使い方を誤ると反撃を受けます。",
+  "Pyra and Mythra are two halves of one fighter, the Aegis, and their down special, Swap, switches between them. Mythra is the faster half: a very quick, offense-oriented swordswoman with far better mobility and less ending lag, who excels at whiff punishing, tech-chasing, combos and stage control, but has weaker attacks and shorter range. Pyra is the stronger half: slow and hard-hitting, with long, disjointed range, who excels at punishing. Mythra suits the neutral game and horizontal recovery; Pyra brings the stronger punishes and KOs.":
+    "ホムラとヒカリは二人で一人のファイターで、下必殺ワザのチェンジで交代します。ヒカリは速い方です。とても素早い攻め重視の剣士で、機動力がはるかに良く後隙も小さく、空振りへの反撃、受け身狩り、コンボ、ステージの支配が得意ですが、攻撃は弱くリーチも短めです。ホムラは強い方です。遅く一撃が重い剣士で、リーチが長く武器判定があり、反撃が得意です。ヒカリは立ち回りと横方向の復帰に向き、ホムラはより強い反撃と撃墜を担います。",
+  "Mythra has the fastest initial dash in the game, and some of the fastest dashing, walking and air speeds.":
+    "ヒカリはステップが全ファイター中最速で、走行速度、歩行速度、空中横移動速度もトップクラスです。",
+  "Mythra's tilts are very quick and start or extend combos, and her neutral attack comes out on frame 2.":
+    "ヒカリの強攻撃はとても速く、コンボの始動や継続になり、弱攻撃は2フレームで出ます。",
+  "Foresight: when Mythra dodges just before being hit, she takes about half the damage and no knockback, and the opponent is slowed, which gives her a free punish.":
+    "因果律予測：ヒカリが攻撃を受ける直前に回避すると、ダメージは約半分でふっとばず、相手がスローになるので、確実に反撃できます。",
+  "Photon Edge is a burst option that is difficult to challenge, and it also works as a horizontal recovery.":
+    "フォトンエッジは対処しにくい奇襲ワザで、横方向の復帰にも使えます。",
+  "Pyra's mobility is very slow, so her approach is limited even against shorter-ranged characters.":
+    "ホムラは機動力がとても低く、リーチの短い相手にさえ近づく手段が限られます。",
+  "Mythra severely lacks KO options and her damage output is very poor; her smash attacks only KO at moderately high percents.":
+    "ヒカリは撃墜手段がひどく乏しく、ダメージ量もとても低いです。スマッシュ攻撃もやや高めの％でないと撃墜できません。",
+  "Mythra's recovery is very exploitable: Ray of Punishment is almost strictly vertical, and Photon Edge leaves her helpless.":
+    "ヒカリの復帰はとても狙われやすいです。パニッシュメントレイはほぼ真上にしか進まず、フォトンエッジのあとはしりもち落下になります。",
+  "Foresight also gives Mythra the slowest dodges in the game, which leaves her open to grabs.":
+    "因果律予測のせいで、ヒカリの回避は全ファイター中最も遅く、つかみに弱くなります。",
+  "Most of Mythra's moves are unsafe on shield unless they are spaced properly.":
+    "ヒカリのワザの多くは、間合いをきちんと取らないとガードされたときに反撃を受けます。",
 };

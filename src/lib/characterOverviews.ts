@@ -853,7 +853,7 @@ export const CHARACTER_OVERVIEWS: Partial<Record<GameKey, Record<string, Charact
     },
     // Round 937: from guides set aside earlier as thin, re-read for what they do say about how the character plays.
     "wii-fit-trainer": {
-      source: { title: "An Advancing Beginners' Guide to Get Fit", url: "https://smashboards.com/guides/", by: "StarPetal (Smashboards)", written: "October 2020" },
+      source: { title: "An Advancing Beginners' Guide to Get Fit", url: "https://smashboards.com/guides/an-advancing-beginners-guide-to-get-fit.1269/", by: "StarPetal (Smashboards)", written: "October 2020" },
       playstyle: {
         en: "An unusual character: she jumps oddly, stalls in the air with her side special, and heals with yoga. Her edge play is where she shines, with a spike on her side special that catches even skilled players. Switch between aggressive and passive play, go for combos rather than relying on healing, and look for spikes.",
       },
