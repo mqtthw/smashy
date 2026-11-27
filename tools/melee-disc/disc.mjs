@@ -127,9 +127,16 @@ export function actions(disc, code) {
       else if (cmd === 0x0b) {
         const w3 = d.u32(p + 12);
         // Also the bone it is on (8 bits from bit 11) and its size (word 1's top 16 bits, in 1/256 units), round 975.
-        events.push({ frame, what: "hitbox", bone: (w >>> 11) & 0xff, size: d.u32(p + 4) >>> 16, offset: [d.data.readInt16BE(p + 10) / 256, d.data.readInt16BE(p + 8) / 256, d.data.readInt16BE(p + 6) / 256], damage: w & 0x3ff, angle: w3 >>> 23, growth: (w3 >>> 14) & 0x1ff, set: (w3 >>> 5) & 0x1ff, base: d.u32(p + 16) >>> 23 });
+        // Its number (3 bits after the command, lb/types.h spawn_hitbox_0.id), round 1005: lower numbers win a tie.
+        // Its offset from the bone, in the bone's own x, y, z (round 1005, ftaction.c ftAction_8007121C: x is word 1's low
+        // half, at +6, and z is at +10; until round 1005 this read them the other way round).
+        events.push({ frame, what: "hitbox", id: (w >>> 23) & 7, bone: (w >>> 11) & 0xff, size: d.u32(p + 4) >>> 16, offset: [d.data.readInt16BE(p + 6) / 256, d.data.readInt16BE(p + 8) / 256, d.data.readInt16BE(p + 10) / 256], damage: w & 0x3ff, angle: w3 >>> 23, growth: (w3 >>> 14) & 0x1ff, set: (w3 >>> 5) & 0x1ff, base: d.u32(p + 16) >>> 23 });
       } else if (cmd === 0x17) events.push({ frame, what: "free" });
       else if (cmd === 0x10) events.push({ frame, what: "clear" });
+      // Round 1005 (lb/types.h): "3C" switches off one hitbox by its number; "30" / "34" change one's damage / size.
+      else if (cmd === 0x0f) events.push({ frame, what: "clearOne", id: w & 0x3ffffff });
+      else if (cmd === 0x0c) events.push({ frame, what: "redamage", id: (w >>> 23) & 7, damage: w & 0x7fffff });
+      else if (cmd === 0x0d) events.push({ frame, what: "resize", id: (w >>> 23) & 7, size: w & 0x7fffff });
       // "7C": show one variant of a model part (lb/types.h set_dobj_flags: a 7-bit part, a 19-bit variant), round 973.
       else if (cmd === 0x1f) events.push({ frame, what: "part", part: (w << 6) >> 25, variant: (w << 13) >> 13 });
       p += cmd === 0x0a || cmd === 0x0b ? 20 : cmd === 0x11 ? 12 : 4;

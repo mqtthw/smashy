@@ -1,6 +1,7 @@
 "use client";
 // Does it kill?'s card picture (round 1001, Matthew: "Update the card when done"): one real Melee kill, the way the
-// quiz now shows it (KillScene.tsx). Captain Falcon's knee (forward air, its kill hit) meets Fox a little past the
+// quiz now shows it (KillScene.tsx). Captain Falcon's knee (forward air, its kill hit, spaced so the sweetspot is the
+// hitbox that lands: killSetups.data.ts) meets Fox a little past the
 // percent it starts to kill from, in the middle of Battlefield (its real shape and platforms, killVisuals.data.ts);
 // the hit freezes for the game's hitlag, Fox flies off along the launch the quiz works out (frameGames.ts,
 // diSurvival.ts) while the camera pulls back, and a KO flashes at the blast line. The real outlines (kill set),
@@ -8,9 +9,10 @@
 // outlines load, or where they aren't served (the public copy), the plain picture given as `fallback` shows. With
 // reduced motion: the last frame.
 import { useEffect, useRef, useState } from "react";
-import { sceneFromLook } from "@/lib/diVisuals";
+import { hitPose, hurtboxHit, hurtboxesAt } from "@/lib/diVisuals";
 import { STAGES, fly, hitlag, knockback, launchAngle } from "@/lib/diSurvival";
 import { killPercent } from "@/lib/frameGames";
+import { KILL_SETUPS } from "@/lib/killSetups.data";
 import { KILL_LOOKS, STAGE_SHAPES } from "@/lib/killVisuals.data";
 import { MELEE_STATS } from "@/lib/characterStats.melee";
 import { MELEE_MOVES } from "@/lib/meleeMoves.data";
@@ -35,8 +37,15 @@ function solve() {
   const angle = launchAngle(KNEE, 1);
   const flight = fly(knockback(KNEE, percent, MELEE_STATS.fox.weight ?? 100), angle, "fox", 0, STAGE);
   const [x1, y1] = flight.points[Math.min(1, flight.points.length - 1)];
-  const scene = sceneFromLook(LOOK, "fox", 0, 1, (Math.atan2(y1, x1) * 180) / Math.PI, percent, () => 0.5);
-  return scene ? { scene, flight, percent } : null;
+  // Where they stand (round 1005): the spacing where the knee's sweetspot is the hit that lands (lib/killSetup.ts).
+  const setup = KILL_SETUPS["captain-falcon-fair|fox"];
+  if (!setup) return null;
+  const [ax, ay, , hit] = setup;
+  const box = LOOK.all.find(([fr]) => fr === hit)?.[2].find((b) => b[4] === 1);
+  const touched = box ? hurtboxHit(hurtboxesAt("fox", 0, -1), ax + box[1], ay + box[2], box[3]) : null;
+  const pose = hitPose(touched?.[5] ?? 1, (Math.atan2(y1, x1) * 180) / Math.PI, percent, () => 0.5);
+  const scene = { ax, ay, hit, windup: hit - 1, frames: LOOK.frames, state: LOOK.state, pose };
+  return { scene, flight, percent };
 }
 
 export default function KillArt({ fallback }: { fallback: React.ReactNode }) {
@@ -116,7 +125,7 @@ export default function KillArt({ fallback }: { fallback: React.ReactNode }) {
       }
       // Falcon: standing, the knee up to its hit, held through the freeze, the rest of it, then standing.
       const fFrame = swing < 0 ? 0 : frozen < 0 ? Math.min(scene.hit, swing + 1) : flying <= 0 ? scene.hit : scene.hit + flying;
-      if (fFrame === 0 || fFrame > scene.frames) fig(figs.falcon, "captain-falcon", "Wait", 1, px(scene.ax), py(0), 1, cam.s, INK);
+      if (fFrame === 0 || fFrame > scene.frames) fig(figs.falcon, "captain-falcon", "Fall", 1, px(scene.ax), py(scene.ay), 1, cam.s, INK);
       else fig(figs.falcon, "captain-falcon", scene.state, fFrame, px(scene.ax), py(scene.ay), 1, cam.s, INK);
       // Fox: standing, his hit pose shaking through the freeze, then along the launch.
       const shake = frozen >= 0 && flying <= 0 ? (frozen % 2 ? 0.6 : -0.6) : 0;

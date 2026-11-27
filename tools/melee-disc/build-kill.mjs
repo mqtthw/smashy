@@ -38,10 +38,10 @@ if (disc.id !== "GALE01" || disc.version !== 2) throw new Error(`This is ${disc.
 const CODES = { fox: "Fx", falco: "Fc", marth: "Ms", sheik: "Sk", "captain-falcon": "Ca", peach: "Pe", jigglypuff: "Pr", pikachu: "Pk", samus: "Ss", ganondorf: "Gn", luigi: "Lg", "dr-mario": "Dr" };
 // Smashy's move names to the game's states (as build-moves.mjs reads them).
 const STATES = { jab: "Attack11", dashAttack: "AttackDash", ftilt: "AttackS3S", utilt: "AttackHi3", dtilt: "AttackLw3", fsmash: "AttackS4", usmash: "AttackHi4", dsmash: "AttackLw4", nair: "AttackAirN", fair: "AttackAirF", bair: "AttackAirB", uair: "AttackAirHi", dair: "AttackAirLw" };
-const HIT_POSES = ["DamageFlyHi", "DamageFlyN", "DamageFlyLw", "DamageFlyTop", "DamageFlyRoll", "DamageFall"];
+const HIT_POSES = ["DamageFlyHi", "DamageFlyN", "DamageFlyLw", "DamageFlyTop", "DamageFlyRoll", "DamageFall", "Fall"];
 // Some characters name standing "Wait1", some "Wait".
 const ALIAS = { Wait: ["Wait1", "Wait"] };
-const STILL = ["Wait", "DamageFall"];
+const STILL = ["Wait", "DamageFall", "Fall"]; // "Fall" (round 1005): in the air, before an aerial or a hit from below
 
 const r2 = (v) => Math.round(v * 100) / 100;
 const scaleOf = (code) => {
@@ -71,6 +71,12 @@ const side = (m, p, scale) => {
 
 const pool = killMoves();
 const looks = {};
+// Each box's hit (damage, angle, growth, base), by move, and the move's hits that send by percent, strongest first:
+// if the strongest can never be the hit that lands (Jigglypuff's up smash: its 15% box is inside the 14% one, which
+// is checked first), the setups below fall back to the next (round 1005).
+const specOf = (e) => `${e.damage}|${e.angle}|${e.growth}|${e.base}`;
+const boxSpecs = {};
+const candidates = {};
 const need = {}; // who -> the states to draw
 for (const { char, move, data } of pool) {
   const code = CODES[char];
@@ -93,8 +99,51 @@ for (const { char, move, data } of pool) {
     const low = Math.min(...model.tris.flatMap((t) => t.map((v) => place(v, model.joints, world)[1]))) * scale;
     boxes.push([f, at[0], at[1], r2((box.size / 256) * scale), r2(low)]);
   }
-  looks[`${char}-${move}`] = { who: char, state, frames, hit, aerial: state.startsWith("AttackAir"), boxes, shot: null };
-  (need[char] ??= new Set(["Wait"])).add(state);
+  // Every hitbox out on each frame (round 1005, Matthew: "the correct hitbox matches up to the hurtbox, for example
+  // marth tippers"), so the picture can be set up the way the game decides a hit: the first frame any of the move's
+  // hitboxes touches, and of those touching on that frame, the lowest number. Each: [number, x, y, radius, 1 if it's
+  // the kill hit]. A box made on frame F is out from F; "clear" on frame N takes them all away from N, "3C" one.
+  const steps = a.events.filter((e) => ["hitbox", "clear", "clearOne", "resize", "redamage"].includes(e.what));
+  const active = new Map();
+  const all = [];
+  let next = 0;
+  // The hit window: a victim can only be hit once by the hitboxes out between two clears (a multi-hit move clears
+  // and makes new ones to hit again), so each frame carries its window's number.
+  let win = 0;
+  let cleared = false;
+  for (let f = Math.max(1, steps[0].frame); f <= frames; f++) {
+    while (next < steps.length && steps[next].frame <= f) {
+      const e = steps[next++];
+      if (e.what === "hitbox") active.set(e.id, { e, size: e.size, kill: mine.includes(e) });
+      else if (e.what === "clear") {
+        active.clear();
+        cleared = true;
+      }
+      else if (e.what === "clearOne") active.delete(e.id);
+      else if (e.what === "resize" && active.has(e.id)) active.get(e.id).size = e.size;
+      else if (e.what === "redamage" && active.has(e.id)) Object.assign(active.get(e.id), { kill: false, changed: true });
+    }
+    if (!active.size) {
+      if (next >= steps.length) break;
+      continue;
+    }
+    const world = posed(model, a.anim, f);
+    const low = Math.min(...model.tris.flatMap((t) => t.map((v) => place(v, model.joints, world)[1]))) * scale;
+    const sorted = [...active.entries()].sort(([x], [y]) => x - y);
+    const list = sorted.map(([id, b]) => [id, ...side(world[b.e.bone], b.e.offset, scale), r2((b.size / 256) * scale), b.kill ? 1 : 0]);
+    (boxSpecs[`${char}-${move}`] ??= []).push(sorted.map(([, b]) => (b.changed ? "" : specOf(b.e))));
+    if (cleared && all.length) win++;
+    cleared = false;
+    all.push([f, r2(low), list, win]);
+  }
+  looks[`${char}-${move}`] = { who: char, state, frames, hit, aerial: state.startsWith("AttackAir"), boxes, shot: null, all };
+  const seen = new Set();
+  candidates[`${char}-${move}`] = a.events
+    .filter((e) => e.what === "hitbox" && e.set === 0 && e.growth > 0)
+    .sort((x, y) => y.damage - x.damage || y.base - x.base)
+    .filter((e) => !seen.has(specOf(e)) && seen.add(specOf(e)))
+    .map((e) => ({ spec: specOf(e), kill: { damage: e.damage, angle: e.angle, base: e.base, growth: e.growth } }));
+  (need[char] ??= new Set(["Wait", "Fall"])).add(state);
 }
 for (const who of DI_VICTIMS) for (const s of ["Wait", ...HIT_POSES]) (need[who] ??= new Set()).add(s);
 
@@ -210,6 +259,51 @@ for (const [key, [file, joints]] of Object.entries(STAGE_FILES)) {
   console.log(key, "body", loops[0].length - 1, "points, platforms", plats.length, loops.length > 1 ? `(dropped ${loops.length - 1} small loops)` : "");
 }
 
+// ---------- Where the fighters stand (round 1005) ----------
+// For every move and victim, the setup lib/killSetup.ts finds (the kill hitbox is the one that lands, the most spaced,
+// an aerial as low as it can be; the victim in the air when nothing reaches them standing). Worked out here once, so
+// the browser doesn't search: [attacker x, attacker y, facing, the frame it connects, the victim's height].
+const { killSetup } = await import("../../src/lib/killSetup.ts");
+const setups = {};
+let airborne = 0;
+const missing = [];
+const hits = {};
+for (const [key, look] of Object.entries(looks)) {
+  // The strongest hit that lands on at least one victim; the quiz uses that hit's numbers (KILL_HITS) when it isn't
+  // the move data's.
+  for (const [i, c] of candidates[key].entries()) {
+    const tried = i === 0 ? look : { ...look, all: look.all.map(([f, low, boxes, w], k) => [f, low, boxes.map((b, j) => [...b.slice(0, 4), boxSpecs[key][k][j] === c.spec ? 1 : 0]), w]) };
+    if (!tried.all.some(([, , boxes]) => boxes.some((b) => b[4] === 1))) continue;
+    const found = DI_VICTIMS.map((v) => [v, killSetup(tried, v)]).filter(([, s]) => s);
+    if (!found.length) continue;
+    if (i > 0) {
+      looks[key] = tried;
+      hits[key] = c.kill;
+      console.log(key, "uses its", c.kill.damage + "% hit: the stronger one never lands first");
+    }
+    for (const [v, s] of found) {
+      if (s.vy > 0) airborne++;
+      setups[`${key}|${v}`] = [s.ax, s.ay, s.face, s.frame, s.vy];
+    }
+    break;
+  }
+  for (const v of DI_VICTIMS) if (!setups[`${key}|${v}`]) missing.push(`${key} on ${v}`);
+}
+fs.writeFileSync(
+  "src/lib/killSetups.data.ts",
+  `// MADE BY tools/melee-disc/build-kill.mjs: don't edit by hand. Where Does it kill?'s fighters stand for each move
+// ("<attacker>-<move>|<victim>"), worked out by lib/killSetup.ts from the game's hitboxes and hurtboxes:
+// [attacker x, attacker y, facing (1: toward the victim), the frame the kill hit connects, the victim's height].
+// The victim stands at x 0. A move missing for a victim has no spacing where its kill hit lands on them.
+export type KillSetupRow = [ax: number, ay: number, face: 1 | -1, frame: number, vy: number];
+export const KILL_SETUPS: Record<string, KillSetupRow> = ${JSON.stringify(setups).replace(/\],"/g, '],\n  "').replace(/^\{/, "{\n  ").replace(/\}$/, ",\n}")};
+
+/** Moves whose strongest hit can never be the one that lands first: the hit the quiz uses instead. */
+export const KILL_HITS: Record<string, { damage: number; angle: number; base: number; growth: number }> = ${JSON.stringify(hits)};
+`,
+);
+console.log(Object.keys(setups).length, "setups,", airborne, "with the victim in the air; none for:", missing.join(", ") || "-");
+
 // ---------- The data file ----------
 
 const line = (v) => JSON.stringify(v).replace(/"(\w+)":/g, "$1: ").replace(/,/g, ", ");
@@ -223,7 +317,12 @@ fs.writeFileSync(
 // from its collision, as it stands at the start (moving parts left out: see the builder).
 import type { DiMoveLook } from "./diVisuals.data";
 
-export const KILL_LOOKS: Record<string, DiMoveLook> = {
+/** Every hitbox out on each frame of a move: [frame, the body's lowest point, [number, x, y, radius, 1 if the kill hit][],
+ *  the hit window (a victim is hit at most once a window; a multi-hit move's windows are split by clears)]. */
+export type HitFrame = [frame: number, low: number, boxes: [id: number, x: number, y: number, radius: number, kill: 0 | 1][], window: number];
+export type KillLook = DiMoveLook & { all: HitFrame[] };
+
+export const KILL_LOOKS: Record<string, KillLook> = {
 ${Object.entries(looks).map(([k, m]) => `  ${JSON.stringify(k)}: ${line(m)},`).join("\n")}
 };
 

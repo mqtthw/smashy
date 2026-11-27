@@ -104,8 +104,9 @@ export function launchAngle(move: Pick<DiMove, "angle">, facing: 1 | -1): number
 
 export type Flight = { points: [number, number][]; ko: "top" | "side" | "bottom" | null; frames: number; landed: boolean };
 
-/** Flies a launch from (x, 0) until it is KO'd, lands back on the stage, or the knockback has run out. */
-export function fly(kb: number, angleDeg: number, victim: Victim, x0: number, stage: Stage = STAGE): Flight {
+/** Flies a launch from (x, y0) until it is KO'd, lands back on the stage, or the knockback has run out. `y0` (round
+ *  1005): how high the victim was hit (Does it kill?'s up airs can hit someone in the air); 0 for standing. */
+export function fly(kb: number, angleDeg: number, victim: Victim, x0: number, stage: Stage = STAGE, y0 = 0): Flight {
   const { gravity, fallSpeed } = MELEE_STATS[victim];
   const cos = Math.cos(rad(angleDeg));
   const sin = Math.sin(rad(angleDeg));
@@ -113,7 +114,7 @@ export function fly(kb: number, angleDeg: number, victim: Victim, x0: number, st
   let speed = kb * 0.03;
   let own = 0; // the character's own vertical speed
   let x = x0;
-  let y = 0;
+  let y = y0;
   const points: [number, number][] = [[x, y]];
   for (let f = 1; f <= 600; f++) {
     speed = Math.max(0, speed - 0.051);
@@ -267,14 +268,14 @@ export type AnalogDi = { turn: number; stickAngle: number | null; flight: Flight
  * between "none" and "straight across"), so they are tried half a degree apart and the one that ends furthest
  * from the blast lines wins. `stickAngle`: where to hold the stick for it (null: holding nothing is best).
  */
-export function bestAnalogDi(kb: number, angle: number, victim: Victim, x0: number, stage: Stage = STAGE): AnalogDi {
+export function bestAnalogDi(kb: number, angle: number, victim: Victim, x0: number, stage: Stage = STAGE, y0 = 0): AnalogDi {
   const range = analogDiRange(angle);
-  let best: AnalogDi = { turn: 0, stickAngle: null, flight: fly(kb, angle, victim, x0, stage) };
+  let best: AnalogDi = { turn: 0, stickAngle: null, flight: fly(kb, angle, victim, x0, stage, y0) };
   let bestMargin = margin(best.flight, stage);
   const turns = [range.min, range.max];
   for (let t = Math.ceil(range.min * 2) / 2; t <= range.max; t += 0.5) if (t !== 0) turns.push(t);
   for (const turn of turns) {
-    const flight = fly(kb, angle + turn, victim, x0, stage);
+    const flight = fly(kb, angle + turn, victim, x0, stage, y0);
     const m = margin(flight, stage);
     if (m <= bestMargin) continue;
     // Where the stick sits for this turn: straight across the launch at the extremes, nearer the launch for less.

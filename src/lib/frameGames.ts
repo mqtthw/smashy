@@ -10,6 +10,7 @@
 //   no DI. Yes or no. Hard mode asks the same with the best DI held.
 import { MELEE_STATS } from "./characterStats.melee";
 import { DI_VICTIMS, STAGES, STAGE_KEYS, bestAnalogDi, fly, knockback, launchAngle, type Flight, type StageKey, type Victim } from "./diSurvival";
+import { KILL_HITS, KILL_SETUPS } from "./killSetups.data";
 import type { KillView } from "./ultimateKill";
 import { MELEE_MOVES, MOVE_CHARS, MOVE_KEYS, type MoveChar, type MoveData, type MoveKey } from "./meleeMoves.data";
 
@@ -76,11 +77,15 @@ export function newMoveGuess(rand: () => number, table: MoveTable = MELEE_MOVES)
  * percent it kills from through the best DI) are worked out for every question, so the stick can always be shown.
  */
 export type KillQuestion = { attacker: MoveChar; move: MoveKey; victim: Victim; stage: StageKey; percent: number; killsFrom: number; kills: boolean; flight: Flight; hard: boolean; stickAngle: number | null; noDi: Flight; noDiFrom: number; diFrom: number };
-const launchOf = (kill: NonNullable<MoveData["kill"]>, pct: number, victim: Victim) => ({ kb: knockback(kill, pct, MELEE_STATS[victim].weight ?? 100), angle: launchAngle(kill, 1) });
-/** The lowest percent at which a hit kills from the middle of a stage with no DI, or null when it doesn't by 300%. */
-export function killPercent(kill: NonNullable<MoveData["kill"]>, victim: Victim, stage: StageKey): number | null {
+/** The launch for a hit. `vy` (round 1005): how high the victim was hit; in the air, the Sakurai angle (361) is 45
+ *  degrees (PlCo.dat common data x144, ftCo_Damage.c ftCo_Damage_CalcAngle). */
+const launchOf = (kill: NonNullable<MoveData["kill"]>, pct: number, victim: Victim, vy = 0) => ({ kb: knockback(kill, pct, MELEE_STATS[victim].weight ?? 100), angle: vy > 0 && kill.angle === 361 ? AIR_SAKURAI : launchAngle(kill, 1) });
+const AIR_SAKURAI = 45;
+/** The lowest percent at which a hit kills from the middle of a stage with no DI, or null when it doesn't by 300%.
+ *  `vy`: how high the victim is when hit (round 1005). */
+export function killPercent(kill: NonNullable<MoveData["kill"]>, victim: Victim, stage: StageKey, vy = 0): number | null {
   // Knockback only grows with percent, so the first percent that kills can be found by halving.
-  const dies = (pct: number) => fly(launchOf(kill, pct, victim).kb, launchOf(kill, pct, victim).angle, victim, 0, STAGES[stage]).ko !== null;
+  const dies = (pct: number) => fly(launchOf(kill, pct, victim, vy).kb, launchOf(kill, pct, victim, vy).angle, victim, 0, STAGES[stage], vy).ko !== null;
   if (!dies(300)) return null;
   let lo = 0;
   let hi = 300;
@@ -95,41 +100,52 @@ export function killPercent(kill: NonNullable<MoveData["kill"]>, victim: Victim,
  * The lowest percent at which a hit kills from the middle of a stage whatever an analog stick holds. Looked for
  * one percent at a time from where it kills with no DI: with DI in play a higher percent isn't always worse at once.
  */
-export function killPercentBestDi(kill: NonNullable<MoveData["kill"]>, victim: Victim, stage: StageKey): number | null {
-  const from = killPercent(kill, victim, stage);
+export function killPercentBestDi(kill: NonNullable<MoveData["kill"]>, victim: Victim, stage: StageKey, vy = 0): number | null {
+  const from = killPercent(kill, victim, stage, vy);
   if (from === null) return null;
   for (let pct = from; pct <= 300; pct++) {
-    const { kb, angle } = launchOf(kill, pct, victim);
-    if (bestAnalogDi(kb, angle, victim, 0, STAGES[stage]).flight.ko) return pct;
+    const { kb, angle } = launchOf(kill, pct, victim, vy);
+    if (bestAnalogDi(kb, angle, victim, 0, STAGES[stage], vy).flight.ko) return pct;
   }
   return null;
 }
 /** The moves Does it kill? asks about: a hit that sends by percent, with real growth, upward or sideways (or the
  *  Sakurai angle). tools/melee-disc/build-kill.mjs draws each of these (round 1001). */
 export const killMoves = (): MoveRef[] => allMoves().filter((m) => m.data.kill && m.data.kill.growth >= 60 && (m.data.kill.angle <= 180 || m.data.kill.angle === 361));
-/** A hit near the percent where it starts to kill: half the questions a little above it, half a little below. */
+/** The hit a question is about: the move's own, or (round 1005) the one that really lands when the move's strongest
+ *  never can (killSetups.data.ts KILL_HITS: Jigglypuff's up smash). */
+export const killHitOf = (m: MoveRef) => KILL_HITS[`${m.char}-${m.move}`] ?? m.data.kill!;
+/**
+ * A hit near the percent where it starts to kill: half the questions a little above it, half a little below. Since
+ * round 1005 the situation is the one the picture shows (killSetups.data.ts, lib/killSetup.ts): where the move's kill
+ * hit really lands, and for a few moves (up airs and the like) with the victim in the air, launched from there.
+ */
 export function newKillQuestion(rand: () => number, hard = false): KillQuestion {
   const strong = killMoves();
   for (let i = 0; i < 200; i++) {
     const hit = pick(strong, rand);
     const victim = pick(DI_VICTIMS, rand);
     const stage = pick(STAGE_KEYS, rand);
-    const noDiFrom = killPercent(hit.data.kill!, victim, stage);
+    const setup = KILL_SETUPS[`${hit.char}-${hit.move}|${victim}`];
+    if (!setup) continue;
+    const vy = setup[4];
+    const kill = killHitOf(hit);
+    const noDiFrom = killPercent(kill, victim, stage, vy);
     if (noDiFrom === null || noDiFrom < 40 || noDiFrom > 160) continue; // the percents people actually die at
-    const diFrom = killPercentBestDi(hit.data.kill!, victim, stage);
+    const diFrom = killPercentBestDi(kill, victim, stage, vy);
     if (diFrom === null) continue;
     const killsFrom = hard ? diFrom : noDiFrom;
     const kills = rand() < 0.5;
     // Hard: a miss sits between the two answers when it can, where no DI dies and the best DI lives.
     const percent = Math.max(0, kills ? killsFrom + Math.floor(rand() * 25) : killsFrom - 1 - Math.floor(rand() * Math.max(6, hard ? killsFrom - noDiFrom + 6 : 22)));
-    const { kb, angle } = launchOf(hit.data.kill!, percent, victim);
-    const noDi = fly(kb, angle, victim, 0, STAGES[stage]);
-    const best = bestAnalogDi(kb, angle, victim, 0, STAGES[stage]);
+    const { kb, angle } = launchOf(kill, percent, victim, vy);
+    const noDi = fly(kb, angle, victim, 0, STAGES[stage], vy);
+    const best = bestAnalogDi(kb, angle, victim, 0, STAGES[stage], vy);
     const flight = hard ? best.flight : noDi;
     // The stick to show: the best DI here, or, when nothing saves them at this percent, the DI that lasts longest
     // (the best one a percent under where it kills through DI).
-    const last = launchOf(hit.data.kill!, diFrom - 1, victim);
-    const stickAngle = best.flight.ko ? bestAnalogDi(last.kb, last.angle, victim, 0, STAGES[stage]).stickAngle : best.stickAngle;
+    const last = launchOf(kill, diFrom - 1, victim, vy);
+    const stickAngle = best.flight.ko ? bestAnalogDi(last.kb, last.angle, victim, 0, STAGES[stage], vy).stickAngle : best.stickAngle;
     if ((flight.ko !== null) !== kills) continue; // DI in play: just above the line isn't always a kill
     return { attacker: hit.char as MoveChar, move: hit.move, victim, stage, percent, killsFrom, kills, flight, hard, stickAngle, noDi, noDiFrom, diFrom };
   }

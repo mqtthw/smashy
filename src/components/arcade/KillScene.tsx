@@ -1,15 +1,17 @@
 "use client";
 // Does it kill?'s picture for Melee (round 1001, Matthew: "rework the Does it Kill? game to have accurate visuals for
 // melee"). Everything drawn is the game's: the stage's own shape and platforms (its collision, killVisuals.data.ts),
-// the attacker doing the real move with its outline frame by frame (build-kill.mjs), placed the DI trainer's way so
-// the move's kill hitbox, on the frame it comes out, is on the victim (diVisuals.ts sceneFromLook), and the victim's
-// hit pose as the game picks it. Before the answer: both stand on the stage and the move plays up to the frame it
+// the attacker doing the real move with its outline frame by frame (build-kill.mjs), placed (since round 1005) where
+// the move's kill hitbox is the one that lands, the way the game decides it (lib/killSetup.ts), and the victim's hit
+// pose as the game picks it. Before the answer: both stand on the stage and the move plays up to the frame it
 // connects, over and over, with the percent over the victim. After: the hit freezes for the game's hitlag (damage / 3
 // + 3, at most 20 frames), then the victim flies along the launch the quiz worked out (diSurvival.ts) while the
 // camera pulls back to the blast lines; a KO flashes where it crosses one; the best DI's stick shows in the corner.
 // Where the outlines aren't served (the public copy) the fighters are plain dots. With reduced motion: still frames.
 import { useEffect, useRef, useState } from "react";
-import { hurtboxesAt, sceneFromLook } from "@/lib/diVisuals";
+import { hitPose, hurtboxHit, hurtboxesAt } from "@/lib/diVisuals";
+import type { Hurtbox } from "@/lib/diVisuals.data";
+import { KILL_HITS, KILL_SETUPS } from "@/lib/killSetups.data";
 import { hitlag } from "@/lib/diSurvival";
 import { KILL_LOOKS, STAGE_SHAPES } from "@/lib/killVisuals.data";
 import { loadOutlines, outlinePath, type Outlines } from "@/lib/outlines";
@@ -48,25 +50,32 @@ export default function KillScene({ q, answered, dialLabel }: { q: KillView; ans
     // The launch's direction as flown (the Sakurai angle already resolved), for the hit pose.
     const [x1, y1] = pts[Math.min(1, pts.length - 1)];
     const launchDeg = (Math.atan2(y1 - pts[0][1], x1 - pts[0][0]) * 180) / Math.PI;
+    // Where they stand (round 1005, killSetups.data.ts from lib/killSetup.ts): the spacing where the kill hit is the
+    // hitbox that lands, as the game decides it (Marth's tipper, spaced), an aerial as low as it can be, the victim in
+    // the air when nothing reaches them standing, a hit from behind done turned away.
+    const setup = KILL_SETUPS[`${q.attacker}-${q.move}|${q.victim}`];
+    if (!setup) return;
+    const [ax, ay, face, hitFrame, vy0] = setup;
+    const windup = hitFrame - 1;
+    // The hurtbox the kill hit touches, for the hit pose the game picks (low / middle / high).
+    const killBox = look.all.find(([f]) => f === hitFrame)?.[2].find((b) => b[4] === 1);
+    const boxes = hurtboxesAt(q.victim, 0, -1).map(([x1, y1, x2, y2, r, h]) => [x1, y1 + vy0, x2, y2 + vy0, r, h] as Hurtbox);
+    const touched = killBox ? hurtboxHit(boxes, ax + face * killBox[1], ay + killBox[2], killBox[3]) : null;
     // From 100%, the game rolls the dice for the spinning pose; here the same question always shows the same one.
-    const scene = sceneFromLook(look, q.victim, 0, 1, launchDeg, q.percent, () => ((q.percent * 7) % 10) / 10);
-    if (!scene) return;
-    // A hit from behind (back airs, and a couple of hits just behind the head): done facing away, it sends the way the
-    // attacker's back faces. So the attacker stands on the left facing left, mirrored about the victim's middle.
-    const boxes = hurtboxesAt(q.victim, 0, -1);
+    const pose = hitPose(touched?.[5] ?? 1, launchDeg, q.percent, () => ((q.percent * 7) % 10) / 10);
     const tx = boxes.length ? boxes.reduce((sum, b) => sum + (b[0] + b[2]) / 2, 0) / boxes.length : 0;
-    const back = scene.ax > tx;
-    const ax = back ? 2 * tx - scene.ax : scene.ax;
-    const face: 1 | -1 = back ? -1 : 1;
-    const damage = MELEE_MOVES[q.attacker as MoveChar]?.[q.move as MoveKey]?.kill?.damage ?? 10;
+    const damage = (KILL_HITS[`${q.attacker}-${q.move}`] ?? MELEE_MOVES[q.attacker as MoveChar]?.[q.move as MoveKey]?.kill)?.damage ?? 10;
     const freeze = hitlag(damage);
+    // Standing still before and after a move: on the ground, or (an aerial) falling in the air where it's done.
+    const idleState = look.aerial ? "Fall" : "Wait";
+    const scene = { hit: hitFrame, windup, frames: look.frames, state: look.state, ay, pose };
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Cameras: the whole main stage, close on the fighters, and the blast lines.
     const edge = Math.max(...shape.body.map(([x]) => Math.abs(x)));
     // Close enough to read the move (the fighters about a third of the picture tall), never past the stage's ends.
     const closeW = Math.min(edge * 2 + 50, Math.max(110, Math.abs(ax - tx) * 2 + 70));
-    const close = { x: (ax + tx) / 2, y: 16, s: Math.min(W / closeW, H / (closeW * 0.55)) };
+    const close = { x: (ax + tx) / 2, y: 16 + Math.max(vy0, ay) * 0.6, s: Math.min(W / closeW, H / (closeW * 0.55)) };
     const wideW = edge * 2 + 50;
     const wide = { x: 0, y: 8, s: Math.min(W / wideW, H / (wideW * 0.55)) };
     const farW = s.right - s.left + 24;
@@ -139,7 +148,7 @@ export default function KillScene({ q, answered, dialLabel }: { q: KillView; ans
       };
       // The attacker: standing, the move, held through the freeze, the rest of the move, then standing.
       if (moveFrame >= 1 && moveFrame <= scene.frames) figure(figs.a, q.attacker, scene.state, moveFrame, ax, scene.ay, face, RED);
-      else figure(figs.a, q.attacker, "Wait", 1, ax, 0, face, RED);
+      else figure(figs.a, q.attacker, idleState, 1, ax, look.aerial ? ay : 0, face, RED);
 
       // The launch and the victim.
       let vx = 0;
@@ -179,9 +188,9 @@ export default function KillScene({ q, answered, dialLabel }: { q: KillView; ans
         }
       } else if (!before && t >= scene.windup) {
         // The freeze: the hit pose, shaking.
-        figure(figs.v, q.victim, scene.pose, 1, (t % 2 ? 0.5 : -0.5), 0, -1, Math.floor(t / 3) % 2 ? "#ffffff" : GOLD);
+        figure(figs.v, q.victim, scene.pose, 1, (t % 2 ? 0.5 : -0.5), vy0, -1, Math.floor(t / 3) % 2 ? "#ffffff" : GOLD);
       } else {
-        figure(figs.v, q.victim, "Wait", 1, 0, 0, -1, GOLD);
+        figure(figs.v, q.victim, vy0 > 0 ? "Fall" : "Wait", 1, 0, vy0, -1, GOLD);
       }
       // The percent, before the answer.
       if (before) {
@@ -189,9 +198,9 @@ export default function KillScene({ q, answered, dialLabel }: { q: KillView; ans
         ctx.textAlign = "center";
         ctx.lineWidth = 5;
         ctx.strokeStyle = "#12102e";
-        ctx.strokeText(`${q.percent}%`, sx(0), sy(30));
+        ctx.strokeText(`${q.percent}%`, sx(0), sy(30 + vy0));
         ctx.fillStyle = GOLD;
-        ctx.fillText(`${q.percent}%`, sx(0), sy(30));
+        ctx.fillText(`${q.percent}%`, sx(0), sy(30 + vy0));
       }
       // The best DI's stick, after the answer: in the middle when holding nothing is best.
       if (!before && flightF >= 0) {
