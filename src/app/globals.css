@@ -1937,3 +1937,34 @@ body::before {
     font-size: 0.95rem;
   }
 }
+
+/* iPhone Safari and other touch screens (round 983). A hover effect stays on after a tap until the next tap
+   elsewhere, so the cards' lift and glow are only for real hovering; game controls take taps at once, without
+   double-tap zoom, the grey tap flash, or the long-press menu. */
+@media (hover: none) {
+  .arcade-tile:hover,
+  .arcade-side:not(:disabled):hover,
+  .arcade-pick:not(:disabled):hover,
+  .arcade-game:hover,
+  .arcade-game:hover .arcade-game-art > svg {
+    transform: none;
+  }
+  .arcade-answer:not(:disabled):hover {
+    box-shadow: none;
+  }
+}
+.arcade-side,
+.arcade-pick,
+.arcade-toggle,
+.arcade-seg > button,
+.arcade-promo-btn,
+.arcade-play-area button:not(.touch-none),
+.arcade-play-area [data-stick] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.arcade-play-area {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
