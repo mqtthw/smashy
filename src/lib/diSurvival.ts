@@ -133,6 +133,10 @@ export function fly(kb: number, angleDeg: number, victim: Victim, x0: number, st
   return { points, ko: null, frames: 600, landed: false };
 }
 
+/** A stick direction as an arrow ("·" for none). The up-right arrow carries U+FE0E so iPhones don't draw an emoji. */
+const ARROWS: Record<string, string> = { "0,0": "·", "1,0": "→", "-1,0": "←", "0,1": "↑", "0,-1": "↓", "1,1": "↗︎", "-1,1": "↖", "1,-1": "↘", "-1,-1": "↙" };
+export const stickArrow = (s: Stick) => ARROWS[`${s.x},${s.y}`] ?? "·";
+
 export const STICKS: Stick[] = [NO_STICK, { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }, { x: 1, y: 1 }, { x: -1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: -1 }];
 
 /** How far from death a flight ended: the smallest gap to the blast line it came closest to (0 when KO'd). */
@@ -142,7 +146,7 @@ export function margin(flight: Flight, stage: Stage = STAGE): number {
 }
 
 /** One hit, worked out: the knockback, the flight with no DI, with the player's DI, and the best the keyboard allows. */
-export function resolveHit(move: DiMove, percentBefore: number, victim: Victim, x0: number, facing: 1 | -1, stick: Stick, stage: Stage = STAGE) {
+export function resolveHit(move: Pick<DiMove, "damage" | "angle" | "base" | "growth">, percentBefore: number, victim: Victim, x0: number, facing: 1 | -1, stick: Stick, stage: Stage = STAGE) {
   const kb = knockback(move, percentBefore, MELEE_STATS[victim].weight ?? 100);
   const angle = launchAngle(move, facing);
   const at = (s: Stick) => fly(kb, diAngle(angle, s), victim, x0, stage);

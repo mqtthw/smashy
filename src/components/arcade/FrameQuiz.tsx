@@ -12,7 +12,7 @@ import { Confetti, Pips } from "@/components/arcade/ArcadeBits";
 import { showToast } from "@/components/ui/Toaster";
 import { setsRank, setsShare, type SetsRank } from "@/lib/arcade";
 import { characterName } from "@/lib/characters";
-import { STAGES } from "@/lib/diSurvival";
+import { STAGES, stickArrow } from "@/lib/diSurvival";
 import { QUIZ_LENGTH, newDuel, newKillQuestion, newMoveGuess, type Duel, type KillQuestion, type MoveGuess } from "@/lib/frameGames";
 import type { MessageKey } from "@/lib/i18n/base";
 import { useT } from "@/lib/i18n/client";
@@ -22,10 +22,10 @@ import { useStoredState } from "@/lib/useStoredState";
 
 export type QuizKind = "frames" | "move" | "kill";
 type Question = { kind: "frames"; q: Duel } | { kind: "move"; q: MoveGuess } | { kind: "kill"; q: KillQuestion };
-const MAKE: Record<QuizKind, () => Question> = {
+const MAKE: Record<QuizKind, (hard: boolean) => Question> = {
   frames: () => ({ kind: "frames", q: newDuel(Math.random) }),
   move: () => ({ kind: "move", q: newMoveGuess(Math.random) }),
-  kill: () => ({ kind: "kill", q: newKillQuestion(Math.random) }),
+  kill: (hard) => ({ kind: "kill", q: newKillQuestion(Math.random, hard) }),
 };
 const RANK: Record<SetsRank, MessageKey> = { perfect: "history.arcade.fq.rank.perfect", top8: "history.arcade.sets.rank.top8", pools: "history.arcade.sets.rank.pools", out: "history.arcade.sets.rank.out" };
 const MOVE: Record<MoveKey, MessageKey> = {
@@ -96,6 +96,7 @@ function KillStage({ q, answered }: { q: KillQuestion; answered: boolean }) {
       {attacker ? <image href={attacker} x={-size * 1.6} y={-size} width={size} height={size} /> : <circle cx={-size} cy={-size / 2} r={size / 2.4} fill="#ff6b5e" />}
       {answered ? (
         <>
+          {q.hard && <path d={`M${q.noDi.points.map(([x, y]) => `${x.toFixed(1)} ${(-y).toFixed(1)}`).join("L")}`} fill="none" stroke="rgb(255 255 255 / 0.45)" strokeWidth={2} strokeDasharray="6 7" />}
           <path d={path} pathLength={1} className="arcade-draw" style={{ animationDuration: `${secs}s` }} fill="none" stroke={q.kills ? "#ff5a4f" : "#ffd447"} strokeWidth={3.5} strokeLinecap="round" />
           <g>
             {victim ? <image href={victim} x={-size / 2} y={-size / 2} width={size} height={size} /> : <circle r={size / 2.4} fill="#ffd447" />}
@@ -123,7 +124,10 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   const [question, setQuestion] = useState<Question | null>(null);
   const [picked, setPicked] = useState<string | null>(null);
   const [answers, setAnswers] = useState<boolean[]>([]);
-  const [bestStored, setBest] = useStoredState(`arcade.fq.${kind}.best`, "0");
+  // Does it kill? has a hard mode, with a best score of its own.
+  const [hardStored, setHardStored] = useStoredState("arcade.fq.kill.hard", "");
+  const hard = kind === "kill" && hardStored === "1";
+  const [bestStored, setBest] = useStoredState(`arcade.fq.${kind}${hard ? ".hard" : ""}.best`, "0");
   const best = Number(bestStored) || 0;
   const mv = (m: MoveKey) => t(MOVE[m]);
   const named = (c: MoveChar, m: MoveKey) => t("history.arcade.fq.of", { char: who(c), move: mv(m) });
@@ -131,11 +135,11 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
   const start = () => {
     setAnswers([]);
     setPicked(null);
-    setQuestion(MAKE[kind]());
+    setQuestion(MAKE[kind](hard));
   };
   const next = () => {
     setPicked(null);
-    setQuestion(answers.length >= QUIZ_LENGTH ? null : MAKE[kind]());
+    setQuestion(answers.length >= QUIZ_LENGTH ? null : MAKE[kind](hard));
   };
 
   // Not started, or a round just ended.
@@ -155,6 +159,12 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
         ) : (
           <p className="text-sm">{t(`history.arcade.fq.${kind}.how`)}</p>
         )}
+        {kind === "kill" && (
+          <label className="flex items-start gap-2 text-sm">
+            <input type="checkbox" className="mt-1" checked={hard} onChange={(e) => { setHardStored(e.target.checked ? "1" : ""); setAnswers([]); }} />
+            <span><span className="font-bold">{t("history.arcade.fq.kill.hard")}</span> <span className="text-muted">{t("history.arcade.fq.kill.hardHow")}</span></span>
+          </label>
+        )}
         {best > 0 && <p className="text-meta text-muted">{t("history.arcade.sets.best", { n: best, total: QUIZ_LENGTH })}</p>}
         <div className="flex flex-wrap items-center gap-3">
           <button type="button" onClick={start} autoFocus className="btn btn-md btn-inverse">{t(over ? "history.arcade.hl.again" : "history.arcade.tech.start")}</button>
@@ -163,7 +173,7 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
               type="button"
               onClick={async () => {
                 try {
-                  await navigator.clipboard.writeText(`${t(`history.arcade.fq.${kind}.title`)}\n${setsShare(answers)}\nhttps://smashy.gg/arcade/${kind}`);
+                  await navigator.clipboard.writeText(`${t(`history.arcade.fq.${kind}.title`)}${hard ? ` (${t("history.arcade.fq.kill.hard")})` : ""}\n${setsShare(answers)}\nhttps://smashy.gg/arcade/${kind}`);
                   showToast(t("ui.copied"));
                 } catch {
                   showToast(t("ui.shareFailed"));
@@ -202,11 +212,12 @@ export default function FrameQuiz({ kind }: { kind: QuizKind }) {
     explain = t("history.arcade.fq.move.why", { move: named(q.char, q.answer) });
   } else {
     const { q } = question;
-    prompt = t("history.arcade.fq.kill.q", { hit: named(q.attacker, q.move), victim: who(q.victim), n: q.percent });
+    prompt = t(q.hard ? "history.arcade.fq.kill.qHard" : "history.arcade.fq.kill.q", { hit: named(q.attacker, q.move), victim: who(q.victim), n: q.percent });
     extra = <KillStage q={q} answered={picked !== null} />;
     options = [{ key: "yes", label: t("history.arcade.fq.kill.yes") }, { key: "no", label: t("history.arcade.fq.kill.no") }];
     answer = q.kills ? "yes" : "no";
-    explain = t("history.arcade.fq.kill.why", { n: q.killsFrom });
+    // On hard: when it kills whatever is held there is no direction to name; when they live, the one that saved them.
+    explain = !q.hard ? t("history.arcade.fq.kill.why", { n: q.killsFrom }) : q.kills ? t("history.arcade.fq.kill.whyHardDead", { n: q.killsFrom, m: q.noDiFrom }) : t("history.arcade.fq.kill.whyHard", { n: q.killsFrom, m: q.noDiFrom, arrow: stickArrow(q.bestStick) });
   }
   const pick = (key: string) => {
     if (picked) return;

@@ -7,9 +7,9 @@
 //   Matthew didn't like that in a game about speed.)
 // - Guess the move: a move's frames as a strip (startup, active, recovery); which of four moves is it.
 // - Does it kill?: a move, a victim, a percent and a stage; flown with the DI trainer's maths (diSurvival.ts) with
-//   no DI. Yes or no.
+//   no DI. Yes or no. Hard mode asks the same with the best DI held.
 import { MELEE_STATS } from "./characterStats.melee";
-import { DI_VICTIMS, STAGES, STAGE_KEYS, fly, knockback, launchAngle, type Flight, type StageKey, type Victim } from "./diSurvival";
+import { DI_VICTIMS, NO_STICK, STAGES, STAGE_KEYS, fly, knockback, launchAngle, resolveHit, type Flight, type StageKey, type Stick, type Victim } from "./diSurvival";
 import { MELEE_MOVES, MOVE_CHARS, MOVE_KEYS, type MoveChar, type MoveData, type MoveKey } from "./meleeMoves.data";
 
 export type MoveRef = { char: MoveChar; move: MoveKey; data: MoveData };
@@ -61,7 +61,12 @@ export function newMoveGuess(rand: () => number): MoveGuess {
 
 // ---------- Does it kill? ----------
 
-export type KillQuestion = { attacker: MoveChar; move: MoveKey; victim: Victim; stage: StageKey; percent: number; killsFrom: number; kills: boolean; flight: Flight };
+/**
+ * `hard`: the question is asked with the best DI (round 959, Matthew: "a hard mode that asks does it kill at
+ * optimal DI"). Then `flight` is the launch with the best of the keyboard's eight directions held (`bestStick`),
+ * `killsFrom` the percent it kills from even so, and `noDi` / `noDiFrom` the same hit with nothing held.
+ */
+export type KillQuestion = { attacker: MoveChar; move: MoveKey; victim: Victim; stage: StageKey; percent: number; killsFrom: number; kills: boolean; flight: Flight; hard: boolean; bestStick: Stick; noDi: Flight; noDiFrom: number };
 /** The lowest percent at which a hit kills from the middle of a stage with no DI, or null when it doesn't by 300%. */
 export function killPercent(kill: NonNullable<MoveData["kill"]>, victim: Victim, stage: StageKey): number | null {
   const weight = MELEE_STATS[victim].weight ?? 100;
@@ -77,19 +82,34 @@ export function killPercent(kill: NonNullable<MoveData["kill"]>, victim: Victim,
   }
   return lo;
 }
+/**
+ * The lowest percent at which a hit kills from the middle of a stage whatever direction is held. Looked for one
+ * percent at a time from where it kills with no DI: with DI in play a higher percent isn't always worse at once.
+ */
+export function killPercentBestDi(kill: NonNullable<MoveData["kill"]>, victim: Victim, stage: StageKey): number | null {
+  const from = killPercent(kill, victim, stage);
+  if (from === null) return null;
+  for (let pct = from; pct <= 300; pct++) if (resolveHit(kill, pct, victim, 0, 1, NO_STICK, STAGES[stage]).best.flight.ko) return pct;
+  return null;
+}
 /** A hit near the percent where it starts to kill: half the questions a little above it, half a little below. */
-export function newKillQuestion(rand: () => number): KillQuestion {
+export function newKillQuestion(rand: () => number, hard = false): KillQuestion {
   const strong = allMoves().filter((m) => m.data.kill && m.data.kill.growth >= 60 && (m.data.kill.angle <= 180 || m.data.kill.angle === 361));
   for (let i = 0; i < 200; i++) {
     const hit = pick(strong, rand);
     const victim = pick(DI_VICTIMS, rand);
     const stage = pick(STAGE_KEYS, rand);
-    const killsFrom = killPercent(hit.data.kill!, victim, stage);
-    if (killsFrom === null || killsFrom < 40 || killsFrom > 160) continue; // the percents people actually die at
+    const noDiFrom = killPercent(hit.data.kill!, victim, stage);
+    if (noDiFrom === null || noDiFrom < 40 || noDiFrom > 160) continue; // the percents people actually die at
+    const killsFrom = hard ? killPercentBestDi(hit.data.kill!, victim, stage) : noDiFrom;
+    if (killsFrom === null) continue;
     const kills = rand() < 0.5;
-    const percent = kills ? killsFrom + Math.floor(rand() * 25) : killsFrom - 4 - Math.floor(rand() * 22);
-    const flight = fly(knockback(hit.data.kill!, percent, MELEE_STATS[victim].weight ?? 100), launchAngle(hit.data.kill!, 1), victim, 0, STAGES[stage]);
-    return { attacker: hit.char, move: hit.move, victim, stage, percent, killsFrom, kills, flight };
+    // Hard: a miss sits between the two answers when it can, where no DI dies and the best DI lives.
+    const percent = Math.max(0, kills ? killsFrom + Math.floor(rand() * 25) : killsFrom - 1 - Math.floor(rand() * Math.max(6, hard ? killsFrom - noDiFrom + 6 : 22)));
+    const solved = resolveHit(hit.data.kill!, percent, victim, 0, 1, NO_STICK, STAGES[stage]);
+    const flight = hard ? solved.best.flight : solved.none;
+    if ((flight.ko !== null) !== kills) continue; // DI in play: just above the line isn't always a kill
+    return { attacker: hit.char, move: hit.move, victim, stage, percent, killsFrom, kills, flight, hard, bestStick: solved.best.stick, noDi: solved.none, noDiFrom };
   }
   throw new Error("no kill question could be made");
 }

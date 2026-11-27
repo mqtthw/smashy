@@ -420,7 +420,7 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.fq.kill.line": "ワザ、％、ステージ。撃墜できる？",
   "history.arcade.fq.kill.blurb": "あるステージで、ある％でワザが当たります。ベクトル変更なしで撃墜できる？答えたあと、DXの計算式で飛ぶ軌道を見よう。",
   "history.arcade.fq.kill.how": "各問題はステージ中央での一撃で、撃墜し始める％の近くです。ベクトル変更なしで撃墜できるかを答えて、飛ぶ様子を見よう。全10問。",
-  "history.arcade.fq.kill.note": "DXのふっとび計算式と、ゲーム本体のファイルにあるワザの数値で計算：ワザの最も強い判定、ホールドなし、ワンパターン相殺なし、地上の相手、ベクトル変更なし。撃墜ラインはIKneeDataによります。",
+  "history.arcade.fq.kill.note": "DXのふっとび計算式と、ゲーム本体のファイルにあるワザの数値で計算：ワザの最も強い判定、ホールドなし、ワンパターン相殺なし、地上の相手。ハードモードはキーボードの8方向のうち最善を入力した場合です（点線は入力なしの軌道）。撃墜ラインはIKneeDataによります。",
   "history.arcade.fq.kill.q": "{hit}が{n}%の{victim}に当たります。ベクトル変更なしで撃墜できる？",
   "history.arcade.fq.kill.yes": "撃墜できる",
   "history.arcade.fq.kill.no": "生き残る",
@@ -446,4 +446,9 @@ export const historyJa: Record<keyof typeof historyEn, string> = {
   "history.arcade.fq.hit": "{i}段目：{a}～{b}F、{d}%",
   "history.arcade.fq.hit1": "{i}段目：{a}Fのみ、{d}%",
   "history.arcade.fq.free": "{n}F目から行動可能",
+  "history.arcade.fq.kill.hard": "ハードモード",
+  "history.arcade.fq.kill.hardHow": "最善のベクトル変更をしても撃墜される？",
+  "history.arcade.fq.kill.qHard": "{hit}が{n}%の{victim}に当たります。最善のベクトル変更でも撃墜される？",
+  "history.arcade.fq.kill.whyHard": "ここでは {arrow} で生き残れます。最善の入力でも{n}%から撃墜、入力なしなら{m}%から。",
+  "history.arcade.fq.kill.whyHardDead": "どの方向でも助かりません：最善の入力でも{n}%から撃墜、入力なしなら{m}%から。",
 };

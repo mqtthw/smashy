@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { allMoves, killPercent, newDuel, newKillQuestion, newMoveGuess, shuffled } from "@/lib/frameGames";
+import { allMoves, killPercent, killPercentBestDi, newDuel, newKillQuestion, newMoveGuess, shuffled } from "@/lib/frameGames";
 import { MELEE_MOVES } from "@/lib/meleeMoves.data";
 
 // A repeatable stream of 0..1 numbers.
@@ -61,6 +61,19 @@ describe("the Arcade's Melee knowledge games", () => {
       expect(q.flight.ko !== null).toBe(q.kills);
       expect(q.kills).toBe(q.percent >= q.killsFrom);
       expect(q.percent).toBeGreaterThanOrEqual(0);
+    }
+  });
+
+  it("Does it kill? on hard: judged with the best DI, which never dies sooner than no DI", () => {
+    const usmash = MELEE_MOVES.fox.usmash!.kill!;
+    expect(killPercentBestDi(usmash, "marth", "fd")!).toBeGreaterThan(killPercent(usmash, "marth", "fd")!); // DI buys percent
+    const rand = stream(21);
+    for (let i = 0; i < 25; i++) {
+      const q = newKillQuestion(rand, true);
+      expect(q.hard).toBe(true);
+      expect(q.flight.ko !== null).toBe(q.kills);
+      expect(q.killsFrom).toBeGreaterThanOrEqual(q.noDiFrom);
+      if (q.kills) expect(q.noDi.ko).not.toBeNull(); // if the best DI dies, so does none
     }
   });
 
