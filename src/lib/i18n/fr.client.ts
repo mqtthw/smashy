@@ -2688,6 +2688,7 @@ export const fr = {
   "history.arcade.fq.about": "À propos des chiffres",
   "history.arcade.fq.gameLabel": "Jeu",
   "history.arcade.tech.halfShort": "Demi-vitesse",
+  "history.arcade.tech.outlines": "Les figures sont la silhouette de chaque personnage à chaque frame, faite à partir des modèles et des animations du jeu (NTSC 1.02), et les roulades avancent comme dans les animations. La cape de Marth est animée par la physique de tissu du jeu, qui ne tourne pas ici : elle pend comme quand il est debout.",
   "playnow.title": "Jouer maintenant",
   "playnow.req.incoming": "{who} veut jouer à {game} maintenant",
   "playnow.req.outgoing": "En attente de la réponse de {who} ({game})",

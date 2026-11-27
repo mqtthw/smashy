@@ -12,7 +12,8 @@
 // - a script is a list of commands, 4 bytes each except effects and hitboxes (20), sounds (12) and jumps (8);
 //   "08 NN" waits until frame NN, "04 NN" waits NN frames, "68 ...02" / "68 ...00" turns intangibility on / off,
 //   "0C NN" starts a loop of NN turns and "10" ends it, "14"/"1C"/"18" jump, call and return;
-//   "2C" makes a hitbox and "40" clears them, "5C" lets the character act again (the move can be interrupted).
+//   "2C" makes a hitbox and "40" clears them, "5C" lets the character act again (the move can be interrupted),
+//   "7C" shows one variant of a switchable model part (Marth's sword in his hand or in its sheath).
 // - a hitbox command's five words (lb/types.h, spawn_hitbox_0..4): word 0 ends with the damage (10 bits); word 3
 //   starts with the angle, knockback growth and weight-set knockback (9 bits each); word 4 starts with the base
 //   knockback (9 bits).
@@ -128,9 +129,12 @@ export function actions(disc, code) {
         events.push({ frame, what: "hitbox", damage: w & 0x3ff, angle: w3 >>> 23, growth: (w3 >>> 14) & 0x1ff, set: (w3 >>> 5) & 0x1ff, base: d.u32(p + 16) >>> 23 });
       } else if (cmd === 0x17) events.push({ frame, what: "free" });
       else if (cmd === 0x10) events.push({ frame, what: "clear" });
+      // "7C": show one variant of a model part (lb/types.h set_dobj_flags: a 7-bit part, a 19-bit variant), round 973.
+      else if (cmd === 0x1f) events.push({ frame, what: "part", part: (w << 6) >> 25, variant: (w << 13) >> 13 });
       p += cmd === 0x0a || cmd === 0x0b ? 20 : cmd === 0x11 ? 12 : 4;
     }
-    out.set(m[1], { frames, events });
+    // The animation's own bytes, for figatree.mjs to read movement from (round 973); kept in memory only.
+    out.set(m[1], { frames, events, anim: animSize ? aj.subarray(animOff, animOff + animSize) : null });
   }
   return out;
 }

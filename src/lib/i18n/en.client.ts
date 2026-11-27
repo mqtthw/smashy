@@ -2689,6 +2689,7 @@ export const en = {
   "history.arcade.fq.about": "About the numbers",
   "history.arcade.fq.gameLabel": "Game",
   "history.arcade.tech.halfShort": "Half speed",
+  "history.arcade.tech.outlines": "The figures are each character's own outline on every frame, made from the game's models and animations (NTSC 1.02), and rolls travel as the animations do. Marth's cape is moved by the game's cloth physics, which isn't run here: it hangs as when he stands.",
   "playnow.title": "Play now",
   "playnow.req.incoming": "{who} wants to play {game} now",
   "playnow.req.outgoing": "Waiting for {who} to answer ({game})",

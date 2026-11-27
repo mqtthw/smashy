@@ -11,8 +11,13 @@
 // - a tech or the missed-tech bounce (entered on landing): the state lasts the animation's length and
 //   intangibility ended at frame N covers frames up to N (26 or 40 frames, intangible 1-20, as SmashWiki and
 //   fightcore.gg both give).
+// - A roll's `path` (round 973): how far along the roll the character is on each of its frames (0 = where it
+//   started, 1 = where it ends), from the movement of the animation's root joint (joint 1, "TransN", its Z
+//   position: figatree.mjs), so the trainer's figure travels as the game's does. Frame k of the state is the
+//   animation's frame k. Only the numbers of that one joint are read.
 import fs from "node:fs";
 import { actions, openDisc, windows } from "./disc.mjs";
+import { jointPositions } from "./figatree.mjs";
 
 const path = process.argv[2];
 if (!path) throw new Error("Give the path to the disc image.");
@@ -32,15 +37,25 @@ for (const [who, code] of Object.entries(CHARS)) {
     const a = get(name);
     return { frames: a.frames, intangible: a.intangible ? [Math.max(1, a.intangible[0]), a.intangible[1]] : null };
   };
+  // How far along the roll the character is on each frame of the state (frames 1..n), 0 to 1, two decimals.
+  const path = (name, n) => {
+    const a = acts.get(name);
+    const z = a.anim && jointPositions(a.anim, 1)?.z;
+    if (!z) throw new Error(`${who}: ${name} has no root movement`);
+    const total = z[z.length - 1] - z[0];
+    if (Math.abs(total) < 1) throw new Error(`${who}: ${name} doesn't travel`);
+    return Array.from({ length: n }, (_, i) => Math.round(((z[Math.min(i + 1, z.length - 1)] - z[0]) / total) * 100) / 100);
+  };
   const getup = (name) => {
     const a = get(name);
     return { frames: a.frames - 1, intangible: a.intangible ? [Math.max(1, a.intangible[0]), a.intangible[1] - 1] : null, ...(a.hits.length ? { hits: a.hits.map(([from, to]) => [from, to - 1]) } : {}) };
   };
-  const side = (s) => ({ stand: getup(`DownStand${s}`), attack: getup(`DownAttack${s}`), forward: getup(`DownFoward${s}`), back: getup(`DownBack${s}`) });
+  const rolled = (w, name) => ({ ...w, path: path(name, w.frames) });
+  const side = (s) => ({ stand: getup(`DownStand${s}`), attack: getup(`DownAttack${s}`), forward: rolled(getup(`DownFoward${s}`), `DownFoward${s}`), back: rolled(getup(`DownBack${s}`), `DownBack${s}`) });
   const f = landed("PassiveStandF");
   const b = landed("PassiveStandB");
   if (JSON.stringify(f) !== JSON.stringify(b)) throw new Error(`${who}: forward and backward tech rolls differ`);
-  out[who] = { tech: landed("Passive"), techRoll: f, bounce: { up: get("DownBoundU").frames, down: get("DownBoundD").frames }, up: side("U"), down: side("D") };
+  out[who] = { tech: landed("Passive"), techRoll: { ...f, path: path("PassiveStandF", f.frames), pathBack: path("PassiveStandB", b.frames) }, bounce: { up: get("DownBoundU").frames, down: get("DownBoundD").frames }, up: side("U"), down: side("D") };
 }
 
 const line = (v) => JSON.stringify(v).replace(/"(\w+)":/g, "$1: ").replace(/,/g, ", ");
@@ -49,8 +64,9 @@ fs.writeFileSync(
   `// MADE BY tools/melee-disc/build-techchase.mjs: don't edit by hand. Each opponent's tech and getup frames for
 // the Arcade's tech-chase trainer, read from the game itself (NTSC 1.02). Frames are counted as players count
 // them (1 = the state's first frame); \`up\` is lying on the back, \`down\` on the front; \`forward\` and \`back\`
-// are the getup rolls; \`hits\` are the frames a getup attack hits on.
-export type Win = { frames: number; intangible: [number, number] | null; hits?: [number, number][] };
+// are the getup rolls; \`hits\` are the frames a getup attack hits on; a roll's \`path\` is how far along it the
+// character is on each frame (0 to 1), from the animation's own movement (\`pathBack\`: the backward tech roll).
+export type Win = { frames: number; intangible: [number, number] | null; hits?: [number, number][]; path?: number[]; pathBack?: number[] };
 export type Getups = { stand: Win; attack: Win; forward: Win; back: Win };
 export type TechData = { tech: Win; techRoll: Win; bounce: { up: number; down: number }; up: Getups; down: Getups };
 

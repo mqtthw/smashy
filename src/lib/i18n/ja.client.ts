@@ -2688,6 +2688,7 @@ export const ja = {
   "history.arcade.fq.about": "数値について",
   "history.arcade.fq.gameLabel": "ゲーム",
   "history.arcade.tech.halfShort": "半分の速さ",
+  "history.arcade.tech.outlines": "人物は、ゲームのモデルとアニメーション（NTSC 1.02）から作った各キャラのシルエットを1Fごとに表示し、受け身の移動もアニメーションどおりです。マルスのマントはゲームの布の物理演算で動くため再現しておらず、立っているときの形で垂らしています。",
   "playnow.title": "今すぐ対戦",
   "playnow.req.incoming": "{who}さんが今すぐ{game}で対戦したがっています",
   "playnow.req.outgoing": "{who}さんの返事を待っています（{game}）",

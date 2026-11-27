@@ -1,8 +1,9 @@
 // MADE BY tools/melee-disc/build-techchase.mjs: don't edit by hand. Each opponent's tech and getup frames for
 // the Arcade's tech-chase trainer, read from the game itself (NTSC 1.02). Frames are counted as players count
 // them (1 = the state's first frame); `up` is lying on the back, `down` on the front; `forward` and `back`
-// are the getup rolls; `hits` are the frames a getup attack hits on.
-export type Win = { frames: number; intangible: [number, number] | null; hits?: [number, number][] };
+// are the getup rolls; `hits` are the frames a getup attack hits on; a roll's `path` is how far along it the
+// character is on each frame (0 to 1), from the animation's own movement (`pathBack`: the backward tech roll).
+export type Win = { frames: number; intangible: [number, number] | null; hits?: [number, number][]; path?: number[]; pathBack?: number[] };
 export type Getups = { stand: Win; attack: Win; forward: Win; back: Win };
 export type TechData = { tech: Win; techRoll: Win; bounce: { up: number; down: number }; up: Getups; down: Getups };
 
@@ -12,51 +13,51 @@ export type TechVictim = (typeof TECH_VICTIMS)[number];
 export const TECH_DATA: Record<TechVictim, TechData> = {
   "fox": {
     tech: {frames: 26, intangible: [1, 20]},
-    techRoll: {frames: 40, intangible: [1, 20]},
+    techRoll: {frames: 40, intangible: [1, 20], path: [-0.02, -0.04, -0.06, -0.06, -0.04, 0.01, 0.05, 0.09, 0.14, 0.18, 0.22, 0.27, 0.31, 0.35, 0.4, 0.44, 0.48, 0.53, 0.57, 0.61, 0.65, 0.7, 0.74, 0.78, 0.83, 0.87, 0.91, 0.96, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], pathBack: [0.03, 0.07, 0.1, 0.13, 0.17, 0.2, 0.23, 0.27, 0.3, 0.33, 0.37, 0.4, 0.43, 0.47, 0.5, 0.53, 0.57, 0.6, 0.63, 0.67, 0.7, 0.73, 0.77, 0.8, 0.83, 0.87, 0.9, 0.93, 0.97, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]},
     bounce: {up: 26, down: 26},
-    up: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[17, 19], [24, 26]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [12, 29]}},
-    down: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[19, 20], [25, 26]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [1, 24]}},
+    up: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[17, 19], [24, 26]]}, forward: {frames: 35, intangible: [1, 19], path: [0, 0.01, 0.03, 0.07, 0.11, 0.22, 0.31, 0.39, 0.44, 0.48, 0.52, 0.54, 0.55, 0.56, 0.56, 0.56, 0.56, 0.56, 0.56, 0.56, 0.58, 0.6, 0.63, 0.67, 0.73, 0.8, 0.89, 1, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [12, 29], path: [0, 0.01, 0.01, 0.01, 0.02, 0.02, 0.04, 0.06, 0.08, 0.11, 0.14, 0.17, 0.21, 0.25, 0.29, 0.34, 0.38, 0.41, 0.45, 0.48, 0.52, 0.55, 0.59, 0.63, 0.67, 0.71, 0.75, 0.8, 0.84, 0.88, 0.91, 0.94, 0.96, 0.98, 1]}},
+    down: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[19, 20], [25, 26]]}, forward: {frames: 35, intangible: [1, 19], path: [0.03, 0.06, 0.09, 0.13, 0.17, 0.21, 0.26, 0.31, 0.36, 0.41, 0.46, 0.51, 0.55, 0.6, 0.65, 0.69, 0.74, 0.78, 0.81, 0.85, 0.88, 0.91, 0.94, 0.96, 0.98, 0.99, 1, 1, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 24], path: [0.03, 0.07, 0.11, 0.15, 0.19, 0.22, 0.25, 0.29, 0.32, 0.36, 0.39, 0.43, 0.47, 0.51, 0.54, 0.58, 0.62, 0.66, 0.7, 0.73, 0.77, 0.8, 0.84, 0.88, 0.91, 0.93, 0.95, 0.97, 0.98, 0.99, 1, 1, 1, 1, 1]}},
   },
   "falco": {
     tech: {frames: 26, intangible: [1, 20]},
-    techRoll: {frames: 40, intangible: [1, 20]},
+    techRoll: {frames: 40, intangible: [1, 20], path: [-0.02, -0.04, -0.06, -0.06, -0.04, 0.01, 0.05, 0.09, 0.14, 0.18, 0.22, 0.27, 0.31, 0.35, 0.4, 0.44, 0.48, 0.53, 0.57, 0.61, 0.65, 0.7, 0.74, 0.78, 0.83, 0.87, 0.91, 0.96, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], pathBack: [0.03, 0.07, 0.1, 0.13, 0.17, 0.2, 0.23, 0.27, 0.3, 0.33, 0.37, 0.4, 0.43, 0.47, 0.5, 0.53, 0.57, 0.6, 0.63, 0.67, 0.7, 0.73, 0.77, 0.8, 0.83, 0.87, 0.9, 0.93, 0.97, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]},
     bounce: {up: 26, down: 26},
-    up: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[17, 19], [24, 26]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [12, 29]}},
-    down: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[19, 20], [25, 26]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [1, 24]}},
+    up: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[17, 19], [24, 26]]}, forward: {frames: 35, intangible: [1, 19], path: [0, 0.01, 0.03, 0.07, 0.11, 0.22, 0.31, 0.39, 0.44, 0.48, 0.52, 0.54, 0.55, 0.56, 0.56, 0.56, 0.56, 0.56, 0.56, 0.56, 0.58, 0.6, 0.63, 0.67, 0.73, 0.8, 0.89, 1, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [12, 29], path: [0, 0.01, 0.01, 0.01, 0.02, 0.02, 0.04, 0.06, 0.08, 0.11, 0.14, 0.17, 0.21, 0.25, 0.29, 0.34, 0.38, 0.41, 0.45, 0.48, 0.52, 0.55, 0.59, 0.63, 0.67, 0.71, 0.75, 0.8, 0.84, 0.88, 0.91, 0.94, 0.96, 0.98, 1]}},
+    down: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[19, 20], [25, 26]]}, forward: {frames: 35, intangible: [1, 19], path: [0.03, 0.06, 0.09, 0.13, 0.17, 0.21, 0.26, 0.31, 0.36, 0.41, 0.46, 0.51, 0.55, 0.6, 0.65, 0.69, 0.74, 0.78, 0.81, 0.85, 0.88, 0.91, 0.94, 0.96, 0.98, 0.99, 1, 1, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 24], path: [0.03, 0.07, 0.11, 0.15, 0.19, 0.22, 0.25, 0.29, 0.32, 0.36, 0.39, 0.43, 0.47, 0.51, 0.54, 0.58, 0.62, 0.66, 0.7, 0.73, 0.77, 0.8, 0.84, 0.88, 0.91, 0.93, 0.95, 0.97, 0.98, 0.99, 1, 1, 1, 1, 1]}},
   },
   "marth": {
     tech: {frames: 26, intangible: [1, 20]},
-    techRoll: {frames: 40, intangible: [1, 20]},
+    techRoll: {frames: 40, intangible: [1, 20], path: [0, 0.01, 0.03, 0.04, 0.06, 0.07, 0.09, 0.16, 0.22, 0.27, 0.31, 0.35, 0.39, 0.42, 0.47, 0.51, 0.56, 0.6, 0.64, 0.68, 0.72, 0.75, 0.79, 0.82, 0.85, 0.87, 0.89, 0.91, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.98, 0.99, 0.99, 0.99, 1, 1], pathBack: [0, 0, 0, 0, 0, 0, 0.06, 0.12, 0.18, 0.23, 0.28, 0.34, 0.38, 0.43, 0.48, 0.52, 0.56, 0.6, 0.64, 0.67, 0.71, 0.74, 0.78, 0.81, 0.84, 0.87, 0.91, 0.94, 0.97, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]},
     bounce: {up: 26, down: 26},
-    up: {stand: {frames: 29, intangible: [1, 21]}, attack: {frames: 49, intangible: [1, 31], hits: [[20, 23], [30, 31]]}, forward: {frames: 35, intangible: [6, 19]}, back: {frames: 35, intangible: [1, 19]}},
-    down: {stand: {frames: 29, intangible: [1, 21]}, attack: {frames: 49, intangible: [1, 28], hits: [[22, 23], [27, 28]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [1, 19]}},
+    up: {stand: {frames: 29, intangible: [1, 21]}, attack: {frames: 49, intangible: [1, 31], hits: [[20, 23], [30, 31]]}, forward: {frames: 35, intangible: [6, 19], path: [0.01, 0.05, 0.09, 0.15, 0.21, 0.28, 0.34, 0.4, 0.45, 0.51, 0.55, 0.59, 0.63, 0.66, 0.69, 0.71, 0.74, 0.76, 0.78, 0.8, 0.81, 0.83, 0.85, 0.87, 0.89, 0.91, 0.93, 0.95, 0.96, 0.98, 0.98, 0.99, 1, 1, 1]}, back: {frames: 35, intangible: [1, 19], path: [0.01, 0.02, 0.04, 0.09, 0.14, 0.19, 0.24, 0.29, 0.34, 0.4, 0.45, 0.51, 0.56, 0.61, 0.66, 0.7, 0.74, 0.78, 0.81, 0.84, 0.87, 0.9, 0.93, 0.95, 0.97, 0.98, 0.99, 0.99, 1, 1, 1, 1, 1, 1, 1]}},
+    down: {stand: {frames: 29, intangible: [1, 21]}, attack: {frames: 49, intangible: [1, 28], hits: [[22, 23], [27, 28]]}, forward: {frames: 35, intangible: [1, 19], path: [0.01, 0.04, 0.1, 0.15, 0.21, 0.26, 0.32, 0.37, 0.42, 0.47, 0.52, 0.57, 0.61, 0.66, 0.7, 0.73, 0.77, 0.8, 0.83, 0.85, 0.87, 0.89, 0.91, 0.93, 0.95, 0.97, 0.98, 1, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 19], path: [0, 0, 0.01, 0.02, 0.03, 0.05, 0.07, 0.09, 0.12, 0.15, 0.18, 0.23, 0.27, 0.32, 0.38, 0.44, 0.5, 0.56, 0.63, 0.69, 0.75, 0.81, 0.86, 0.9, 0.93, 0.96, 0.98, 0.99, 1, 1, 1, 1, 1, 1, 1]}},
   },
   "sheik": {
     tech: {frames: 26, intangible: [1, 20]},
-    techRoll: {frames: 40, intangible: [1, 20]},
+    techRoll: {frames: 40, intangible: [1, 20], path: [0, 0, 0, 0, 0, 0, 0.15, 0.21, 0.27, 0.33, 0.39, 0.44, 0.5, 0.55, 0.6, 0.65, 0.69, 0.73, 0.77, 0.81, 0.84, 0.88, 0.9, 0.93, 0.95, 0.97, 0.98, 0.99, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], pathBack: [0, 0, 0.09, 0.13, 0.17, 0.21, 0.25, 0.3, 0.34, 0.37, 0.41, 0.45, 0.49, 0.53, 0.56, 0.6, 0.63, 0.67, 0.7, 0.73, 0.76, 0.79, 0.82, 0.85, 0.88, 0.91, 0.93, 0.96, 0.98, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]},
     bounce: {up: 26, down: 26},
-    up: {stand: {frames: 29, intangible: [1, 19]}, attack: {frames: 49, intangible: [1, 26], hits: [[17, 19], [24, 26]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [1, 22]}},
-    down: {stand: {frames: 29, intangible: [1, 19]}, attack: {frames: 49, intangible: [1, 21], hits: [[16, 17], [20, 21]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [1, 19]}},
+    up: {stand: {frames: 29, intangible: [1, 19]}, attack: {frames: 49, intangible: [1, 26], hits: [[17, 19], [24, 26]]}, forward: {frames: 35, intangible: [1, 19], path: [0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.2, 0.25, 0.31, 0.37, 0.43, 0.49, 0.55, 0.56, 0.6, 0.66, 0.72, 0.78, 0.83, 0.87, 0.9, 0.92, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 0.99, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 22], path: [0, 0, 0, 0, 0, 0, 0.01, 0.03, 0.06, 0.1, 0.15, 0.2, 0.25, 0.33, 0.42, 0.51, 0.54, 0.54, 0.55, 0.55, 0.56, 0.58, 0.61, 0.66, 0.71, 0.76, 0.81, 0.85, 0.89, 0.92, 0.94, 0.96, 0.98, 0.99, 1]}},
+    down: {stand: {frames: 29, intangible: [1, 19]}, attack: {frames: 49, intangible: [1, 21], hits: [[16, 17], [20, 21]]}, forward: {frames: 35, intangible: [1, 19], path: [0.02, 0.06, 0.09, 0.13, 0.16, 0.19, 0.22, 0.25, 0.28, 0.3, 0.33, 0.35, 0.37, 0.4, 0.44, 0.48, 0.53, 0.58, 0.64, 0.69, 0.75, 0.8, 0.85, 0.9, 0.93, 0.95, 0.97, 0.98, 0.99, 0.99, 0.99, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 19], path: [0.01, 0.05, 0.09, 0.14, 0.18, 0.22, 0.26, 0.3, 0.33, 0.36, 0.38, 0.41, 0.44, 0.47, 0.5, 0.52, 0.54, 0.57, 0.59, 0.63, 0.67, 0.71, 0.76, 0.81, 0.86, 0.9, 0.93, 0.95, 0.97, 0.98, 0.99, 0.99, 1, 1, 1]}},
   },
   "captain-falcon": {
     tech: {frames: 26, intangible: [1, 20]},
-    techRoll: {frames: 40, intangible: [1, 20]},
+    techRoll: {frames: 40, intangible: [1, 20], path: [-0.02, -0.05, -0.07, -0.08, -0.05, 0, 0.07, 0.15, 0.21, 0.25, 0.29, 0.32, 0.35, 0.39, 0.46, 0.54, 0.61, 0.68, 0.72, 0.76, 0.79, 0.82, 0.85, 0.88, 0.91, 0.92, 0.94, 0.95, 0.97, 0.98, 0.99, 1.01, 1.02, 1.02, 1.02, 1.02, 1.01, 1.01, 1, 1], pathBack: [0, -0.01, -0.03, -0.03, -0.02, 0, 0.04, 0.07, 0.11, 0.15, 0.19, 0.22, 0.26, 0.3, 0.33, 0.37, 0.41, 0.44, 0.48, 0.52, 0.56, 0.59, 0.63, 0.67, 0.7, 0.74, 0.78, 0.81, 0.85, 0.89, 0.93, 0.96, 1, 1, 1, 1, 1, 1, 1, 1]},
     bounce: {up: 26, down: 26},
-    up: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 29], hits: [[19, 20], [28, 29]]}, forward: {frames: 35, intangible: [1, 23]}, back: {frames: 35, intangible: [1, 19]}},
-    down: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 27], hits: [[20, 21], [26, 27]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [1, 25]}},
+    up: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 29], hits: [[19, 20], [28, 29]]}, forward: {frames: 35, intangible: [1, 23], path: [0.03, 0.07, 0.1, 0.15, 0.2, 0.26, 0.32, 0.38, 0.45, 0.51, 0.58, 0.64, 0.7, 0.75, 0.79, 0.82, 0.85, 0.87, 0.9, 0.92, 0.94, 0.95, 0.97, 0.98, 0.99, 0.99, 1, 1, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 19], path: [0.01, 0.01, 0.03, 0.06, 0.11, 0.16, 0.22, 0.28, 0.34, 0.4, 0.46, 0.52, 0.58, 0.64, 0.69, 0.74, 0.79, 0.83, 0.86, 0.89, 0.91, 0.93, 0.95, 0.96, 0.97, 0.98, 0.99, 0.99, 0.99, 1, 1, 1, 1, 1, 1]}},
+    down: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 27], hits: [[20, 21], [26, 27]]}, forward: {frames: 35, intangible: [1, 19], path: [0.04, 0.08, 0.12, 0.17, 0.21, 0.2, 0.21, 0.24, 0.28, 0.32, 0.36, 0.41, 0.46, 0.5, 0.55, 0.6, 0.65, 0.69, 0.74, 0.78, 0.82, 0.86, 0.89, 0.92, 0.95, 0.97, 0.99, 1, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 25], path: [0, 0, 0, 0, 0, 0, 0, -0.01, -0.01, 0, 0.01, 0.02, 0.05, 0.08, 0.13, 0.19, 0.26, 0.34, 0.42, 0.51, 0.6, 0.68, 0.76, 0.83, 0.9, 0.95, 0.98, 1, 1, 1, 1, 1, 1, 1, 1]}},
   },
   "peach": {
     tech: {frames: 26, intangible: [1, 20]},
-    techRoll: {frames: 40, intangible: [1, 20]},
+    techRoll: {frames: 40, intangible: [1, 20], path: [0, 0.02, 0.04, 0.08, 0.12, 0.16, 0.21, 0.27, 0.32, 0.38, 0.44, 0.5, 0.56, 0.61, 0.67, 0.72, 0.78, 0.82, 0.87, 0.9, 0.94, 0.96, 0.98, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], pathBack: [0.05, 0.06, 0.05, 0.05, 0.06, 0.1, 0.14, 0.19, 0.24, 0.3, 0.36, 0.42, 0.48, 0.55, 0.61, 0.67, 0.73, 0.79, 0.84, 0.88, 0.92, 0.96, 0.98, 0.99, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]},
     bounce: {up: 26, down: 26},
-    up: {stand: {frames: 29, intangible: [1, 19]}, attack: {frames: 49, intangible: [1, 27], hits: [[17, 19], [25, 27]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [1, 19]}},
-    down: {stand: {frames: 29, intangible: [1, 19]}, attack: {frames: 49, intangible: [1, 26], hits: [[17, 18], [25, 26]]}, forward: {frames: 35, intangible: [1, 19]}, back: {frames: 35, intangible: [1, 19]}},
+    up: {stand: {frames: 29, intangible: [1, 19]}, attack: {frames: 49, intangible: [1, 27], hits: [[17, 19], [25, 27]]}, forward: {frames: 35, intangible: [1, 19], path: [0, 0.01, 0.01, 0.03, 0.04, 0.06, 0.09, 0.11, 0.14, 0.18, 0.21, 0.25, 0.3, 0.34, 0.4, 0.46, 0.52, 0.58, 0.64, 0.69, 0.75, 0.79, 0.84, 0.88, 0.91, 0.94, 0.97, 0.99, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 19], path: [0, 0, 0, 0, 0, 0.02, 0.04, 0.07, 0.1, 0.15, 0.19, 0.24, 0.29, 0.35, 0.4, 0.45, 0.5, 0.54, 0.59, 0.63, 0.68, 0.72, 0.76, 0.79, 0.83, 0.86, 0.89, 0.91, 0.94, 0.95, 0.97, 0.98, 0.99, 1, 1]}},
+    down: {stand: {frames: 29, intangible: [1, 19]}, attack: {frames: 49, intangible: [1, 26], hits: [[17, 18], [25, 26]]}, forward: {frames: 35, intangible: [1, 19], path: [0, 0, 0, 0, 0, 0.02, 0.04, 0.06, 0.1, 0.13, 0.18, 0.22, 0.28, 0.33, 0.39, 0.44, 0.5, 0.56, 0.61, 0.67, 0.72, 0.78, 0.82, 0.87, 0.9, 0.94, 0.96, 0.98, 1, 1, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 19], path: [0.08, 0.1, 0.1, 0.08, 0.06, 0.06, 0.08, 0.1, 0.13, 0.17, 0.21, 0.25, 0.3, 0.34, 0.4, 0.45, 0.5, 0.56, 0.61, 0.66, 0.71, 0.76, 0.8, 0.85, 0.88, 0.92, 0.94, 0.96, 0.98, 0.99, 1, 1, 1, 1, 1]}},
   },
   "jigglypuff": {
     tech: {frames: 26, intangible: [1, 20]},
-    techRoll: {frames: 40, intangible: [1, 20]},
+    techRoll: {frames: 40, intangible: [1, 20], path: [-0.01, -0.04, -0.07, -0.08, -0.06, 0, 0.07, 0.15, 0.24, 0.34, 0.43, 0.53, 0.62, 0.7, 0.79, 0.86, 0.92, 0.96, 0.99, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], pathBack: [-0.02, -0.05, -0.08, -0.1, -0.06, 0, 0.06, 0.13, 0.2, 0.27, 0.34, 0.41, 0.49, 0.56, 0.63, 0.7, 0.76, 0.82, 0.88, 0.92, 0.96, 1, 1.02, 1.03, 1.05, 1.06, 1.06, 1.07, 1.07, 1.07, 1.06, 1.02, 1, 1, 1, 1, 1, 1, 1, 1]},
     bounce: {up: 26, down: 26},
-    up: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 15], hits: [[19, 20], [24, 25]]}, forward: {frames: 35, intangible: [1, 18]}, back: {frames: 35, intangible: [1, 20]}},
-    down: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[20, 21], [24, 26]]}, forward: {frames: 35, intangible: [1, 23]}, back: {frames: 35, intangible: [1, 28]}},
+    up: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 15], hits: [[19, 20], [24, 25]]}, forward: {frames: 35, intangible: [1, 18], path: [0, 0, 0, 0, 0, 0, 0, 0.01, 0.02, 0.04, 0.06, 0.1, 0.14, 0.19, 0.24, 0.3, 0.36, 0.42, 0.48, 0.55, 0.61, 0.67, 0.73, 0.79, 0.84, 0.88, 0.92, 0.96, 0.98, 0.99, 1, 1, 1, 1, 1]}, back: {frames: 35, intangible: [1, 20], path: [0, 0.01, 0.01, 0.01, 0.01, 0.02, 0.06, 0.1, 0.14, 0.18, 0.22, 0.26, 0.3, 0.34, 0.39, 0.43, 0.47, 0.51, 0.55, 0.59, 0.63, 0.67, 0.71, 0.75, 0.8, 0.84, 0.88, 0.92, 0.96, 1, 1, 1, 1, 1, 1]}},
+    down: {stand: {frames: 29, intangible: [1, 22]}, attack: {frames: 49, intangible: [1, 26], hits: [[20, 21], [24, 26]]}, forward: {frames: 35, intangible: [1, 23], path: [0, 0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.03, 0.05, 0.07, 0.09, 0.12, 0.17, 0.22, 0.27, 0.32, 0.37, 0.41, 0.46, 0.51, 0.56, 0.61, 0.66, 0.71, 0.76, 0.8, 0.85, 0.9, 0.95, 1, 1, 1]}, back: {frames: 35, intangible: [1, 28], path: [0.01, 0.02, 0.02, 0.03, 0.04, 0.05, 0.05, 0.06, 0.06, 0.06, 0.05, 0.05, 0.06, 0.06, 0.08, 0.1, 0.13, 0.18, 0.23, 0.3, 0.36, 0.44, 0.51, 0.59, 0.66, 0.72, 0.78, 0.82, 0.86, 0.89, 0.93, 0.96, 1, 1, 1]}},
   },
 };

@@ -2688,6 +2688,7 @@ export const es = {
   "history.arcade.fq.about": "Sobre los números",
   "history.arcade.fq.gameLabel": "Juego",
   "history.arcade.tech.halfShort": "Media velocidad",
+  "history.arcade.tech.outlines": "Las figuras son la silueta de cada personaje en cada frame, hecha con los modelos y animaciones del juego (NTSC 1.02), y los rolls avanzan como en las animaciones. La capa de Marth la mueve la física de tela del juego, que aquí no se ejecuta: cuelga como cuando está de pie.",
   "playnow.title": "Jugar ya",
   "playnow.req.incoming": "{who} quiere jugar {game} ahora",
   "playnow.req.outgoing": "Esperando a que {who} responda ({game})",

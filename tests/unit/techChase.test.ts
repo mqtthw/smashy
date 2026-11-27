@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { TECH_VICTIMS } from "@/lib/techChase.data";
+import { TECH_DATA, TECH_VICTIMS } from "@/lib/techChase.data";
 import { busy, foxAt, framesAt, judgeFrame, moveSlot, newScript, openFrames, scriptFrames, striking, type Action, type Script } from "@/lib/techChase";
 
 const fixed = (list: number[]) => () => list.shift() ?? 0;
@@ -95,5 +95,28 @@ describe("the tech-chase trainer, in Melee's frames", () => {
     expect(framesAt(16)).toBe(0);
     expect(moveSlot(-1, -1)).toBe(-1);
     expect(moveSlot(0, 1)).toBe(1);
+  });
+
+  it("moves rolls along the game's own animation, counting them there from halfway (round 973)", () => {
+    for (const v of TECH_VICTIMS) {
+      const d = TECH_DATA[v];
+      for (const w of [d.techRoll, d.up.forward, d.up.back, d.down.forward, d.down.back]) {
+        expect(w.path).toHaveLength(w.frames);
+        expect(w.path!.at(-1)).toBe(1);
+      }
+      expect(d.techRoll.pathBack).toHaveLength(d.techRoll.frames);
+    }
+    // Fox's forward tech roll (read from the disc): moving by frame 6, halfway on frame 18, there by frame 29.
+    const roll = TECH_DATA.fox.techRoll.path!;
+    expect(roll.findIndex((x) => x >= 0.5) + 1).toBe(18);
+    expect(roll.indexOf(1) + 1).toBe(29);
+    // A script's roll counts as arriving the frame it is halfway.
+    let s: Script | null = null;
+    for (let i = 0; i < 50 && s?.option !== "right"; i++) s = newScript(Math.random, "fox");
+    const phase = s!.phases[0];
+    expect(phase.path).toBe(roll);
+    expect(phase.arrives).toBe(18);
+    expect(foxAt(s!, 17).spot).toBe(0);
+    expect(foxAt(s!, 18).spot).toBe(1);
   });
 });

@@ -45,10 +45,50 @@ type Game = {
   victim: TechVictim;
 };
 const fresh = (speed: number, victim: TechVictim = "fox"): Game => ({ victim, phase: "idle", script: null, landAt: 0, speed, slot: 0, px: slotX(0), action: null, done: 0, frozen: 0, resultAt: 0, outcome: null, whiff: null, points: 0, punishes: 0, lives: START_LIVES });
+// The characters' outlines (round 973, Matthew: "the outline has to be accurate to the animation because the point
+// is to help players recognize the visual cues of each characters tech animations"): every frame of each tech,
+// roll, bounce and getup, made from the game's own models and animations by tools/melee-disc/build-outlines.mjs and
+// served from /outlines/melee/ (kept out of the public open-source copy, whose trainer draws plain shapes instead).
+// Each frame is loops of points in quarter units, the first point whole and the rest as steps; x across (facing
+// right), y down from the floor.
+type Outlines = { unit: number; states: Record<string, number[][][]> };
+const outlineFiles = new Map<string, Promise<Outlines | null>>();
+const loadOutlines = (who: string) => {
+  if (!outlineFiles.has(who)) outlineFiles.set(who, fetch(`/outlines/melee/${who}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+  return outlineFiles.get(who)!;
+};
+const paths = new Map<string, Path2D | null>();
+/** One frame of a state as a path (frame 1 = the state's first), or null if it isn't there. */
+function figure(o: Outlines | null | undefined, who: string, state: string, frame: number): Path2D | null {
+  const frames = o?.states[state];
+  if (!frames?.length) return null;
+  const i = Math.max(0, Math.min(frames.length, Math.round(frame)) - 1);
+  const key = `${who}|${state}|${i}`;
+  if (!paths.has(key)) {
+    const path = new Path2D();
+    for (const d of frames[i]) {
+      let x = 0;
+      let y = 0;
+      for (let k = 0; k < d.length; k += 2) {
+        x = k ? x + d[k] : d[k];
+        y = k ? y + d[k + 1] : d[k + 1];
+        if (k) path.lineTo(x * FIG, y * FIG);
+        else path.moveTo(x * FIG, y * FIG);
+      }
+      path.closePath();
+    }
+    paths.set(key, path);
+  }
+  return paths.get(key)!;
+}
+/** Pixels a stored quarter unit is drawn at: Fox stands about 70 pixels tall. */
+const FIG = 1.05;
+type Figures = { who: string; victim: Outlines | null; marth: Outlines | null };
+
 type Note = { key: MessageKey; values?: Record<string, string | number>; good: boolean };
 type Hud = { phase: Game["phase"]; points: number; punishes: number; lives: number; note: Note | null; newBest: boolean };
 
-function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+function draw(ctx: CanvasRenderingContext2D, g: Game, now: number, figs: Figures) {
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = "rgba(190,200,255,0.10)";
   ctx.fillRect(40, GROUND, W - 80, 10);
@@ -71,21 +111,44 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   let color = "#ff6b5e";
   let rolling = false;
   let hitting = false;
+  // The game's own state and frame on this frame (round 973), for the outline.
+  let state = "Wait";
+  let sf = 1;
+  let figLift = 0;
   if (g.script && g.phase !== "idle") {
     if (f < 1) {
       const p = 1 + (f - 1) / FALL_FRAMES; // 0 at the top of the fall, 1 on landing
       lift = (1 - p * p) * 130;
       lying = 0.5;
+      state = "DamageFall";
+      figLift = lift;
     } else {
       const fox = foxAt(g.script, f);
       const name = fox.phase?.name;
       dx = slotX(fox.spot);
+      const face = g.script.face === "down" ? "D" : "U";
+      const p = fox.phase;
       if (fox.free) color = "#7dff9a";
-      else {
+      else if (p) {
+        sf = fox.frame;
+        state =
+          p.name === "tech" ? "Passive"
+          : p.name === "techRoll" ? (p.to === 1 ? "PassiveStandF" : "PassiveStandB")
+          : p.name === "bounce" ? `DownBound${face}`
+          : p.name === "lying" ? `DownWait${face}`
+          : p.name === "getupStand" ? `DownStand${face}`
+          : p.name === "getupAttack" ? `DownAttack${face}`
+          : p.to === 1 ? `DownFoward${face}` : `DownBack${face}`;
+        if (p.name === "lying") sf = ((fox.frame - 1) % 40) + 1;
+      }
+      if (!fox.free) {
         color = !fox.vulnerable ? (Math.floor(f / 2) % 2 ? "#ffffff" : "#ffd0c8") : fox.downed ? "#c58bff" : "#5ad1ff";
         if (name === "techRoll" || name === "getupRoll") {
           rolling = fox.progress < 0.75;
-          dx = slotX(fox.from) + (slotX(fox.phase!.to!) - slotX(fox.from)) * Math.min(1, fox.progress / 0.75);
+          const path = fox.phase!.path;
+          // Along the roll as the game's animation travels (round 973), or evenly when there's no path.
+          const along = path ? path[Math.max(0, Math.min(path.length - 1, fox.frame - 1))] : Math.min(1, fox.progress / 0.75);
+          dx = slotX(fox.from) + (slotX(fox.phase!.to!) - slotX(fox.from)) * along;
         } else if (name === "bounce") {
           lying = 1;
           lift = Math.sin(fox.progress * Math.PI) * 16;
@@ -100,15 +163,30 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
       lift = 26;
       lying = 0;
       rolling = false;
+      state = "CaptureWaitHi";
+      sf = 1;
     } else if (g.phase !== "round" && g.outcome?.kind === "hit") {
       color = "#ffd447";
       lift = 40;
       rolling = false;
+      state = "DamageFlyN";
+      sf = 1;
+      figLift = 40;
     }
   }
+  const fig = figure(figs.victim, figs.who, state, sf);
   ctx.save();
-  ctx.translate(dx, GROUND - lift);
-  if (rolling) {
+  ctx.translate(dx, GROUND - (fig ? figLift : lift));
+  if (fig) {
+    // Their real outline on this frame; drawn outlined in red while their getup attack is hitting.
+    ctx.fillStyle = color;
+    ctx.fill(fig, "evenodd");
+    if (hitting) {
+      ctx.strokeStyle = "#ff5a4f";
+      ctx.lineWidth = 3;
+      ctx.stroke(fig);
+    }
+  } else if (rolling) {
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.arc(0, -22, 22, 0, Math.PI * 2);
@@ -147,6 +225,17 @@ function draw(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   ctx.save();
   ctx.translate(g.px - 46, GROUND);
   ctx.fillStyle = g.phase !== "round" && g.outcome?.kind === "gotHit" ? "#ff5a4f" : stuck && !out ? "#b99a2a" : "#ffd447";
+  // Marth's own outline (round 973): his grab and down tilt on the frame he's on, holding after a grab.
+  const gotHit = g.phase !== "round" && g.outcome?.kind === "gotHit";
+  const held = g.phase !== "round" && g.outcome?.kind === "grab";
+  const mState = gotHit ? "DamageFlyN" : g.action && stuck ? (g.action.move === "grab" ? "Catch" : "AttackLw3") : held ? "CatchWait" : g.phase !== "round" && g.outcome?.kind === "hit" ? "AttackLw3" : "Wait";
+  const mFig = figure(figs.marth, "marth", mState, mState === "Catch" || mState === "AttackLw3" ? Math.max(1, mf) : 1);
+  if (mFig) {
+    ctx.translate(0, gotHit ? -30 : 0);
+    ctx.fill(mFig, "evenodd");
+    ctx.restore();
+    return;
+  }
   ctx.beginPath();
   ctx.moveTo(-14, 0);
   ctx.lineTo(14, 0);
@@ -170,6 +259,17 @@ export default function TechChase() {
   const [half, setHalf] = useState(false);
   const [victim, setVictim] = useState<TechVictim>("fox");
   const game = useRef<Game>(fresh(1));
+  // The opponent's and Marth's outlines, fetched when the opponent is picked (round 973).
+  const figs = useRef<Figures>({ who: "fox", victim: null, marth: null });
+  useEffect(() => {
+    let live = true;
+    Promise.all([loadOutlines(victim), loadOutlines("marth")]).then(([v, m]) => {
+      if (live) figs.current = { who: victim, victim: v, marth: m };
+    });
+    return () => {
+      live = false;
+    };
+  }, [victim]);
   const [bestStored, setBest] = useStoredState("arcade.tech.best", "0");
   const best = Number(bestStored) || 0;
   const bestRef = useRef(best);
@@ -251,7 +351,7 @@ export default function TechChase() {
           setHud((h) => ({ ...h, phase: "over", newBest }));
         }
       }
-      draw(ctx, g, now);
+      draw(ctx, g, now, figs.current);
       id = requestAnimationFrame(frame);
     });
     return () => cancelAnimationFrame(id);
@@ -348,6 +448,7 @@ export default function TechChase() {
           <li>{t("history.arcade.tech.how")}</li>
           <li>{t("history.arcade.tech.colours")}</li>
           <li className="text-meta text-muted">{t("history.arcade.tech.frames")}</li>
+          <li className="text-meta text-muted">{t("history.arcade.tech.outlines")}</li>
           <li className="text-meta text-muted">{t("history.arcade.tech.note")}</li>
         </ul>
       </details>

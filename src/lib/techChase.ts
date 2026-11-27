@@ -49,6 +49,7 @@ export type Phase = {
   hits?: readonly (readonly [number, number])[]; // frames his own attack hits on
   to?: Slot; // where a roll ends
   arrives?: number; // the frame from which he counts as being there
+  path?: readonly number[]; // a roll: how far along it he is on each frame, 0 to 1 (from the game's animation)
 };
 
 export type TechOption = "inPlace" | "left" | "right" | "missed";
@@ -57,6 +58,14 @@ export const TECH_OPTIONS: TechOption[] = ["inPlace", "left", "right", "missed"]
 export const GETUPS: Getup[] = ["rollLeft", "rollRight", "stand", "attack"];
 
 const phase = (name: PhaseName, w: Win, extra: Partial<Phase> = {}): Phase => ({ name, frames: w.frames, intangible: w.intangible, downed: false, ...(w.hits ? { hits: w.hits } : {}), ...extra });
+/**
+ * A roll to `to`, travelling along `path` (round 973: read from the game's animation). He counts as being at the
+ * new spot from the frame he is halfway there (it used to be frame 12 for every roll).
+ */
+const roll = (name: PhaseName, w: Win, to: Slot, path: readonly number[] | undefined): Phase => {
+  const half = path ? path.findIndex((v) => Math.abs(v) >= 0.5) + 1 : 12;
+  return phase(name, w, { to, arrives: half > 0 ? half : 12, ...(path ? { path } : {}) });
+};
 
 /**
  * One knockdown, start to finish: what the opponent does on landing (frame 1 is the frame they land), and after.
@@ -75,13 +84,14 @@ export function newScript(rand: () => number, victim: TechVictim = "fox"): Scrip
   const d = TECH_DATA[victim];
   const option = pick(TECH_OPTIONS, rand);
   if (option === "inPlace") return { victim, option, getup: null, face: null, phases: [phase("tech", d.tech)] };
-  if (option === "left" || option === "right") return { victim, option, getup: null, face: null, phases: [phase("techRoll", d.techRoll, { to: option === "left" ? -1 : 1, arrives: 12 })] };
+  // Facing right: a roll to the right is the forward one.
+  if (option === "left" || option === "right") return { victim, option, getup: null, face: null, phases: [roll("techRoll", d.techRoll, option === "left" ? -1 : 1, option === "left" ? d.techRoll.pathBack : d.techRoll.path)] };
   const wait = 10 + Math.floor(rand() * 31);
   const getup = pick(GETUPS, rand);
   const face = rand() < 0.5 ? "up" : "down";
   const g = d[face];
   const up =
-    getup === "attack" ? phase("getupAttack", g.attack) : getup === "stand" ? phase("getupStand", g.stand) : phase("getupRoll", getup === "rollRight" ? g.forward : g.back, { to: getup === "rollRight" ? 1 : -1, arrives: 12 });
+    getup === "attack" ? phase("getupAttack", g.attack) : getup === "stand" ? phase("getupStand", g.stand) : getup === "rollRight" ? roll("getupRoll", g.forward, 1, g.forward.path) : roll("getupRoll", g.back, -1, g.back.path);
   return {
     victim,
     option,
