@@ -32,9 +32,12 @@ export const yearOf = (date: string) => Number(date.slice(0, 4));
 // ---------- Guess the major ----------
 
 export const MAJOR_TRIES = 5;
-/** Majors that can be the day's answer: a full top 8 and a known size. */
+/** The games the two daily puzzles use (round 1016, Matthew: "limit it to melee and ultimate for now"). */
+export const DAILY_GAMES: GameKey[] = ["melee", "ultimate"];
+
+/** Majors that can be the day's answer: a daily game's, with a full top 8 and a known size. */
 export const majorPuzzlePool = (majors: ArcadeMajor[]) =>
-  majors.filter((m) => m.top8.length >= 8 && m.entrants !== null).sort((a, b) => a.slug.localeCompare(b.slug) || a.game.localeCompare(b.game));
+  majors.filter((m) => DAILY_GAMES.includes(m.game) && m.top8.length >= 8 && m.entrants !== null).sort((a, b) => a.slug.localeCompare(b.slug) || a.game.localeCompare(b.game));
 
 export type Compare = "same" | "higher" | "lower";
 const compare = (guess: number, answer: number): Compare => (guess === answer ? "same" : answer > guess ? "higher" : "lower");
@@ -161,8 +164,8 @@ export type PlayerOption = { slug: string; name: string; wins: number; top8s: nu
 /** Players who can be the day's answer: a major win, or at least six top 8s. In a fixed order. */
 export const playerPuzzlePool = (players: PlayerOption[]) => players.filter((p) => p.wins >= 1 || p.top8s >= 6).sort((a, b) => a.slug.localeCompare(b.slug));
 
-/** The games take turns by day; the two biggest come up most. */
-export const PLAYER_GAME_TURNS: GameKey[] = ["melee", "ultimate", "smash4", "melee", "ultimate", "pplus", "melee", "ultimate", "brawl", "smash64"];
+/** The daily games take turns by day (until round 1016 all six did, Melee and Ultimate most often). */
+export const PLAYER_GAME_TURNS: GameKey[] = DAILY_GAMES;
 export const playerGameOfDay = (day: number): GameKey => PLAYER_GAME_TURNS[(day - 1) % PLAYER_GAME_TURNS.length];
 
 /** What a guess tells the player. `main`: null when either player's most-played character isn't known. */

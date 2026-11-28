@@ -12,6 +12,7 @@ import { unixNow } from "@/lib/format";
 import { GAMES, GAME_KEYS, type GameKey } from "@/lib/games";
 import { getMatchupHighlights } from "@/lib/highlights";
 import { getMatchupPosts } from "@/lib/posts";
+import { matchupKey, matchupPairsWithContent } from "@/lib/matchupPairs";
 import { pageMeta } from "@/lib/siteMeta";
 import { getUserId } from "@/lib/supabase/server";
 import { LangProvider } from "@/lib/i18n/client";
@@ -46,9 +47,12 @@ async function Matchup({ params }: Pick<PageProps<"/games/[game]/[character]/vs/
   const m = resolve(game, character, opponent);
   if (!m) notFound();
   const userId = await getUserId();
+  // Guests (and the crawlers that open every pair) skip the database for a matchup with nothing in it
+  // (round 1015, see matchupPairs.ts).
+  const empty = !userId && (await matchupPairsWithContent(m.game))?.includes(matchupKey(character, opponent)) === false;
   const [resources, posts, t, lang] = await Promise.all([
-    getMatchupHighlights(m.game, character, opponent, userId),
-    getMatchupPosts(m.game, character, opponent, userId),
+    empty ? [] : getMatchupHighlights(m.game, character, opponent, userId),
+    empty ? [] : getMatchupPosts(m.game, character, opponent, userId),
     getT(),
     getLang(),
   ]);

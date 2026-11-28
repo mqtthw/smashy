@@ -1,4 +1,4 @@
-// Guess the player: the Arcade's second daily puzzle. The games take turns by day; the answer and the choices
+// Guess the player: the Arcade's second daily puzzle. Melee and Ultimate take turns by day (round 1016); the answer and the choices
 // come from that game's major top 8s. Players who hide their stats are left out at every visit, and when that
 // can't be checked the puzzle isn't shown.
 import type { Metadata } from "next";

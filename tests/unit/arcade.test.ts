@@ -25,7 +25,8 @@ describe("the Arcade", () => {
     expect(pickDaily([], 1)).toBeNull();
   });
 
-  it("only makes a puzzle of a major with a full top 8 and a known size", () => {
+  it("only makes a puzzle of a Melee or Ultimate major with a full top 8 and a known size", () => {
+    expect(majorPuzzlePool([...list, { ...list[0], game: "smash4" }]).every((m) => m.game === "melee" || m.game === "ultimate")).toBe(true);
     expect(majorPuzzlePool(list).map((m) => `${m.slug}|${m.game}`)).toEqual(["tournament/genesis-3|melee", "tournament/genesis-3|ultimate", "tournament/the-big-house-6|melee"]);
   });
 
@@ -123,10 +124,10 @@ describe("the Arcade's player games", () => {
     expect(pool.map((p) => p.slug)).toEqual(["1", "3"]);
   });
 
-  it("gives every game a turn", () => {
+  it("gives Melee and Ultimate turns", () => {
     expect(playerGameOfDay(1)).toBe("melee");
     expect(playerGameOfDay(PLAYER_GAME_TURNS.length + 2)).toBe("ultimate");
-    expect(new Set(PLAYER_GAME_TURNS).size).toBe(6);
+    expect(PLAYER_GAME_TURNS).toEqual(["melee", "ultimate"]);
   });
 
   it("compares a guess with the answer, and says nothing about mains it doesn't know", () => {
