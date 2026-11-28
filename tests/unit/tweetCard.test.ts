@@ -1,7 +1,7 @@
 // Tweets linked in posts (round 622): finding them in a post, and turning X's tweet data into the card.
 import { describe, expect, it } from "vitest";
 import { tweetIdFrom, tweetLinks } from "@/lib/embeds";
-import { toTweetCard, tweetDataUrl } from "@/lib/tweetCard";
+import { toTweetCard, tweetDataUrl, xVideoUrl } from "@/lib/tweetCard";
 
 describe("finding tweet links", () => {
   it("reads x.com, twitter.com and mobile links, with or without tracking bits", () => {
@@ -65,5 +65,11 @@ describe("the tweet card", () => {
   });
   it("asks X's tweet data address with the id and its token", () => {
     expect(tweetDataUrl("2123597283744751976")).toMatch(/^https:\/\/cdn\.syndication\.twimg\.com\/tweet-result\?id=2123597283744751976&lang=en&token=\w+$/);
+  });
+});
+
+describe("xVideoUrl", () => {
+  it("is X's own video player for the tweet, set to start at once", () => {
+    expect(xVideoUrl("2124429086789353494")).toBe("https://x.com/i/videos/tweet/2124429086789353494?autoplay=true");
   });
 });

@@ -7,11 +7,16 @@
 // tweet (an iframe), where the video plays without leaving Smashy. Nothing from X loads until that
 // press, so the Feed stays as light as before. (X's video files can't be played directly: its video
 // server refuses other sites.)
+// Round 1015: pressing play now plays the video right where the picture was, at once: X's own video
+// player (x.com/i/videos/tweet/ID, the player X uses for its video cards) with autoplay, inside the
+// Smashy card. Before, the press loaded X's whole tweet widget, which needed a second press on X's own
+// play button, never reported its height (so it showed a white strip and its own scrollbar) and looked
+// like X, not Smashy.
 import { useEffect, useRef, useState } from "react";
 import EmbedPlayer from "@/components/highlights/EmbedPlayer";
 import { Bone } from "@/components/ui/Skeleton";
 import { useLang, useT } from "@/lib/i18n/client";
-import type { TweetCard } from "@/lib/tweetCard";
+import { xVideoUrl, type TweetCard } from "@/lib/tweetCard";
 import NewTab from "@/components/ui/NewTab";
 import { usePageShown } from "@/lib/usePageShown";
 
@@ -65,7 +70,6 @@ export default function TweetEmbed({ id, href }: { id: string; href: string }) {
   const pic = tweet.picture;
   const dateText = date && !Number.isNaN(date.getTime()) ? date.toLocaleDateString(lang, { month: "short", day: "numeric", year: "numeric" }) : "";
   const linkProps = { href, target: "_blank", rel: "nofollow ugc noopener noreferrer" } as const;
-  if (playing) return <XPlayer id={tweet.id} title={t("media.hl.tweetBy", { name: tweet.name })} />;
   const head = (
     <>
       <span className="flex items-center gap-2">
@@ -91,13 +95,17 @@ export default function TweetEmbed({ id, href }: { id: string; href: string }) {
     return (
       <div className="rounded-xl border border-line p-3">
         <a {...linkProps} className="block rounded-lg hover:bg-surface">{head}</a>
-        <button type="button" onClick={() => setPlaying(true)} aria-label={t("media.hl.playVideo")} className="relative mt-2 block w-full overflow-hidden rounded-lg bg-surface-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={pic.url} alt="" width={pic.width} height={pic.height} loading="lazy" decoding="async" className="max-h-[28rem] w-full object-cover" />
-          <span aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
-            <span className="flex size-14 items-center justify-center rounded-full bg-black/60 pl-1 text-2xl text-white">▶</span>
-          </span>
-        </button>
+        {playing ? (
+          <XVideo id={tweet.id} width={pic.width} height={pic.height} title={t("media.hl.tweetBy", { name: tweet.name })} />
+        ) : (
+          <button type="button" onClick={() => setPlaying(true)} aria-label={t("media.hl.playVideo")} className="relative mt-2 block w-full overflow-hidden rounded-lg bg-surface-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={pic.url} alt="" width={pic.width} height={pic.height} loading="lazy" decoding="async" className="max-h-[28rem] w-full object-cover" />
+            <span aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
+              <span className="flex size-14 items-center justify-center rounded-full bg-black/60 pl-1 text-2xl text-white">▶</span>
+            </span>
+          </button>
+        )}
         <a {...linkProps} className="mt-2 flex items-center justify-between gap-2 text-meta text-muted hover:text-foreground">
           <span>{dateText}</span>
           <span>{t("media.hl.watchOn", { provider: "X" })}<NewTab /></span>
@@ -129,38 +137,21 @@ export default function TweetEmbed({ id, href }: { id: string; href: string }) {
 }
 
 /**
- * X's own embedded tweet, in an iframe (the same page X's embed script would create, without running
- * that script here). It tells its height by message; until then a guess. Dark or light to match Smashy.
+ * X's own video player for the tweet's video, started at once (the press on Smashy's ▶ counts as the
+ * viewer asking for sound, so browsers let it play). The same shape as the picture it replaces: no
+ * white edge, no scrollbar. A tall video gets black bars from X's player once it hits the height cap.
  */
-function XPlayer({ id, title }: { id: string; title: string }) {
-  const frame = useRef<HTMLIFrameElement>(null);
-  const [height, setHeight] = useState(560);
-  const [theme] = useState(() => {
-    const chosen = document.documentElement.getAttribute("data-theme");
-    return chosen === "light" || chosen === "dark" ? chosen : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  });
-  useEffect(() => {
-    const onMessage = (e: MessageEvent) => {
-      if (e.origin !== "https://platform.twitter.com" || e.source !== frame.current?.contentWindow) return;
-      // { "twttr.embed": { method: "twttr.private.resize", params: [{ height }] } }
-      const params = (e.data as { "twttr.embed"?: { method?: string; params?: { height?: number }[] } } | null)?.["twttr.embed"];
-      const h = params?.method === "twttr.private.resize" ? params.params?.[0]?.height : undefined;
-      if (typeof h === "number" && h > 100 && h < 3000) setHeight(Math.ceil(h));
-    };
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, []);
+function XVideo({ id, width, height, title }: { id: string; width: number; height: number; title: string }) {
   return (
     <iframe
-      ref={frame}
-      src={`https://platform.twitter.com/embed/Tweet.html?id=${id}&dnt=true&theme=${theme}&hideThread=true`}
+      src={xVideoUrl(id)}
       title={title}
-      height={height}
       allow="autoplay; fullscreen; picture-in-picture"
       allowFullScreen
       referrerPolicy="strict-origin-when-cross-origin"
       sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"
-      className="w-full rounded-xl"
+      style={{ aspectRatio: `${width} / ${height}` }}
+      className="mt-2 block max-h-[28rem] w-full rounded-lg bg-black"
     />
   );
 }

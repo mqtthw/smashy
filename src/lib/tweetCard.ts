@@ -32,6 +32,11 @@ export function tweetDataUrl(id: string): string {
   return `https://cdn.syndication.twimg.com/tweet-result?id=${id}&lang=en&token=${token}`;
 }
 
+/** X's own video player for a tweet's video, set to start at once (round 1015). */
+export function xVideoUrl(id: string): string {
+  return `https://x.com/i/videos/tweet/${id}?autoplay=true`;
+}
+
 const decode = (s: string) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
 
 /** X's tweet data → the card, or null for a deleted or hidden tweet or data in a shape we don't know. */
