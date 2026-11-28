@@ -247,12 +247,13 @@ function finishedThisWeek(snapshot: Snapshot, nowSec: number): SmashyTournament[
 
 /**
  * A region's upcoming tournaments from the saved lists only (round 704, for "More smash near" on event
- * pages): never a start.gg request, so a busy event page can't use up start.gg's limit. Texas uses its
- * usual saved copy; another region with nothing saved yet gives an empty list.
+ * pages and the public API): never a start.gg request, so a busy event page can't use up start.gg's limit.
+ * Texas reads its saved copy directly, however old (getTexasEvents would ask start.gg once the copy is
+ * over a day old, round 1008); a region with nothing saved yet gives an empty list.
  */
 export async function getSavedUpcomingTournaments(region: string): Promise<SmashyTournament[]> {
   if (!isRegion(region)) return [];
-  const list = region === HOME_REGION ? (await getTexasEvents()).tournaments : await readSavedRegionUpcoming(region);
+  const list = region === HOME_REGION ? await readSavedTexasUpcoming() : await readSavedRegionUpcoming(region);
   return dropFinished(list, Math.floor(Date.now() / 1000));
 }
 
@@ -261,5 +262,13 @@ async function readSavedRegionUpcoming(region: string): Promise<SmashyTournament
   cacheLife({ stale: 60, revalidate: 300, expire: 1800 });
   const { data, error } = await createAdminClient({ forPage: true }).from("region_events").select("data").eq("region", region).maybeSingle();
   if (error) throw new Error(`Saved region events unreadable: ${error.message}`);
+  return ((data?.data as Snapshot | null)?.tournaments ?? []) as SmashyTournament[];
+}
+
+async function readSavedTexasUpcoming(): Promise<SmashyTournament[]> {
+  "use cache: remote";
+  cacheLife({ stale: 60, revalidate: 300, expire: 1800 });
+  const { data, error } = await createAdminClient({ forPage: true }).from("events_sync").select("data").eq("id", 1).maybeSingle();
+  if (error) throw new Error(`Saved events unreadable: ${error.message}`);
   return ((data?.data as Snapshot | null)?.tournaments ?? []) as SmashyTournament[];
 }

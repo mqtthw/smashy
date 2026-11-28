@@ -5,7 +5,7 @@
 // page). Someone opening a shared link to an event or a player page used to see only "← Back" and the tab
 // bar. Not on the home page (it has its own header), Reels and an open chat (full screen), or sign-in.
 import type { ReactNode } from "react";
-import Link from "next/link";
+import IntentLink from "@/components/ui/IntentLink";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import RotatingCharacterIcon from "@/components/RotatingCharacterIcon";
@@ -22,17 +22,17 @@ export default function PhoneBrandBar({ menu, characterIcons }: { menu: ReactNod
   if (SKIP.some((r) => r.test(pathname))) return null;
   return (
     <div className="flex items-center justify-between gap-2 border-b border-line px-4 py-2 md:hidden print:hidden">
-      <Link href="/" aria-label={t("nav.home")}>
+      <IntentLink href="/" aria-label={t("nav.home")}>
         <Logo className="text-2xl" />
-      </Link>
+      </IntentLink>
       <div className="flex items-center gap-2">
-        <Link href="/search" aria-label={t("feed.search")} title={t("feed.search")} className={PHONE_HEADER_BTN}>
+        <IntentLink href="/search" aria-label={t("feed.search")} title={t("feed.search")} className={PHONE_HEADER_BTN}>
           <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2}><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
-        </Link>
-        <Link href="/games" title={t("feed.resources")} className={PHONE_HEADER_BTN}>
+        </IntentLink>
+        <IntentLink href="/games" title={t("feed.resources")} className={PHONE_HEADER_BTN}>
           <RotatingCharacterIcon icons={characterIcons} />
           <span>{t("feed.resources")}</span>
-        </Link>
+        </IntentLink>
         {menu}
       </div>
     </div>

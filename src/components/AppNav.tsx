@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import IntentLink from "@/components/ui/IntentLink";
 import { GAMECUBE_PATH } from "@/lib/gamecubeIcon";
 import { isTabActive } from "@/lib/navActive";
 import { usePathname } from "next/navigation";
@@ -51,7 +51,7 @@ function TabList({ pathname }: { pathname: string | null }) {
         const active = isTabActive(shown, tab.href);
         return (
           <li key={tab.href} className={"desktopOnly" in tab ? "hidden md:block" : undefined}>
-            <Link
+            <IntentLink
               href={tab.href}
               onClick={() => setTapped({ href: tab.href, on: pathname })}
               title={t(tab.label)}
@@ -73,7 +73,7 @@ function TabList({ pathname }: { pathname: string | null }) {
               <span className="md:sr-only lg:not-sr-only">{t(tab.label)}</span>
               {tab.href === "/profile" && <NotificationBadge className="absolute -mt-1 ml-5 md:ml-6 lg:static lg:ml-auto" />}
               {tab.href === "/messages" && <MessageBadge className="absolute -mt-1 ml-5 md:ml-6 lg:static lg:ml-auto" />}
-            </Link>
+            </IntentLink>
           </li>
         );
       })}
@@ -113,10 +113,10 @@ export default function AppNav({ accounts }: { accounts?: React.ReactNode }) {
       className="app-dock fixed inset-x-3 bottom-(--dock-gap) z-10 rounded-3xl glass-bar shadow-[0_10px_26px_rgb(80_10_8/0.25)] print:hidden
                  md:sticky md:flex md:flex-col md:top-0 md:bottom-auto md:inset-x-auto md:h-screen md:w-20 md:shrink-0 md:rounded-none md:border-0 md:border-r md:border-line md:bg-transparent md:shadow-none md:backdrop-blur-none lg:w-56"
     >
-      <Link href="/" aria-label={t("nav.home")} className="hidden py-6 text-center md:block lg:px-5 lg:text-left">
+      <IntentLink href="/" aria-label={t("nav.home")} className="hidden py-6 text-center md:block lg:px-5 lg:text-left">
         <span className="inline-block text-3xl lg:hidden"><Logo markOnly className="" /></span>
         <span className="hidden text-4xl lg:inline-block"><Logo className="" /></span>
-      </Link>
+      </IntentLink>
       <Suspense fallback={<TabList pathname={null} />}>
         <ActiveTabList />
       </Suspense>

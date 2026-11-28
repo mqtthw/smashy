@@ -1,4 +1,5 @@
 import Link from "next/link";
+import IntentLink from "@/components/ui/IntentLink";
 import GetTheApp from "@/components/GetTheApp";
 import { Suspense } from "react";
 import OnlineToday from "@/app/brackets/OnlineToday";
@@ -137,9 +138,9 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
           <Link href="/brackets" className="link font-semibold">{t("browse.events.openAnyBracket")}</Link>
         </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <Link href="/signin" className="btn btn-md btn-primary btn-hero">{t("ui.guest.join")}</Link>
+          <IntentLink href="/signin" className="btn btn-md btn-primary btn-hero">{t("ui.guest.join")}</IntentLink>
           <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-            <Link href="/signin" className="font-semibold text-foreground hover:underline">{t("ui.guest.signIn")}</Link>
+            <IntentLink href="/signin" className="font-semibold text-foreground hover:underline">{t("ui.guest.signIn")}</IntentLink>
             <Link href="/about" className="text-muted hover:text-foreground hover:underline">{t("ui.guest.whatIs")}</Link>
           </span>
         </div>
@@ -162,9 +163,9 @@ export default async function GuestWelcome({ majors = [] }: { majors?: Major[] }
         {/* One button; the rest are quiet links beside it (round 871: two buttons over a third row of links
             read as a wall of equal-weight buttons). */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <Link href="/signin" className="btn btn-md btn-primary btn-hero">{t("ui.guest.join")}</Link>
+          <IntentLink href="/signin" className="btn btn-md btn-primary btn-hero">{t("ui.guest.join")}</IntentLink>
           <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-            <Link href="/signin" className="font-semibold text-foreground hover:underline">{t("ui.guest.signIn")}</Link>
+            <IntentLink href="/signin" className="font-semibold text-foreground hover:underline">{t("ui.guest.signIn")}</IntentLink>
             <Link href="/about" className="text-muted hover:text-foreground hover:underline">{t("ui.guest.whatIs")}</Link>
             <Link href="/help" className="text-muted hover:text-foreground hover:underline">{t("ui.guest.helpBuild")}</Link>
           </span>

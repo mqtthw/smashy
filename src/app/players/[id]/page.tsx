@@ -11,6 +11,7 @@ import { startggKey } from "@/lib/seasonsMath";
 import { SeasonRanks } from "@/components/seasons/SeasonParts";
 import type { Metadata } from "next";
 import Link from "next/link";
+import IntentLink from "@/components/ui/IntentLink";
 import BackLink from "@/components/ui/BackLink";
 import { notFound } from "next/navigation";
 import { after, connection } from "next/server";
@@ -99,6 +100,17 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
   if (!/^\d{1,12}$/.test(id)) notFound();
   const userId = await getUserId();
   const [lang, t] = await Promise.all([getLang(), getT()]);
+  // A crawler on a player search engines aren't told to list (no top 8 at a major, so the page says
+  // "don't index"): just the name, from Smashy's own saved facts (round 1011). Search crawlers opened
+  // ~8,000 player pages a day in late November, most of them these, each a full lookup and the site's
+  // single biggest use of server time; the page they'd get can't appear in search results anyway.
+  if (!userId && isCrawler((await headers()).get("user-agent"))) {
+    const [facts, onSmashy] = await Promise.all([playerSearchFacts(id).catch(() => null), onSmashyOnce(id).catch(() => null)]);
+    if (!facts?.top8) {
+      if (!onSmashy?.allowed) return <p className="p-6 text-muted">{t("people.player.hidden")}</p>;
+      return facts ? <h1 className="px-4 pt-4 text-center text-3xl">{facts.tag}</h1> : <p className="p-6 text-muted">{t("people.player.hidden")}</p>;
+    }
+  }
   // A guest while start.gg is in heavy use (round 781): start.gg isn't asked, and the page shows what
   // Smashy has saved (the tag and their top 8s at majors) with a note, instead of a wall that says
   // "busy, sign in". On a busy day that wall was all most visitors would have seen of player lookup.
@@ -171,8 +183,8 @@ async function PlayerContent({ params }: { params: PageProps<"/players/[id]">["p
           {player.profileUrl && (
             <a href={player.profileUrl} target="_blank" rel="noopener noreferrer" className="link">{t("people.player.openStartgg")}<NewTab /></a>
           )}
-          <Link href={`/players/compare?a=${player.playerId}`} className="link">{t("people.player.compare")}</Link>
-          <Link href={`/vods?q=${encodeURIComponent(player.tag)}`} className="link">{t("people.player.videosOf", { tag: player.tag })}</Link>
+          <IntentLink href={`/players/compare?a=${player.playerId}`} className="link">{t("people.player.compare")}</IntentLink>
+          <IntentLink href={`/vods?q=${encodeURIComponent(player.tag)}`} className="link">{t("people.player.videosOf", { tag: player.tag })}</IntentLink>
         </div>
         <Suspense fallback={null}>
           <SeasonRanks keys={[startggKey(player.playerId)]} viewerId={userId} className="mt-1" />

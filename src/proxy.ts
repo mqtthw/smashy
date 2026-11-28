@@ -77,10 +77,47 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
+/**
+ * Which requests run the proxy (round 1009). Not static files and images, and not the site's own icon,
+ * manifest, service worker and robots.txt (they never need a sign-in or a limit). Not the site quietly
+ * preloading a link either ("next-router-prefetch"): in the week to Nov 27 those were about two thirds of
+ * the proxy's runs, about four per link on screen per visit, and the proxy was ~38% of all server time.
+ * A preload only fetches a page's shared outline (partialPrefetching); opening the page is a normal
+ * request and still runs everything here.
+ *
+ * Round 1012: and only the requests it has a job for. A guest opening an ordinary page (the Feed, Discuss,
+ * a character page…) needs nothing from it, and those were most of what was left. It still runs for:
+ * anyone with a sign-in cookie (keeping the login fresh), the pages with crawler and guest limits
+ * (players, tournaments, brackets, sets), AI training crawlers (turned away everywhere), Vercel's own
+ * addresses (the old address's redirect, the "real page is on smashy.gg" header), and the public API.
+ * Each entry below is one of those; Next's config must be written out, so the page pattern repeats.
+ */
 export const config = {
   matcher: [
-    // Everything except static files and images.
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    {
+      source: "/((?!(?:_next/static|_next/image|favicon\\.ico|icon|apple-icon|sw\\.js|manifest\\.webmanifest|robots\\.txt)(?:/|$)|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+      has: [{ type: "header", key: "cookie", value: ".*sb-[^=;]*-auth-token.*" }],
+      missing: [
+        { type: "header", key: "next-router-prefetch" },
+        { type: "header", key: "purpose", value: "prefetch" },
+      ],
+    },
+    {
+      source: "/((?:players|events|brackets|sets)/.*)",
+      missing: [
+        { type: "header", key: "next-router-prefetch" },
+        { type: "header", key: "purpose", value: "prefetch" },
+      ],
+    },
+    // Same names as AI_TRAINING_CRAWLERS in lib/guestPages.ts (a test keeps the two lists together).
+    {
+      source: "/((?!(?:_next/static|_next/image|favicon\\.ico|icon|apple-icon|sw\\.js|manifest\\.webmanifest|robots\\.txt)(?:/|$)|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+      has: [{ type: "header", key: "user-agent", value: ".*(?:GPTBot|ClaudeBot|anthropic-ai|meta-externalagent|Amazonbot|CCBot|Bytespider|Applebot-Extended|cohere-training-data-crawler|Diffbot|Timpibot|ImagesiftBot|omgili).*" }],
+    },
+    {
+      source: "/((?!(?:_next/static|_next/image|favicon\\.ico|icon|apple-icon|sw\\.js|manifest\\.webmanifest|robots\\.txt)(?:/|$)|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+      has: [{ type: "host", value: ".*\\.vercel\\.app" }],
+    },
     // The public API always, even an address that ends like an image (round 717): otherwise it would
     // skip the per-address limit and keep its sign-in cookies.
     "/api/v1/:path*",
